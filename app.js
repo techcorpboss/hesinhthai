@@ -553,7 +553,7 @@ function showToast(msg) {
   if (!container) return;
   const el = document.createElement("div");
   el.className = "toast";
-  el.innerHTML = `<strong style="color:#38bdf8">TechCorp Hub:</strong> ${msg}`;
+  el.innerHTML = `<strong style="color:#0052d4">TechCorp Hub:</strong> ${msg}`;
   container.appendChild(el);
   setTimeout(() => {
     el.remove();
@@ -629,10 +629,10 @@ function renderConnectedApps() {
       return `
         <div class="product-item">
           <div class="product-info">
-            <h4>${i + 1}. ${escapeHtml(app.name)} <code style="font-size:11.5px;color:#38bdf8;margin-left:6px;">[${escapeHtml(app.id)}]</code></h4>
+            <h4>${i + 1}. ${escapeHtml(app.name)} <code style="font-size:11.5px;color:#0052d4;margin-left:6px;">[${escapeHtml(app.id)}]</code></h4>
             <p>${escapeHtml(app.desc || "")}</p>
             <div style="font-size:11.5px;color:#64748b;margin-top:4px;">
-              🌐 URL: <span style="color:#94a3b8;">${escapeHtml(app.appUrl || "")}</span>
+              🌐 URL: <span style="color:#475569;">${escapeHtml(app.appUrl || "")}</span>
               ${app.apiKeyMasked ? ` • 🔑 API Key: <code>${escapeHtml(app.apiKeyMasked)}</code>` : ""}
             </div>
           </div>
@@ -663,12 +663,12 @@ function renderAdminAppsTable() {
         <tr>
           <td>
             <strong>${escapeHtml(app.name)}</strong>
-            <div style="font-size:11.5px;color:#38bdf8;">ID: <code>${escapeHtml(app.id)}</code> • Nhãn: ${escapeHtml(app.badge || "App")}</div>
-            <div style="font-size:11.5px;color:#94a3b8;">${escapeHtml(app.desc || "")}</div>
+            <div style="font-size:11.5px;color:#0052d4;">ID: <code>${escapeHtml(app.id)}</code> • Nhãn: ${escapeHtml(app.badge || "App")}</div>
+            <div style="font-size:11.5px;color:#475569;">${escapeHtml(app.desc || "")}</div>
           </td>
           <td>
-            <div style="font-size:12px;color:#f8fafc;">🌐 ${escapeHtml(app.appUrl || "")}</div>
-            <div style="font-size:11.5px;color:#fbbf24;margin-top:3px;">🔑 <code>${escapeHtml(app.apiKeyMasked || "tc_live_...")}</code></div>
+            <div style="font-size:12px;color:#0f172a;">🌐 ${escapeHtml(app.appUrl || "")}</div>
+            <div style="font-size:11.5px;color:#d97706;margin-top:3px;">🔑 <code>${escapeHtml(app.apiKeyMasked || "tc_live_...")}</code></div>
           </td>
           <td>${stBadge}</td>
           <td>
@@ -729,7 +729,7 @@ window.saveEcosystemApp = async function () {
   const desc = document.getElementById("newAppDesc")?.value.trim();
 
   if (!id || !name) {
-    showToast(`<span style="color:#fbbf24">Vui lòng nhập đầy đủ Mã định danh (App ID) và Tên ứng dụng!</span>`);
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Mã định danh (App ID) và Tên ứng dụng!</span>`);
     return;
   }
 
@@ -810,10 +810,10 @@ window.saveEcosystemApp = async function () {
       if (outEl && data.integration) {
         outEl.innerHTML = `
           <div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);padding:12px;border-radius:10px;margin-bottom:10px;">
-            <div style="color:#34d399;font-weight:700;font-size:13px;">✅ Đã tích hợp "${escapeHtml(data.app.name)}" & Ghi Audit Log!</div>
-            <div style="font-size:12px;color:#f8fafc;margin-top:4px;">🔑 <strong>API Key:</strong> <code style="color:#fbbf24">${escapeHtml(data.app.apiKey)}</code></div>
+            <div style="color:#059669;font-weight:700;font-size:13px;">✅ Đã tích hợp "${escapeHtml(data.app.name)}" & Ghi Audit Log!</div>
+            <div style="font-size:12px;color:#0f172a;margin-top:4px;">🔑 <strong>API Key:</strong> <code style="color:#d97706">${escapeHtml(data.app.apiKey)}</code></div>
           </div>
-          <p style="font-size:12px;color:#94a3b8;margin-bottom:4px;"><strong>Mã nhúng Thanh Liên thông:</strong></p>
+          <p style="font-size:12px;color:#475569;margin-bottom:4px;"><strong>Mã nhúng Thanh Liên thông:</strong></p>
           <div class="code-box">${escapeHtml(data.integration.widgetSnippet)}</div>
         `;
       }
@@ -821,7 +821,7 @@ window.saveEcosystemApp = async function () {
       showToast(`Đã bổ sung ứng dụng <b>${escapeHtml(data.app.name)}</b> vào hệ sinh thái!`);
       return;
     } else if (data && data.error) {
-      showToast(`<span style="color:#fbbf24">${escapeHtml(data.error)}</span>`);
+      showToast(`<span style="color:#d97706">${escapeHtml(data.error)}</span>`);
       return;
     }
   } catch (_) {}
@@ -961,7 +961,7 @@ function renderForumPosts() {
   );
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="padding:24px;text-align:center;color:#94a3b8;">Chưa có bài thảo luận nào trong chuyên mục này.</div>`;
+    container.innerHTML = `<div style="padding:24px;text-align:center;color:#475569;">Chưa có bài thảo luận nào trong chuyên mục này.</div>`;
     return;
   }
 
@@ -983,19 +983,19 @@ function renderForumPosts() {
               }
               ${isLocked ? `<span class="badge badge-red">🔒 Đã khóa bình luận (Clocked)</span>` : ""}
             </div>
-            <span style="font-size:11.5px;color:#94a3b8;">🕒 ${escapeHtml(post.createdAt)} • 👁️ ${post.views || 1} lượt xem</span>
+            <span style="font-size:11.5px;color:#475569;">🕒 ${escapeHtml(post.createdAt)} • 👁️ ${post.views || 1} lượt xem</span>
           </div>
 
-          <h4 style="font-size:16px;font-weight:700;color:#f8fafc;margin-bottom:6px;">
+          <h4 style="font-size:16px;font-weight:700;color:#0f172a;margin-bottom:6px;">
             ${escapeHtml(post.title)}
           </h4>
 
-          <div style="font-size:12.5px;color:#38bdf8;margin-bottom:10px;">
+          <div style="font-size:12.5px;color:#0052d4;margin-bottom:10px;">
             👤 <strong>${escapeHtml(post.author?.name)}</strong> — ${escapeHtml(post.author?.org)}
-            <span style="color:#94a3b8;">(${escapeHtml(post.author?.verifiedApp || post.author?.roleBadge)})</span>
+            <span style="color:#475569;">(${escapeHtml(post.author?.verifiedApp || post.author?.roleBadge)})</span>
           </div>
 
-          <p style="font-size:13.5px;color:#e2e8f0;line-height:1.6;">
+          <p style="font-size:13.5px;color:#1e293b;line-height:1.6;">
             ${escapeHtml(post.content)}
           </p>
 
@@ -1024,7 +1024,7 @@ function renderForumPosts() {
                 ${isLocked ? "🔓 Mở khóa (Unlock)" : "🔒 Clock / Khóa bình luận"}
               </button>
             </div>
-            <span style="font-size:12px;color:#94a3b8;">💬 ${(post.comments || []).length} phản hồi</span>
+            <span style="font-size:12px;color:#475569;">💬 ${(post.comments || []).length} phản hồi</span>
           </div>
 
           <div class="forum-comments-wrap">
@@ -1033,10 +1033,10 @@ function renderForumPosts() {
                 (c) => `
                 <div class="forum-comment-item">
                   <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                    <strong style="color:#38bdf8;">✔ ${escapeHtml(c.authorName)} <span style="color:#94a3b8;font-weight:400;">(${escapeHtml(c.roleBadge)})</span></strong>
+                    <strong style="color:#0052d4;">✔ ${escapeHtml(c.authorName)} <span style="color:#475569;font-weight:400;">(${escapeHtml(c.roleBadge)})</span></strong>
                     <span style="font-size:11px;color:#64748b;">${escapeHtml(c.time)}</span>
                   </div>
-                  <div style="color:#f1f5f9;">${escapeHtml(c.text)}</div>
+                  <div style="color:#1e293b;">${escapeHtml(c.text)}</div>
                 </div>
               `
               )
@@ -1044,7 +1044,7 @@ function renderForumPosts() {
 
             ${
               isLocked
-                ? `<div style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.35);color:#fda4af;padding:9px 12px;border-radius:8px;font-size:12.5px;margin-top:8px;">
+                ? `<div style="background:#fff1f2;border:1px solid #fda4af;color:#be123c;padding:9px 12px;border-radius:8px;font-size:12.5px;margin-top:8px;">
                     🔒 <strong>Chủ đề đã bị khóa bình luận (Clocked):</strong> Quản trị viên đã đóng chức năng gửi phản hồi mới cho bài viết này.
                   </div>`
                 : `<div style="display:flex;gap:8px;margin-top:8px;">
@@ -1103,17 +1103,17 @@ window.renderAdminForumTable = function () {
       return `
         <tr>
           <td>
-            <div style="font-size:11.5px;color:#38bdf8;">
+            <div style="font-size:11.5px;color:#0052d4;">
               <code>${escapeHtml(p.id)}</code> • ${escapeHtml(p.categoryLabel)}
               ${p.pinned ? `<span class="badge badge-amber" style="margin-left:4px;">📌 Ghim VIP</span>` : ""}
             </div>
-            <strong style="font-size:13.5px;color:#f8fafc;">${escapeHtml(p.title)}</strong>
+            <strong style="font-size:13.5px;color:#0f172a;">${escapeHtml(p.title)}</strong>
             <div style="font-size:11.5px;color:#64748b;margin-top:2px;">💬 ${(p.comments || []).length} bình luận • 👍 ${p.likes || 0} quan tâm</div>
           </td>
           <td>
-            <div style="font-weight:600;color:#e2e8f0;">${escapeHtml(p.author?.name)}</div>
-            <div style="font-size:11.5px;color:#94a3b8;">${escapeHtml(p.author?.org)}</div>
-            <div style="font-size:11.5px;color:#34d399;margin-top:3px;">🎁 ${escapeHtml((p.memberDeal || "").slice(0, 65))}...</div>
+            <div style="font-weight:600;color:#1e293b;">${escapeHtml(p.author?.name)}</div>
+            <div style="font-size:11.5px;color:#475569;">${escapeHtml(p.author?.org)}</div>
+            <div style="font-size:11.5px;color:#059669;margin-top:3px;">🎁 ${escapeHtml((p.memberDeal || "").slice(0, 65))}...</div>
           </td>
           <td>${stBadge}</td>
           <td>${lockBadge}</td>
@@ -1342,13 +1342,13 @@ window.submitNewForumPost = async function () {
   const status = isPending ? "pending" : "approved";
 
   if (!title || !content) {
-    showToast(`<span style="color:#fbbf24">Vui lòng nhập đầy đủ Tiêu đề và Nội dung bài viết!</span>`);
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Tiêu đề và Nội dung bài viết!</span>`);
     return;
   }
 
   if ((category === "spotlight" || category === "comarketing") && !memberDeal) {
     showToast(
-      `<span style="color:#fbbf24">Quy tắc chống spam Give-to-Get: Vui lòng nhập Đặc quyền / Ưu đãi dành cho thành viên TechCorp!</span>`
+      `<span style="color:#d97706">Quy tắc chống spam Give-to-Get: Vui lòng nhập Đặc quyền / Ưu đãi dành cho thành viên TechCorp!</span>`
     );
     return;
   }
@@ -1373,7 +1373,7 @@ window.submitNewForumPost = async function () {
       STATE.activityLogs = data.activityLogs || STATE.activityLogs;
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
     } else if (data && data.error) {
-      showToast(`<span style="color:#fbbf24">${escapeHtml(data.error)}</span>`);
+      showToast(`<span style="color:#d97706">${escapeHtml(data.error)}</span>`);
       return;
     }
   } catch (_) {
@@ -1527,18 +1527,18 @@ window.renderAdminUsersTable = function () {
           : `<span class="badge badge-green">🟢 Active</span>`;
 
       const appsList = (u.assignedApps || [])
-        .map((a) => `<code style="font-size:11px;color:#38bdf8;margin-right:4px;">${escapeHtml(a)}</code>`)
+        .map((a) => `<code style="font-size:11px;color:#0052d4;margin-right:4px;">${escapeHtml(a)}</code>`)
         .join("");
 
       return `
         <tr>
           <td>
             <strong>${escapeHtml(u.fullName)}</strong>
-            <div style="font-size:11.5px;color:#38bdf8;">ID: <code>${escapeHtml(u.id)}</code></div>
-            <div style="font-size:11.5px;color:#94a3b8;">✉️ ${escapeHtml(u.email)} • 📞 ${escapeHtml(u.phone || "")}</div>
+            <div style="font-size:11.5px;color:#0052d4;">ID: <code>${escapeHtml(u.id)}</code></div>
+            <div style="font-size:11.5px;color:#475569;">✉️ ${escapeHtml(u.email)} • 📞 ${escapeHtml(u.phone || "")}</div>
           </td>
           <td>
-            <div style="font-size:12.5px;color:#f8fafc;">🏢 ${escapeHtml(u.org)}</div>
+            <div style="font-size:12.5px;color:#0f172a;">🏢 ${escapeHtml(u.org)}</div>
             <span class="badge badge-purple" style="margin-top:4px;">${escapeHtml(u.roleBadge || u.role)}</span>
           </td>
           <td>
@@ -1628,7 +1628,7 @@ window.saveEcosystemUser = async function () {
   });
 
   if (!fullName || !email || !org) {
-    showToast(`<span style="color:#fbbf24">Vui lòng nhập đầy đủ Họ tên, Email và Đơn vị/Tổ chức!</span>`);
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Họ tên, Email và Đơn vị/Tổ chức!</span>`);
     return;
   }
 
@@ -1707,7 +1707,7 @@ window.saveEcosystemUser = async function () {
       showToast(`Đã tạo tài khoản TechCorp ID cho <b>${escapeHtml(fullName)}</b>!`);
       return;
     } else if (data && data.error) {
-      showToast(`<span style="color:#fbbf24">${escapeHtml(data.error)}</span>`);
+      showToast(`<span style="color:#d97706">${escapeHtml(data.error)}</span>`);
       return;
     }
   } catch (_) {}
@@ -1746,7 +1746,7 @@ window.toggleUserLock = async function (userId) {
   const u = STATE.users.find((x) => x.id === userId);
   if (!u) return;
   if (userId === "USR-ADMIN-00") {
-    showToast(`<span style="color:#fbbf24">Không thể khóa tài khoản Super Admin gốc!</span>`);
+    showToast(`<span style="color:#d97706">Không thể khóa tài khoản Super Admin gốc!</span>`);
     return;
   }
   const nextStatus = u.status === "locked" ? "active" : "locked";
@@ -1854,22 +1854,22 @@ window.renderAuditLogsTable = function () {
       return `
         <tr>
           <td>
-            <code style="font-size:11.5px;color:#38bdf8;">${escapeHtml(log.id)}</code>
-            <div style="font-size:11.5px;color:#94a3b8;margin-top:2px;">🕒 ${escapeHtml(log.timestamp)}</div>
+            <code style="font-size:11.5px;color:#0052d4;">${escapeHtml(log.id)}</code>
+            <div style="font-size:11.5px;color:#475569;margin-top:2px;">🕒 ${escapeHtml(log.timestamp)}</div>
           </td>
           <td>
-            <strong style="font-size:13px;color:#f8fafc;">${escapeHtml(log.actorName)}</strong>
-            <div style="font-size:11.5px;color:#94a3b8;">${escapeHtml(log.actorOrg)} (${escapeHtml(log.actorId)})</div>
+            <strong style="font-size:13px;color:#0f172a;">${escapeHtml(log.actorName)}</strong>
+            <div style="font-size:11.5px;color:#475569;">${escapeHtml(log.actorOrg)} (${escapeHtml(log.actorId)})</div>
           </td>
           <td>
-            <code style="font-size:12px;color:#fbbf24;">${escapeHtml(log.ipAddress)}</code>
+            <code style="font-size:12px;color:#d97706;">${escapeHtml(log.ipAddress)}</code>
           </td>
           <td>
-            <div><code style="font-weight:700;color:#38bdf8;">${escapeHtml(log.action)}</code></div>
+            <div><code style="font-weight:700;color:#0052d4;">${escapeHtml(log.action)}</code></div>
             <div style="margin-top:4px;">${sevBadge}</div>
           </td>
-          <td style="font-weight:600;color:#e2e8f0;">${escapeHtml(log.target)}</td>
-          <td style="font-size:12.5px;color:#cbd5e1;max-width:340px;">${escapeHtml(log.details)}</td>
+          <td style="font-weight:600;color:#1e293b;">${escapeHtml(log.target)}</td>
+          <td style="font-size:12.5px;color:#334155;max-width:340px;">${escapeHtml(log.details)}</td>
         </tr>
       `;
     })
@@ -1910,7 +1910,7 @@ function renderActivityFeed() {
     .map(
       (item) => `
       <div class="feed-item">
-        <span class="time">${escapeHtml(item.time)} ${item.eventType ? `• <code style="color:#38bdf8">${escapeHtml(item.eventType)}</code>` : ""}</span>
+        <span class="time">${escapeHtml(item.time)} ${item.eventType ? `• <code style="color:#0052d4">${escapeHtml(item.eventType)}</code>` : ""}</span>
         <div>${escapeHtml(item.text)}</div>
       </div>
     `
@@ -1941,18 +1941,18 @@ function renderTalents() {
       <div class="item-card">
         <div>
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
-            <h4>${escapeHtml(t.name)} <span style="font-size:12px;color:#38bdf8;">(${escapeHtml(t.id)})</span></h4>
+            <h4>${escapeHtml(t.name)} <span style="font-size:12px;color:#0052d4;">(${escapeHtml(t.id)})</span></h4>
             <span class="badge badge-green">Đã xác thực Thi Online</span>
           </div>
-          <p style="font-size:12.5px;color:#94a3b8;margin-top:4px;">🎓 <strong>Trường:</strong> ${escapeHtml(t.school)}</p>
-          <p style="font-size:12.5px;color:#94a3b8;">🏫 <strong>Đào tạo thêm:</strong> ${escapeHtml(t.center)}</p>
-          <p style="font-size:13px;color:#f8fafc;margin-top:6px;">🎯 <strong>Vị trí mong muốn:</strong> ${escapeHtml(t.targetRole)} (GPA: ${escapeHtml(t.gpa)})</p>
+          <p style="font-size:12.5px;color:#475569;margin-top:4px;">🎓 <strong>Trường:</strong> ${escapeHtml(t.school)}</p>
+          <p style="font-size:12.5px;color:#475569;">🏫 <strong>Đào tạo thêm:</strong> ${escapeHtml(t.center)}</p>
+          <p style="font-size:13px;color:#0f172a;margin-top:6px;">🎯 <strong>Vị trí mong muốn:</strong> ${escapeHtml(t.targetRole)} (GPA: ${escapeHtml(t.gpa)})</p>
           <div class="skill-tags">
             ${t.certs.map((c) => `<span class="badge badge-blue">${escapeHtml(c)}</span>`).join("")}
           </div>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid rgba(148,163,184,0.14);">
-          <span style="font-size:12px;color:#34d399;">● ${escapeHtml(t.status)} ${t.syncedToErpCount ? `(Đã đồng bộ ${t.syncedToErpCount} DN)` : ""}</span>
+          <span style="font-size:12px;color:#059669;">● ${escapeHtml(t.status)} ${t.syncedToErpCount ? `(Đã đồng bộ ${t.syncedToErpCount} DN)` : ""}</span>
           <button class="btn btn-primary" onclick="importCandidateToERP('${t.id}', '${t.name}')">
             Đẩy hồ sơ vào HRM (ERP)
           </button>
@@ -2039,14 +2039,14 @@ function renderContests() {
         <div>
           <span class="badge badge-purple" style="margin-bottom:8px;">Phễu Thu hút Học viên & Sinh viên</span>
           <h4>${escapeHtml(c.title)}</h4>
-          <p style="font-size:12.5px;color:#94a3b8;margin-top:6px;">🤝 <strong>Đơn vị đồng hành:</strong> ${escapeHtml(c.organizer)}</p>
-          <p style="font-size:12.5px;color:#94a3b8;margin-top:4px;">👥 <strong>Đối tượng:</strong> ${escapeHtml(c.targetGroup)}</p>
-          <p style="font-size:12.5px;color:#34d399;margin-top:4px;">🎁 <strong>Quyền lợi:</strong> ${escapeHtml(c.reward)}</p>
+          <p style="font-size:12.5px;color:#475569;margin-top:6px;">🤝 <strong>Đơn vị đồng hành:</strong> ${escapeHtml(c.organizer)}</p>
+          <p style="font-size:12.5px;color:#475569;margin-top:4px;">👥 <strong>Đối tượng:</strong> ${escapeHtml(c.targetGroup)}</p>
+          <p style="font-size:12.5px;color:#059669;margin-top:4px;">🎁 <strong>Quyền lợi:</strong> ${escapeHtml(c.reward)}</p>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid rgba(148,163,184,0.14);">
           <div>
-            <span style="font-size:13px;font-weight:700;color:#38bdf8;">${c.participants.toLocaleString()} thí sinh</span>
-            <span style="font-size:12px;color:#fbbf24;margin-left:8px;">(${c.leadsGenerated} Lead học viên mới)</span>
+            <span style="font-size:13px;font-weight:700;color:#0052d4;">${c.participants.toLocaleString()} thí sinh</span>
+            <span style="font-size:12px;color:#d97706;margin-left:8px;">(${c.leadsGenerated} Lead học viên mới)</span>
           </div>
           <button class="btn btn-outline" onclick="pushLeadsToCenter('${c.id}', '${c.title}')">
             Đồng bộ Lead về CRM Trung tâm
@@ -2088,11 +2088,11 @@ function renderB2B() {
         <div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
             <span class="badge badge-amber">${escapeHtml(b.category)}</span>
-            <span style="font-size:11.5px;color:#94a3b8;">${escapeHtml(b.usingTech)}</span>
+            <span style="font-size:11.5px;color:#475569;">${escapeHtml(b.usingTech)}</span>
           </div>
           <h4>${escapeHtml(b.company)}</h4>
-          <p style="font-size:13px;color:#f8fafc;margin-top:8px;">${escapeHtml(b.offer)}</p>
-          <p style="font-size:12px;color:#38bdf8;margin-top:8px;">🎯 Áp dụng cho: ${escapeHtml(b.target)}</p>
+          <p style="font-size:13px;color:#0f172a;margin-top:8px;">${escapeHtml(b.offer)}</p>
+          <p style="font-size:12px;color:#0052d4;margin-top:8px;">🎯 Áp dụng cho: ${escapeHtml(b.target)}</p>
         </div>
         <div style="display:flex;justify-content:flex-end;padding-top:10px;border-top:1px solid rgba(148,163,184,0.14);">
           <button class="btn btn-emerald" onclick="connectB2B('${b.company}')">
@@ -2133,14 +2133,14 @@ function renderLighthouseTable() {
       const pct = Math.min(100, Math.round((item.currentSigned / item.targetCount) * 100));
       return `
         <tr>
-          <td><strong>${escapeHtml(item.segment)}</strong><div style="font-size:12px;color:#94a3b8;">📍 ${escapeHtml(item.focusArea)}</div></td>
+          <td><strong>${escapeHtml(item.segment)}</strong><div style="font-size:12px;color:#475569;">📍 ${escapeHtml(item.focusArea)}</div></td>
           <td><span class="badge badge-blue">${escapeHtml(item.comboPackage)}</span></td>
           <td>
             <div style="font-weight:700;">${item.currentSigned} / ${item.targetCount} đơn vị (${pct}%)</div>
-            <div style="font-size:11.5px;color:#fbbf24;">Đang đàm phán: ${item.inPipeline} đơn vị</div>
+            <div style="font-size:11.5px;color:#d97706;">Đang đàm phán: ${item.inPipeline} đơn vị</div>
             <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
           </td>
-          <td style="font-size:12.5px;color:#cbd5e1;">${escapeHtml(item.notes)}</td>
+          <td style="font-size:12.5px;color:#334155;">${escapeHtml(item.notes)}</td>
           <td>
             <button class="btn btn-outline btn-sm" onclick="incrementSigned(${idx})">+1 Chốt mới</button>
           </td>
@@ -2216,12 +2216,12 @@ window.calculateComboPrice = function () {
 
   resultBox.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(148,163,184,0.16);padding-bottom:10px;margin-bottom:10px;">
-      <span style="color:#94a3b8;font-size:13px;">Chi phí thuê bao Combo hàng tháng:</span>
-      <strong style="font-size:20px;color:#38bdf8;">${monthlyFee.toLocaleString("vi-VN")} VNĐ / tháng</strong>
+      <span style="color:#475569;font-size:13px;">Chi phí thuê bao Combo hàng tháng:</span>
+      <strong style="font-size:20px;color:#0052d4;">${monthlyFee.toLocaleString("vi-VN")} VNĐ / tháng</strong>
     </div>
-    <p style="font-size:13px;margin-bottom:6px;">💳 <strong>Tổng thanh toán (${months} tháng):</strong> <span style="color:#34d399;font-weight:700;">${total.toLocaleString("vi-VN")} VNĐ</span></p>
+    <p style="font-size:13px;margin-bottom:6px;">💳 <strong>Tổng thanh toán (${months} tháng):</strong> <span style="color:#059669;font-weight:700;">${total.toLocaleString("vi-VN")} VNĐ</span></p>
     <p style="font-size:13px;margin-bottom:6px;">🎁 <strong>Ưu đãi Giai đoạn 1 tại Nha Trang:</strong> ${bonusGift}</p>
-    <p style="font-size:13px;color:#fbbf24;">🚀 <strong>Đặc quyền Hệ sinh thái đi kèm:</strong> ${ecoBenefit}</p>
+    <p style="font-size:13px;color:#d97706;">🚀 <strong>Đặc quyền Hệ sinh thái đi kèm:</strong> ${ecoBenefit}</p>
   `;
 };
 

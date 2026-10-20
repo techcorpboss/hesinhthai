@@ -1,5 +1,5 @@
 /**
- * TechCorp Ecosystem Unified Topbar Widget (v2.1 - Dynamic API + Live Forum Ticker)
+ * TechCorp Ecosystem Unified Topbar Widget (v3.0 - International Bright Blue Enterprise Edition)
  * Tự động tải danh sách ứng dụng & tin nóng từ Diễn đàn Cộng đồng qua:
  *   GET https://hesinhthai.techcorp.info.vn/api/v1/apps
  */
@@ -12,35 +12,35 @@
       id: "edu-school",
       name: "QL Trường học (Mầm non - ĐH)",
       badge: "EdTech",
-      color: "#0ea5e9",
+      color: "#0061ff",
       desc: "Học vụ, Sổ liên lạc điện tử, Thu học phí"
     },
     {
       id: "edu-center",
-      name: "QL Trung tâm Ngoại ngữ - Tin học",
+      name: "QL Trung tâm NN - TH",
       badge: "EdTech",
-      color: "#8b5cf6",
+      color: "#6366f1",
       desc: "CRM Tuyển sinh, Lớp học, Học viên"
     },
     {
       id: "lms-exam",
       name: "Học & Thi Online (LMS)",
       badge: "Core Funnel",
-      color: "#10b981",
+      color: "#059669",
       desc: "Phòng thi trực tuyến, Cấp chứng chỉ số"
     },
     {
       id: "biz-web",
-      name: "Website Doanh nghiệp Số",
+      name: "Website Doanh nghiệp",
       badge: "BizTech",
-      color: "#f59e0b",
+      color: "#ea580c",
       desc: "Thương hiệu, SEO đa ngôn ngữ, Tuyển dụng"
     },
     {
       id: "biz-erp",
       name: "Quản trị Doanh nghiệp (ERP)",
       badge: "BizTech",
-      color: "#ef4444",
+      color: "#0284c7",
       desc: "HRM, CRM, Tài chính, Kho vận, Công việc"
     }
   ];
@@ -48,26 +48,26 @@
   const scriptEl = document.currentScript;
   const hubBaseUrl = (scriptEl && scriptEl.getAttribute("data-hub-url")) || "";
   let currentAppId = (scriptEl && scriptEl.getAttribute("data-app-id")) || "biz-erp";
-  const currentOrg = (scriptEl && scriptEl.getAttribute("data-org-name")) || "Nha Trang Bay Resort & Travel";
-  const currentRole = (scriptEl && scriptEl.getAttribute("data-user-role")) || "CEO Doanh nghiệp SME";
+  const currentOrg = (scriptEl && scriptEl.getAttribute("data-org-name")) || "TechCorp Headquarters";
+  const currentRole = (scriptEl && scriptEl.getAttribute("data-user-role")) || "Super Admin";
 
   const style = document.createElement("style");
   style.textContent = `
     .tc-eco-bar {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-      color: #f8fafc;
-      height: 42px;
-      padding: 0 16px;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(90deg, #003580 0%, #0061ff 50%, #0284c7 100%);
+      color: #ffffff;
+      height: 44px;
+      padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 12.5px;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+      box-shadow: 0 2px 12px rgba(0, 97, 255, 0.25);
       position: relative;
       z-index: 9999;
       box-sizing: border-box;
-      gap: 10px;
+      gap: 12px;
     }
     .tc-eco-left, .tc-eco-right {
       display: flex;
@@ -79,17 +79,21 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-weight: 700;
-      color: #38bdf8;
-      letter-spacing: 0.2px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.3px;
       white-space: nowrap;
+      background: rgba(255, 255, 255, 0.14);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
     .tc-eco-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 8px #10b981;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
     }
     .tc-eco-switcher {
       display: flex;
@@ -103,55 +107,58 @@
       display: none;
     }
     .tc-eco-pill {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #cbd5e1;
-      padding: 3px 9px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: rgba(255, 255, 255, 0.92);
+      padding: 4px 11px;
       border-radius: 999px;
       cursor: pointer;
-      font-size: 11.5px;
+      font-size: 12px;
+      font-weight: 600;
       transition: all 0.2s ease;
       white-space: nowrap;
     }
     .tc-eco-pill:hover {
-      background: rgba(56, 189, 248, 0.18);
-      color: #fff;
-      border-color: #38bdf8;
+      background: rgba(255, 255, 255, 0.26);
+      color: #ffffff;
+      transform: translateY(-1px);
     }
     .tc-eco-pill.active {
-      background: rgba(14, 165, 233, 0.25);
-      color: #fff;
-      border-color: #38bdf8;
-      font-weight: 600;
+      background: #ffffff;
+      color: #0052d4;
+      border-color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     .tc-eco-forum-alert {
-      background: rgba(245, 158, 11, 0.16);
-      border: 1px solid rgba(245, 158, 11, 0.45);
-      color: #fbbf24;
-      padding: 3px 10px;
+      background: linear-gradient(135deg, #ff7e29 0%, #ff5500 100%);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      padding: 4px 12px;
       border-radius: 999px;
       font-size: 11.5px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      max-width: 260px;
+      max-width: 270px;
       overflow: hidden;
       text-overflow: ellipsis;
+      box-shadow: 0 2px 8px rgba(255, 85, 0, 0.35);
     }
     .tc-eco-forum-alert:hover {
-      background: rgba(245, 158, 11, 0.28);
+      filter: brightness(1.08);
     }
     .tc-eco-sso-badge {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      color: #6ee7b7;
-      padding: 3px 10px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      padding: 4px 11px;
       border-radius: 6px;
       font-size: 11.5px;
-      font-weight: 500;
+      font-weight: 600;
       white-space: nowrap;
     }
-    @media (max-width: 1100px) {
+    @media (max-width: 1150px) {
       .tc-eco-forum-alert {
         display: none;
       }
@@ -170,16 +177,16 @@
     <div class="tc-eco-left">
       <span class="tc-eco-brand">
         <span class="tc-eco-dot"></span>
-        HESINHTHAI.TECHCORP.INFO.VN
+        TECHCORP CLOUD ECOSYSTEM
       </span>
       <div class="tc-eco-switcher" id="tcEcoSwitcher"></div>
     </div>
     <div class="tc-eco-right">
       <button type="button" class="tc-eco-forum-alert" id="tcEcoForumTicker" title="Bấm để mở Diễn đàn Cộng đồng & Giao thương TechCorp">
-        💬 Diễn đàn: Tìm đối tác đào tạo & Ưu đãi nội bộ mới!
+        🔥 Diễn đàn B2B: Tìm đối tác đào tạo & Ưu đãi nội bộ mới!
       </button>
       <span class="tc-eco-sso-badge" id="tcEcoSsoStatus">
-        SSO: ${currentOrg} (${currentRole})
+        ✓ SSO: ${currentOrg} (${currentRole})
       </span>
     </div>
   `;
@@ -225,7 +232,7 @@
         if (data && data.latestForumHeadline && data.latestForumHeadline.title) {
           const ticker = bar.querySelector("#tcEcoForumTicker");
           if (ticker) {
-            ticker.textContent = `💬 Diễn đàn: ${data.latestForumHeadline.title}`;
+            ticker.textContent = `🔥 Diễn đàn: ${data.latestForumHeadline.title}`;
           }
         }
       })

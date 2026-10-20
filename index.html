@@ -20,17 +20,20 @@
   <header class="hub-header">
     <div class="hub-header-inner">
       <div class="brand-box">
-        <div class="brand-logo" style="background:#ffffff;padding:3px;overflow:hidden;">
+        <div class="brand-logo">
           <img src="logo.png" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
         </div>
         <div class="brand-title">
-          <h1>TechCorp Ecosystem Hub • <span style="color:#38bdf8;">hesinhthai.techcorp.info.vn</span></h1>
+          <h1>
+            TechCorp Ecosystem Hub
+            <span class="brand-domain-pill">🌐 hesinhthai.techcorp.info.vn</span>
+          </h1>
           <p id="currentPersonaDesc">TechCorp Headquarters (Nha Trang - Khánh Hòa) • [🛡️ Super Admin TechCorp]</p>
         </div>
       </div>
 
       <div class="sso-control">
-        <label for="personaSelect">Tài khoản TechCorp ID (SSO JWT):</label>
+        <label for="personaSelect">🔑 Tài khoản SSO (TechCorp ID):</label>
         <select id="personaSelect" class="sso-select">
           <option value="super-admin">0. 🛡️ Super Admin Quản trị Hệ sinh thái</option>
           <option value="ceo-sme">1. CEO Doanh nghiệp SME (ERP & Website)</option>
@@ -43,6 +46,28 @@
   </header>
 
   <main class="container">
+    <!-- Hero Banner giới thiệu Hệ sinh thái chuẩn Quốc tế -->
+    <section class="hero-banner">
+      <div class="hero-banner-left">
+        <span class="hero-tag">⚡ NỀN TẢNG LIÊN THÔNG ĐA ỨNG DỤNG • ENTERPRISE CLOUD v3.0</span>
+        <h2 class="hero-banner-title">Hệ sinh thái Giáo dục Số – Đào tạo – Nhân lực & Quản trị Doanh nghiệp TechCorp</h2>
+        <p class="hero-banner-desc">
+          Kết nối dữ liệu thời gian thực giữa <strong>Trường học – Trung tâm Ngoại ngữ/Tin học – Sàn Thi Online – Doanh nghiệp ERP</strong> bằng định danh duy nhất <strong>TechCorp ID</strong>.
+        </p>
+      </div>
+      <div class="hero-banner-actions">
+        <button class="btn btn-primary" onclick="openAdminSubtab('admin-apps')">
+          ➕ Bổ sung Ứng dụng Mới
+        </button>
+        <button class="btn btn-outline" onclick="switchToTab('tab-forum')">
+          💬 Diễn đàn Giao thương
+        </button>
+        <button class="btn btn-emerald" onclick="openAdminSubtab('admin-audit')">
+          🔍 Nhật ký Audit Logs
+        </button>
+      </div>
+    </section>
+
     <!-- Dải chỉ số thực thi Giai đoạn 1 tại Nha Trang -->
     <section class="kpi-grid">
       <div class="kpi-card">
@@ -66,7 +91,7 @@
       <div class="kpi-card">
         <div class="kpi-top">
           <span>TÀI KHOẢN TECHCORP ID & AUDIT LOGS</span>
-          <span class="badge badge-purple" id="kpiAuditCountBadge">4 Bản ghi truy vết</span>
+          <span class="badge badge-blue" id="kpiAuditCountBadge">4 Bản ghi truy vết</span>
         </div>
         <div class="kpi-value" id="kpiUsersCount">5 Tài khoản</div>
         <div class="kpi-sub">● Quản lý CRUD & Truy vết hành động thời gian thực</div>
@@ -75,35 +100,35 @@
       <div class="kpi-card">
         <div class="kpi-top">
           <span>TIẾN ĐỘ HẠT NHÂN NHA TRANG (GĐ1)</span>
-          <span class="badge badge-blue">Mục tiêu 90 ngày</span>
+          <span class="badge badge-green">Mục tiêu 90 ngày</span>
         </div>
         <div class="kpi-value" id="kpiLighthouseCount">22 / 57</div>
         <div class="kpi-sub">● 2 ĐH/CĐ • 10 TT NN-TH • 15 Mầm non • 30 SME</div>
       </div>
     </section>
 
-    <!-- Thanh điều hướng các Phân hệ Cốt lõi -->
+    <!-- Thanh điều hướng 7 Phân hệ Cốt lõi (Thiết kế chuẩn Grid không thanh cuộn ngang) -->
     <nav class="nav-tabs">
       <button class="tab-btn active" data-tab="tab-bridge">
-        1. Trục Liên thông & Live Event Bus
+        🔗 1. Trục Liên thông & API
       </button>
       <button class="tab-btn" data-tab="tab-admin">
-        🛡️ 2. Quản trị Hệ sinh thái & Audit Logs (Admin CMS)
+        🛡️ 2. Quản trị & Audit CMS
       </button>
       <button class="tab-btn" data-tab="tab-forum">
-        💬 3. Diễn đàn Cộng đồng & Quảng bá Chéo
+        💬 3. Diễn đàn & Quảng bá
       </button>
       <button class="tab-btn" data-tab="tab-talent">
-        4. Sàn Nhân lực & Thực tập Nha Trang (EdTech ↔ ERP)
+        🎓 4. Sàn Nhân lực & Thực tập
       </button>
       <button class="tab-btn" data-tab="tab-lms">
-        5. Phễu Thi Online & Tuyển sinh Chéo (LMS Hub)
+        🏆 5. Phễu Thi Online (LMS)
       </button>
       <button class="tab-btn" data-tab="tab-b2b">
-        6. Chợ Giao thương B2B & Đặc quyền Phụ huynh
+        🤝 6. Chợ Giao thương B2B
       </button>
       <button class="tab-btn" data-tab="tab-phase1">
-        7. Quản trị 57 Hạt nhân Nha Trang & Báo giá Combo
+        📊 7. Hạt nhân Nha Trang & Giá
       </button>
     </nav>
 
@@ -113,20 +138,22 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h3 class="card-title">Danh sách Ứng dụng Đang Kết nối vào CSDL Tập trung</h3>
+              <h3 class="card-title">🚀 Danh sách Ứng dụng Đang Kết nối vào CSDL Tập trung</h3>
               <p class="card-subtitle">
                 Mọi ứng dụng trong danh sách này dùng chung <strong>TechCorp ID (SSO)</strong> và bắn sự kiện qua <strong>Hub API Gateway</strong>
               </p>
             </div>
-            <button class="btn btn-primary" onclick="openAdminSubtab('admin-apps')">
+            <button class="btn btn-primary btn-sm" onclick="openAdminSubtab('admin-apps')">
               ⚙️ Quản trị Ứng dụng (Thêm / Sửa / Xoá)
             </button>
           </div>
 
           <div class="product-list" id="connectedAppsList"></div>
 
-          <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border-color);">
-            <h4 style="font-size:14px;margin-bottom:10px;color:#38bdf8;">⚡ Kích hoạt Luồng Đồng bộ API Thực tế (Lưu vào SQLite/JSON DB & Ghi Audit Log):</h4>
+          <div style="margin-top:18px;padding-top:16px;border-top:2px solid #edf4ff;">
+            <h4 style="font-size:14px;margin-bottom:10px;color:#0052d4;font-weight:800;">
+              ⚡ Kích hoạt Luồng Đồng bộ API Thực tế (Lưu vào SQLite/JSON DB & Ghi Audit Log):
+            </h4>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
               <button class="btn btn-primary" onclick="simulateCrossSync('erp-job')">
                 1. Đẩy Tin tuyển dụng từ ERP → Trường ĐH & Trung tâm
@@ -144,7 +171,7 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h3 class="card-title">Nhật ký Đồng bộ Tập trung (Hub Event Bus Logs)</h3>
+              <h3 class="card-title">📡 Nhật ký Đồng bộ Tập trung (Hub Event Bus Logs)</h3>
               <p class="card-subtitle">Dữ liệu thời gian thực từ API <code>POST /api/v1/events/publish</code> & Diễn đàn</p>
             </div>
             <button class="btn btn-outline btn-sm" onclick="openAdminSubtab('admin-audit')">
@@ -153,8 +180,10 @@
           </div>
           <div class="feed-list" id="liveFeedList"></div>
 
-          <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border-color);">
-            <h4 style="font-size:13.5px;color:#f8fafc;">SSO JWT Token hiện tại của phiên làm việc (<code>TechCorp ID</code>):</h4>
+          <div style="margin-top:18px;padding-top:14px;border-top:2px solid #edf4ff;">
+            <h4 style="font-size:13.5px;color:#0b2559;font-weight:800;">
+              🔐 SSO JWT Token hiện tại của phiên làm việc (<code>TechCorp ID</code>):
+            </h4>
             <div class="code-box" id="currentSsoTokenBox" style="word-break:break-all;max-height:85px;overflow-y:auto;">
               Đang khởi tạo JWT Token từ /api/v1/sso/token...
             </div>
@@ -167,16 +196,16 @@
     <section id="tab-admin" class="tab-panel">
       <div class="admin-subnav" id="adminSubNav">
         <button class="admin-subbtn active" data-subtab="admin-apps">
-          🚀 2.1. Quản trị Ứng dụng Hệ sinh thái (Thêm / Sửa / Xoá / API Key)
+          🚀 2.1. Quản trị Ứng dụng (Thêm / Sửa / Xoá / API Key)
         </button>
         <button class="admin-subbtn" data-subtab="admin-forum">
-          🛡️ 2.2. Quản lý Diễn đàn (Thẩm định, Tạo mới, Xem, Xoá, Clock/Lock)
+          🛡️ 2.2. Quản lý Diễn đàn (Thẩm định, Tạo mới, Xem, Xoá, Clock)
         </button>
         <button class="admin-subbtn" data-subtab="admin-users">
-          👥 2.3. Quản lý Tài khoản Người dùng (Xem, Tạo mới, Sửa, Xoá, Khóa)
+          👥 2.3. Quản lý Tài khoản (Xem, Tạo mới, Sửa, Xoá, Khóa)
         </button>
         <button class="admin-subbtn" data-subtab="admin-audit">
-          🔍 2.4. Truy vết Người dùng & Nhật ký Kiểm toán (Audit Logs)
+          🔍 2.4. Truy vết Người dùng (Security Audit Logs)
         </button>
       </div>
 
@@ -225,22 +254,22 @@
             <div style="display:flex;flex-direction:column;gap:12px;">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Mã định danh Ứng dụng (App ID):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Mã định danh Ứng dụng (App ID):</label>
                   <input type="text" id="newAppId" class="input-control" style="width:100%;" placeholder="VD: biz-hotel-pms" value="biz-hotel-pms" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Nhãn phân loại (Badge):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Nhãn phân loại (Badge):</label>
                   <input type="text" id="newAppBadge" class="input-control" style="width:100%;" placeholder="VD: Hospitality / EdTech" value="Hospitality" />
                 </div>
               </div>
 
               <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Tên hiển thị trên Thanh Liên thông:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Tên hiển thị trên Thanh Liên thông:</label>
                   <input type="text" id="newAppName" class="input-control" style="width:100%;" value="QL Khách sạn & Resort (PMS)" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Trạng thái hoạt động:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Trạng thái hoạt động:</label>
                   <select id="newAppStatus" class="select-control" style="width:100%;">
                     <option value="active">🟢 Đang hoạt động (Active)</option>
                     <option value="maintenance">🟡 Đang bảo trì (Maintenance)</option>
@@ -251,17 +280,17 @@
 
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Địa chỉ Web của Ứng dụng (App URL):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Địa chỉ Web của Ứng dụng (App URL):</label>
                   <input type="text" id="newAppUrl" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Webhook nhận sự kiện từ Hub:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Webhook nhận sự kiện từ Hub:</label>
                   <input type="text" id="newAppWebhook" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn/api/webhooks/techcorp-hub" />
                 </div>
               </div>
 
               <div>
-                <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Mô tả chức năng & Luồng dữ liệu liên thông:</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Mô tả chức năng & Luồng dữ liệu liên thông:</label>
                 <input
                   type="text"
                   id="newAppDesc"
@@ -281,8 +310,8 @@
               </div>
             </div>
 
-            <div id="integrationGuideOutput" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border-color);">
-              <p style="font-size:12.5px;color:#94a3b8;margin-bottom:6px;">
+            <div id="integrationGuideOutput" style="margin-top:16px;padding-top:14px;border-top:2px solid #edf4ff;">
+              <p style="font-size:12.5px;color:#334155;margin-bottom:6px;">
                 <strong>Mã nhúng Thanh Liên thông chuẩn cho các ứng dụng vệ tinh:</strong>
               </p>
               <div class="code-box">&lt;script src="https://hesinhthai.techcorp.info.vn/widget/techcorp-ecosystem-bar.js" data-hub-url="https://hesinhthai.techcorp.info.vn" data-app-id="biz-erp" defer&gt;&lt;/script&gt;</div>
@@ -327,25 +356,25 @@
           <!-- Khung Xem / Sửa nhanh bài viết diễn đàn khi Admin bấm "Xem / Sửa" -->
           <div
             id="adminForumEditModal"
-            style="display:none;background:rgba(15,23,42,0.92);border:1px solid #38bdf8;border-radius:12px;padding:18px;margin-bottom:18px;"
+            style="display:none;background:#f0f7ff;border:2px solid #0061ff;border-radius:14px;padding:18px;margin-bottom:18px;box-shadow:0 8px 24px rgba(0,97,255,0.12);"
           >
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-              <h4 style="color:#38bdf8;" id="adminForumModalHeader">👁️ Xem & Chỉnh sửa / Thẩm định Bài viết</h4>
+              <h4 style="color:#0052d4;font-weight:800;" id="adminForumModalHeader">👁️ Xem & Chỉnh sửa / Thẩm định Bài viết</h4>
               <button class="btn btn-outline btn-sm" onclick="closeAdminForumModal()">Đóng ✕</button>
             </div>
             <input type="hidden" id="adminEditPostId" />
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;">
               <div>
-                <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">Tiêu đề bài viết:</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Tiêu đề bài viết:</label>
                 <input type="text" id="adminEditPostTitle" class="input-control" style="width:100%;" />
               </div>
               <div>
-                <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">Đặc quyền cam kết (Give-to-Get):</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Đặc quyền cam kết (Give-to-Get):</label>
                 <input type="text" id="adminEditPostDeal" class="input-control" style="width:100%;" />
               </div>
             </div>
             <div style="margin-bottom:12px;">
-              <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">Nội dung chi tiết:</label>
+              <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Nội dung chi tiết:</label>
               <textarea id="adminEditPostContent" class="input-control" style="width:100%;min-height:80px;font-family:inherit;"></textarea>
             </div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
@@ -435,22 +464,22 @@
             <div style="display:flex;flex-direction:column;gap:12px;">
               <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Họ và tên người dùng:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Họ và tên người dùng:</label>
                   <input type="text" id="userFullName" class="input-control" style="width:100%;" placeholder="VD: Phạm Hoàng Nam (Giám đốc)" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Số điện thoại:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Số điện thoại:</label>
                   <input type="text" id="userPhone" class="input-control" style="width:100%;" placeholder="VD: 0905.888.999" />
                 </div>
               </div>
 
               <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Địa chỉ Email (Định danh SSO):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Địa chỉ Email (Định danh SSO):</label>
                   <input type="email" id="userEmail" class="input-control" style="width:100%;" placeholder="VD: nam.ph@camranhresort.vn" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Trạng thái Tài khoản:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Trạng thái Tài khoản:</label>
                   <select id="userStatus" class="select-control" style="width:100%;">
                     <option value="active">🟢 Đang hoạt động (Active)</option>
                     <option value="locked">🔴 Khóa tài khoản (Locked)</option>
@@ -459,12 +488,12 @@
               </div>
 
               <div>
-                <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Đơn vị / Doanh nghiệp / Trường học tại Khánh Hòa:</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Đơn vị / Doanh nghiệp / Trường học tại Khánh Hòa:</label>
                 <input type="text" id="userOrg" class="input-control" style="width:100%;" placeholder="VD: Cam Ranh Riviera Resort & Spa" />
               </div>
 
               <div>
-                <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:5px;">Nhóm Vai trò trong Hệ sinh thái:</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Nhóm Vai trò trong Hệ sinh thái:</label>
                 <select id="userRole" class="select-control" style="width:100%;">
                   <option value="ceo_sme">Khối Doanh nghiệp SME (ERP & Website)</option>
                   <option value="center_director">Khối Đào tạo Trung tâm Ngoại ngữ - Tin học</option>
@@ -476,21 +505,21 @@
               </div>
 
               <div>
-                <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:6px;">Phân quyền Truy cập Ứng dụng qua SSO:</label>
-                <div id="userAppPermissionsBox" style="display:flex;flex-wrap:wrap;gap:10px;background:rgba(15,23,42,0.6);padding:10px;border-radius:8px;border:1px solid var(--border-color);">
-                  <label style="font-size:12px;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">Phân quyền Truy cập Ứng dụng qua SSO:</label>
+                <div id="userAppPermissionsBox" style="display:flex;flex-wrap:wrap;gap:10px;background:#f0f7ff;padding:12px;border-radius:10px;border:1px solid #bfdbfe;">
+                  <label style="font-size:12.5px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="edu-school" /> QL Trường học
                   </label>
-                  <label style="font-size:12px;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                  <label style="font-size:12.5px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="edu-center" /> QL Trung tâm NN-TH
                   </label>
-                  <label style="font-size:12px;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                  <label style="font-size:12.5px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="lms-exam" checked /> Học & Thi Online
                   </label>
-                  <label style="font-size:12px;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                  <label style="font-size:12.5px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="biz-web" checked /> Website DN
                   </label>
-                  <label style="font-size:12px;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                  <label style="font-size:12.5px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="biz-erp" checked /> Quản trị ERP
                   </label>
                 </div>
@@ -601,17 +630,17 @@
           </div>
 
           <div
-            style="background:rgba(14,165,233,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12.5px;"
+            style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:12px;padding:13px 15px;margin-bottom:14px;font-size:12.5px;"
           >
-            <div style="color:#38bdf8;font-weight:700;">✔ Định danh người đăng (TechCorp ID):</div>
-            <div id="forumComposerIdentity" style="color:#f8fafc;margin-top:4px;">
+            <div style="color:#0052d4;font-weight:800;">✔ Định danh người đăng (TechCorp ID):</div>
+            <div id="forumComposerIdentity" style="color:#0f172a;font-weight:600;margin-top:4px;">
               Quản trị viên Hệ sinh thái TechCorp • TechCorp Headquarters (Nha Trang - Khánh Hòa)
             </div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:12px;">
             <div>
-              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">1. Chọn chuyên mục đăng bài:</label>
+              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">1. Chọn chuyên mục đăng bài:</label>
               <select id="forumPostCategory" class="select-control" style="width:100%;">
                 <option value="rfq">📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ - Hiệu quả nhất)</option>
                 <option value="spotlight">🎁 Quảng bá Thương hiệu & Đặc quyền Thành viên (Give-to-Get)</option>
@@ -621,7 +650,7 @@
             </div>
 
             <div>
-              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">2. Tiêu đề bài viết (Rõ nhu cầu & Địa bàn):</label>
+              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">2. Tiêu đề bài viết (Rõ nhu cầu & Địa bàn):</label>
               <input
                 type="text"
                 id="forumPostTitle"
@@ -632,7 +661,7 @@
             </div>
 
             <div>
-              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">3. Nội dung chi tiết:</label>
+              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">3. Nội dung chi tiết:</label>
               <textarea
                 id="forumPostContent"
                 class="input-control"
@@ -642,24 +671,24 @@
             </div>
 
             <div>
-              <label style="font-size:12.5px;color:#34d399;display:block;margin-bottom:6px;font-weight:600;">
+              <label style="font-size:12.5px;color:#059669;display:block;margin-bottom:6px;font-weight:800;">
                 4. 🎁 Đặc quyền / Quyền lợi cam kết dành cho Thành viên TechCorp (Quy tắc Give-to-Get):
               </label>
               <input
                 type="text"
                 id="forumPostDeal"
                 class="input-control"
-                style="width:100%;border-color:rgba(16,185,129,0.4);"
+                style="width:100%;border-color:#6ee7b7;background:#f0fdf4;"
                 placeholder="VD: Giảm 25% học phí / Chiết khấu 15% hợp đồng cho đơn vị có TechCorp ID..."
               />
             </div>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-              <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#fbbf24;cursor:pointer;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#ea580c;font-weight:700;cursor:pointer;">
                 <input type="checkbox" id="forumPostPinned" />
                 <span>📌 Ghim VIP lên đầu Diễn đàn</span>
               </label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#94a3b8;cursor:pointer;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#475569;font-weight:600;cursor:pointer;">
                 <input type="checkbox" id="forumPostPending" />
                 <span>⏳ Đưa vào hàng đợi Chờ thẩm định</span>
               </label>
@@ -774,7 +803,7 @@
 
           <div style="display:flex;flex-direction:column;gap:14px;">
             <div>
-              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">1. Chọn loại hình khách hàng tại Nha Trang:</label>
+              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">1. Chọn loại hình khách hàng tại Nha Trang:</label>
               <select id="calcCustomerType" class="select-control" style="width:100%;">
                 <option value="sme">Doanh nghiệp SME (Combo Website + Micro-ERP + Tuyển dụng)</option>
                 <option value="center">Trung tâm Ngoại ngữ - Tin học (Combo QL Trung tâm + Thi Online + Web)</option>
@@ -783,14 +812,14 @@
             </div>
 
             <div>
-              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">
+              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">
                 2. Quy mô đơn vị (Số nhân sự DN / Số học viên Trung tâm / Số học sinh Trường):
               </label>
               <input type="number" id="calcScaleInput" class="input-control" style="width:100%;" value="25" min="5" max="5000" />
             </div>
 
             <div>
-              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">3. Chu kỳ thanh toán:</label>
+              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">3. Chu kỳ thanh toán:</label>
               <select id="calcPeriod" class="select-control" style="width:100%;">
                 <option value="12">Thanh toán 12 tháng (Nhận trọn bộ quà tặng Website & Đặc quyền Hạt nhân)</option>
                 <option value="6">Thanh toán 6 tháng</option>
@@ -799,7 +828,7 @@
 
             <div
               id="calcResultBox"
-              style="background:rgba(15,23,42,0.85);border:1px solid var(--border-accent);border-radius:12px;padding:16px;margin-top:6px;"
+              style="background:#f0f7ff;border:2px solid #93c5fd;border-radius:14px;padding:18px;margin-top:6px;"
             ></div>
           </div>
         </div>
