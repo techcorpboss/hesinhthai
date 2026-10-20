@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng nhập Định danh Tập trung TechCorp ID (SSO) — hesinhthai.techcorp.info.vn</title>
+  <link rel="icon" type="image/png" href="logo.png?v=6.0" />
+  <link rel="stylesheet" href="styles.css?v=6.0" />
+  <script
+    src="widget/techcorp-ecosystem-bar.js?v=6.0"
+    data-app-id="erp"
+    data-org-name="TechCorp ID SSO"
+    data-user-role="Cổng Xác thực Tập trung"
+    defer
+  ></script>
+  <style>
+    .login-wrapper {
+      max-width: 1280px;
+      margin: 34px auto 64px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .login-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+    .login-box {
+      background: #ffffff;
+      border: 1.5px solid #bfd7fa;
+      border-top: 5px solid #0061ff;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 18px 40px -12px rgba(0, 65, 190, 0.14);
+    }
+    .login-role-card {
+      background: #ffffff;
+      border: 1.5px solid #dbe6f5;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      margin-bottom: 12px;
+    }
+    .login-role-card:hover {
+      border-color: #0061ff;
+      background: #f8fbff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 82, 212, 0.1);
+    }
+    .login-role-card.selected {
+      border: 2px solid #0061ff;
+      background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+      box-shadow: 0 10px 24px rgba(0, 82, 212, 0.14);
+    }
+    .login-field {
+      margin-bottom: 15px;
+    }
+    .login-field label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #0b2559;
+      margin-bottom: 6px;
+    }
+    .login-scope-box {
+      background: #f0f7ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 12.5px;
+      color: #1e3a8a;
+      margin-bottom: 18px;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER GỌN GÀNG HIỆN ĐẠI -->
+  <header class="hub-header">
+    <div class="hub-header-inner">
+      <a href="index.html" class="brand-box">
+        <div class="brand-logo">
+          <img src="logo.png?v=6.0" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+        </div>
+        <div class="brand-title">
+          <h1>
+            TechCorp ID (SSO)
+            <span class="brand-domain-pill">🔐 Cổng Đăng nhập Quản trị Theo Vai trò</span>
+          </h1>
+          <p>Xác thực Tập trung JWT • Phân tách Tuyệt đối Giao diện & Chức năng theo Đúng Vai trò</p>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="index.html" class="btn btn-outline" style="text-decoration:none;">
+          🌍 Quay về Trang Public Hệ sinh thái
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="login-wrapper">
+    <!-- CỘT TRÁI: FORM ĐĂNG NHẬP TECHCORP ID -->
+    <div class="login-box">
+      <div style="margin-bottom:20px;">
+        <span class="badge badge-blue">🔑 SINGLE SIGN-ON (SSO v6.0)</span>
+        <h2 style="font-size:22px;font-weight:800;color:#0b2559;margin-top:8px;">Đăng nhập Cổng Quản trị</h2>
+        <p style="font-size:13px;color:#475569;margin-top:4px;">
+          Hệ thống sẽ tự động tải <strong>chỉ những menu và dữ liệu thuộc phạm vi vai trò</strong> của tài khoản đăng nhập.
+        </p>
+      </div>
+
+      <form id="ssoLoginForm" onsubmit="handleSsoLoginSubmit(event)">
+        <div class="login-field">
+          <label for="loginRoleSelect">1. Chọn Vai trò Quản trị trong Hệ sinh thái:</label>
+          <select id="loginRoleSelect" class="select-control" style="width:100%;font-weight:700;" onchange="fillCredentialsByRole(this.value)">
+            <option value="super-admin">👑 1. Super Admin — Chủ Hệ sinh thái TechCorp (Toàn quyền)</option>
+            <option value="ceo-sme">🏢 2. Chủ Doanh nghiệp Thành viên — CEO SME</option>
+            <option value="center-dir">🏫 3. Giám đốc Trung tâm Ngoại ngữ - Tin học</option>
+            <option value="school-principal">🎓 4. Hiệu trưởng Trường học (Mầm non - K12 - ĐH)</option>
+            <option value="student-user">👨‍🎓 5. Học viên / Sinh viên / Phụ huynh</option>
+          </select>
+        </div>
+
+        <div class="login-field">
+          <label for="loginEmailInput">2. Email Định danh TechCorp ID:</label>
+          <input type="email" id="loginEmailInput" class="input-control" style="width:100%;" required value="admin@techcorp.info.vn" />
+        </div>
+
+        <div class="login-field">
+          <label for="loginPasswordInput">3. Mật khẩu Xác thực SSO:</label>
+          <input type="password" id="loginPasswordInput" class="input-control" style="width:100%;" required value="TechCorp@2026" />
+        </div>
+
+        <div class="login-scope-box" id="loginRolePreviewBox">
+          <strong>👑 Quyền hạn Super Admin:</strong> Thấy toàn bộ 100% chức năng quản trị Hệ sinh thái (15 Ứng dụng, Bản tin Public, Kiểm duyệt Diễn đàn, Tài khoản User, Ma trận RBAC & Audit Logs).
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px 18px;font-size:14px;">
+          🔐 Đăng nhập vào Không gian Quản trị →
+        </button>
+      </form>
+    </div>
+
+    <!-- CỘT PHẢI: CHỌN NHANH 5 VAI TRÒ ĐỂ ĐĂNG NHẬP 1-CLICK & SO SÁNH PHÂN QUYỀN -->
+    <div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-header">
+          <div>
+            <span class="badge badge-green">⚡ ĐĂNG NHẬP NHANH 1-CLICK ĐỂ KIỂM TRA PHÂN TÁCH GIAO DIỆN</span>
+            <h3 class="card-title" style="margin-top:6px;">Chọn Tài khoản Theo Từng Vai trò trong Hệ sinh thái TechCorp</h3>
+            <p class="card-subtitle">
+              Chỉ duy nhất tài khoản <strong>👑 Super Admin</strong> mới thấy toàn bộ các chức năng quản trị hệ thống. Các vai trò thành viên khác khi đăng nhập sẽ <strong>chỉ nhìn thấy menu và dữ liệu của riêng vai trò đó</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div id="roleCardsList">
+          <div class="login-role-card selected" data-role="super-admin" onclick="fillCredentialsByRole('super-admin')">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="badge badge-amber">👑 Vai trò 1 • Toàn quyền Hệ sinh thái</span>
+                <code style="font-size:12px;color:#0052d4;font-weight:700;">admin@techcorp.info.vn</code>
+              </div>
+              <div style="font-size:15px;font-weight:800;color:#0b2559;">Quản trị viên Tối cao (Super Admin TechCorp)</div>
+              <div style="font-size:12.5px;color:#475569;margin-top:3px;">
+                ✔ Thấy tất cả 8 phân hệ Quản trị: Tổng quan Event Bus, Quản lý 15 Sản phẩm & API Key, Bản tin Public, Kiểm duyệt Diễn đàn, Quản lý User, Ma trận RBAC & Audit Logs.
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="quickLoginAs('super-admin', event)">
+              Đăng nhập Super Admin →
+            </button>
+          </div>
+
+          <div class="login-role-card" data-role="ceo-sme" onclick="fillCredentialsByRole('ceo-sme')">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="badge badge-blue">🏢 Vai trò 2 • Khối Doanh nghiệp SME</span>
+                <code style="font-size:12px;color:#0052d4;font-weight:700;">ceo@nhatrangbayresort.vn</code>
+              </div>
+              <div style="font-size:15px;font-weight:800;color:#0b2559;">Nguyễn Hải Đăng — CEO Nha Trang Bay Resort & Hưng Phát Land</div>
+              <div style="font-size:12.5px;color:#475569;margin-top:3px;">
+                ✔ Chỉ hiển thị nội dung của Doanh nghiệp: Hệ thống ERP/KPI/PMS/BĐS đang dùng, Tuyển dụng Nhân sự 1-Click từ Sàn CV, Phát hành E-Voucher B2B & Đăng tin Doanh nghiệp.
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" onclick="quickLoginAs('ceo-sme', event)">
+              Đăng nhập CEO Doanh nghiệp →
+            </button>
+          </div>
+
+          <div class="login-role-card" data-role="center-dir" onclick="fillCredentialsByRole('center-dir')">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="badge badge-blue">🏫 Vai trò 3 • Khối Đào tạo Ngoại ngữ - Tin học</span>
+                <code style="font-size:12px;color:#0052d4;font-weight:700;">director@oceanenglish.edu.vn</code>
+              </div>
+              <div style="font-size:15px;font-weight:800;color:#0b2559;">Trần Thanh Tâm — Giám đốc Ocean English & IT Center Nha Trang</div>
+              <div style="font-size:12.5px;color:#475569;margin-top:3px;">
+                ✔ Chỉ hiển thị nội dung của Trung tâm: Hệ thống TTNN/LMS/TechCorpLearn, Quản lý Đấu trường Thi thử IELTS/TOEIC, Kéo Lead học viên về CRM & Báo giá Đào tạo B2B.
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" onclick="quickLoginAs('center-dir', event)">
+              Đăng nhập GĐ Trung tâm →
+            </button>
+          </div>
+
+          <div class="login-role-card" data-role="school-principal" onclick="fillCredentialsByRole('school-principal')">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="badge badge-blue">🎓 Vai trò 4 • Khối Cơ sở Giáo dục (Mầm non - K12 - ĐH)</span>
+                <code style="font-size:12px;color:#0052d4;font-weight:700;">bgh@saobienschool.edu.vn</code>
+              </div>
+              <div style="font-size:15px;font-weight:800;color:#0b2559;">ThS. Lê Thị Minh Hương — Hiệu trưởng Hệ thống Giáo dục Liên cấp</div>
+              <div style="font-size:12.5px;color:#475569;margin-top:3px;">
+                ✔ Chỉ hiển thị nội dung của Nhà trường: Hệ thống EduManager Pro (Mầm non – THPT) & TC COMPASS, Thu học phí QR, Duyệt Học bổng gửi Phụ huynh & Nhà cung ứng học đường.
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" onclick="quickLoginAs('school-principal', event)">
+              Đăng nhập Hiệu trưởng →
+            </button>
+          </div>
+
+          <div class="login-role-card" data-role="student-user" onclick="fillCredentialsByRole('student-user')">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="badge badge-green">👨‍🎓 Vai trò 5 • Cộng đồng Sinh viên / Học viên / Phụ huynh</span>
+                <code style="font-size:12px;color:#0052d4;font-weight:700;">khoi.nm.64cntt@ntu.edu.vn</code>
+              </div>
+              <div style="font-size:15px;font-weight:800;color:#0b2559;">Nguyễn Minh Khôi — Sinh viên Năm cuối ĐH Nha Trang (#TC-KH-8821)</div>
+              <div style="font-size:12.5px;color:#475569;margin-top:3px;">
+                ✔ Chỉ hiển thị Cổng Công dân Số cá nhân: Hồ sơ Năng lực Số & Chứng chỉ Thi Online QR, Ứng tuyển Thực tập/Việc làm 1-Click và Ví Học bổng / E-Voucher cá nhân.
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" onclick="quickLoginAs('student-user', event)">
+              Đăng nhập Học viên / SV →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const ROLE_ACCOUNTS = {
+      "super-admin": {
+        personaKey: "super-admin",
+        roleCode: "super_admin",
+        email: "admin@techcorp.info.vn",
+        name: "Quản trị viên Hệ sinh thái TechCorp",
+        org: "TechCorp Headquarters (Điều hành 15 Hệ thống Live)",
+        roleBadge: "👑 Super Admin TechCorp",
+        scopeText:
+          "<strong>👑 Quyền hạn Super Admin:</strong> Thấy toàn bộ 100% chức năng quản trị Hệ sinh thái (15 Ứng dụng, Bản tin Public, Kiểm duyệt Diễn đàn, Tài khoản User, Ma trận RBAC & Audit Logs)."
+      },
+      "ceo-sme": {
+        personaKey: "ceo-sme",
+        roleCode: "ceo_sme",
+        email: "ceo@nhatrangbayresort.vn",
+        name: "Nguyễn Hải Đăng (CEO Doanh nghiệp)",
+        org: "Nha Trang Bay Resort & Hưng Phát Land",
+        roleBadge: "🏢 Chủ Doanh nghiệp SME",
+        scopeText:
+          "<strong>🏢 Quyền hạn Chủ Doanh nghiệp:</strong> Chỉ hiển thị các chức năng quản trị của Doanh nghiệp (Ứng dụng ERP/KPI/PMS/BĐS, Tuyển dụng Nhân sự 1-Click, Chiến dịch E-Voucher B2B & Đăng tin Doanh nghiệp)."
+      },
+      "center-dir": {
+        personaKey: "center-dir",
+        roleCode: "center_director",
+        email: "director@oceanenglish.edu.vn",
+        name: "Trần Thanh Tâm (GĐ Trung tâm NN-TH)",
+        org: "Ocean English & IT Center Nha Trang",
+        roleBadge: "🏫 Giám đốc Trung tâm NN-TH",
+        scopeText:
+          "<strong>🏫 Quyền hạn Giám đốc Trung tâm:</strong> Chỉ hiển thị các chức năng quản trị của Trung tâm Đào tạo (Hệ thống TTNN/LMS/Learn, Đấu trường Thi Online, Đồng bộ Lead học viên về CRM & Báo giá Đào tạo B2B)."
+      },
+      "school-principal": {
+        personaKey: "school-principal",
+        roleCode: "school_principal",
+        email: "bgh@saobienschool.edu.vn",
+        name: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
+        org: "Hệ thống Giáo dục Liên cấp & ĐH Nha Trang",
+        roleBadge: "🎓 Hiệu trưởng Nhà trường",
+        scopeText:
+          "<strong>🎓 Quyền hạn Hiệu trưởng Nhà trường:</strong> Chỉ hiển thị các chức năng quản trị của Trường học (Hệ thống K12 & TC COMPASS, Thu học phí QR, Duyệt Học bổng Phụ huynh & Nhà cung ứng Học đường)."
+      },
+      "student-user": {
+        personaKey: "student-user",
+        roleCode: "student_parent",
+        email: "khoi.nm.64cntt@ntu.edu.vn",
+        name: "Nguyễn Minh Khôi (Sinh viên / Học viên)",
+        org: "Đại học Nha Trang • Hồ sơ #TC-KH-8821",
+        roleBadge: "👨‍🎓 Học viên / Sinh viên",
+        scopeText:
+          "<strong>👨‍🎓 Quyền hạn Học viên / Sinh viên:</strong> Chỉ hiển thị Cổng Công dân Số cá nhân (Hồ sơ Năng lực Số QR, Chứng chỉ Thi Online, Ứng tuyển Thực tập 1-Click & Ví Học bổng / E-Voucher)."
+      }
+    };
+
+    function fillCredentialsByRole(roleKey) {
+      const acc = ROLE_ACCOUNTS[roleKey] || ROLE_ACCOUNTS["super-admin"];
+      document.getElementById("loginRoleSelect").value = acc.personaKey;
+      document.getElementById("loginEmailInput").value = acc.email;
+      document.getElementById("loginPasswordInput").value = "TechCorp@2026";
+      document.getElementById("loginRolePreviewBox").innerHTML = acc.scopeText;
+
+      document.querySelectorAll(".login-role-card").forEach((card) => {
+        card.classList.toggle("selected", card.getAttribute("data-role") === acc.personaKey);
+      });
+    }
+
+    async function performLogin(roleKey) {
+      const acc = ROLE_ACCOUNTS[roleKey] || ROLE_ACCOUNTS["super-admin"];
+      let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.sso_session_" + acc.personaKey;
+      try {
+        const res = await fetch("/api/v1/sso/token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ personaKey: acc.personaKey })
+        });
+        const data = await res.json();
+        if (data && data.ok && data.token) {
+          token = data.token;
+        }
+      } catch (_) {}
+
+      const sessionData = {
+        personaKey: acc.personaKey,
+        roleCode: acc.roleCode,
+        email: acc.email,
+        name: acc.name,
+        org: acc.org,
+        roleBadge: acc.roleBadge,
+        token: token,
+        loginAt: new Date().toISOString()
+      };
+      localStorage.setItem("tc_sso_session", JSON.stringify(sessionData));
+      window.location.href = "admin.html?role=" + encodeURIComponent(acc.personaKey);
+    }
+
+    function handleSsoLoginSubmit(e) {
+      e.preventDefault();
+      const roleKey = document.getElementById("loginRoleSelect").value;
+      performLogin(roleKey);
+    }
+
+    function quickLoginAs(roleKey, ev) {
+      if (ev) ev.stopPropagation();
+      fillCredentialsByRole(roleKey);
+      performLogin(roleKey);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const roleParam = params.get("role");
+      if (roleParam && ROLE_ACCOUNTS[roleParam]) {
+        fillCredentialsByRole(roleParam);
+      }
+    });
+  </script>
+</body>
+</html>

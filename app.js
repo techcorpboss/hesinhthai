@@ -870,6 +870,14 @@ window.activeAdminPanelId = "panel-master-overview";
 window.activeMemberSubTab = "overview";
 
 window.activateAdminPanel = function (panelId, memberSubTab) {
+  const roleCode = getCurrentRoleCode();
+  // Strict RBAC isolation: Only super_admin can access Master Admin panels
+  if (roleCode !== "super_admin" && panelId && panelId.indexOf("panel-master-") === 0) {
+    panelId = "panel-role-workspace";
+    if (!memberSubTab) {
+      memberSubTab = window.activeMemberSubTab || "overview";
+    }
+  }
   if (memberSubTab) {
     window.activeMemberSubTab = memberSubTab;
   }
@@ -1182,8 +1190,8 @@ function renderPublicProductsShowcase() {
               <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
                 🚀 Truy cập Hệ thống Live ↗
               </a>
-              <a href="admin.html" class="btn btn-outline btn-sm" style="text-decoration:none;">
-                🛡️ Quản trị
+              <a href="login.html" class="btn btn-outline btn-sm" style="text-decoration:none;">
+                🔐 Quản trị
               </a>
             </div>
           </div>
@@ -2831,11 +2839,51 @@ function renderRoleContextAndSidebar() {
   const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
   const userObj = getCurrentUserObject();
   const perms = (roleConfig && roleConfig.permissions) || {};
+  const assignedApps = (userObj && userObj.assignedApps) || [];
 
-  // 1. Highlight Role Pill Cards
-  document.querySelectorAll(".role-pill-card").forEach((card) => {
-    card.classList.toggle("active", card.getAttribute("data-persona") === STATE.currentPersona);
-  });
+  // 1. Update Clean White Enterprise Header in admin.html to match strictly the logged-in role
+  const portalTitles = {
+    super_admin: {
+      title: "Cổng Quản trị Tối cao Hệ sinh thái",
+      pill: "👑 Super Admin (Toàn quyền)",
+      avatar: "👑"
+    },
+    ceo_sme: {
+      title: "Workspace Quản trị Doanh nghiệp SME",
+      pill: "🏢 Chủ Doanh nghiệp Thành viên",
+      avatar: "🏢"
+    },
+    center_director: {
+      title: "Workspace Quản trị Trung tâm Đào tạo",
+      pill: "🏫 Giám đốc Trung tâm NN-TH",
+      avatar: "🏫"
+    },
+    school_principal: {
+      title: "Workspace Quản trị Trường học & ĐH",
+      pill: "🎓 Hiệu trưởng / Ban Giám hiệu",
+      avatar: "🎓"
+    },
+    student_parent: {
+      title: "Cổng Công dân Số TechCorp ID",
+      pill: "👨‍🎓 Học viên / Sinh viên / Phụ huynh",
+      avatar: "👨‍🎓"
+    }
+  };
+  const headerMeta = portalTitles[roleCode] || portalTitles.super_admin;
+
+  const titleEl = document.getElementById("adminPortalTitle");
+  const pillEl = document.getElementById("adminPortalRolePill");
+  const descEl = document.getElementById("currentPersonaDesc");
+  const avatarEl = document.getElementById("adminHeaderAvatar");
+  const nameEl = document.getElementById("adminHeaderName");
+  const orgEl = document.getElementById("adminHeaderOrg");
+
+  if (titleEl) titleEl.textContent = headerMeta.title;
+  if (pillEl) pillEl.textContent = headerMeta.pill;
+  if (descEl) descEl.textContent = `${persona.org} • Tài khoản: ${(userObj && userObj.email) || "admin@techcorp.info.vn"}`;
+  if (avatarEl) avatarEl.textContent = headerMeta.avatar;
+  if (nameEl) nameEl.textContent = persona.name;
+  if (orgEl) orgEl.textContent = persona.org;
 
   // 2. Dynamically Render Role-Specific Left Sidebar (#dynamicRoleSidebarNav in admin.html)
   const sidebarNavEl = document.getElementById("dynamicRoleSidebarNav");
@@ -2845,13 +2893,13 @@ function renderRoleContextAndSidebar() {
 
     if (roleCode === "super_admin") {
       sidebarNavEl.innerHTML = `
-        <div class="sidebar-section-label">👑 ĐIỀU HÀNH HỆ SINH THÁI (MASTER)</div>
+        <div class="sidebar-section-label">👑 QUẢN TRỊ TỐI CAO (SUPER ADMIN)</div>
         <button class="nav-btn" data-panel="panel-master-overview" onclick="activateAdminPanel('panel-master-overview')">
           <span>📊 1. Tổng quan & Event Bus</span>
           <span class="nav-badge">${STATE.apps.length} App</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-apps" onclick="activateAdminPanel('panel-master-apps')">
-          <span>🚀 2. Quản trị Sản phẩm & App</span>
+          <span>🚀 2. Quản trị 15 Sản phẩm & App</span>
           <span class="nav-badge">API Key</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-bulletins" onclick="activateAdminPanel('panel-master-bulletins')">
@@ -2881,37 +2929,42 @@ function renderRoleContextAndSidebar() {
         </button>
       `;
     } else {
+      // Non-superadmin roles ONLY see functions strictly belonging to their role
       const roleMenus = {
         ceo_sme: {
-          sectionTitle: "🏢 QUẢN TRỊ DOANH NGHIỆP (SME)",
+          sectionTitle: "🏢 CHỨC NĂNG CHỦ DOANH NGHIỆP",
           items: [
-            { label: "🏢 1. Bảng điều khiển Doanh nghiệp", subtab: "overview", badge: "ERP+Web" },
-            { label: "👨‍💼 2. Tuyển dụng Liên thông & Sàn CV", subtab: "recruitment", badge: `${STATE.talents.length} CV` },
-            { label: "🎁 3. Chiến dịch E-Voucher & B2B", subtab: "b2b", badge: "Give-to-Get" }
+            { label: "🏢 1. Tổng quan Doanh nghiệp", subtab: "overview", badge: "Dashboard" },
+            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} Hệ thống` },
+            { label: "👨‍💼 3. Tuyển dụng Liên thông & CV", subtab: "recruitment", badge: `${STATE.talents.length} CV` },
+            { label: "🎁 4. Chiến dịch E-Voucher & B2B", subtab: "b2b", badge: "Give-to-Get" }
           ]
         },
         center_director: {
-          sectionTitle: "🏫 QUẢN TRỊ TRUNG TÂM ĐÀO TẠO",
+          sectionTitle: "🏫 CHỨC NĂNG GIÁM ĐỐC TRUNG TÂM",
           items: [
-            { label: "🏫 1. Bảng điều khiển Trung tâm", subtab: "overview", badge: "CRM+LMS" },
-            { label: "🏆 2. Đấu trường Thi Online & Lead", subtab: "contests", badge: "385 Lead" },
-            { label: "🤝 3. Hợp đồng Đào tạo DN (RFQ)", subtab: "b2b", badge: "04 HĐ" }
+            { label: "🏫 1. Tổng quan Trung tâm", subtab: "overview", badge: "Dashboard" },
+            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} Hệ thống` },
+            { label: "🏆 3. Đấu trường Thi Online & Lead", subtab: "contests", badge: "385 Lead" },
+            { label: "🤝 4. Hợp đồng Đào tạo DN (RFQ)", subtab: "b2b", badge: "04 HĐ" }
           ]
         },
         school_principal: {
-          sectionTitle: "🎓 QUẢN TRỊ NHÀ TRƯỜNG (BGH)",
+          sectionTitle: "🎓 CHỨC NĂNG HIỆU TRƯỞNG TRƯỜNG",
           items: [
-            { label: "🎓 1. Bảng điều khiển Học vụ & QR", subtab: "overview", badge: "96.4% QR" },
-            { label: "🎁 2. Duyệt Học bổng & Phúc lợi PH", subtab: "scholarships", badge: "500 Suất" },
-            { label: "🍱 3. Nhà cung ứng Học đường B2B", subtab: "b2b", badge: "06 ĐV" }
+            { label: "🎓 1. Tổng quan Học vụ & QR", subtab: "overview", badge: "96.4% QR" },
+            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} Hệ thống` },
+            { label: "🎁 3. Duyệt Học bổng & Phúc lợi PH", subtab: "scholarships", badge: "500 Suất" },
+            { label: "🍱 4. Nhà cung ứng Học đường B2B", subtab: "b2b", badge: "06 ĐV" }
           ]
         },
         student_parent: {
-          sectionTitle: "👨‍🎓 CỔNG CÔNG DÂN SỐ TECHCORP ID",
+          sectionTitle: "👨‍🎓 CHỨC NĂNG HỌC VIÊN / PHỤ HUYNH",
           items: [
             { label: "🏅 1. Hồ sơ Năng lực Số (Passport)", subtab: "overview", badge: "Verified" },
-            { label: "🚀 2. Ứng tuyển Thực tập 1-Click", subtab: "jobs", badge: "30 DN" },
-            { label: "🎁 3. Ví Học bổng & E-Voucher", subtab: "vouchers", badge: "05 Ưu đãi" }
+            { label: "🚀 2. Nền tảng Học & Thi Trực tuyến", subtab: "apps", badge: `${assignedApps.length} Hệ thống` },
+            { label: "💼 3. Ứng tuyển Thực tập 1-Click", subtab: "jobs", badge: "30 DN" },
+            { label: "🎁 4. Ví Học bổng & E-Voucher", subtab: "vouchers", badge: "05 Ưu đãi" }
           ]
         }
       };
@@ -2931,60 +2984,24 @@ function renderRoleContextAndSidebar() {
       const postNewsBtn = perms.postMemberNews
         ? `
           <button class="nav-btn" onclick="openBulletinModal('member')">
-            <span>📢 4. Đăng Tin Quảng bá lên Public</span>
+            <span>📢 5. Đăng Tin Đơn vị lên Public</span>
             <span class="nav-badge">✔ Mở</span>
           </button>
         `
         : "";
 
-      // Check if Master Admin granted additional system permissions to this role in RBAC
-      let extraRbacMenus = "";
-      if (perms.publishMasterBulletin) {
-        extraRbacMenus += `
-          <button class="nav-btn" data-panel="panel-master-bulletins" onclick="activateAdminPanel('panel-master-bulletins')">
-            <span>📢 Quản trị Bản tin Public</span>
-            <span class="nav-badge">RBAC</span>
-          </button>
-        `;
-      }
-      if (perms.manageAppsUsersRbac) {
-        extraRbacMenus += `
-          <button class="nav-btn" data-panel="panel-master-apps" onclick="activateAdminPanel('panel-master-apps')">
-            <span>🚀 Quản trị Sản phẩm & App</span>
-            <span class="nav-badge">RBAC</span>
-          </button>
-          <button class="nav-btn" data-panel="panel-master-users" onclick="activateAdminPanel('panel-master-users')">
-            <span>👥 Quản lý Thành viên & SSO</span>
-            <span class="nav-badge">RBAC</span>
-          </button>
-        `;
-      }
-      if (perms.moderateForumAudit) {
-        extraRbacMenus += `
-          <button class="nav-btn" data-panel="panel-master-forum" onclick="activateAdminPanel('panel-master-forum')">
-            <span>🛡️ Kiểm duyệt Diễn đàn</span>
-            <span class="nav-badge">RBAC</span>
-          </button>
-          <button class="nav-btn" data-panel="panel-master-audit" onclick="activateAdminPanel('panel-master-audit')">
-            <span>🔍 Nhật ký Audit Logs</span>
-            <span class="nav-badge">RBAC</span>
-          </button>
-        `;
-      }
-
       sidebarNavEl.innerHTML = `
         <div class="sidebar-section-label">${cfg.sectionTitle}</div>
         ${roleMenuButtons}
         ${postNewsBtn}
-        <div class="sidebar-section-label" style="margin-top:10px;">🔐 CẤU HÌNH PHÂN QUYỀN & LIÊN THÔNG</div>
-        ${extraRbacMenus}
-        <button class="nav-btn" data-panel="panel-master-rbac" onclick="activateAdminPanel('panel-master-rbac')">
-          <span>🔐 Ma trận Phân quyền RBAC</span>
-          <span class="nav-badge">Cấu hình</span>
-        </button>
+        <div class="sidebar-section-label" style="margin-top:10px;">🔗 ĐIỀU HƯỚNG PHIÊN LÀM VIỆC</div>
         <a href="index.html" class="nav-btn" style="text-decoration:none;">
           <span>🌍 Xem Trang Public Hệ sinh thái</span>
           <span class="nav-badge">↗</span>
+        </a>
+        <a href="login.html" onclick="logoutSsoSession()" class="nav-btn" style="text-decoration:none;">
+          <span>🔄 Đổi Tài khoản / Đăng xuất</span>
+          <span class="nav-badge">SSO</span>
         </a>
       `;
     }
@@ -3038,11 +3055,11 @@ function renderRoleContextAndSidebar() {
       ],
       ceo_sme: [
         {
-          label: "GÓI SẢN PHẨM ĐANG SỬ DỤNG",
+          label: "HỆ THỐNG ĐƯỢC CẤP PHÉP",
           badge: "SME Active",
           badgeClass: "badge-green",
-          value: "ERP + Web + LMS",
-          sub: "● 35/50 Tài khoản nhân sự SSO"
+          value: `${assignedApps.length} Nền tảng`,
+          sub: "● ERP, BSC-KPI, PMS Khách sạn, BĐS, Nội thất"
         },
         {
           label: "HỒ SƠ ỨNG VIÊN ĐÃ XÁC THỰC",
@@ -3179,7 +3196,7 @@ function renderRoleContextAndSidebar() {
   const sidebarBox = document.getElementById("sidebarRoleSummaryBox");
   if (sidebarBox && roleConfig) {
     sidebarBox.innerHTML = `
-      <h5>🎭 Phiên Phân quyền Hiện tại</h5>
+      <h5>🎭 Phiên Đăng nhập Hiện tại</h5>
       <div style="font-weight:800;color:#0f172a;font-size:13px;">${escapeHtml(persona.name)}</div>
       <div style="color:#475569;font-size:11.5px;margin-top:2px;">🏢 ${escapeHtml(persona.org)}</div>
       <div class="sidebar-perm-list">
@@ -3187,7 +3204,7 @@ function renderRoleContextAndSidebar() {
         <div class="sidebar-perm-item">${perms.postMemberNews ? "✅" : "🔒"} Đăng tin lên Trang Public</div>
         <div class="sidebar-perm-item">${perms.postForumB2B ? "✅" : "🔒"} Đăng Diễn đàn & B2B</div>
         <div class="sidebar-perm-item">${perms.accessTalentPool ? "✅" : "🔒"} Tuyển dụng Sàn Nhân lực</div>
-        <div class="sidebar-perm-item">${perms.manageAppsUsersRbac ? "✅" : "🔒"} Quản trị Tối cao & RBAC</div>
+        <div class="sidebar-perm-item">${roleCode === "super_admin" ? "✅ Toàn quyền Super Admin" : "🔒 Quản trị Hệ thống (Chỉ SuperAdmin)"}</div>
       </div>
     `;
   }
@@ -3195,34 +3212,39 @@ function renderRoleContextAndSidebar() {
   // 5. Update Main Role Context Banner
   const bannerEl = document.getElementById("roleContextBanner");
   if (bannerEl && roleConfig) {
-    const assignedApps = (userObj && userObj.assignedApps) || [];
-    const primaryActionBtn =
+    const actionButtonsHtml =
       roleCode === "super_admin"
-        ? `<button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-master-overview')">👑 Bảng Điều hành Toàn Hệ sinh thái</button>`
-        : `<button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'overview')">🏢 Workspace Quản trị Đơn vị</button>`;
+        ? `
+          <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-master-overview')">👑 Tổng quan Hệ sinh thái</button>
+          <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-master-rbac')">🔐 Cấu hình Phân quyền RBAC</button>
+          <a href="login.html" class="btn btn-outline btn-sm" style="text-decoration:none;">🔄 Đổi Vai trò Test</a>
+        `
+        : `
+          <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'overview')">🏢 Tổng quan Workspace</button>
+          <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'apps')">🚀 Mở ${assignedApps.length} Hệ thống Được cấp phép</button>
+          <a href="login.html" onclick="logoutSsoSession()" class="btn btn-outline btn-sm" style="text-decoration:none;">🔄 Đổi Tài khoản Khác</a>
+        `;
 
     bannerEl.innerHTML = `
       <div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
           <span class="badge badge-blue">${escapeHtml(roleConfig.roleName)}</span>
           <span class="badge badge-green">🔑 TechCorp ID: ${escapeHtml((userObj && userObj.id) || "USR-ADMIN-00")}</span>
-          <span class="badge badge-purple">Ứng dụng được cấp phép: ${assignedApps.length} / ${STATE.apps.length} App</span>
+          <span class="badge badge-purple">Hệ thống được cấp quyền: ${assignedApps.length} / ${STATE.apps.length} Nền tảng</span>
         </div>
         <div style="font-size:15px;font-weight:800;color:#0b2559;">
-          Đang quản trị với vai trò: <span style="color:#0052d4;">${escapeHtml(persona.name)}</span> — ${escapeHtml(persona.org)}
+          Phiên làm việc: <span style="color:#0052d4;">${escapeHtml(persona.name)}</span> — ${escapeHtml(persona.org)}
         </div>
         <div style="font-size:12.5px;color:#334155;margin-top:2px;">
-          📌 <strong>Cấu trúc hiển thị & Quyền hạn RBAC:</strong> ${escapeHtml(roleConfig.desc)}
+          📌 <strong>Phạm vi hiển thị:</strong> ${
+            roleCode === "super_admin"
+              ? "Toàn quyền điều hành cả 8 phân hệ Quản trị Hệ sinh thái & Giám sát 4 Khối thành viên."
+              : "Giao diện được cô lập theo đúng vai trò đăng nhập — chỉ hiển thị các chức năng và phần mềm thuộc phạm vi đơn vị của bạn."
+          }
         </div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        ${primaryActionBtn}
-        <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-master-rbac')">
-          🔐 Cấu hình Phân quyền RBAC
-        </button>
-        <a href="index.html" class="btn btn-emerald btn-sm" style="text-decoration:none;">
-          🌍 Mở Trang Public
-        </a>
+        ${actionButtonsHtml}
       </div>
     `;
   }
@@ -3444,6 +3466,53 @@ function renderMemberWorkspace() {
 
   const actualRole = getCurrentRoleCode();
   const activeRole = actualRole === "super_admin" ? STATE.previewTenantRole || "ceo_sme" : actualRole;
+  const subTab = window.activeMemberSubTab || "overview";
+
+  // Find user matching activeRole so we only show the apps assigned to that role
+  const roleUser =
+    STATE.users.find((u) => u.role === activeRole) ||
+    getCurrentUserObject();
+  const allowedAppIds = (roleUser && roleUser.assignedApps) || [];
+  const allowedAppsList = STATE.apps.filter((a) => allowedAppIds.includes(a.id));
+
+  const roleAppsHtml = `
+    <div class="card" style="${subTab === "apps" ? "border:2px solid #0052d4;box-shadow:0 12px 28px rgba(0,82,212,0.12);" : ""}">
+      <div class="card-header">
+        <div>
+          <span class="badge badge-green">🚀 HỆ THỐNG PHẦN MỀM ĐƯỢC CẤP QUYỀN SSO CHO VAI TRÒ NÀY (${allowedAppsList.length} NỀN TẢNG LIVE)</span>
+          <h3 class="card-title" style="margin-top:6px;">Danh sách các Ứng dụng Thực tế thuộc Phạm vi Quản trị của Đơn vị</h3>
+          <p class="card-subtitle">
+            Tài khoản của vai trò này chỉ nhìn thấy và truy cập trực tiếp các hệ thống phần mềm được cấp phép dưới đây:
+          </p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;">
+        ${allowedAppsList
+          .map((app) => {
+            const meta = PRODUCT_SHOWCASE_META[app.id] || { icon: "🚀" };
+            return `
+              <div style="background:#f8fbff;border:1.5px solid #cfe2ff;border-radius:14px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;">
+                    <span style="font-size:20px;">${meta.icon}</span>
+                    <span class="badge badge-green">● SSO Authorized</span>
+                  </div>
+                  <strong style="font-size:13.5px;color:#071936;display:block;">${escapeHtml(app.name)}</strong>
+                  <p style="font-size:12px;color:#475569;margin-top:4px;line-height:1.45;">${escapeHtml(app.desc || "")}</p>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid #dbeafe;">
+                  <code style="font-size:11px;color:#0052d4;font-weight:700;">${escapeHtml(app.appUrl.replace("https://", ""))}</code>
+                  <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+                    Mở Hệ thống ↗
+                  </a>
+                </div>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
 
   const masterInspectorBar =
     actualRole === "super_admin"
@@ -3451,9 +3520,9 @@ function renderMemberWorkspace() {
       <div class="card" style="background:linear-gradient(90deg,#fffdf5,#ffffff);border:2px solid #f59e0b;margin-bottom:18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
           <div>
-            <span class="badge badge-amber">👑 CHẾ ĐỘ GIÁM SÁT CỦA CHỦ HỆ SINH THÁI</span>
+            <span class="badge badge-amber">👑 CHẾ ĐỘ GIÁM SÁT CỦA SUPER ADMIN</span>
             <h4 style="font-size:15px;font-weight:800;color:#0f172a;margin-top:4px;">
-              Xem trước Giao diện Quản trị Riêng của từng Nhóm Thành viên trong Hệ sinh thái:
+              Kiểm tra Giao diện Quản trị Cô lập của từng Vai trò Thành viên trong Hệ sinh thái:
             </h4>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -3475,9 +3544,15 @@ function renderMemberWorkspace() {
     `
       : "";
 
+  if (subTab === "apps") {
+    container.innerHTML = `${masterInspectorBar}${roleAppsHtml}`;
+    return;
+  }
+
   if (activeRole === "ceo_sme") {
     container.innerHTML = `
       ${masterInspectorBar}
+      ${roleAppsHtml}
       <div class="card">
         <div class="card-header">
           <div>
@@ -3570,6 +3645,7 @@ function renderMemberWorkspace() {
   } else if (activeRole === "center_director") {
     container.innerHTML = `
       ${masterInspectorBar}
+      ${roleAppsHtml}
       <div class="card">
         <div class="card-header">
           <div>
@@ -3655,6 +3731,7 @@ function renderMemberWorkspace() {
   } else if (activeRole === "school_principal") {
     container.innerHTML = `
       ${masterInspectorBar}
+      ${roleAppsHtml}
       <div class="card">
         <div class="card-header">
           <div>
@@ -3738,6 +3815,7 @@ function renderMemberWorkspace() {
   } else {
     container.innerHTML = `
       ${masterInspectorBar}
+      ${roleAppsHtml}
       <div class="card">
         <div class="card-header">
           <div>
@@ -3912,8 +3990,37 @@ function setupForumCategoryFilter() {
   });
 }
 
+window.logoutSsoSession = function () {
+  try {
+    localStorage.removeItem("tc_sso_session");
+  } catch (_) {}
+};
+
+function persistRoleSessionToStorage(personaKey) {
+  try {
+    const p = STATE.personas[personaKey];
+    const u = STATE.users.find((x) => x.personaKey === personaKey);
+    if (p) {
+      localStorage.setItem(
+        "tc_sso_session",
+        JSON.stringify({
+          personaKey,
+          roleCode: PERSONA_TO_ROLE[personaKey] || "super_admin",
+          email: (u && u.email) || "admin@techcorp.info.vn",
+          name: p.name,
+          org: p.org,
+          roleBadge: p.roleBadge,
+          loginAt: new Date().toISOString()
+        })
+      );
+    }
+  } catch (_) {}
+}
+
 window.selectPersonaRole = async function (val) {
   STATE.currentPersona = val;
+  persistRoleSessionToStorage(val);
+
   const select = document.getElementById("personaSelect");
   if (select && select.value !== val) {
     select.value = val;
@@ -3953,9 +4060,9 @@ window.selectPersonaRole = async function (val) {
     if (forumIdEl) forumIdEl.textContent = `${p.name} • ${p.org}`;
     const ssoBadge = document.getElementById("tcEcoSsoStatus");
     if (ssoBadge) {
-      ssoBadge.textContent = `SSO: ${p.name} (${p.roleBadge})`;
+      ssoBadge.textContent = `🔐 ${p.name} (${p.roleBadge})`;
     }
-    showToast(`🎭 Đã chuyển Cấu trúc Quản trị theo vai trò: <b>${escapeHtml(p.name)}</b>`);
+    showToast(`🎭 Đang mở Cổng Quản trị theo vai trò: <b>${escapeHtml(p.name)}</b>`);
   }
 
   renderAllViews();
@@ -4017,22 +4124,43 @@ async function bootstrapFromServer() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Check if URL has ?role= query parameter (e.g. admin.html?role=ceo-sme)
+  const isAdminPage = Boolean(document.getElementById("dynamicRoleSidebarNav"));
+  let resolvedRole = null;
+
   try {
     const params = new URLSearchParams(window.location.search);
     const roleParam = params.get("role");
     if (roleParam && PERSONA_TO_ROLE[roleParam]) {
-      STATE.currentPersona = roleParam;
-      if (roleParam === "super-admin") {
-        window.activeAdminPanelId = "panel-master-overview";
-      } else {
-        window.activeAdminPanelId = "panel-role-workspace";
-        window.activeMemberSubTab = "overview";
+      resolvedRole = roleParam;
+      persistRoleSessionToStorage(roleParam);
+    } else {
+      const savedRaw = localStorage.getItem("tc_sso_session");
+      if (savedRaw) {
+        const savedObj = JSON.parse(savedRaw);
+        if (savedObj && savedObj.personaKey && PERSONA_TO_ROLE[savedObj.personaKey]) {
+          resolvedRole = savedObj.personaKey;
+        }
       }
-      const select = document.getElementById("personaSelect");
-      if (select) select.value = roleParam;
     }
   } catch (_) {}
+
+  // If user opens admin.html directly without logging in, redirect to login.html
+  if (isAdminPage && !resolvedRole) {
+    window.location.replace("login.html");
+    return;
+  }
+
+  if (resolvedRole) {
+    STATE.currentPersona = resolvedRole;
+    if (resolvedRole === "super-admin") {
+      window.activeAdminPanelId = "panel-master-overview";
+    } else {
+      window.activeAdminPanelId = "panel-role-workspace";
+      window.activeMemberSubTab = "overview";
+    }
+    const select = document.getElementById("personaSelect");
+    if (select) select.value = resolvedRole;
+  }
 
   setupTabs();
   setupPersonaSwitcher();
@@ -4046,3 +4174,4 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("calcScaleInput")?.addEventListener("input", calculateComboPrice);
   document.getElementById("calcPeriod")?.addEventListener("change", calculateComboPrice);
 });
+

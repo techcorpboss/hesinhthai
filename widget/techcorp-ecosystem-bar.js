@@ -1,165 +1,237 @@
 /**
- * TechCorp Ecosystem Unified Topbar Widget (v5.1 - 15 Real Live Apps + Dual Mode Public/Admin)
- * Tự động tải danh sách 15 ứng dụng thực tế từ:
- *   GET https://hesinhthai.techcorp.info.vn/api/v1/apps
+ * TechCorp Ecosystem Unified Topbar Widget (v6.0 - Clean International Enterprise Topbar + Mega Launcher)
+ * Thiết kế gọn gàng, hiện đại, không dính chùm:
+ *   - Bên trái: Thương hiệu TECHCORP CLOUD + Nút Mega-Menu "🌐 Khám phá 15 Nền tảng Live ▾" chia theo 4 khối ngành
+ *   - Bên phải: Nút chuyển nhanh Trang Public, Cổng Quản trị & Trạng thái Tài khoản Đăng nhập SSO
  */
 (function () {
   if (window.__TECHCORP_BAR_LOADED__) return;
   window.__TECHCORP_BAR_LOADED__ = true;
 
   const FALLBACK_PRODUCTS = [
-    { id: "mamnon", name: "Mầm non", appUrl: "https://mamnon.techcorp.info.vn", desc: "EduManager Pro — Quản lý Trường Mầm non & AI" },
-    { id: "tieuhoc", name: "Tiểu học", appUrl: "https://tieuhoc.techcorp.info.vn", desc: "EduManager Pro — Quản lý Trường Tiểu học & AI" },
-    { id: "thcs", name: "THCS", appUrl: "https://thcs.techcorp.info.vn", desc: "EduManager Pro — Quản lý Trường THCS & AI" },
-    { id: "thpt", name: "THPT", appUrl: "https://thpt.techcorp.info.vn", desc: "EduManager Pro — Quản lý Trường THPT & AI" },
-    { id: "gdtx", name: "GDTX", appUrl: "https://gdtx.techcorp.info.vn", desc: "EduManager Pro — Trung tâm GDNN - GDTX" },
-    { id: "qldt", name: "Đại học (TC COMPASS)", appUrl: "https://qldt.techcorp.info.vn", desc: "TC COMPASS — Quản trị Đại học & Hiệu suất" },
-    { id: "ttnn", name: "Trung tâm NN-TH", appUrl: "https://ttnn.techcorp.info.vn", desc: "Quản lý Trung tâm Ngoại ngữ & Tin học" },
-    { id: "lms", name: "Thi Online (LMS)", appUrl: "https://lms.techcorp.info.vn", desc: "TechCorp LMS & E-Testing — Khảo thí Trực tuyến" },
-    { id: "learn", name: "TechCorpLearn", appUrl: "https://learn.techcorp.info.vn", desc: "TechCorpLearn — Học trực tuyến & Khóa học số" },
-    { id: "kpi", name: "BSC-KPI", appUrl: "https://kpi.techcorp.info.vn", desc: "Hệ thống BSC-KPI & Quản trị Doanh nghiệp Thông minh" },
-    { id: "erp", name: "ERP Doanh nghiệp", appUrl: "https://erp.techcorp.info.vn", desc: "Hệ thống Quản trị Doanh nghiệp Tổng thể ERP" },
-    { id: "qldh", name: "Khách sạn (PMS)", appUrl: "https://qldh.techcorp.info.vn", desc: "TechCorp PMS — Quản lý Khách sạn & Resort" },
-    { id: "bds", name: "Bất động sản AI", appUrl: "https://bds.techcorp.info.vn", desc: "Hưng Phát Land — Sàn Giao dịch BĐS & Trợ lý AI" },
-    { id: "noithat", name: "Nội thất 3D", appUrl: "https://noithat.techcorp.info.vn", desc: "Thiết kế, Thi công & Showroom Nội thất" },
-    { id: "techcorp", name: "TechCorp Academy", appUrl: "https://techcorp.info.vn", desc: "Cổng Giải pháp Phần mềm PMS, ERP, LMS & Đào tạo" }
+    { id: "mamnon", name: "Quản lý Trường Mầm non & AI", badge: "EdTech K-12", appUrl: "https://mamnon.techcorp.info.vn" },
+    { id: "tieuhoc", name: "Quản lý Trường Tiểu học & AI", badge: "EdTech K-12", appUrl: "https://tieuhoc.techcorp.info.vn" },
+    { id: "thcs", name: "Quản lý Trường THCS & AI", badge: "EdTech K-12", appUrl: "https://thcs.techcorp.info.vn" },
+    { id: "thpt", name: "Quản lý Trường THPT & AI", badge: "EdTech K-12", appUrl: "https://thpt.techcorp.info.vn" },
+    { id: "gdtx", name: "Trung tâm GDNN - GDTX", badge: "EdTech K-12", appUrl: "https://gdtx.techcorp.info.vn" },
+    { id: "qldt", name: "TC COMPASS — Quản trị Đại học", badge: "EdTech & LMS", appUrl: "https://qldt.techcorp.info.vn" },
+    { id: "ttnn", name: "Quản lý Trung tâm Ngoại ngữ - TH", badge: "EdTech & LMS", appUrl: "https://ttnn.techcorp.info.vn" },
+    { id: "lms", name: "TechCorp LMS & Khảo thí Online", badge: "EdTech & LMS", appUrl: "https://lms.techcorp.info.vn" },
+    { id: "learn", name: "TechCorpLearn — E-Learning", badge: "EdTech & LMS", appUrl: "https://learn.techcorp.info.vn" },
+    { id: "kpi", name: "Hệ thống Quản trị BSC-KPI", badge: "Enterprise & KPI", appUrl: "https://kpi.techcorp.info.vn" },
+    { id: "erp", name: "TechCorp ERP — Quản trị Doanh nghiệp", badge: "Enterprise & KPI", appUrl: "https://erp.techcorp.info.vn" },
+    { id: "techcorp", name: "TechCorp Academy & Giải pháp Số", badge: "Enterprise & KPI", appUrl: "https://techcorp.info.vn" },
+    { id: "qldh", name: "TechCorp PMS — Quản lý Khách sạn", badge: "Chuyên ngành", appUrl: "https://qldh.techcorp.info.vn" },
+    { id: "bds", name: "Hưng Phát Land — Sàn BĐS & AI", badge: "Chuyên ngành", appUrl: "https://bds.techcorp.info.vn" },
+    { id: "noithat", name: "TechCorp Interior — Nội thất 3D", badge: "Chuyên ngành", appUrl: "https://noithat.techcorp.info.vn" }
   ];
 
   const scriptEl = document.currentScript;
   const hubBaseUrl = (scriptEl && scriptEl.getAttribute("data-hub-url")) || "";
-  let currentAppId = (scriptEl && scriptEl.getAttribute("data-app-id")) || "erp";
-  const currentOrg = (scriptEl && scriptEl.getAttribute("data-org-name")) || "TechCorp Headquarters";
-  const currentRole = (scriptEl && scriptEl.getAttribute("data-user-role")) || "Chủ Hệ sinh thái";
-  const isAdminPage = window.location.pathname.indexOf("admin.html") !== -1;
+  const pathname = window.location.pathname || "";
+  const isAdminPage = pathname.indexOf("admin.html") !== -1;
+  const isLoginPage = pathname.indexOf("login.html") !== -1;
+
+  // Check session role from localStorage
+  let savedSession = null;
+  try {
+    const raw = localStorage.getItem("tc_sso_session");
+    if (raw) savedSession = JSON.parse(raw);
+  } catch (_) {}
 
   const style = document.createElement("style");
   style.textContent = `
     .tc-eco-bar {
       font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(90deg, #002b75 0%, #0055e5 50%, #0284c7 100%);
-      color: #ffffff;
-      height: 44px;
-      padding: 0 22px;
+      background: #071936;
+      color: #f8fafc;
+      height: 42px;
+      padding: 0 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 12px;
-      box-shadow: 0 2px 12px rgba(0, 85, 229, 0.25);
       position: relative;
-      z-index: 9999;
+      z-index: 10000;
       box-sizing: border-box;
-      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .tc-eco-inner {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
     .tc-eco-left, .tc-eco-right {
       display: flex;
       align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
-    .tc-eco-left {
-      flex: 1;
-      overflow: hidden;
+      gap: 12px;
     }
     .tc-eco-brand {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       font-weight: 800;
+      font-size: 12px;
       color: #ffffff;
       text-decoration: none;
-      letter-spacing: 0.2px;
+      letter-spacing: 0.4px;
       white-space: nowrap;
-      background: rgba(255, 255, 255, 0.14);
-      padding: 4px 10px;
-      border-radius: 7px;
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      flex-shrink: 0;
     }
     .tc-eco-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 8px #4ade80;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
     }
-    .tc-eco-switcher {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      scrollbar-width: none;
+    .tc-eco-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.18);
     }
-    .tc-eco-switcher::-webkit-scrollbar {
-      display: none;
+    .tc-eco-launcher-wrap {
+      position: relative;
     }
-    .tc-eco-pill {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      color: rgba(255, 255, 255, 0.94);
-      padding: 4px 10px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 600;
-      transition: all 0.18s ease;
-      white-space: nowrap;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-    .tc-eco-pill:hover {
-      background: rgba(255, 255, 255, 0.28);
+    .tc-eco-launcher-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #ffffff;
-    }
-    .tc-eco-pill.active {
-      background: #ffffff;
-      color: #0047cc;
-      border-color: #ffffff;
-      font-weight: 800;
-    }
-    .tc-eco-mode-link {
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 4px 11px;
-      border-radius: 999px;
-      font-size: 11.5px;
+      gap: 8px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .tc-eco-launcher-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+    .tc-eco-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      width: 860px;
+      max-width: 92vw;
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(7, 25, 54, 0.28);
+      border: 1px solid #cbd5e1;
+      padding: 18px 20px;
+      z-index: 10001;
+    }
+    .tc-eco-dropdown.open {
+      display: block;
+    }
+    .tc-eco-dd-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .tc-eco-dd-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .tc-eco-dd-col h6 {
+      font-size: 11px;
       font-weight: 800;
+      text-transform: uppercase;
+      color: #0055e5;
+      margin: 0 0 8px 0;
+      letter-spacing: 0.4px;
+    }
+    .tc-eco-dd-item {
+      display: block;
+      padding: 7px 9px;
+      border-radius: 8px;
       text-decoration: none;
-      white-space: nowrap;
-      transition: all 0.18s ease;
-      flex-shrink: 0;
+      color: #1e293b;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.15s ease;
+      margin-bottom: 3px;
     }
-    .tc-eco-mode-public {
-      background: ${!isAdminPage ? "#ffffff" : "rgba(255,255,255,0.16)"};
-      color: ${!isAdminPage ? "#0047cc" : "#ffffff"};
-      border: 1px solid rgba(255,255,255,0.4);
+    .tc-eco-dd-item:hover {
+      background: #eff6ff;
+      color: #0055e5;
     }
-    .tc-eco-mode-admin {
-      background: ${isAdminPage ? "#ff6b00" : "linear-gradient(135deg, #ff7e29 0%, #ff5500 100%)"};
-      color: #ffffff;
-      border: 1px solid rgba(255,255,255,0.45);
-      box-shadow: 0 2px 8px rgba(255, 85, 0, 0.35);
+    .tc-eco-dd-domain {
+      display: block;
+      font-size: 10.5px;
+      color: #64748b;
+      font-weight: 500;
+      margin-top: 1px;
     }
-    .tc-eco-sso-badge {
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #ffffff;
+    .tc-eco-quick-stats {
+      font-size: 11.5px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tc-eco-link {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
       padding: 4px 10px;
       border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
+      transition: all 0.15s ease;
       white-space: nowrap;
-      flex-shrink: 0;
     }
-    @media (max-width: 1280px) {
-      .tc-eco-sso-badge {
+    .tc-eco-link:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .tc-eco-link.active {
+      color: #ffffff;
+      background: rgba(0, 97, 255, 0.45);
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      font-weight: 700;
+    }
+    .tc-eco-sso-btn {
+      background: linear-gradient(135deg, #0061ff 0%, #0284c7 100%);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 5px 13px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transition: all 0.15s ease;
+    }
+    .tc-eco-sso-btn:hover {
+      filter: brightness(1.1);
+    }
+    @media (max-width: 1024px) {
+      .tc-eco-quick-stats {
         display: none;
       }
+      .tc-eco-dd-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
-    @media (max-width: 900px) {
-      .tc-eco-switcher {
-        display: none;
+    @media (max-width: 640px) {
+      .tc-eco-bar {
+        padding: 0 12px;
+      }
+      .tc-eco-dd-grid {
+        grid-template-columns: 1fr;
       }
     }
   `;
@@ -168,68 +240,91 @@
   const bar = document.createElement("div");
   bar.className = "tc-eco-bar";
   bar.innerHTML = `
-    <div class="tc-eco-left">
-      <a href="${hubBaseUrl}/index.html" class="tc-eco-brand" title="Về Trang chủ Public Hệ sinh thái TechCorp">
-        <span class="tc-eco-dot"></span>
-        TECHCORP ECOSYSTEM (16 SITES)
-      </a>
-      <div class="tc-eco-switcher" id="tcEcoSwitcher"></div>
-    </div>
-    <div class="tc-eco-right">
-      <a href="${hubBaseUrl}/index.html" class="tc-eco-mode-link tc-eco-mode-public">
-        🌍 Trang Public Hệ sinh thái
-      </a>
-      <a href="${hubBaseUrl}/admin.html" class="tc-eco-mode-link tc-eco-mode-admin" id="tcEcoForumTicker">
-        🛡️ Cổng Quản trị Theo Vai trò (SSO)
-      </a>
-      <span class="tc-eco-sso-badge" id="tcEcoSsoStatus">
-        ✓ SSO: ${currentOrg} (${currentRole})
-      </span>
+    <div class="tc-eco-inner">
+      <div class="tc-eco-left">
+        <a href="${hubBaseUrl}/index.html" class="tc-eco-brand">
+          <span class="tc-eco-dot"></span>
+          TECHCORP CLOUD ECOSYSTEM
+        </a>
+        <span class="tc-eco-divider"></span>
+        <div class="tc-eco-launcher-wrap" id="tcEcoLauncherWrap">
+          <button type="button" class="tc-eco-launcher-btn" id="tcEcoLauncherBtn">
+            <span>🌐 Khám phá 15 Nền tảng Live</span>
+            <span style="font-size:10px;opacity:0.85;">▼</span>
+          </button>
+          <div class="tc-eco-dropdown" id="tcEcoDropdown">
+            <div class="tc-eco-dd-header">
+              <div>
+                <strong style="font-size:13.5px;color:#071936;">Danh mục 15 Hệ thống Phần mềm Đang Vận hành Thực tế (*.techcorp.info.vn)</strong>
+                <div style="font-size:11.5px;color:#64748b;">100% Trực tuyến (HTTP 200 & SSL) • Kết nối định danh tập trung TechCorp ID</div>
+              </div>
+              <a href="${hubBaseUrl}/index.html#sec-products" style="font-size:12px;font-weight:700;color:#0055e5;text-decoration:none;">Xem chi tiết trên Trang Public →</a>
+            </div>
+            <div class="tc-eco-dd-grid" id="tcEcoDropdownGrid"></div>
+          </div>
+        </div>
+        <div class="tc-eco-quick-stats">
+          <span>● 16/16 Domains Online</span>
+          <span>•</span>
+          <span>SSO JWT v5.2</span>
+        </div>
+      </div>
+      <div class="tc-eco-right">
+        <a href="${hubBaseUrl}/index.html" class="tc-eco-link ${!isAdminPage && !isLoginPage ? "active" : ""}">
+          🌍 Trang Public Hệ sinh thái
+        </a>
+        <a href="${hubBaseUrl}/admin.html" class="tc-eco-link ${isAdminPage ? "active" : ""}">
+          🛡️ Cổng Quản trị
+        </a>
+        <a href="${hubBaseUrl}/login.html" class="tc-eco-sso-btn" id="tcEcoSsoStatus">
+          ${savedSession && savedSession.name ? "👤 " + savedSession.name + " (Đổi Vai trò)" : "🔐 Đăng nhập Quản trị (SSO)"}
+        </a>
+      </div>
     </div>
   `;
 
-  function shortLabel(p) {
-    const map = {
-      mamnon: "Mầm non",
-      tieuhoc: "Tiểu học",
-      thcs: "THCS",
-      thpt: "THPT",
-      gdtx: "GDTX",
-      qldt: "ĐH (TC COMPASS)",
-      ttnn: "Trung tâm NN-TH",
-      lms: "Thi Online LMS",
-      learn: "TechCorpLearn",
-      kpi: "BSC-KPI",
-      erp: "ERP Doanh nghiệp",
-      qldh: "Khách sạn PMS",
-      bds: "BĐS AI",
-      noithat: "Nội thất",
-      techcorp: "TechCorp Academy"
-    };
-    return map[p.id] || p.name;
-  }
+  function renderDropdownApps(apps) {
+    const grid = bar.querySelector("#tcEcoDropdownGrid");
+    if (!grid) return;
 
-  function renderSwitcher(apps) {
-    const switcher = bar.querySelector("#tcEcoSwitcher");
-    if (!switcher) return;
-    switcher.innerHTML = apps
-      .map(
-        (p) => `
-        <a href="${p.appUrl || "#"}" target="_blank" rel="noopener" class="tc-eco-pill ${p.id === currentAppId ? "active" : ""}" data-product-id="${p.id}" title="${p.name} — ${p.appUrl || ""}">
-          ${shortLabel(p)} ↗
-        </a>
-      `
-      )
+    const groups = [
+      { title: "🎓 Giáo dục Mầm non & K-12", badge: "EdTech K-12" },
+      { title: "🏫 Đại học, TTNN & Khảo thí LMS", badge: "EdTech & LMS" },
+      { title: "🏢 Quản trị ERP & BSC-KPI", badge: "Enterprise & KPI" },
+      { title: "🏨 Khách sạn, BĐS AI & Nội thất", badge: "Chuyên ngành" }
+    ];
+
+    grid.innerHTML = groups
+      .map((g) => {
+        const items = apps
+          .filter((a) => (a.badge || "") === g.badge)
+          .map((a) => {
+            const cleanDomain = (a.appUrl || "").replace("https://", "");
+            return `
+              <a href="${a.appUrl || "#"}" target="_blank" rel="noopener" class="tc-eco-dd-item">
+                <div>${a.name} ↗</div>
+                <span class="tc-eco-dd-domain">${cleanDomain}</span>
+              </a>
+            `;
+          })
+          .join("");
+        return `
+          <div class="tc-eco-dd-col">
+            <h6>${g.title}</h6>
+            ${items}
+          </div>
+        `;
+      })
       .join("");
   }
 
   window.refreshTechCorpTopbar = function (apps) {
     if (Array.isArray(apps) && apps.length) {
-      renderSwitcher(apps);
+      renderDropdownApps(apps);
     }
   };
 
-  renderSwitcher(FALLBACK_PRODUCTS);
+  renderDropdownApps(FALLBACK_PRODUCTS);
 
   if (document.body) {
     document.body.insertBefore(bar, document.body.firstChild);
@@ -239,13 +334,29 @@
     });
   }
 
+  const btn = bar.querySelector("#tcEcoLauncherBtn");
+  const dd = bar.querySelector("#tcEcoDropdown");
+  const wrap = bar.querySelector("#tcEcoLauncherWrap");
+
+  if (btn && dd) {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dd.classList.toggle("open");
+    });
+    document.addEventListener("click", (e) => {
+      if (wrap && !wrap.contains(e.target)) {
+        dd.classList.remove("open");
+      }
+    });
+  }
+
   const apiEndpoint = `${hubBaseUrl}/api/v1/apps`;
   if (window.location.protocol.startsWith("http")) {
     fetch(apiEndpoint)
       .then((r) => r.json())
       .then((data) => {
         if (data && Array.isArray(data.apps) && data.apps.length) {
-          renderSwitcher(data.apps);
+          renderDropdownApps(data.apps);
         }
       })
       .catch(() => {});

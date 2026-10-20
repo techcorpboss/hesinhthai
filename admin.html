@@ -4,116 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cổng Quản trị Hệ sinh thái Theo Vai trò (RBAC Admin Portal) — hesinhthai.techcorp.info.vn</title>
-  <link rel="icon" type="image/png" href="logo.png?v=5.0" />
-  <link rel="stylesheet" href="styles.css?v=5.0" />
+  <link rel="icon" type="image/png" href="logo.png?v=6.0" />
+  <link rel="stylesheet" href="styles.css?v=6.0" />
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=5.0"
-    data-app-id="biz-erp"
+    src="widget/techcorp-ecosystem-bar.js?v=6.0"
+    data-app-id="erp"
     data-org-name="TechCorp Role-Based Admin"
     data-user-role="SSO Workspace"
     defer
   ></script>
 </head>
 <body>
-  <!-- HEADER CỔNG QUẢN TRỊ ĐA VAI TRÒ -->
+  <!-- HEADER QUẢN TRỊ CHUẨN QUỐC TẾ (GỌN GÀNG, TÁCH BIỆT THEO PHIÊN ĐĂNG NHẬP) -->
   <header class="hub-header">
     <div class="hub-header-inner">
-      <div class="brand-box">
+      <a href="index.html" class="brand-box">
         <div class="brand-logo">
-          <img src="logo.png?v=5.0" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+          <img src="logo.png?v=6.0" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
         </div>
         <div class="brand-title">
           <h1>
-            TechCorp Role-Based Management Portal
-            <span class="brand-domain-pill">🛡️ Cổng Quản trị Phân tầng Theo Đúng Vai trò (RBAC v5.0)</span>
+            <span id="adminPortalTitle">TechCorp Admin Portal</span>
+            <span class="brand-domain-pill" id="adminPortalRolePill">🛡️ RBAC v6.0</span>
           </h1>
-          <p id="currentPersonaDesc">TechCorp Headquarters (Nha Trang - Khánh Hòa) • [👑 Chủ Hệ sinh thái TechCorp]</p>
+          <p id="currentPersonaDesc">Đang xác thực phiên làm việc SSO TechCorp ID...</p>
         </div>
-      </div>
+      </a>
 
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="badge badge-green" id="apiStatusBadge">● API & SQLite Online</span>
+
+        <div class="user-session-pill" id="adminHeaderUserPill">
+          <div class="user-session-avatar" id="adminHeaderAvatar">👑</div>
+          <div class="user-session-meta">
+            <strong id="adminHeaderName">Quản trị viên Hệ sinh thái</strong>
+            <span id="adminHeaderOrg">TechCorp Headquarters</span>
+          </div>
+        </div>
+
         <a
           href="index.html"
-          class="btn"
-          style="background:rgba(255,255,255,0.18);color:#ffffff;border:1px solid rgba(255,255,255,0.45);padding:8px 14px;"
+          class="btn btn-outline btn-sm"
+          style="text-decoration:none;padding:9px 14px;"
         >
-          🌍 Xem Trang Public Quảng bá Hệ sinh thái
+          🌍 Trang Public
         </a>
 
-        <div class="sso-control">
-          <label for="personaSelect">🔑 Chuyển Vai trò SSO:</label>
-          <select id="personaSelect" class="sso-select">
-            <option value="super-admin">1. 👑 Chủ Hệ sinh thái TechCorp (Master Owner)</option>
-            <option value="ceo-sme">2. 🏢 Chủ Doanh nghiệp SME (Nha Trang Bay Resort)</option>
-            <option value="center-dir">3. 🏫 Giám đốc Trung tâm NN-TH (Ocean English & IT)</option>
-            <option value="school-principal">4. 🎓 Hiệu trưởng Trường học (Hệ thống Sao Biển)</option>
-            <option value="student-user">5. 👨‍🎓 Sinh viên / Học viên / Phụ huynh (ĐH Nha Trang)</option>
-          </select>
-        </div>
+        <a
+          href="login.html"
+          onclick="logoutSsoSession()"
+          class="btn btn-primary btn-sm"
+          style="text-decoration:none;padding:9px 14px;"
+        >
+          🔄 Đổi Tài khoản / Đăng xuất
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- THANH CHỌN 5 VAI TRÒ: KHI CHỌN VAI TRÒ NÀO, TOÀN BỘ MENU SIDEBAR, CHỈ SỐ KPI & MÀN HÌNH QUẢN TRỊ TỰ ĐỘNG CẤU TRÚC LẠI THEO ĐÚNG VAI TRÒ ĐÓ -->
-  <section class="role-switcher-strip">
-    <div class="role-switcher-box">
-      <div class="role-switcher-top">
-        <div class="role-switcher-title">
-          <span>🎭 CHỌN VAI TRÒ ĐỂ HỆ THỐNG TỰ ĐỘNG CẤU TRÚC LẠI MENU QUẢN TRỊ, CHỈ SỐ KPI & QUYỀN HẠN (RBAC) THEO ĐÚNG ĐỐI TƯỢNG:</span>
-        </div>
-        <span class="badge badge-green" id="apiStatusBadge">● API & SQLite Online</span>
-      </div>
-
-      <div class="role-cards-grid" id="roleCardsContainer">
-        <button class="role-pill-card active" data-persona="super-admin" onclick="selectPersonaRole('super-admin')">
-          <div class="role-pill-top">
-            <span>👑 1. Chủ Hệ sinh thái</span>
-            <span class="badge badge-amber">7 Menu Master</span>
-          </div>
-          <div class="role-pill-org">TechCorp Headquarters</div>
-          <div class="role-pill-scope">✔ Quản trị App, RBAC, User, Forum & Audit</div>
-        </button>
-
-        <button class="role-pill-card" data-persona="ceo-sme" onclick="selectPersonaRole('ceo-sme')">
-          <div class="role-pill-top">
-            <span>🏢 2. Chủ Doanh nghiệp</span>
-            <span class="badge badge-blue">Workspace DN</span>
-          </div>
-          <div class="role-pill-org">Nha Trang Bay Resort & Travel</div>
-          <div class="role-pill-scope">✔ Quản trị ERP/Web, Tuyển HRM & Voucher B2B</div>
-        </button>
-
-        <button class="role-pill-card" data-persona="center-dir" onclick="selectPersonaRole('center-dir')">
-          <div class="role-pill-top">
-            <span>🏫 3. Giám đốc Trung tâm</span>
-            <span class="badge badge-blue">Workspace TT</span>
-          </div>
-          <div class="role-pill-org">Ocean English & IT Center</div>
-          <div class="role-pill-scope">✔ Quản trị Thi Online, Lead CRM & Học bổng</div>
-        </button>
-
-        <button class="role-pill-card" data-persona="school-principal" onclick="selectPersonaRole('school-principal')">
-          <div class="role-pill-top">
-            <span>🎓 4. Hiệu trưởng Trường</span>
-            <span class="badge badge-blue">Workspace Trường</span>
-          </div>
-          <div class="role-pill-org">Hệ thống Giáo dục Sao Biển</div>
-          <div class="role-pill-scope">✔ Quản trị Học vụ, Học phí QR & Duyệt Tài trợ</div>
-        </button>
-
-        <button class="role-pill-card" data-persona="student-user" onclick="selectPersonaRole('student-user')">
-          <div class="role-pill-top">
-            <span>👨‍🎓 5. Học viên / Phụ huynh</span>
-            <span class="badge badge-green">Cổng Cá nhân</span>
-          </div>
-          <div class="role-pill-org">Nguyễn Minh Khôi (ĐH Nha Trang)</div>
-          <div class="role-pill-scope">✔ Hồ sơ Năng lực QR, Ứng tuyển & Ví Ưu đãi</div>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- BỐ CỤC CỔNG QUẢN TRỊ: SIDEBAR ĐỘNG THEO VAI TRÒ + KHU VỰC LÀM VIỆC CHÍNH -->
+  <!-- BỐ CỤC CỔNG QUẢN TRỊ: SIDEBAR ĐỘNG CHỈ HIỂN THỊ CHỨC NĂNG CỦA VAI TRÒ ĐÃ ĐĂNG NHẬP -->
   <div class="portal-shell">
     <!-- SIDEBAR TỰ ĐỘNG RENDER MENU THEO ĐÚNG VAI TRÒ ĐANG ĐĂNG NHẬP -->
     <aside class="portal-sidebar">
@@ -695,6 +644,6 @@
   </div>
 
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=5.0"></script>
+  <script src="app.js?v=6.0"></script>
 </body>
 </html>
