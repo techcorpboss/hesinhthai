@@ -1567,17 +1567,19 @@ body {
 }
 
 /* ==================== v6.2 TECHCORP CORPORATE FOOTER (16 LIVE PRODUCTS) ==================== */
-.tc-corp-footer {
-  background: #050b1a;
-  color: #cbd5e1;
-  border-top: 2px solid #1e3a8a;
+.tc-corp-footer,
+.tc-corporate-footer {
+  background: linear-gradient(180deg, #081738 0%, #050d21 65%, #030712 100%);
+  color: #e2e8f0;
+  border-top: 3px solid #2563eb;
   margin-top: 48px;
   font-size: 13px;
+  box-shadow: 0 -10px 30px rgba(3, 7, 18, 0.18);
 }
 
 .tc-footer-trust-wrap {
-  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(15, 23, 42, 0.55);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 29, 64, 0.75);
 }
 
 .tc-footer-trust-bar {
@@ -1611,24 +1613,24 @@ body {
   justify-content: center;
   font-size: 19px;
   flex-shrink: 0;
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  border: 1px solid rgba(148, 163, 184, 0.3);
 }
 
 .tc-trust-icon.blue {
-  background: rgba(37, 99, 235, 0.16);
-  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(37, 99, 235, 0.22);
+  border-color: rgba(96, 165, 250, 0.5);
   color: #60a5fa;
 }
 
 .tc-trust-icon.amber {
-  background: rgba(245, 158, 11, 0.15);
-  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(251, 191, 36, 0.5);
   color: #fbbf24;
 }
 
 .tc-trust-icon.emerald {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(52, 211, 153, 0.5);
   color: #34d399;
 }
 
@@ -1640,7 +1642,7 @@ body {
 }
 
 .tc-trust-text p {
-  color: #94a3b8;
+  color: #cbd5e1;
   font-size: 12px;
 }
 
@@ -1682,6 +1684,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .tc-footer-brand-name {
@@ -1695,9 +1698,9 @@ body {
 }
 
 .tc-footer-academy-pill {
-  background: rgba(37, 99, 235, 0.28);
-  border: 1px solid #3b82f6;
-  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.35);
+  border: 1px solid #60a5fa;
+  color: #bfdbfe;
   font-size: 10.5px;
   font-weight: 800;
   padding: 2px 8px;
@@ -1708,13 +1711,13 @@ body {
 .tc-footer-company-sub {
   font-size: 11.5px;
   font-weight: 800;
-  color: #f59e0b;
+  color: #fbbf24;
   letter-spacing: 0.3px;
   margin-top: 3px;
 }
 
 .tc-footer-desc {
-  color: #94a3b8;
+  color: #cbd5e1;
   font-size: 12.5px;
   line-height: 1.65;
   margin-bottom: 16px;
@@ -1732,7 +1735,7 @@ body {
   align-items: flex-start;
   gap: 9px;
   font-size: 12.5px;
-  color: #cbd5e1;
+  color: #e2e8f0;
   line-height: 1.5;
 }
 
@@ -1779,10 +1782,10 @@ body {
 }
 
 .tc-footer-links a {
-  color: #94a3b8;
+  color: #cbd5e1;
   text-decoration: none;
   font-size: 12.5px;
-  font-weight: 500;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -1790,7 +1793,7 @@ body {
 }
 
 .tc-footer-links a:hover {
-  color: #60a5fa;
+  color: #38bdf8;
   transform: translateX(3px);
 }
 
@@ -1801,8 +1804,8 @@ body {
 }
 
 .tc-footer-bottom-wrap {
-  border-top: 1px solid rgba(148, 163, 184, 0.14);
-  background: #030712;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  background: #020617;
 }
 
 .tc-footer-bottom {
@@ -1815,7 +1818,7 @@ body {
   flex-wrap: wrap;
   gap: 12px;
   font-size: 12px;
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .tc-footer-bottom-links {
@@ -1826,8 +1829,9 @@ body {
 }
 
 .tc-footer-bottom-links a {
-  color: #94a3b8;
+  color: #cbd5e1;
   text-decoration: none;
+  font-weight: 600;
   transition: color 0.18s;
 }
 
