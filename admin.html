@@ -778,10 +778,70 @@
           </div>
         </div>
       </section>
+
+      <!-- =====================================================================
+           PANEL I: QUẢN LÝ KHÁCH HÀNG LIÊN HỆ & ĐĂNG KÝ DEMO SẢN PHẨM (DEMO LEADS CRM)
+           ===================================================================== -->
+      <section id="panel-master-demos" class="tab-panel">
+        <div class="card" style="border-top:4px solid #059669;">
+          <div class="card-header">
+            <div>
+              <span class="badge badge-green">📋 CRM QUẢN LÝ KHÁCH HÀNG ĐĂNG KÝ DEMO 16 SẢN PHẨM</span>
+              <h3 class="card-title" style="margin-top:6px;">Danh sách Khách hàng Liên hệ Tư vấn &amp; Đăng ký Dùng thử Demo</h3>
+              <p class="card-subtitle">
+                Lưu trữ tự động toàn bộ thông tin khách hàng đăng ký từ trang giới thiệu chi tiết của 16 sản phẩm (<code>product.html</code>). Cho phép cập nhật trạng thái chăm sóc, ghi chú lịch hẹn Demo và xuất danh sách Excel/CSV.
+              </p>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <a href="product.html?id=erp#demo-form" target="_blank" class="btn btn-outline btn-sm">🌍 Mở Trang Đăng ký Demo ↗</a>
+              <button class="btn btn-emerald btn-sm" onclick="exportDemoLeadsCsv()">📥 Xuất Danh sách Khách hàng (CSV)</button>
+            </div>
+          </div>
+
+          <!-- Thống kê nhanh số lượng khách hàng đăng ký Demo -->
+          <div class="kpi-row" style="margin-bottom:18px;" id="adminDemoKpiRow"></div>
+
+          <!-- Bộ lọc & Tìm kiếm Khách hàng Đăng ký Demo -->
+          <div class="filter-bar">
+            <select id="adminDemoStatusFilter" class="select-control" onchange="renderAdminDemoRequestsTable()">
+              <option value="all">Tất cả trạng thái xử lý</option>
+              <option value="new">🆕 Mới đăng ký (Chờ gọi tư vấn)</option>
+              <option value="contacted">📞 Đã liên hệ / Đã gửi tài khoản</option>
+              <option value="scheduled">📅 Đã hẹn lịch Demo 1-1</option>
+              <option value="completed">✅ Đã Demo &amp; Chốt triển khai</option>
+            </select>
+            <input
+              type="text"
+              id="adminDemoSearchInput"
+              class="input-control"
+              style="min-width:280px;"
+              placeholder="Tìm theo tên khách hàng, SĐT/Zalo, đơn vị, sản phẩm..."
+              oninput="renderAdminDemoRequestsTable()"
+            />
+          </div>
+
+          <!-- Bảng Danh sách Khách hàng Liên hệ Demo -->
+          <div class="table-wrap">
+            <table class="tc-table">
+              <thead>
+                <tr>
+                  <th>Mã &amp; Thời gian</th>
+                  <th>Thông tin Khách hàng &amp; Đơn vị</th>
+                  <th>Sản phẩm Đăng ký Demo</th>
+                  <th>Lịch hẹn &amp; Yêu cầu Trọng tâm</th>
+                  <th>Trạng thái Chăm sóc &amp; Ghi chú Admin</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="adminDemoRequestsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=6.1"></script>
+  <script src="app.js?v=13"></script>
 </body>
 </html>

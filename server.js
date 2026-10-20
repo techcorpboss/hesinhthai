@@ -130,6 +130,7 @@ async function handleApi(req, res, parsedUrl) {
       meta: db.state.meta,
       sso,
       heroSliders: db.state.heroSliders || [],
+      demoRequests: db.state.demoRequests || [],
       apps: db.getPublicApps(),
       users: db.state.users || [],
       personas: db.state.personas,
@@ -723,6 +724,63 @@ async function handleApi(req, res, parsedUrl) {
         ok: true,
         slide: updated,
         heroSliders: db.state.heroSliders,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  // 18. Customer Demo Requests & Contact Leads Management
+  if (pathname === "/api/v1/demo-requests" && method === "GET") {
+    return sendJson(res, 200, {
+      ok: true,
+      demoRequests: db.state.demoRequests || []
+    });
+  }
+
+  if (pathname === "/api/v1/demo-requests" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const created = db.createDemoRequest(body, clientIp);
+      return sendJson(res, 201, {
+        ok: true,
+        message: "Đã gửi yêu cầu Đăng ký Demo thành công! Chuyên gia TechCorp sẽ liên hệ trong 15 phút.",
+        demoRequest: created,
+        demoRequests: db.state.demoRequests,
+        auditLogs: db.state.auditLogs,
+        activityLogs: db.state.activityLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  const demoLeadMatch = pathname.match(/^\/api\/v1\/demo-requests\/([^/]+)$/);
+  if (demoLeadMatch && method === "PUT") {
+    try {
+      const leadId = decodeURIComponent(demoLeadMatch[1]);
+      const body = await parseBody(req);
+      const updated = db.updateDemoRequest(leadId, body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        demoRequest: updated,
+        demoRequests: db.state.demoRequests,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  if (demoLeadMatch && method === "DELETE") {
+    try {
+      const leadId = decodeURIComponent(demoLeadMatch[1]);
+      const removed = db.deleteDemoRequest(leadId, "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        removed,
+        demoRequests: db.state.demoRequests,
         auditLogs: db.state.auditLogs
       });
     } catch (err) {

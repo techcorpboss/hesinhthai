@@ -1,9 +1,9 @@
 {
   "meta": {
     "domain": "hesinhthai.techcorp.info.vn",
-    "version": "5.1.0",
+    "version": "6.4.0",
     "region": "Nha Trang - Khánh Hòa",
-    "updatedAt": "2026-10-20T07:12:44.481Z"
+    "updatedAt": "2026-10-20T10:27:02.510Z"
   },
   "apps": [
     {
@@ -215,6 +215,25 @@
       "createdAt": "2026-10-01T08:20:00.000Z"
     },
     {
+      "id": "jobai",
+      "name": "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc AI ATS",
+      "badge": "Enterprise & KPI",
+      "category": "enterprise_erp",
+      "color": "#0d9488",
+      "appUrl": "https://jobai.techcorp.info.vn",
+      "webhookUrl": "https://jobai.techcorp.info.vn/api/webhooks/techcorp-hub",
+      "desc": "Sàn Tuyển dụng & Tìm việc thông minh tích hợp AI ATS đa ngôn ngữ: Phân tích CV tự động, gợi ý việc làm chuẩn xác & kết nối Sinh viên - Doanh nghiệp.",
+      "apiKey": "tc_live_jobai_9a8b7c6d5e4f3a2b16",
+      "status": "active",
+      "scopes": [
+        "sso:login",
+        "ai:ats_matching",
+        "talent:import",
+        "job:marketplace"
+      ],
+      "createdAt": "2026-10-01T08:21:00.000Z"
+    },
+    {
       "id": "techcorp",
       "name": "TechCorp Academy — Giải pháp PMS, ERP, LMS & Đào tạo",
       "badge": "Enterprise & KPI",
@@ -295,7 +314,7 @@
       "id": "super-admin",
       "userId": "USR-ADMIN-00",
       "name": "Quản trị viên Hệ sinh thái TechCorp",
-      "org": "TechCorp Headquarters (Điều hành 15 Hệ thống Live)",
+      "org": "TechCorp Headquarters (Điều hành 16 Hệ thống Live)",
       "roleBadge": "🛡️ Super Admin TechCorp",
       "defaultAppId": "erp"
     },
@@ -697,6 +716,7 @@
         "learn",
         "kpi",
         "erp",
+        "jobai",
         "qldh",
         "bds",
         "noithat",
@@ -720,6 +740,7 @@
       "assignedApps": [
         "erp",
         "kpi",
+        "jobai",
         "qldh",
         "bds",
         "noithat",
@@ -745,6 +766,7 @@
         "ttnn",
         "lms",
         "learn",
+        "jobai",
         "gdtx",
         "kpi"
       ],
@@ -771,7 +793,8 @@
         "gdtx",
         "qldt",
         "lms",
-        "learn"
+        "learn",
+        "jobai"
       ],
       "status": "active",
       "lastLogin": "1 giờ trước",
@@ -791,6 +814,7 @@
       "assignedApps": [
         "lms",
         "learn",
+        "jobai",
         "qldt",
         "ttnn"
       ],
@@ -985,5 +1009,190 @@
         "moderateForumAudit": false
       }
     }
-  }
+  },
+  "heroSliders": [
+    {
+      "id": "slide-1",
+      "order": 1,
+      "badge": "⚡ NỀN TẢNG HỆ SINH THÁI SỐ ĐA CHIỀU • 16 HỆ THỐNG LIVE",
+      "title": "Kết nối Trường học – Trung tâm Đào tạo – Sàn Tuyển dụng AI & Doanh nghiệp trên Một Trục Duy nhất",
+      "subtitle": "Hệ sinh thái TechCorp hợp nhất 16 nền tảng phần mềm chuyên sâu đang vận hành thực tế trên *.techcorp.info.vn: nơi các Trường học, Trung tâm Ngoại ngữ - Tin học, Doanh nghiệp SME và Học viên/Phụ huynh liên thông dữ liệu và trao đổi cơ hội bằng định danh duy nhất TechCorp ID (SSO).",
+      "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+      "ctaPrimaryText": "🚀 Khám phá 16 Sản phẩm Thực tế",
+      "ctaPrimaryUrl": "#sec-products",
+      "ctaSecondaryText": "🔐 Đăng nhập Quản trị (Theo Vai trò)",
+      "ctaSecondaryUrl": "login.html",
+      "metric1Value": "16 Hệ thống",
+      "metric1Sub": "Vận hành thực tế trên *.techcorp.info.vn",
+      "metric2Value": "2.920+ Hồ sơ",
+      "metric2Sub": "Ứng viên & Học viên xác thực Điểm Thi Online"
+    },
+    {
+      "id": "slide-2",
+      "order": 2,
+      "badge": "🤖 SÀN TUYỂN DỤNG & TÌM VIỆC THÔNG MINH • JOBAI.TECHCORP.INFO.VN",
+      "title": "TechCorp HireMind AI — Sàn Tuyển dụng, Tìm việc & Phân tích Nhân sự Đa ngôn ngữ AI ATS",
+      "subtitle": "Kết nối trực tiếp Sinh viên các Trường Đại học/Cao đẳng, Học viên Trung tâm Ngoại ngữ - Tin học với hàng trăm Doanh nghiệp & Resort. Sàng lọc CV tự động bằng AI đa ngôn ngữ (Việt - Anh - Hàn - Nhật - Trung) và đồng bộ 1-Click về phân hệ HRM trên TechCorp ERP.",
+      "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+      "ctaPrimaryText": "💼 Truy cập Sàn Tuyển dụng JobAI ↗",
+      "ctaPrimaryUrl": "https://jobai.techcorp.info.vn",
+      "ctaSecondaryText": "👨‍🎓 Xem Sàn Nhân lực Xác thực",
+      "ctaSecondaryUrl": "#sec-talent-b2b",
+      "metric1Value": "AI ATS 7 Ngôn ngữ",
+      "metric1Sub": "Chấm điểm độ phù hợp CV & JD tự động",
+      "metric2Value": "1-Click HRM Sync",
+      "metric2Sub": "Đẩy thẳng hồ sơ ứng viên vào TechCorp ERP"
+    },
+    {
+      "id": "slide-3",
+      "order": 3,
+      "badge": "🎓 KHỐI GIÁO DỤC MẦM NON & PHỔ THÔNG K-12 • 05 NỀN TẢNG CHUYÊN SÂU",
+      "title": "EduManager Pro K-12 — Quản trị Toàn diện Trường Mầm non, Tiểu học, THCS, THPT & GDTX",
+      "subtitle": "Tự động hóa điểm danh AI, thực đơn dinh dưỡng, học bạ số theo Thông tư Bộ GD&ĐT, phân ban GDPT 2018, Sổ liên lạc điện tử Phụ huynh và gạch nợ học phí QR động trong 3 giây.",
+      "imageUrl": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+      "ctaPrimaryText": "🏫 Khám phá Khối Trường học K-12",
+      "ctaPrimaryUrl": "#sec-products",
+      "ctaSecondaryText": "🎓 Đăng nhập Workspace Hiệu trưởng",
+      "ctaSecondaryUrl": "login.html?role=school-principal",
+      "metric1Value": "05 Cấp học",
+      "metric1Sub": "Mầm non • Tiểu học • THCS • THPT • GDTX",
+      "metric2Value": "96.4% QR Auto",
+      "metric2Sub": "Gạch nợ học phí tự động không tiền mặt"
+    },
+    {
+      "id": "slide-4",
+      "order": 4,
+      "badge": "🏫 ĐẠI HỌC, NGOẠI NGỮ & KHẢO THÍ TRỰC TUYẾN • 04 NỀN TẢNG SỐ",
+      "title": "TC COMPASS, Trung tâm Ngoại ngữ - Tin học, TechCorp LMS & Cổng Học tập TechCorpLearn",
+      "subtitle": "Quản trị đào tạo tín chỉ Đại học, CRM tuyển sinh Trung tâm Ngoại ngữ - Tin học, phòng thi trực tuyến chống gian lận AI (IELTS/TOEIC/MOS) và cấp Chứng chỉ Năng lực Số kèm mã QR xác thực.",
+      "imageUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+      "ctaPrimaryText": "📝 Mở Nền tảng Thi Online LMS ↗",
+      "ctaPrimaryUrl": "https://lms.techcorp.info.vn",
+      "ctaSecondaryText": "🏫 Đăng nhập Workspace Trung tâm",
+      "ctaSecondaryUrl": "login.html?role=center-dir",
+      "metric1Value": "1.420+ Thí sinh",
+      "metric1Sub": "Dự thi IELTS/TOEIC/Tin học trên TechCorp LMS",
+      "metric2Value": "Chứng chỉ QR",
+      "metric2Sub": "Xác thực năng lực trực tiếp trên Talent Passport"
+    },
+    {
+      "id": "slide-5",
+      "order": 5,
+      "badge": "🏢 ĐIỀU HÀNH DOANH NGHIỆP & QUẢN TRỊ HIỆU SUẤT • ERP & BSC-KPI",
+      "title": "TechCorp ERP, Quản trị Mục tiêu BSC-KPI & Giải pháp Chuyển đổi Số TechCorp Academy",
+      "subtitle": "Hợp nhất mọi quy trình điều hành doanh nghiệp: Nhân sự - Tiền lương (HRM), Chăm sóc khách hàng (CRM), Tài chính - Kế toán, Kho vận và Thẻ điểm cân bằng BSC-KPI từ Ban Giám đốc tới từng nhân viên.",
+      "imageUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+      "ctaPrimaryText": "📊 Truy cập Hệ thống TechCorp ERP ↗",
+      "ctaPrimaryUrl": "https://erp.techcorp.info.vn",
+      "ctaSecondaryText": "🏢 Đăng nhập Workspace Doanh nghiệp",
+      "ctaSecondaryUrl": "login.html?role=ceo-sme",
+      "metric1Value": "ERP + BSC-KPI",
+      "metric1Sub": "Quản trị mục tiêu & điều hành doanh nghiệp số",
+      "metric2Value": "Give-to-Get B2B",
+      "metric2Sub": "Phát hành E-Voucher tới >10.000 Phụ huynh & SV"
+    },
+    {
+      "id": "slide-6",
+      "order": 6,
+      "badge": "🏨 GIẢI PHÁP CHUYÊN NGÀNH • KHÁCH SẠN PMS, BẤT ĐỘNG SẢN AI & NỘI THẤT",
+      "title": "TechCorp PMS Khách sạn - Resort, Sàn BĐS Hưng Phát Land AI & Showroom Nội thất 3D",
+      "subtitle": "Bộ giải pháp chuyên ngành may đo cho nền kinh tế Du lịch - Dịch vụ & Đô thị biển: Quản lý vận hành Khách sạn & Resort (PMS), Sàn giao dịch Bất động sản tích hợp Trợ lý AI 24/7 và Thiết kế - Thi công Nội thất.",
+      "imageUrl": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+      "ctaPrimaryText": "🏨 Xem Hệ thống PMS Khách sạn ↗",
+      "ctaPrimaryUrl": "https://qldh.techcorp.info.vn",
+      "ctaSecondaryText": "💬 Diễn đàn Giao thương B2B",
+      "ctaSecondaryUrl": "#sec-forum",
+      "metric1Value": "03 Chuyên ngành",
+      "metric1Sub": "Khách sạn PMS • Sàn BĐS AI • Nội thất 3D",
+      "metric2Value": "15% – 40%",
+      "metric2Sub": "Đặc quyền chiết khấu nội bộ trong Hệ sinh thái"
+    }
+  ],
+  "demoRequests": [
+    {
+      "id": "DEMO-261001",
+      "fullName": "ThS. Nguyễn Thị Lan Anh",
+      "phone": "0905.382.119",
+      "email": "lananh.principal@saobienedu.vn",
+      "orgName": "Hệ thống Mầm non & Tiểu học Sao Biển (KĐT Mỹ Gia, Nha Trang)",
+      "orgScale": "300 - 800 học sinh / nhân sự",
+      "productId": "mamnon",
+      "productName": "EduManager Pro — Quản lý Trường Mầm non & AI",
+      "appUrl": "https://mamnon.techcorp.info.vn",
+      "preferredTime": "Sáng thứ 5 (09:00 - 11:00) tại trường hoặc qua Google Meet",
+      "notes": "Cần demo tính năng Điểm danh AI nhận diện khuôn mặt, thực đơn dinh dưỡng tự động và gạch nợ học phí VietQR.",
+      "status": "scheduled",
+      "adminNote": "Đã liên hệ Zalo, hẹn lịch demo trực tiếp tại KĐT Mỹ Gia sáng thứ 5.",
+      "ipAddress": "113.160.214.88",
+      "createdAt": "2026-10-20 08:45:12"
+    },
+    {
+      "id": "DEMO-261002",
+      "fullName": "Ông Trần Quốc Bảo",
+      "phone": "0914.775.680",
+      "email": "baotq@asiabayresort.com",
+      "orgName": "Asia Bay Resort & Spa Cam Ranh",
+      "orgScale": "150 - 300 nhân sự",
+      "productId": "qldh",
+      "productName": "TechCorp PMS — Hệ thống Quản lý Khách sạn & Resort",
+      "appUrl": "https://qldh.techcorp.info.vn",
+      "preferredTime": "Chiều nay 14:30",
+      "notes": "Muốn trải nghiệm luồng đồng bộ đặt phòng PMS + POS nhà hàng và kết nối tuyển dụng nhân sự từ Sàn HireMind AI.",
+      "status": "contacted",
+      "adminNote": "Đã gửi tài khoản dùng thử PMS + ERP qua email, đang chờ phản hồi lịch họp với GM.",
+      "ipAddress": "14.161.42.19",
+      "createdAt": "2026-10-20 09:20:05"
+    },
+    {
+      "id": "DEMO-261003",
+      "fullName": "TS. Lê Minh Hoàng",
+      "phone": "0988.412.909",
+      "email": "hoanglm@pacificuni.edu.vn",
+      "orgName": "Trường Cao đẳng Kỹ thuật & Du lịch Miền Trung",
+      "orgScale": "Trên 1.000 sinh viên / giảng viên",
+      "productId": "qldt",
+      "productName": "TC COMPASS — Quản trị Đại học & Đánh giá Hiệu suất",
+      "appUrl": "https://qldt.techcorp.info.vn",
+      "preferredTime": "Tuần này (Thứ 4 hoặc Thứ 6)",
+      "notes": "Quan tâm hệ thống quản trị tín chỉ TC COMPASS kết hợp đánh giá KPI giảng viên và cổng thực tập sinh viên.",
+      "status": "new",
+      "adminNote": "",
+      "ipAddress": "171.244.18.102",
+      "createdAt": "2026-10-20 10:15:40"
+    },
+    {
+      "id": "DEMO-261004",
+      "fullName": "Bà Phạm Hoàng Yến",
+      "phone": "0935.889.234",
+      "email": "yenpham@globalenglish-nt.vn",
+      "orgName": "Hệ thống Anh ngữ Quốc tế Global Star (3 cơ sở Nha Trang)",
+      "orgScale": "500 - 1.500 học viên",
+      "productId": "ttnn",
+      "productName": "Quản lý Trung tâm Ngoại ngữ & Tin học Chuẩn Quốc tế",
+      "appUrl": "https://ttnn.techcorp.info.vn",
+      "preferredTime": "10:00 sáng mai",
+      "notes": "Đăng ký nhận tài khoản Demo CRM tuyển sinh đa kênh + Phòng thi thử IELTS/TOEIC trực tuyến.",
+      "status": "completed",
+      "adminNote": "Đã bàn giao tài khoản Demo và ký MOU tham gia gói Hạt nhân Nha Trang.",
+      "ipAddress": "113.172.55.14",
+      "createdAt": "2026-10-19 16:10:22"
+    },
+    {
+      "id": "DEMO-261005",
+      "fullName": "Ông Vũ Đình Khôi",
+      "phone": "0903.551.890",
+      "email": "khoivd@seatechgroup.vn",
+      "orgName": "Công ty CP Thương mại & Dịch vụ SeaTech Khánh Hòa",
+      "orgScale": "50 - 150 nhân sự",
+      "productId": "erp",
+      "productName": "TechCorp ERP — Quản trị Doanh nghiệp Tổng thể",
+      "appUrl": "https://erp.techcorp.info.vn",
+      "preferredTime": "15:00 chiều mai",
+      "notes": "Cần tư vấn Combo TechCorp ERP + BSC-KPI + Sàn Tuyển dụng AI HireMind cho 80 nhân sự.",
+      "status": "new",
+      "adminNote": "",
+      "ipAddress": "27.67.110.45",
+      "createdAt": "2026-10-20 11:05:19"
+    }
+  ]
 }

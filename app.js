@@ -886,6 +886,93 @@ const STATE = {
       }
     }
   },
+  demoRequests: [
+    {
+      id: "DEMO-261001",
+      fullName: "ThS. Nguyễn Thị Lan Anh",
+      phone: "0905.382.119",
+      email: "lananh.principal@saobienedu.vn",
+      orgName: "Hệ thống Mầm non & Tiểu học Sao Biển (KĐT Mỹ Gia, Nha Trang)",
+      orgScale: "300 - 800 học sinh / nhân sự",
+      productId: "mamnon",
+      productName: "EduManager Pro — Quản lý Trường Mầm non & AI",
+      appUrl: "https://mamnon.techcorp.info.vn",
+      preferredTime: "Sáng thứ 5 (09:00 - 11:00) tại trường hoặc qua Google Meet",
+      notes: "Cần demo tính năng Điểm danh AI nhận diện khuôn mặt, thực đơn dinh dưỡng tự động và gạch nợ học phí VietQR.",
+      status: "scheduled",
+      adminNote: "Đã liên hệ Zalo, hẹn lịch demo trực tiếp tại KĐT Mỹ Gia sáng thứ 5.",
+      ipAddress: "113.160.214.88",
+      createdAt: "2026-10-20 08:45:12"
+    },
+    {
+      id: "DEMO-261002",
+      fullName: "Ông Trần Quốc Bảo",
+      phone: "0914.775.680",
+      email: "baotq@asiabayresort.com",
+      orgName: "Asia Bay Resort & Spa Cam Ranh",
+      orgScale: "150 - 300 nhân sự",
+      productId: "qldh",
+      productName: "TechCorp PMS — Hệ thống Quản lý Khách sạn & Resort",
+      appUrl: "https://qldh.techcorp.info.vn",
+      preferredTime: "Chiều nay 14:30",
+      notes: "Muốn trải nghiệm luồng đồng bộ đặt phòng PMS + POS nhà hàng và kết nối tuyển dụng nhân sự từ Sàn HireMind AI.",
+      status: "contacted",
+      adminNote: "Đã gửi tài khoản dùng thử PMS + ERP qua email, đang chờ phản hồi lịch họp với GM.",
+      ipAddress: "14.161.42.19",
+      createdAt: "2026-10-20 09:20:05"
+    },
+    {
+      id: "DEMO-261003",
+      fullName: "TS. Lê Minh Hoàng",
+      phone: "0988.412.909",
+      email: "hoanglm@pacificuni.edu.vn",
+      orgName: "Trường Cao đẳng Kỹ thuật & Du lịch Miền Trung",
+      orgScale: "Trên 1.000 sinh viên / giảng viên",
+      productId: "qldt",
+      productName: "TC COMPASS — Quản trị Đại học & Đánh giá Hiệu suất",
+      appUrl: "https://qldt.techcorp.info.vn",
+      preferredTime: "Tuần này (Thứ 4 hoặc Thứ 6)",
+      notes: "Quan tâm hệ thống quản trị tín chỉ TC COMPASS kết hợp đánh giá KPI giảng viên và cổng thực tập sinh viên.",
+      status: "new",
+      adminNote: "",
+      ipAddress: "171.244.18.102",
+      createdAt: "2026-10-20 10:15:40"
+    },
+    {
+      id: "DEMO-261004",
+      fullName: "Bà Phạm Hoàng Yến",
+      phone: "0935.889.234",
+      email: "yenpham@globalenglish-nt.vn",
+      orgName: "Hệ thống Anh ngữ Quốc tế Global Star (3 cơ sở Nha Trang)",
+      orgScale: "500 - 1.500 học viên",
+      productId: "ttnn",
+      productName: "Quản lý Trung tâm Ngoại ngữ & Tin học Chuẩn Quốc tế",
+      appUrl: "https://ttnn.techcorp.info.vn",
+      preferredTime: "10:00 sáng mai",
+      notes: "Đăng ký nhận tài khoản Demo CRM tuyển sinh đa kênh + Phòng thi thử IELTS/TOEIC trực tuyến.",
+      status: "completed",
+      adminNote: "Đã bàn giao tài khoản Demo và ký MOU tham gia gói Hạt nhân Nha Trang.",
+      ipAddress: "113.172.55.14",
+      createdAt: "2026-10-19 16:10:22"
+    },
+    {
+      id: "DEMO-261005",
+      fullName: "Ông Vũ Đình Khôi",
+      phone: "0903.551.890",
+      email: "khoivd@seatechgroup.vn",
+      orgName: "Công ty CP Thương mại & Dịch vụ SeaTech Khánh Hòa",
+      orgScale: "50 - 150 nhân sự",
+      productId: "erp",
+      productName: "TechCorp ERP — Quản trị Doanh nghiệp Tổng thể",
+      appUrl: "https://erp.techcorp.info.vn",
+      preferredTime: "15:00 chiều mai",
+      notes: "Cần tư vấn Combo TechCorp ERP + BSC-KPI + Sàn Tuyển dụng AI HireMind cho 80 nhân sự.",
+      status: "new",
+      adminNote: "",
+      ipAddress: "27.67.110.45",
+      createdAt: "2026-10-20 11:05:19"
+    }
+  ],
   previewTenantRole: "ceo_sme"
 };
 
@@ -1043,6 +1130,7 @@ window.openAdminSubtab = function (subtabId) {
     "admin-rbac": "panel-master-rbac",
     "admin-bulletins": "panel-master-bulletins",
     "admin-apps": "panel-master-apps",
+    "admin-demos": "panel-master-demos",
     "admin-forum": "panel-master-forum",
     "admin-users": "panel-master-users",
     "admin-audit": "panel-master-audit"
@@ -1064,6 +1152,7 @@ function renderAllViews() {
   renderAdminBulletinsTable();
   renderConnectedApps();
   renderAdminAppsTable();
+  renderAdminDemoRequestsTable();
   renderForumPosts();
   renderAdminForumTable();
   renderAdminUsersTable();
@@ -1657,6 +1746,9 @@ function renderPublicProductsShowcase() {
         .map((h) => `<div style="font-size:12.5px;color:#334155;margin-top:4px;">✔ ${escapeHtml(h)}</div>`)
         .join("");
 
+      const detailUrl = `product.html?id=${encodeURIComponent(app.id)}`;
+      const demoUrl = `product.html?id=${encodeURIComponent(app.id)}#demo-form`;
+
       return `
         <div class="pub-product-card">
           <div>
@@ -1667,7 +1759,11 @@ function renderPublicProductsShowcase() {
                 <span class="badge badge-blue">${escapeHtml(app.badge || "TechCorp Cloud")}</span>
               </div>
             </div>
-            <h3>${escapeHtml(app.name)}</h3>
+            <h3>
+              <a href="${detailUrl}" style="color:inherit;text-decoration:none;">
+                ${escapeHtml(app.name)}
+              </a>
+            </h3>
             <div style="font-size:12px;font-weight:700;color:#0052d4;margin-bottom:6px;">
               🎯 Đối tượng: ${escapeHtml(meta.targetAudience)}
             </div>
@@ -1679,16 +1775,24 @@ function renderPublicProductsShowcase() {
               ${escapeHtml(meta.ecoFlow)}
             </div>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:10px;border-top:1px solid #e2e8f0;flex-wrap:wrap;">
-            <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" style="font-size:11.5px;color:#0052d4;font-weight:800;text-decoration:none;">
-              🌐 ${escapeHtml(app.appUrl.replace("https://", ""))} ↗
-            </a>
-            <div style="display:flex;gap:6px;">
-              <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
-                🚀 Truy cập Hệ thống Live ↗
+          <div style="display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid #e2e8f0;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
+              <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" style="font-size:11.5px;color:#0052d4;font-weight:800;text-decoration:none;">
+                🌐 ${escapeHtml(app.appUrl.replace("https://", ""))} ↗
               </a>
-              <a href="login.html" class="btn btn-outline btn-sm" style="text-decoration:none;">
-                🔐 Quản trị
+              <a href="${detailUrl}" style="font-size:11.5px;color:#059669;font-weight:800;text-decoration:none;">
+                📖 Xem 6 Phân hệ Chức năng →
+              </a>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <a href="${detailUrl}" class="btn btn-outline btn-sm" style="text-decoration:none;flex:1;justify-content:center;">
+                📖 Chi tiết Sản phẩm
+              </a>
+              <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;flex:1.15;justify-content:center;">
+                🚀 Xem &amp; Dùng thử ↗
+              </a>
+              <a href="${demoUrl}" class="btn btn-emerald btn-sm" style="text-decoration:none;flex:1;justify-content:center;">
+                📝 Đăng ký Demo
               </a>
             </div>
           </div>
@@ -3389,6 +3493,7 @@ function renderRoleContextAndSidebar() {
     const totalBulletinsCount = (STATE.announcements || []).length;
 
     if (roleCode === "super_admin") {
+      const demoLeadsCount = (STATE.demoRequests || []).length;
       sidebarNavEl.innerHTML = `
         <div class="sidebar-section-label">👑 QUẢN TRỊ TỐI CAO (SUPER ADMIN)</div>
         <button class="nav-btn" data-panel="panel-master-overview" onclick="activateAdminPanel('panel-master-overview')">
@@ -3399,29 +3504,33 @@ function renderRoleContextAndSidebar() {
           <span>🚀 2. Quản trị 16 Sản phẩm & App</span>
           <span class="nav-badge">API Key</span>
         </button>
+        <button class="nav-btn" data-panel="panel-master-demos" onclick="activateAdminPanel('panel-master-demos')">
+          <span>📋 3. Khách hàng Đăng ký Demo</span>
+          <span class="nav-badge" style="background:#059669;color:#fff;">${demoLeadsCount} Lead</span>
+        </button>
         <button class="nav-btn" data-panel="panel-master-bulletins" onclick="activateAdminPanel('panel-master-bulletins')">
-          <span>🖼️ 3. Quản trị 6 Slider & Bản tin</span>
+          <span>🖼️ 4. Quản trị 6 Slider & Bản tin</span>
           <span class="nav-badge">6 Slide</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-forum" onclick="activateAdminPanel('panel-master-forum')">
-          <span>🛡️ 4. Kiểm duyệt Diễn đàn</span>
+          <span>🛡️ 5. Kiểm duyệt Diễn đàn</span>
           <span class="nav-badge">${pendingForumCount} Chờ</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-users" onclick="activateAdminPanel('panel-master-users')">
-          <span>👥 5. Quản lý Thành viên & SSO</span>
+          <span>👥 6. Quản lý Thành viên & SSO</span>
           <span class="nav-badge">${STATE.users.length} User</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-rbac" onclick="activateAdminPanel('panel-master-rbac')">
-          <span>🔐 6. Cấu hình Phân quyền RBAC</span>
+          <span>🔐 7. Cấu hình Phân quyền RBAC</span>
           <span class="nav-badge">9 Quyền</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-audit" onclick="activateAdminPanel('panel-master-audit')">
-          <span>🔍 7. Audit Logs & 57 Hạt nhân</span>
+          <span>🔍 8. Audit Logs & 57 Hạt nhân</span>
           <span class="nav-badge">An ninh</span>
         </button>
         <div class="sidebar-section-label" style="margin-top:10px;">🏢 GIÁM SÁT WORKSPACE ĐƠN VỊ</div>
         <button class="nav-btn" data-panel="panel-role-workspace" onclick="activateAdminPanel('panel-role-workspace', 'overview')">
-          <span>🏢 8. Giám sát Workspace 4 Khối</span>
+          <span>🏢 9. Giám sát Workspace 4 Khối</span>
           <span class="nav-badge">4 Vai trò</span>
         </button>
       `;
@@ -4574,6 +4683,303 @@ function setupPersonaSwitcher() {
   });
 }
 
+function mergeLocalDemoRequests() {
+  try {
+    const raw = localStorage.getItem("tc_hub_demo_requests_v1");
+    if (!raw) return;
+    const localList = JSON.parse(raw);
+    if (!Array.isArray(localList)) return;
+    if (!Array.isArray(STATE.demoRequests)) {
+      STATE.demoRequests = [];
+    }
+    localList.forEach((item) => {
+      if (item && item.id && !STATE.demoRequests.some((x) => x.id === item.id)) {
+        STATE.demoRequests.unshift(item);
+      }
+    });
+  } catch (_) {}
+}
+
+function syncDemoRequestsToLocal() {
+  try {
+    localStorage.setItem("tc_hub_demo_requests_v1", JSON.stringify(STATE.demoRequests || []));
+  } catch (_) {}
+}
+
+window.renderAdminDemoRequestsTable = function () {
+  mergeLocalDemoRequests();
+  const tbody = document.getElementById("adminDemoRequestsTableBody");
+  const kpiRow = document.getElementById("adminDemoKpiRow");
+  const list = STATE.demoRequests || [];
+
+  if (kpiRow) {
+    const countNew = list.filter((x) => x.status === "new").length;
+    const countContacted = list.filter((x) => x.status === "contacted").length;
+    const countScheduled = list.filter((x) => x.status === "scheduled").length;
+    const countCompleted = list.filter((x) => x.status === "completed").length;
+
+    kpiRow.innerHTML = `
+      <div class="kpi-card">
+        <span class="label">📋 Tổng Yêu cầu Đăng ký Demo</span>
+        <div class="value" style="color:#0052d4;">${list.length} Khách hàng</div>
+        <div class="sub">Từ 16 trang giới thiệu sản phẩm</div>
+      </div>
+      <div class="kpi-card">
+        <span class="label">🆕 Mới đăng ký (Cần gọi ngay)</span>
+        <div class="value" style="color:#dc2626;">${countNew}</div>
+        <div class="sub">SLA phản hồi trong 15 phút</div>
+      </div>
+      <div class="kpi-card">
+        <span class="label">📅 Đã liên hệ &amp; Hẹn lịch Demo</span>
+        <div class="value" style="color:#d97706;">${countContacted + countScheduled}</div>
+        <div class="sub">${countScheduled} lịch hẹn Demo 1-1</div>
+      </div>
+      <div class="kpi-card">
+        <span class="label">✅ Đã Cấp Demo &amp; Chốt Triển khai</span>
+        <div class="value" style="color:#059669;">${countCompleted}</div>
+        <div class="sub">Chuyển đổi thành Đơn vị Thành viên</div>
+      </div>
+    `;
+  }
+
+  if (!tbody) return;
+
+  const statusFilter = (document.getElementById("adminDemoStatusFilter") || {}).value || "all";
+  const kw = (((document.getElementById("adminDemoSearchInput") || {}).value) || "").toLowerCase().trim();
+
+  const filtered = list.filter((item) => {
+    const matchStatus = statusFilter === "all" || item.status === statusFilter;
+    const matchKw =
+      !kw ||
+      (item.id || "").toLowerCase().includes(kw) ||
+      (item.fullName || "").toLowerCase().includes(kw) ||
+      (item.phone || "").toLowerCase().includes(kw) ||
+      (item.email || "").toLowerCase().includes(kw) ||
+      (item.orgName || "").toLowerCase().includes(kw) ||
+      (item.productName || "").toLowerCase().includes(kw) ||
+      (item.notes || "").toLowerCase().includes(kw);
+    return matchStatus && matchKw;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center;padding:24px;color:#64748b;">
+          Không tìm thấy yêu cầu đăng ký Demo nào phù hợp với bộ lọc hiện tại.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  const STATUS_META = {
+    new: { badgeClass: "badge-red", label: "🆕 Mới đăng ký" },
+    contacted: { badgeClass: "badge-blue", label: "📞 Đã liên hệ" },
+    scheduled: { badgeClass: "badge-amber", label: "📅 Đã hẹn lịch Demo" },
+    completed: { badgeClass: "badge-green", label: "✅ Đã cấp Demo / Chốt" }
+  };
+
+  tbody.innerHTML = filtered
+    .map((item) => {
+      const st = STATUS_META[item.status] || STATUS_META.new;
+      return `
+        <tr>
+          <td>
+            <code style="font-size:12px;font-weight:800;color:#0052d4;">${escapeHtml(item.id)}</code>
+            <div style="font-size:11.5px;color:#475569;margin-top:3px;">🕒 ${escapeHtml(item.createdAt || "Vừa xong")}</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px;">IP: ${escapeHtml(item.ipAddress || "103.170.122.138")}</div>
+          </td>
+          <td>
+            <strong style="font-size:13.5px;color:#0f172a;">${escapeHtml(item.fullName)}</strong>
+            <div style="font-size:12px;font-weight:700;color:#0284c7;margin-top:2px;">🏢 ${escapeHtml(item.orgName)}</div>
+            <div style="font-size:11.5px;color:#334155;margin-top:3px;">
+              📞 <strong>${escapeHtml(item.phone)}</strong> • ✉️ ${escapeHtml(item.email || "Chưa cung cấp")}
+            </div>
+            <div style="font-size:11px;color:#64748b;margin-top:2px;">Quy mô: ${escapeHtml(item.orgScale || "50 - 200 nhân sự")}</div>
+          </td>
+          <td>
+            <span class="badge badge-blue" style="margin-bottom:4px;display:inline-block;">Mã: ${escapeHtml((item.productId || "erp").toUpperCase())}</span>
+            <div style="font-weight:700;font-size:12.5px;color:#0f172a;">${escapeHtml(item.productName)}</div>
+            <div style="margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;">
+              <a href="product.html?id=${encodeURIComponent(item.productId || "erp")}" target="_blank" style="font-size:11.5px;color:#059669;font-weight:700;text-decoration:none;">📖 Trang Giới thiệu ↗</a>
+              <a href="${escapeHtml(item.appUrl || "https://hesinhthai.techcorp.info.vn")}" target="_blank" style="font-size:11.5px;color:#0052d4;font-weight:700;text-decoration:none;">🚀 Hệ thống Live ↗</a>
+            </div>
+          </td>
+          <td style="max-width:270px;">
+            <div style="font-size:12px;font-weight:700;color:#d97706;">🗓️ Hẹn: ${escapeHtml(item.preferredTime || "Trong giờ hành chính")}</div>
+            <div style="font-size:12px;color:#334155;margin-top:4px;line-height:1.45;">💬 "${escapeHtml(item.notes || "")}"</div>
+          </td>
+          <td style="min-width:220px;">
+            <div style="margin-bottom:6px;"><span class="badge ${st.badgeClass}">${st.label}</span></div>
+            <select
+              class="select-control"
+              style="width:100%;font-size:12px;padding:5px 8px;margin-bottom:6px;"
+              onchange="updateDemoLeadStatus('${escapeHtml(item.id)}', this.value)"
+            >
+              <option value="new" ${item.status === "new" ? "selected" : ""}>🆕 Mới đăng ký</option>
+              <option value="contacted" ${item.status === "contacted" ? "selected" : ""}>📞 Đã liên hệ / Gửi TK</option>
+              <option value="scheduled" ${item.status === "scheduled" ? "selected" : ""}>📅 Đã hẹn lịch Demo</option>
+              <option value="completed" ${item.status === "completed" ? "selected" : ""}>✅ Đã cấp Demo / Chốt</option>
+            </select>
+            <div style="display:flex;gap:4px;">
+              <input
+                type="text"
+                id="demoNoteInput-${escapeHtml(item.id)}"
+                class="input-control"
+                style="font-size:11.5px;padding:5px 8px;flex:1;"
+                placeholder="Ghi chú chăm sóc khách hàng..."
+                value="${escapeHtml(item.adminNote || "")}"
+              />
+              <button class="btn btn-outline btn-sm" onclick="saveDemoLeadAdminNote('${escapeHtml(item.id)}')" title="Lưu ghi chú">💾</button>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <a href="tel:${escapeHtml((item.phone || "").replace(/[^0-9+]/g, ""))}" class="btn btn-primary btn-sm" style="text-decoration:none;text-align:center;">
+                📞 Gọi / Zalo
+              </a>
+              <button class="btn btn-danger btn-sm" onclick="deleteDemoLead('${escapeHtml(item.id)}')">
+                🗑️ Xoá
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+};
+
+window.updateDemoLeadStatus = async function (leadId, newStatus) {
+  const lead = (STATE.demoRequests || []).find((x) => x.id === leadId);
+  if (!lead) return;
+  lead.status = newStatus;
+  syncDemoRequestsToLocal();
+
+  try {
+    const res = await fetch(`/api/v1/demo-requests/${encodeURIComponent(leadId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok && Array.isArray(data.demoRequests)) {
+      STATE.demoRequests = data.demoRequests;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      syncDemoRequestsToLocal();
+    }
+  } catch (_) {
+    recordLocalAuditLog(
+      "DEMO_REQUEST_UPDATE",
+      `${lead.id}: ${lead.fullName}`,
+      "INFO",
+      `Cập nhật trạng thái chăm sóc khách hàng Demo sang: ${newStatus}`
+    );
+  }
+
+  renderAllViews();
+  showToast(`✅ Đã cập nhật trạng thái chăm sóc khách hàng <b>${escapeHtml(lead.fullName)}</b>!`);
+};
+
+window.saveDemoLeadAdminNote = async function (leadId) {
+  const lead = (STATE.demoRequests || []).find((x) => x.id === leadId);
+  if (!lead) return;
+  const noteInput = document.getElementById(`demoNoteInput-${leadId}`);
+  const adminNote = noteInput ? noteInput.value.trim() : "";
+  lead.adminNote = adminNote;
+  syncDemoRequestsToLocal();
+
+  try {
+    const res = await fetch(`/api/v1/demo-requests/${encodeURIComponent(leadId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ adminNote, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok && Array.isArray(data.demoRequests)) {
+      STATE.demoRequests = data.demoRequests;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      syncDemoRequestsToLocal();
+    }
+  } catch (_) {
+    recordLocalAuditLog("DEMO_REQUEST_NOTE", `${lead.id}: ${lead.fullName}`, "INFO", `Ghi chú Admin: ${adminNote}`);
+  }
+
+  renderAllViews();
+  showToast(`💾 Đã lưu ghi chú chăm sóc cho khách hàng <b>${escapeHtml(lead.fullName)}</b>!`);
+};
+
+window.deleteDemoLead = async function (leadId) {
+  const lead = (STATE.demoRequests || []).find((x) => x.id === leadId);
+  if (!lead) return;
+  if (!confirm(`Bạn có chắc chắn muốn xoá yêu cầu đăng ký Demo của "${lead.fullName}" (${lead.orgName})?`)) {
+    return;
+  }
+
+  STATE.demoRequests = (STATE.demoRequests || []).filter((x) => x.id !== leadId);
+  syncDemoRequestsToLocal();
+
+  try {
+    const res = await fetch(`/api/v1/demo-requests/${encodeURIComponent(leadId)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data && data.ok && Array.isArray(data.demoRequests)) {
+      STATE.demoRequests = data.demoRequests;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      syncDemoRequestsToLocal();
+    }
+  } catch (_) {
+    recordLocalAuditLog("DEMO_REQUEST_DELETE", `${lead.id}: ${lead.fullName}`, "WARNING", "Xoá yêu cầu đăng ký Demo.");
+  }
+
+  renderAllViews();
+  showToast(`🗑️ Đã xoá yêu cầu đăng ký Demo mã <b>${escapeHtml(leadId)}</b>!`);
+};
+
+window.exportDemoLeadsCsv = function () {
+  const list = STATE.demoRequests || [];
+  const headers = [
+    "MaPhieu",
+    "ThoiGianDangKy",
+    "HoTenKhachHang",
+    "SoDienThoai",
+    "Email",
+    "DonViToChuc",
+    "QuyMo",
+    "MaSanPham",
+    "TenSanPham",
+    "LichHenDemo",
+    "YeuCauChiTiet",
+    "TrangThai",
+    "GhiChuAdmin"
+  ];
+  const rows = list.map((x) => [
+    x.id,
+    `"${(x.createdAt || "").replace(/"/g, '""')}"`,
+    `"${(x.fullName || "").replace(/"/g, '""')}"`,
+    `"${(x.phone || "").replace(/"/g, '""')}"`,
+    `"${(x.email || "").replace(/"/g, '""')}"`,
+    `"${(x.orgName || "").replace(/"/g, '""')}"`,
+    `"${(x.orgScale || "").replace(/"/g, '""')}"`,
+    x.productId || "",
+    `"${(x.productName || "").replace(/"/g, '""')}"`,
+    `"${(x.preferredTime || "").replace(/"/g, '""')}"`,
+    `"${(x.notes || "").replace(/"/g, '""')}"`,
+    x.status || "new",
+    `"${(x.adminNote || "").replace(/"/g, '""')}"`
+  ]);
+  const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `TechCorp_KhachHang_DangKy_Demo_${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast("📥 Đã xuất danh sách Khách hàng Đăng ký Demo (CSV) thành công!");
+};
+
 async function bootstrapFromServer() {
   const badgeEl = document.getElementById("apiStatusBadge");
   const tokenBox = document.getElementById("currentSsoTokenBox");
@@ -4589,6 +4995,10 @@ async function bootstrapFromServer() {
         STATE.heroSliders = data.heroSliders;
         saveCachedHeroSliders();
       }
+      if (Array.isArray(data.demoRequests) && data.demoRequests.length > 0) {
+        STATE.demoRequests = data.demoRequests;
+      }
+      mergeLocalDemoRequests();
       STATE.users = data.users || STATE.users;
       STATE.personas = data.personas || STATE.personas;
       STATE.announcements = data.announcements || STATE.announcements;
@@ -4614,6 +5024,7 @@ async function bootstrapFromServer() {
       }
     }
   } catch (err) {
+    mergeLocalDemoRequests();
     if (badgeEl) {
       badgeEl.textContent = "● Portal Ready";
       badgeEl.className = "badge badge-green";

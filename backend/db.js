@@ -410,14 +410,103 @@ const INITIAL_HERO_SLIDERS = [
   }
 ];
 
+const INITIAL_DEMO_REQUESTS = [
+  {
+    id: "DEMO-261001",
+    fullName: "ThS. Nguyễn Thị Lan Anh",
+    phone: "0905.382.119",
+    email: "lananh.principal@saobienedu.vn",
+    orgName: "Hệ thống Mầm non & Tiểu học Sao Biển (KĐT Mỹ Gia, Nha Trang)",
+    orgScale: "300 - 800 học sinh / nhân sự",
+    productId: "mamnon",
+    productName: "EduManager Pro — Quản lý Trường Mầm non & AI",
+    appUrl: "https://mamnon.techcorp.info.vn",
+    preferredTime: "Sáng thứ 5 (09:00 - 11:00) tại trường hoặc qua Google Meet",
+    notes: "Cần demo tính năng Điểm danh AI nhận diện khuôn mặt, thực đơn dinh dưỡng tự động và gạch nợ học phí VietQR.",
+    status: "scheduled",
+    adminNote: "Đã liên hệ Zalo, hẹn lịch demo trực tiếp tại KĐT Mỹ Gia sáng thứ 5.",
+    ipAddress: "113.160.214.88",
+    createdAt: "2026-10-20 08:45:12"
+  },
+  {
+    id: "DEMO-261002",
+    fullName: "Ông Trần Quốc Bảo",
+    phone: "0914.775.680",
+    email: "baotq@asiabayresort.com",
+    orgName: "Asia Bay Resort & Spa Cam Ranh",
+    orgScale: "150 - 300 nhân sự",
+    productId: "qldh",
+    productName: "TechCorp PMS — Hệ thống Quản lý Khách sạn & Resort",
+    appUrl: "https://qldh.techcorp.info.vn",
+    preferredTime: "Chiều nay 14:30",
+    notes: "Muốn trải nghiệm luồng đồng bộ đặt phòng PMS + POS nhà hàng và kết nối tuyển dụng nhân sự từ Sàn HireMind AI.",
+    status: "contacted",
+    adminNote: "Đã gửi tài khoản dùng thử PMS + ERP qua email, đang chờ phản hồi lịch họp với GM.",
+    ipAddress: "14.161.42.19",
+    createdAt: "2026-10-20 09:20:05"
+  },
+  {
+    id: "DEMO-261003",
+    fullName: "TS. Lê Minh Hoàng",
+    phone: "0988.412.909",
+    email: "hoanglm@pacificuni.edu.vn",
+    orgName: "Trường Cao đẳng Kỹ thuật & Du lịch Miền Trung",
+    orgScale: "Trên 1.000 sinh viên / giảng viên",
+    productId: "qldt",
+    productName: "TC COMPASS — Quản trị Đại học & Đánh giá Hiệu suất",
+    appUrl: "https://qldt.techcorp.info.vn",
+    preferredTime: "Tuần này (Thứ 4 hoặc Thứ 6)",
+    notes: "Quan tâm hệ thống quản trị tín chỉ TC COMPASS kết hợp đánh giá KPI giảng viên và cổng thực tập sinh viên.",
+    status: "new",
+    adminNote: "",
+    ipAddress: "171.244.18.102",
+    createdAt: "2026-10-20 10:15:40"
+  },
+  {
+    id: "DEMO-261004",
+    fullName: "Bà Phạm Hoàng Yến",
+    phone: "0935.889.234",
+    email: "yenpham@globalenglish-nt.vn",
+    orgName: "Hệ thống Anh ngữ Quốc tế Global Star (3 cơ sở Nha Trang)",
+    orgScale: "500 - 1.500 học viên",
+    productId: "ttnn",
+    productName: "Quản lý Trung tâm Ngoại ngữ & Tin học Chuẩn Quốc tế",
+    appUrl: "https://ttnn.techcorp.info.vn",
+    preferredTime: "10:00 sáng mai",
+    notes: "Đăng ký nhận tài khoản Demo CRM tuyển sinh đa kênh + Phòng thi thử IELTS/TOEIC trực tuyến.",
+    status: "completed",
+    adminNote: "Đã bàn giao tài khoản Demo và ký MOU tham gia gói Hạt nhân Nha Trang.",
+    ipAddress: "113.172.55.14",
+    createdAt: "2026-10-19 16:10:22"
+  },
+  {
+    id: "DEMO-261005",
+    fullName: "Ông Vũ Đình Khôi",
+    phone: "0903.551.890",
+    email: "khoivd@seatechgroup.vn",
+    orgName: "Công ty CP Thương mại & Dịch vụ SeaTech Khánh Hòa",
+    orgScale: "50 - 150 nhân sự",
+    productId: "erp",
+    productName: "TechCorp ERP — Quản trị Doanh nghiệp Tổng thể",
+    appUrl: "https://erp.techcorp.info.vn",
+    preferredTime: "15:00 chiều mai",
+    notes: "Cần tư vấn Combo TechCorp ERP + BSC-KPI + Sàn Tuyển dụng AI HireMind cho 80 nhân sự.",
+    status: "new",
+    adminNote: "",
+    ipAddress: "27.67.110.45",
+    createdAt: "2026-10-20 11:05:19"
+  }
+];
+
 const INITIAL_SEED = {
   meta: {
     domain: "hesinhthai.techcorp.info.vn",
-    version: "6.1.0",
+    version: "6.4.0",
     region: "Nha Trang - Khánh Hòa",
     updatedAt: new Date().toISOString()
   },
   heroSliders: INITIAL_HERO_SLIDERS,
+  demoRequests: INITIAL_DEMO_REQUESTS,
   apps: [
     {
       id: "mamnon",
@@ -1102,13 +1191,20 @@ class HubDatabase {
           this.state.heroSliders = JSON.parse(JSON.stringify(INITIAL_HERO_SLIDERS));
           needsSave = true;
         }
-        if (!this.state.meta || this.state.meta.version !== "6.1.0") {
+        if (!Array.isArray(this.state.demoRequests)) {
+          this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
+          needsSave = true;
+        }
+        if (!this.state.meta || this.state.meta.version !== "6.4.0") {
           this.state.meta = JSON.parse(JSON.stringify(INITIAL_SEED.meta));
           this.state.apps = JSON.parse(JSON.stringify(INITIAL_SEED.apps));
           this.state.users = JSON.parse(JSON.stringify(INITIAL_USERS));
           this.state.personas = JSON.parse(JSON.stringify(INITIAL_SEED.personas));
           if (!Array.isArray(this.state.heroSliders) || this.state.heroSliders.length < 6) {
             this.state.heroSliders = JSON.parse(JSON.stringify(INITIAL_HERO_SLIDERS));
+          }
+          if (!Array.isArray(this.state.demoRequests) || this.state.demoRequests.length === 0) {
+            this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
           }
           if (Array.isArray(this.state.announcements) && this.state.announcements.length > 0) {
             this.state.announcements[0] = JSON.parse(JSON.stringify(INITIAL_SEED.announcements[0]));
@@ -1782,6 +1878,127 @@ class HubDatabase {
     });
     this.save();
     return this.state.heroSliders;
+  }
+
+  // ==================== DEMO REQUESTS / CUSTOMER LEADS CRUD ====================
+  createDemoRequest(payload, ipAddress = "103.170.122.138") {
+    if (!Array.isArray(this.state.demoRequests)) {
+      this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
+    }
+    const fullName = String(payload.fullName || "").trim();
+    const phone = String(payload.phone || "").trim();
+    const email = String(payload.email || "").trim();
+    const orgName = String(payload.orgName || "").trim();
+    const productId = String(payload.productId || "erp").trim();
+
+    if (!fullName || !phone || !orgName) {
+      throw new Error("Vui lòng nhập đầy đủ Họ tên người liên hệ, Số điện thoại/Zalo và Tên Đơn vị/Doanh nghiệp.");
+    }
+
+    const matchedApp = this.state.apps.find((a) => a.id === productId);
+    const productName = payload.productName || (matchedApp ? matchedApp.name : "Giải pháp Hệ sinh thái TechCorp");
+    const appUrl = payload.appUrl || (matchedApp ? matchedApp.appUrl : "https://hesinhthai.techcorp.info.vn");
+
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const createdAt = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
+      now.getHours()
+    )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+    const newLead = {
+      id: "DEMO-" + String(Date.now()).slice(-6),
+      fullName,
+      phone,
+      email: email || "Chưa cung cấp",
+      orgName,
+      orgScale: String(payload.orgScale || "50 - 200 nhân sự / học viên").trim(),
+      productId,
+      productName,
+      appUrl,
+      preferredTime: String(payload.preferredTime || "Trong giờ hành chính").trim(),
+      notes: String(payload.notes || "Đăng ký nhận tài khoản dùng thử & tư vấn triển khai.").trim(),
+      status: "new",
+      adminNote: "",
+      ipAddress,
+      createdAt
+    };
+
+    this.state.demoRequests.unshift(newLead);
+
+    this.addEvent({
+      sourceApp: productId,
+      targetApp: "techcorp-hub",
+      eventType: "DEMO_LEAD_REGISTERED",
+      text: `[Đăng ký Demo mới] Khách hàng "${fullName}" (${orgName} - SĐT: ${phone}) vừa đăng ký trải nghiệm Demo hệ thống "${productName}".`
+    });
+
+    this.addAuditLog({
+      actorKey: "super-admin",
+      ipAddress,
+      action: "DEMO_REQUEST_CREATED",
+      target: `${newLead.id}: ${fullName} (${orgName})`,
+      severity: "INFO",
+      details: `Khách hàng đăng ký Demo sản phẩm [${productId}] "${productName}" • SĐT: ${phone} • Email: ${newLead.email}.`
+    });
+
+    this.save();
+    return newLead;
+  }
+
+  updateDemoRequest(leadId, payload, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!Array.isArray(this.state.demoRequests)) {
+      this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
+    }
+    const lead = this.state.demoRequests.find((item) => item.id === leadId);
+    if (!lead) {
+      throw new Error(`Không tìm thấy yêu cầu đăng ký Demo mã '${leadId}'.`);
+    }
+
+    const oldStatus = lead.status;
+    if (payload.status !== undefined) {
+      lead.status = String(payload.status).trim();
+    }
+    if (payload.adminNote !== undefined) {
+      lead.adminNote = String(payload.adminNote).trim();
+    }
+    if (payload.preferredTime !== undefined) {
+      lead.preferredTime = String(payload.preferredTime).trim();
+    }
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "DEMO_REQUEST_UPDATE",
+      target: `${lead.id}: ${lead.fullName} (${lead.orgName})`,
+      severity: "INFO",
+      details: `Cập nhật trạng thái xử lý Demo [${lead.productName}]: ${oldStatus} -> ${lead.status}. Ghi chú: ${lead.adminNote || "Không có"}`
+    });
+
+    this.save();
+    return lead;
+  }
+
+  deleteDemoRequest(leadId, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!Array.isArray(this.state.demoRequests)) {
+      this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
+    }
+    const idx = this.state.demoRequests.findIndex((item) => item.id === leadId);
+    if (idx === -1) {
+      throw new Error(`Không tìm thấy yêu cầu đăng ký Demo mã '${leadId}' để xoá.`);
+    }
+    const removed = this.state.demoRequests.splice(idx, 1)[0];
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "DEMO_REQUEST_DELETE",
+      target: `${removed.id}: ${removed.fullName} (${removed.orgName})`,
+      severity: "WARNING",
+      details: `Đã xoá yêu cầu đăng ký Demo sản phẩm "${removed.productName}" của khách hàng ${removed.fullName}.`
+    });
+
+    this.save();
+    return removed;
   }
 
   // ==================== EVENT BUS ====================
