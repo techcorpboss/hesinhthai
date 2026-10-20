@@ -5,6 +5,7 @@ WORKDIR /app
 COPY package.json ./
 COPY server.js ./
 COPY index.html ./
+COPY logo.png ./
 COPY styles.css ./
 COPY app.js ./
 COPY backend ./backend
