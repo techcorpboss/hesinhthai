@@ -30,7 +30,7 @@ function getClientIp(req) {
   if (xff) return String(xff).split(",")[0].trim();
   const xri = req.headers["x-real-ip"];
   if (xri) return String(xri).trim();
-  return req.socket?.remoteAddress || "103.170.122.138";
+  return (req.socket && req.socket.remoteAddress) || (req.connection && req.connection.remoteAddress) || "103.170.122.138";
 }
 
 function setCorsHeaders(res) {
@@ -152,7 +152,7 @@ async function handleApi(req, res, parsedUrl) {
       apps: activeApps,
       allApps: db.getPublicApps(),
       latestForumHeadline: topPost
-        ? { id: topPost.id, title: topPost.title, authorOrg: topPost.author?.org || "" }
+        ? { id: topPost.id, title: topPost.title, authorOrg: (topPost.author && topPost.author.org) || "" }
         : null
     });
   }

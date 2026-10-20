@@ -978,7 +978,7 @@ class HubDatabase {
       action: "FORUM_DELETE",
       target: `${removed.id}: ${removed.title}`,
       severity: "CRITICAL",
-      details: `Đã xoá bài viết của "${removed.author?.name}" khỏi Diễn đàn Cộng đồng.`
+      details: `Đã xoá bài viết của "${(removed.author && removed.author.name) || "Thành viên"}" khỏi Diễn đàn Cộng đồng.`
     });
     this.save();
     return removed;
