@@ -1158,13 +1158,23 @@ window.activateAdminPanel = function (panelId, memberSubTab) {
 
 window.currentPublicPage = "home";
 
-window.switchPublicPage = function (pageKey, updateHistory = true) {
+window.switchPublicPage = function (pageKey, updateHistory = true, scrollTargetId = "") {
   const validPages = ["home", "products", "forum", "pricing", "contact"];
+  const rawKey = String(pageKey || "home").replace(/^#/, "").trim().toLowerCase();
+
+  const sectionScrollMap = {
+    "sec-talent-lms": "sec-talent-lms",
+    "view-talent-lms": "sec-talent-lms",
+    "sec-exchange": "sec-exchange",
+    "view-forum-b2b": "sec-exchange"
+  };
+  const resolvedScrollId = scrollTargetId || sectionScrollMap[rawKey] || "";
+
   const aliasMap = {
     "sec-bulletins": "home",
-    "view-plaza": "home",
     "sec-products": "products",
-    "view-workspace": "products",
+    "view-plaza": "products",
+    "view-workspace": "pricing",
     "sec-exchange": "forum",
     "view-forum-b2b": "forum",
     "sec-talent-lms": "forum",
@@ -1174,7 +1184,7 @@ window.switchPublicPage = function (pageKey, updateHistory = true) {
     "view-master-admin": "contact"
   };
 
-  let normalized = String(pageKey || "home").replace(/^#/, "").trim().toLowerCase();
+  let normalized = rawKey.replace(/^pub-page-/, "");
   if (aliasMap[normalized]) {
     normalized = aliasMap[normalized];
   }
@@ -1205,7 +1215,71 @@ window.switchPublicPage = function (pageKey, updateHistory = true) {
     } catch (_) {}
   }
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (resolvedScrollId) {
+    setTimeout(() => {
+      const targetEl = document.getElementById(resolvedScrollId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 60);
+  } else {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+};
+
+window.handleBulletinAction = function (annId, fallbackView = "", fallbackLabel = "") {
+  const item = (STATE.announcements || []).find((a) => a.id === annId);
+  const view = (item && item.actionView) || fallbackView || "";
+  const label = ((item && item.actionLabel) || fallbackLabel || "").toLowerCase();
+
+  // Nếu đang ở trang Admin (admin.html)
+  if (!document.getElementById("pub-page-home")) {
+    window.switchToTab(view || "view-workspace");
+    return;
+  }
+
+  // Nếu đang ở trang Public (index.html), điều hướng chính xác đến trang & phân khu tương ứng
+  if (annId === "ANN-MASTER-01" || label.includes("sản phẩm") || label.includes("trường học") || label.includes("sơ đồ")) {
+    window.switchPublicPage("products");
+    return;
+  }
+  if (annId === "ANN-MASTER-02" || label.includes("báo giá") || label.includes("combo")) {
+    window.switchPublicPage("pricing");
+    return;
+  }
+  if (annId === "ANN-MASTER-04" || label.includes("tư vấn") || label.includes("liên hệ") || label.includes("demo")) {
+    window.switchPublicPage("contact");
+    return;
+  }
+  if (
+    annId === "ANN-MEM-01" ||
+    annId === "ANN-MEM-02" ||
+    annId === "ANN-MASTER-03" ||
+    label.includes("nhân lực") ||
+    label.includes("lms") ||
+    label.includes("đấu trường") ||
+    view === "view-talent-lms" ||
+    view === "sec-talent-lms"
+  ) {
+    window.switchPublicPage("forum", true, "sec-talent-lms");
+    return;
+  }
+  if (
+    annId === "ANN-MEM-03" ||
+    annId === "ANN-MEM-04" ||
+    label.includes("b2b") ||
+    label.includes("hợp tác") ||
+    label.includes("ưu đãi") ||
+    label.includes("diễn đàn") ||
+    label.includes("kết nối")
+  ) {
+    window.switchPublicPage("forum", true, "sec-exchange");
+    return;
+  }
+
+  window.switchPublicPage(view || "products");
 };
 
 function initPublicPageFromUrl() {
@@ -1225,9 +1299,19 @@ function initPublicPageFromUrl() {
 }
 
 window.switchToTab = function (tabId) {
-  // Support both legacy tab IDs and v5.0 panel IDs / Public pages
+  // Nếu đang ở Trang Public (index.html), luôn ưu tiên chuyển trang Public
+  if (document.getElementById("pub-page-home")) {
+    window.switchPublicPage(tabId);
+    return;
+  }
+  // Nếu đang ở Trang Admin (admin.html)
   const panelMap = {
     "view-plaza": "panel-master-overview",
+    "pub-page-home": "panel-master-overview",
+    "pub-page-products": "panel-master-apps",
+    "pub-page-pricing": "panel-role-workspace",
+    "pub-page-forum": "panel-master-forum",
+    "pub-page-contact": "panel-master-demos",
     "view-workspace": "panel-role-workspace",
     "view-forum-b2b": "panel-master-forum",
     "view-talent-lms": "panel-role-workspace",
@@ -1236,11 +1320,6 @@ window.switchToTab = function (tabId) {
   const mappedPanel = panelMap[tabId] || tabId;
   if (document.getElementById(mappedPanel)) {
     window.activateAdminPanel(mappedPanel);
-    return;
-  }
-  // If on Public Page (index.html), switch to relevant Public Page
-  if (document.getElementById("pub-page-home")) {
-    window.switchPublicPage(tabId);
   }
 };
 
@@ -4214,7 +4293,7 @@ function renderCentralBulletins() {
                 <div class="bulletin-summary">${escapeHtml(item.summary)}</div>
                 <div class="bulletin-footer">
                   <span>👤 Ban hành bởi: <strong>${escapeHtml(item.authorName)}</strong> (${escapeHtml(item.authorOrg)})</span>
-                  <button class="btn btn-outline btn-sm" onclick="switchToTab('${escapeHtml(item.actionView || "products")}')">
+                  <button type="button" class="btn btn-outline btn-sm" onclick="handleBulletinAction('${escapeHtml(item.id)}', '${escapeHtml(item.actionView || "products")}', '${escapeHtml(item.actionLabel || "Xem chi tiết")}')">
                     ${escapeHtml(item.actionLabel || "Xem chi tiết")} →
                   </button>
                 </div>
@@ -4240,7 +4319,7 @@ function renderCentralBulletins() {
                 <div class="bulletin-summary">${escapeHtml(item.summary)}</div>
                 <div class="bulletin-footer">
                   <span>🏢 Đơn vị đăng: <strong>${escapeHtml(item.authorOrg)}</strong> (${escapeHtml(item.authorName)})</span>
-                  <button class="btn btn-outline btn-sm" onclick="switchToTab('${escapeHtml(item.actionView || "forum")}')">
+                  <button type="button" class="btn btn-outline btn-sm" onclick="handleBulletinAction('${escapeHtml(item.id)}', '${escapeHtml(item.actionView || "forum")}', '${escapeHtml(item.actionLabel || "Kết nối ngay")}')">
                     ${escapeHtml(item.actionLabel || "Kết nối ngay")} →
                   </button>
                 </div>
