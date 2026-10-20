@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "seed": "node server.js --seed"
+    "seed": "node server.js --seed",
+    "db:init": "node scripts/init-mysql.js"
   },
   "keywords": [
     "techcorp",
@@ -20,5 +21,9 @@
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "mysql2": "^3.24.6"
   }
 }

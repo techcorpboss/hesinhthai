@@ -7,7 +7,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const { URL } = require("url");
-const { db, SQLITE_DB_PATH, JSON_DB_PATH } = require("./backend/db");
+const { db, SQLITE_DB_PATH, JSON_DB_PATH, getMysqlStatus } = require("./backend/db");
 const { issueSsoToken, verifySsoToken } = require("./backend/sso");
 
 const PORT = parseInt(process.env.PORT || "3000", 10);
@@ -107,13 +107,16 @@ async function handleApi(req, res, parsedUrl) {
   if (pathname === "/api/v1/health" && method === "GET") {
     return sendJson(res, 200, {
       ok: true,
-      service: "TechCorp Ecosystem Hub API, Admin CMS, SSO & Audit Logs",
+      service: "TechCorp Ecosystem Hub API, Admin CMS, SSO & MySQL Database",
       domain: PUBLIC_DOMAIN,
       totalConnectedApps: db.state.apps.length,
       totalUsers: (db.state.users || []).length,
+      totalDemoRequests: (db.state.demoRequests || []).length,
       totalForumPosts: (db.state.forumPosts || []).length,
       totalAuditLogs: (db.state.auditLogs || []).length,
+      mysql: getMysqlStatus(),
       storage: {
+        mysqlDatabase: process.env.DB_DATABASE || "hesinhthai_db",
         sqlitePath: path.basename(SQLITE_DB_PATH),
         jsonPath: path.basename(JSON_DB_PATH)
       },

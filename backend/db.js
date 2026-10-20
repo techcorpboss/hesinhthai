@@ -11,6 +11,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const { initAndSyncMysql, syncStateToMysqlAsync, getMysqlStatus } = require("./mysql");
 
 const DATA_DIR = path.join(__dirname, "..", "data");
 const JSON_DB_PATH = path.join(DATA_DIR, "techcorp_hub_db.json");
@@ -1221,6 +1222,7 @@ class HubDatabase {
       this.save();
     }
     this.syncToSqlite();
+    initAndSyncMysql(this.state);
   }
 
   save() {
@@ -1229,6 +1231,7 @@ class HubDatabase {
     fs.writeFileSync(tmpPath, JSON.stringify(this.state, null, 2), "utf8");
     fs.renameSync(tmpPath, JSON_DB_PATH);
     this.syncToSqlite();
+    syncStateToMysqlAsync(this.state);
   }
 
   syncToSqlite() {
@@ -2028,5 +2031,7 @@ class HubDatabase {
 module.exports = {
   db: new HubDatabase(),
   SQLITE_DB_PATH,
-  JSON_DB_PATH
+  JSON_DB_PATH,
+  getMysqlStatus
 };
+
