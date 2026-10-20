@@ -24,6 +24,10 @@ else
 fi
 
 echo "=== [1/4] Đồng bộ mã nguồn mới nhất từ GitHub (${REPO_URL}) ==="
+if ! command -v git >/dev/null 2>&1; then
+  apt-get update -y && apt-get install -y git curl
+fi
+
 TMP_CLONE="/tmp/hesinhthai_sync_$$"
 rm -rf "${TMP_CLONE}"
 git clone --depth 1 "${REPO_URL}" "${TMP_CLONE}"
@@ -37,13 +41,15 @@ rm -rf "${TMP_CLONE}"
 mkdir -p "${TARGET_DIR}/data"
 
 echo "=== [2/4] Kiểm tra Node.js & PM2 ==="
+export PATH=$PATH:/usr/local/bin:~/.nvm/versions/node/$(ls ~/.nvm/versions/node 2>/dev/null | tail -n 1)/bin:/www/server/nodejs/v22.11.0/bin:/www/server/nodejs/v20.18.0/bin:/www/server/nodejs/v18.20.0/bin
+
 if ! command -v node >/dev/null 2>&1; then
   curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
   apt-get install -y nodejs
 fi
 
 if ! command -v pm2 >/dev/null 2>&1; then
-  npm install -g pm2
+  npm install -g pm2 || true
 fi
 
 echo "=== [3/4] Khởi tạo CSDL & Chạy Backend API + SSO + Forum (Port ${PORT}) ==="
@@ -52,25 +58,29 @@ node server.js --seed
 export PORT="${PORT}"
 export TECHCORP_HUB_DOMAIN="https://${DOMAIN}"
 
-pm2 delete techcorp-hub >/dev/null 2>&1 || true
-pm2 start server.js --name "techcorp-hub" --update-env
-pm2 save
+if command -v pm2 >/dev/null 2>&1; then
+  pm2 delete techcorp-hub >/dev/null 2>&1 || true
+  pm2 start server.js --name "techcorp-hub" --update-env
+  pm2 save || true
+else
+  pkill -f "node server.js" >/dev/null 2>&1 || true
+  nohup node server.js > "${TARGET_DIR}/hub-server.log" 2>&1 &
+fi
 
 # Tự động cấu hình Reverse Proxy cho /api/ trên aaPanel Nginx nếu có
 AAPANEL_NGINX_CONF="/www/server/panel/vhost/nginx/${DOMAIN}.conf"
 if [ -f "${AAPANEL_NGINX_CONF}" ]; then
   if ! grep -q "proxy_pass http://127.0.0.1:3000" "${AAPANEL_NGINX_CONF}"; then
     echo "=== [4/4] Tích hợp Reverse Proxy /api/ vào cấu hình Nginx của aaPanel ==="
-    sed -i '/server_name/a \
-    location /api/ {\
-        proxy_pass http://127.0.0.1:3000/api/;\
-        proxy_http_version 1.1;\
-        proxy_set_header Host $host;\
-        proxy_set_header X-Real-IP $remote_addr;\
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\
-        proxy_set_header X-Forwarded-Proto $scheme;\
-    }' "${AAPANEL_NGINX_CONF}"
-    /etc/init.d/nginx reload || systemctl reload nginx || true
+    cp "${AAPANEL_NGINX_CONF}" "${AAPANEL_NGINX_CONF}.bak"
+    PROXY_SNIPPET="\n    location ^~ /api/ {\n        proxy_pass http://127.0.0.1:3000/api/;\n        proxy_http_version 1.1;\n        proxy_set_header Host \$host;\n        proxy_set_header X-Real-IP \$remote_addr;\n        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto \$scheme;\n    }\n"
+    sed -i "s|#ERROR-PAGE-START|${PROXY_SNIPPET}\n    #ERROR-PAGE-START|g" "${AAPANEL_NGINX_CONF}"
+    if /etc/init.d/nginx configtest >/dev/null 2>&1 || nginx -t >/dev/null 2>&1; then
+      /etc/init.d/nginx reload >/dev/null 2>&1 || systemctl reload nginx >/dev/null 2>&1 || true
+      echo "✅ Đã kích hoạt Reverse Proxy /api/ trên Nginx thành công!"
+    else
+      mv "${AAPANEL_NGINX_CONF}.bak" "${AAPANEL_NGINX_CONF}"
+    fi
   fi
 fi
 
