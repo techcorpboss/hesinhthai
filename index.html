@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hệ sinh thái Số TechCorp — hesinhthai.techcorp.info.vn (Cổng Quảng bá Sản phẩm, Kết nối Giao thương & Liên thông Thành viên)</title>
-  <link rel="icon" type="image/png" href="logo.png?v=6.1" />
-  <link rel="stylesheet" href="styles.css?v=6.1" />
+  <link rel="icon" type="image/png" href="logo.png?v=6.2" />
+  <link rel="stylesheet" href="styles.css?v=6.2" />
   <!-- Thanh Liên thông Hệ sinh thái (Topbar SSO dùng chung) -->
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=6.1"
+    src="widget/techcorp-ecosystem-bar.js?v=6.2"
     data-app-id="erp"
     data-org-name="TechCorp Ecosystem Hub"
     data-user-role="SSO Connected"
@@ -16,37 +16,38 @@
   ></script>
 </head>
 <body>
-  <!-- HEADER HỆ SINH THÁI TECHCORP (CLEAN 3-COLUMN ENTERPRISE HEADER - ĐÃ BỎ NHÃN PUBLIC DƯ THỪA) -->
+  <!-- HEADER HỆ SINH THÁI TECHCORP (CÂN ĐỐI MENU & NÚT ĐĂNG NHẬP GỌN GÀNG) -->
   <header class="hub-header">
     <div class="hub-header-inner">
       <a href="index.html" class="brand-box">
         <div class="brand-logo">
-          <img src="logo.png?v=6.1" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+          <img src="logo.png?v=6.2" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
         </div>
         <div class="brand-title">
           <h1>
             TechCorp Ecosystem
             <span class="brand-domain-pill">⚡ 16 Nền tảng Live</span>
           </h1>
-          <p>Trục Liên thông 16 Nền tảng Giáo dục, Đào tạo, Sàn Tuyển dụng AI & Quản trị Doanh nghiệp</p>
+          <p>Hệ sinh thái Giáo dục, Sàn Tuyển dụng AI & Quản trị Doanh nghiệp</p>
         </div>
       </a>
 
-      <!-- Menu Điều hướng Trung tâm (Gọn gàng, Thoáng đãng) -->
-      <nav class="pub-nav-links">
-        <a href="#sec-products" class="pub-nav-link">🚀 Sản phẩm (16)</a>
-        <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="pub-nav-link" style="color:#0052d4;">🤖 Sàn Việc làm JobAI ↗</a>
-        <a href="#sec-bulletins" class="pub-nav-link">📢 Bản tin Chung</a>
-        <a href="#sec-exchange" class="pub-nav-link">💬 Diễn đàn B2B</a>
-        <a href="#sec-talent-lms" class="pub-nav-link">🎓 Nhân lực & LMS</a>
-        <a href="#sec-pricing" class="pub-nav-link">💳 Báo giá Combo</a>
-      </nav>
+      <!-- Cụm Menu Điều hướng + Nút Đăng nhập Cân đối (Dịch chuyển sang trái, không bị khuất góc phải) -->
+      <div style="display:flex;align-items:center;gap:14px;margin-right:auto;margin-left:28px;">
+        <nav class="pub-nav-links">
+          <a href="#sec-products" class="pub-nav-link">🚀 Sản phẩm (16)</a>
+          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="pub-nav-link" style="color:#0052d4;">🤖 Sàn Việc làm JobAI ↗</a>
+          <a href="#sec-bulletins" class="pub-nav-link">📢 Bản tin Chung</a>
+          <a href="#sec-exchange" class="pub-nav-link">💬 Diễn đàn B2B</a>
+          <a href="#sec-talent-lms" class="pub-nav-link">🎓 Nhân lực & LMS</a>
+          <a href="#sec-pricing" class="pub-nav-link">💳 Báo giá Combo</a>
+        </nav>
 
-      <!-- Hành động Đăng nhập Quản trị bên phải -->
-      <div class="header-actions">
-        <a href="login.html" class="btn btn-primary" style="text-decoration:none;padding:10px 18px;">
-          🔐 Đăng nhập Quản trị Hệ sinh thái →
-        </a>
+        <div class="header-actions" style="margin-right:0;">
+          <a href="login.html" class="btn btn-primary" style="text-decoration:none;padding:9px 18px;white-space:nowrap;">
+            🔐 Đăng nhập
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -505,22 +506,207 @@
     </section>
   </main>
 
-  <footer class="pub-footer">
-    <div style="max-width:1480px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;">
-      <div>
-        <div style="font-size:17px;font-weight:800;">TECHCORP ECOSYSTEM HUB • HESINHTHAI.TECHCORP.INFO.VN</div>
-        <div style="font-size:13px;color:#dbeafe;margin-top:4px;">
-          Nền tảng Liên thông Giáo dục Số – Đào tạo – Sàn Tuyển dụng AI & Quản trị Doanh nghiệp • Trụ sở: Nha Trang, Khánh Hòa
+  <!-- FOOTER DOANH NGHIỆP CHUẨN QUỐC TẾ: CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP (LIÊN KẾT TRỰC TIẾP 16 SẢN PHẨM LIVE) -->
+  <footer class="tc-corp-footer">
+    <!-- Dải 3 Cam kết Chất lượng & Hỗ trợ trên cùng -->
+    <div class="tc-footer-trust-wrap">
+      <div class="tc-footer-trust-bar">
+        <div class="tc-trust-item">
+          <div class="tc-trust-icon blue">🛡️</div>
+          <div class="tc-trust-text">
+            <h4>Đạt chuẩn ISO 9001:2015</h4>
+            <p>Hệ thống quản trị chất lượng đào tạo & dịch vụ công nghệ</p>
+          </div>
+        </div>
+
+        <div class="tc-trust-item">
+          <div class="tc-trust-icon amber">🏅</div>
+          <div class="tc-trust-text">
+            <h4>Liên thông Định danh TechCorp ID (SSO)</h4>
+            <p>Kết nối đồng bộ 16 nền tảng phần mềm chuẩn Quốc gia & Quốc tế</p>
+          </div>
+        </div>
+
+        <div class="tc-trust-item">
+          <div class="tc-trust-icon emerald">📞</div>
+          <div class="tc-trust-text">
+            <h4>Tư vấn Trực tuyến 24/7</h4>
+            <p>Hotline: <strong style="color:#fbbf24;">0392.091.068</strong> • ĐT: <strong style="color:#e2e8f0;">0814.39.6688</strong></p>
+          </div>
         </div>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn" style="background:#059669;color:#ffffff;">🤖 Sàn Tuyển dụng JobAI ↗</a>
-        <a href="admin.html" class="btn" style="background:#ff6b00;color:#ffffff;">🛡️ Vào Cổng Quản trị Theo Vai trò (admin.html)</a>
+    </div>
+
+    <!-- Nội dung chính Footer: Thông tin Công ty TNHH Công nghệ và Giáo dục TechCorp + Liên kết trực tiếp 16 Sản phẩm -->
+    <div class="tc-footer-main">
+      <!-- Cột 1: Thông tin Pháp nhân Công ty TNHH Công nghệ và Giáo dục TechCorp -->
+      <div>
+        <div class="tc-footer-brand-top">
+          <div class="tc-footer-logo">
+            <img src="logo.png?v=6.2" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+          </div>
+          <div>
+            <div class="tc-footer-brand-name">
+              TECHCORP
+              <span class="tc-footer-academy-pill">ECOSYSTEM</span>
+            </div>
+            <div class="tc-footer-company-sub">CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP</div>
+          </div>
+        </div>
+
+        <p class="tc-footer-desc">
+          Đồng hành phát triển sự nghiệp công nghệ và cung cấp giải pháp chuyển đổi số toàn diện cho trường học, trung tâm đào tạo và doanh nghiệp.
+        </p>
+
+        <ul class="tc-footer-contact-list">
+          <li>
+            <span>📍</span>
+            <span><strong>Trụ sở chính:</strong> 187 Mai Xuân Thưởng, P. Bắc Nha Trang, tỉnh Khánh Hòa</span>
+          </li>
+          <li>
+            <span>📍</span>
+            <span><strong>Văn phòng giao dịch:</strong> Số 10 Đặng Dung, P. Nam Nha Trang, tỉnh Khánh Hòa</span>
+          </li>
+          <li>
+            <span>📞</span>
+            <span><strong>Số điện thoại:</strong> 0814.39.6688 • <strong>Hotline:</strong> <span style="color:#fbbf24;font-weight:700;">0392.091.068</span></span>
+          </li>
+          <li>
+            <span>✉️</span>
+            <span><a href="mailto:techcorpnt@gmail.com" style="color:#cbd5e1;text-decoration:none;">techcorpnt@gmail.com</a></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Cột 2: Khối Giáo dục Mầm non – Phổ thông K12 & GDTX (05 Sản phẩm) -->
+      <div>
+        <div class="tc-footer-col-heading">
+          <span class="tc-col-bar blue"></span>
+          <span>KHỐI GIÁO DỤC K-12 & GDTX (05)</span>
+        </div>
+        <ul class="tc-footer-links">
+          <li>
+            <a href="https://mamnon.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> EduManager Pro — Trường Mầm non & AI
+            </a>
+          </li>
+          <li>
+            <a href="https://tieuhoc.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> EduManager Pro — Trường Tiểu học & AI
+            </a>
+          </li>
+          <li>
+            <a href="https://thcs.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> EduManager Pro — Trường THCS & AI
+            </a>
+          </li>
+          <li>
+            <a href="https://thpt.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> EduManager Pro — Trường THPT & Hướng nghiệp
+            </a>
+          </li>
+          <li>
+            <a href="https://gdtx.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> EduManager Pro — Trung tâm GDNN - GDTX
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Cột 3: Khối Đại học, Trung tâm Ngoại ngữ - Tin học & Khảo thí LMS (05 Sản phẩm) -->
+      <div>
+        <div class="tc-footer-col-heading">
+          <span class="tc-col-bar amber"></span>
+          <span>ĐẠI HỌC, TRUNG TÂM & LMS (05)</span>
+        </div>
+        <ul class="tc-footer-links">
+          <li>
+            <a href="https://qldt.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TC COMPASS v1.0 (Quản trị Đại học)
+            </a>
+          </li>
+          <li>
+            <a href="https://ttnn.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> Quản lý Trung tâm Ngoại ngữ & Tin học
+            </a>
+          </li>
+          <li>
+            <a href="https://lms.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TechCorp LMS & E-Testing (Đào tạo & Khảo thí)
+            </a>
+          </li>
+          <li>
+            <a href="https://learn.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TechCorpLearn (Cổng Học Trực tuyến)
+            </a>
+          </li>
+          <li>
+            <a href="https://techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TechCorp Academy (Cổng Giải pháp Số)
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Cột 4: Khối Quản trị Doanh nghiệp, Việc làm AI & Chuyên ngành (06 Sản phẩm) -->
+      <div>
+        <div class="tc-footer-col-heading">
+          <span class="tc-col-bar emerald"></span>
+          <span>DOANH NGHIỆP, JOBAI & PMS (06)</span>
+        </div>
+        <ul class="tc-footer-links">
+          <li>
+            <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TechCorp HireMind AI (Sàn Tuyển dụng & Tìm việc)
+            </a>
+          </li>
+          <li>
+            <a href="https://erp.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TechCorp ERP (Quản trị Doanh nghiệp Tổng thể)
+            </a>
+          </li>
+          <li>
+            <a href="https://kpi.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TechCorp KPI (Quản trị Mục tiêu & Hiệu suất)
+            </a>
+          </li>
+          <li>
+            <a href="https://qldh.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TechCorp PMS (Quản lý Khách sạn & Resort)
+            </a>
+          </li>
+          <li>
+            <a href="https://bds.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> Hưng Phát Land (Sàn Giao dịch BĐS & AI)
+            </a>
+          </li>
+          <li>
+            <a href="https://noithat.techcorp.info.vn" target="_blank" rel="noopener">
+              <span class="ext-icon">↗</span> TechCorp Interior (Thiết kế & Thi công Nội thất)
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Dòng Bản quyền Dưới cùng -->
+    <div class="tc-footer-bottom-wrap">
+      <div class="tc-footer-bottom">
+        <div>
+          © 2026 <strong>CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP</strong>. Bản quyền thuộc về TechCorp.
+        </div>
+        <div class="tc-footer-bottom-links">
+          <a href="#sec-products">Tất cả 16 Giải pháp Công nghệ</a>
+          <span>•</span>
+          <a href="#sec-exchange">Diễn đàn Giao thương B2B</a>
+          <span>•</span>
+          <a href="login.html">Cổng Quản trị CMS (Đăng nhập)</a>
+        </div>
       </div>
     </div>
   </footer>
 
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=6.1"></script>
+  <script src="app.js?v=6.2"></script>
 </body>
 </html>
