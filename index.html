@@ -43,7 +43,7 @@
           <a href="#sec-pricing" class="pub-nav-link">💳 Báo giá Combo</a>
         </nav>
 
-        <div class="header-actions" style="margin-right:0;">
+        <div class="header-actions" id="publicHeaderAuthActions" style="margin-right:0;display:flex;align-items:center;gap:8px;">
           <a href="login.html" class="btn btn-primary" style="text-decoration:none;padding:9px 18px;white-space:nowrap;">
             🔐 Đăng nhập
           </a>
@@ -93,65 +93,6 @@
       </div>
     </section>
 
-    <!-- DẢI CHỌN NHANH ĐỂ ĐĂNG NHẬP VÀO ĐÚNG TRANG QUẢN TRỊ CỦA TỪNG VAI TRÒ -->
-    <section class="pub-section">
-      <div class="role-switcher-box" style="background:linear-gradient(135deg,#ffffff 0%,#f0f7ff 100%);">
-        <div class="role-switcher-top">
-          <div class="role-switcher-title">
-            <span>🔐 ĐĂNG NHẬP VÀO CỔNG QUẢN TRỊ THEO ĐÚNG VAI TRÒ CỦA BẠN (MỖI VAI TRÒ CHỈ HIỂN THỊ NỘI DUNG QUẢN TRỊ CỦA ĐƠN VỊ MÌNH):</span>
-          </div>
-          <span class="badge badge-green" id="apiStatusBadge">● 17/17 Hệ thống *.techcorp.info.vn Online (HTTP 200)</span>
-        </div>
-
-        <div class="role-cards-grid">
-          <a href="login.html?role=super-admin" class="role-pill-card" style="text-decoration:none;">
-            <div class="role-pill-top">
-              <span>👑 1. Super Admin</span>
-              <span class="badge badge-amber">Toàn quyền Hệ thống</span>
-            </div>
-            <div class="role-pill-org">Chủ Hệ sinh thái TechCorp</div>
-            <div class="role-pill-scope">→ Đăng nhập: Quản trị 16 App, 6 Slider, User & RBAC</div>
-          </a>
-
-          <a href="login.html?role=ceo-sme" class="role-pill-card" style="text-decoration:none;">
-            <div class="role-pill-top">
-              <span>🏢 2. Chủ Doanh nghiệp</span>
-              <span class="badge badge-blue">SME Portal</span>
-            </div>
-            <div class="role-pill-org">Giám đốc / HR Doanh nghiệp Thành viên</div>
-            <div class="role-pill-scope">→ Đăng nhập: Quản trị ERP/KPI/PMS, Sàn JobAI & B2B</div>
-          </a>
-
-          <a href="login.html?role=center-dir" class="role-pill-card" style="text-decoration:none;">
-            <div class="role-pill-top">
-              <span>🏫 3. Giám đốc Trung tâm</span>
-              <span class="badge badge-blue">Center Portal</span>
-            </div>
-            <div class="role-pill-org">Trung tâm Ngoại ngữ - Tin học</div>
-            <div class="role-pill-scope">→ Đăng nhập: Quản trị TTNN, Đấu trường LMS & Lead CRM</div>
-          </a>
-
-          <a href="login.html?role=school-principal" class="role-pill-card" style="text-decoration:none;">
-            <div class="role-pill-top">
-              <span>🎓 4. Hiệu trưởng Trường</span>
-              <span class="badge badge-blue">School Portal</span>
-            </div>
-            <div class="role-pill-org">Trường Mầm non – Phổ thông K12 – ĐH</div>
-            <div class="role-pill-scope">→ Đăng nhập: Quản trị Học vụ, Học phí QR & Học bổng</div>
-          </a>
-
-          <a href="login.html?role=student-user" class="role-pill-card" style="text-decoration:none;">
-            <div class="role-pill-top">
-              <span>👨‍🎓 5. Học viên / Ứng viên</span>
-              <span class="badge badge-green">Citizen ID</span>
-            </div>
-            <div class="role-pill-org">Sinh viên, Học viên & Phụ huynh</div>
-            <div class="role-pill-scope">→ Đăng nhập: Hồ sơ Số QR, Tìm việc JobAI & Ví Ưu đãi</div>
-          </a>
-        </div>
-      </div>
-    </section>
-
     <!-- 2. TRƯNG BÀY & QUẢNG BÁ HỆ THỐNG 16 SẢN PHẨM PHẦN MỀM ĐANG CHẠY THỰC TẾ CỦA TECHCORP -->
     <section id="sec-products" class="pub-section">
       <div class="pub-section-header">
@@ -162,9 +103,6 @@
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-emerald btn-sm">
             🤖 Mở Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
-          </a>
-          <a href="admin.html?role=super-admin" class="btn btn-outline btn-sm">
-            ➕ Quản trị Sản phẩm & Hero Slider
           </a>
           <a href="#sec-pricing" class="btn btn-primary btn-sm">
             💳 Tính Giá Gói Combo →
@@ -194,53 +132,15 @@
       <div class="pub-product-grid" id="publicProductsShowcaseGrid"></div>
     </section>
 
-    <!-- 3. BẢNG TIN CHUNG HỆ SINH THÁI: THÔNG BÁO TỪ CHỦ HỆ SINH THÁI & TIN TỨC ĐƠN VỊ THÀNH VIÊN -->
+    <!-- 3. BẢNG TIN CHUNG HỆ SINH THÁI: CHỈ HIỂN THỊ NỘI DUNG ĐƯỢC ĐĂNG & CUNG CẤP TỪ TRANG QUẢN TRỊ -->
     <section id="sec-bulletins" class="pub-section">
       <div class="pub-section-header">
         <div>
           <div class="pub-section-tag">📢 TRUNG TÂM THÔNG TIN & SỰ KIỆN TOÀN HỆ SINH THÁI</div>
           <h3 class="pub-section-title">Thông báo Chính thức từ Chủ Hệ sinh thái & Tin tức từ Đơn vị Thành viên</h3>
         </div>
-        <div style="display:flex;gap:8px;">
-          <button class="btn btn-emerald btn-sm" onclick="openBulletinModal('member')">
-            ✍️ Thành viên Đăng Thông báo / Sự kiện Mới
-          </button>
-          <a href="admin.html?role=super-admin" class="btn btn-outline btn-sm">
-            👑 Quản trị Bảng tin
-          </a>
-        </div>
-      </div>
-
-      <!-- Khung Đăng nhanh Bản tin của Thành viên ngay trên Trang Public -->
-      <div
-        id="quickBulletinModal"
-        class="card"
-        style="display:none;background:#f0f7ff;border:2px solid #0061ff;margin-bottom:20px;"
-      >
-        <div class="card-header">
-          <div>
-            <h3 class="card-title" id="quickBulletinModalTitle">📢 Đăng tải Tin tức / Sự kiện / Ưu đãi lên Trang Public Hệ sinh thái</h3>
-            <p class="card-subtitle">Hiển thị công khai trên Trang chủ Hệ sinh thái để quảng bá tới toàn bộ cộng đồng.</p>
-          </div>
-          <button class="btn btn-outline btn-sm" onclick="closeBulletinModal()">Đóng ✕</button>
-        </div>
-        <input type="hidden" id="newBulletinSourceType" value="member" />
-        <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-bottom:12px;">
-          <div>
-            <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nhãn Đơn vị / Chuyên mục:</label>
-            <input type="text" id="newBulletinBadge" class="input-control" style="width:100%;" value="🌟 TIN TỪ ĐƠN VỊ THÀNH VIÊN" />
-          </div>
-          <div>
-            <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Tiêu đề Bản tin / Chương trình Quảng bá:</label>
-            <input type="text" id="newBulletinTitle" class="input-control" style="width:100%;" placeholder="VD: Khai giảng khóa Tiếng Anh Doanh nghiệp giảm 30%..." />
-          </div>
-        </div>
-        <div style="margin-bottom:12px;">
-          <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung chi tiết & Quyền lợi dành cho Thành viên:</label>
-          <textarea id="newBulletinSummary" class="input-control" style="width:100%;min-height:70px;" placeholder="Mô tả chi tiết chương trình, thời gian áp dụng và quyền lợi liên kết..."></textarea>
-        </div>
-        <div style="display:flex;justify-content:flex-end;">
-          <button class="btn btn-primary" onclick="submitNewAnnouncement()">🚀 Đăng tải lên Trang Public</button>
+        <div>
+          <span class="badge badge-blue">✔ Nội dung được kiểm duyệt & phát hành từ Cổng Quản trị</span>
         </div>
       </div>
 
@@ -267,33 +167,26 @@
       </div>
     </section>
 
-    <!-- 4. KHÔNG GIAN TRAO ĐỔI, QUẢNG BÁ LẪN NHAU & CHỢ GIAO THƯƠNG B2B GIỮA CÁC ĐƠN VỊ THÀNH VIÊN -->
+    <!-- 4. DIỄN ĐÀN GIAO THƯƠNG & ƯU ĐÃI CHÉO B2B (CHỈ HIỂN THỊ NỘI DUNG ĐÃ ĐƯỢC DUYỆT TỪ TRANG QUẢN TRỊ) -->
     <section id="sec-exchange" class="pub-section">
       <div class="pub-section-header">
         <div>
           <div class="pub-section-tag">💬 KẾT NỐI CỘNG ĐỒNG & QUẢNG BÁ CHÉO CÓ KIỂM CHỨNG</div>
           <h3 class="pub-section-title">Diễn đàn Trao đổi Thành viên & Chợ Giao thương Nội bộ (Give-to-Get)</h3>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <label style="font-size:12px;font-weight:700;color:#0043b8;">Đang tương tác với tư cách:</label>
-          <select id="personaSelect" class="sso-select">
-            <option value="ceo-sme">🏢 Nguyễn Hải Đăng (CEO Nha Trang Bay Resort)</option>
-            <option value="center-dir">🏫 Trần Thanh Tâm (GĐ Ocean English & IT Center)</option>
-            <option value="school-principal">🎓 ThS. Lê Thị Minh Hương (Hiệu trưởng Trường Sao Biển)</option>
-            <option value="student-user">👨‍🎓 Nguyễn Minh Khôi (Sinh viên ĐH Nha Trang)</option>
-            <option value="super-admin">👑 Ban Điều hành Hệ sinh thái TechCorp</option>
-          </select>
+        <div>
+          <span class="badge badge-green">✔ Chỉ hiển thị Tin Giao thương đã được Thẩm định & Phê duyệt</span>
         </div>
       </div>
 
       <div class="grid-2">
-        <!-- Cột Trái: Diễn đàn Thảo luận & Tìm Đối tác giữa các Thành viên -->
+        <!-- Cột Trái: Danh sách Bài viết Giao thương đã duyệt -->
         <div class="card">
           <div class="card-header">
             <div>
-              <h3 class="card-title">💬 Bảng Thảo luận, Tìm Đối tác (RFQ) & Quảng bá Chéo Giữa Các Thành viên</h3>
+              <h3 class="card-title">💬 Bảng Tin Hợp tác, Tìm Đối tác (RFQ) & Quảng bá Chéo Đã Phê Duyệt</h3>
               <p class="card-subtitle">
-                Các đơn vị thành viên tự do trao đổi nhu cầu mua sắm, tìm đối tác đào tạo, đồng tổ chức sự kiện và gửi báo giá trực tiếp.
+                Tổng hợp các nhu cầu mua sắm nội bộ, hợp tác đào tạo và ưu đãi chéo chính thức từ các đơn vị thành viên TechCorp.
               </p>
             </div>
           </div>
@@ -309,68 +202,13 @@
           <div id="forumPostsContainer"></div>
         </div>
 
-        <!-- Cột Phải: Đăng bài Quảng bá / Giao thương mới + Danh sách Ưu đãi B2B Nội bộ -->
+        <!-- Cột Phải: Danh sách Ưu đãi B2B Nội bộ Đang Mở -->
         <div style="display:flex;flex-direction:column;gap:20px;">
           <div class="card">
             <div class="card-header">
               <div>
-                <h3 class="card-title">✍️ Đăng Tin Giao thương / Quảng bá Sản phẩm của Đơn vị Bạn</h3>
-                <p class="card-subtitle">
-                  Chia sẻ cơ hội hợp tác hoặc quảng bá dịch vụ kèm ưu đãi nội bộ (Give-to-Get) tới toàn bộ thành viên hệ sinh thái.
-                </p>
-              </div>
-            </div>
-
-            <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;">
-              <strong style="color:#0043b8;">✔ Đơn vị đăng bài:</strong>
-              <span id="forumComposerIdentity" style="color:#0f172a;font-weight:700;margin-left:4px;">
-                Nguyễn Hải Đăng (CEO Resort & Travel) • Nha Trang Bay Resort & Travel
-              </span>
-            </div>
-
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <select id="forumPostCategory" class="select-control" style="width:100%;">
-                <option value="rfq">📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ)</option>
-                <option value="spotlight">🎁 Quảng bá Sản phẩm & Đặc quyền Thành viên (Give-to-Get)</option>
-                <option value="comarketing">🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện</option>
-                <option value="knowledge">💡 Chia sẻ Kinh nghiệm Quản trị & Chuyển đổi số</option>
-              </select>
-
-              <input
-                type="text"
-                id="forumPostTitle"
-                class="input-control"
-                style="width:100%;"
-                placeholder="Tiêu đề bài viết (VD: [Nha Trang] Cần tìm đối tác đào tạo / Cung ứng thực phẩm...)"
-              />
-
-              <textarea
-                id="forumPostContent"
-                class="input-control"
-                style="width:100%;min-height:75px;resize:vertical;font-family:inherit;"
-                placeholder="Nội dung chi tiết muốn trao đổi hoặc quảng bá tới các đơn vị thành viên..."
-              ></textarea>
-
-              <input
-                type="text"
-                id="forumPostDeal"
-                class="input-control"
-                style="width:100%;border-color:#6ee7b7;background:#f0fdf4;"
-                placeholder="🎁 Ưu đãi cam kết dành cho thành viên cùng Hệ sinh thái (VD: Giảm 25%...)"
-              />
-
-              <button class="btn btn-primary" onclick="submitNewForumPost()" style="padding:11px;">
-                🚀 Đăng lên Diễn đàn Giao thương Hệ sinh thái
-              </button>
-            </div>
-          </div>
-
-          <!-- Gói Ưu đãi B2B Nổi bật giữa các Đơn vị Thành viên -->
-          <div class="card">
-            <div class="card-header">
-              <div>
                 <h3 class="card-title">🎁 Đặc quyền & Ưu đãi Chéo B2B Đang Mở</h3>
-                <p class="card-subtitle">Các gói tài trợ & chiết khấu độc quyền từ Doanh nghiệp thành viên</p>
+                <p class="card-subtitle">Các gói tài trợ & chiết khấu độc quyền được cung cấp từ Không gian Quản trị của Đơn vị Thành viên</p>
               </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px;" id="b2bGrid"></div>

@@ -1,8 +1,7 @@
 /**
- * TechCorp Ecosystem Unified Topbar Widget (v6.0 - Clean International Enterprise Topbar + Mega Launcher)
- * Thiết kế gọn gàng, hiện đại, không dính chùm:
- *   - Bên trái: Thương hiệu TECHCORP CLOUD + Nút Mega-Menu "🌐 Khám phá 15 Nền tảng Live ▾" chia theo 4 khối ngành
- *   - Bên phải: Nút chuyển nhanh Trang Public, Cổng Quản trị & Trạng thái Tài khoản Đăng nhập SSO
+ * TechCorp Ecosystem Unified Topbar Widget (v6.6 - Strict Auth State & Logout Support)
+ * - Khi chưa đăng nhập: Chỉ hiển thị nút "🔐 Đăng nhập", ẩn các liên kết Quản trị nội bộ.
+ * - Khi đã đăng nhập: Hiển thị đúng Tên & Vai trò của tài khoản đang đăng nhập, nút vào Workspace của vai trò đó và nút "🚪 Đăng xuất".
  */
 (function () {
   if (window.__TECHCORP_BAR_LOADED__) return;
@@ -33,12 +32,25 @@
   const isAdminPage = pathname.indexOf("admin.html") !== -1;
   const isLoginPage = pathname.indexOf("login.html") !== -1;
 
-  // Check session role from localStorage
-  let savedSession = null;
-  try {
-    const raw = localStorage.getItem("tc_sso_session");
-    if (raw) savedSession = JSON.parse(raw);
-  } catch (_) {}
+  function getSavedSsoSession() {
+    try {
+      const raw = localStorage.getItem("tc_sso_session");
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.personaKey && parsed.email) {
+        return parsed;
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  window.handleGlobalSsoLogout = function (ev) {
+    if (ev) ev.preventDefault();
+    try {
+      localStorage.removeItem("tc_sso_session");
+    } catch (_) {}
+    window.location.href = (hubBaseUrl ? hubBaseUrl + "/" : "") + "login.html?logged_out=1";
+  };
 
   const style = document.createElement("style");
   style.textContent = `
@@ -69,7 +81,7 @@
     .tc-eco-left, .tc-eco-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
     .tc-eco-brand {
       display: inline-flex;
@@ -204,6 +216,19 @@
       border: 1px solid rgba(96, 165, 250, 0.4);
       font-weight: 700;
     }
+    .tc-eco-user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: #e2e8f0;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
     .tc-eco-sso-btn {
       background: linear-gradient(135deg, #0061ff 0%, #0284c7 100%);
       color: #ffffff;
@@ -219,8 +244,27 @@
     .tc-eco-sso-btn:hover {
       filter: brightness(1.1);
     }
+    .tc-eco-logout-btn {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      text-decoration: none;
+      padding: 5px 11px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid rgba(248, 113, 113, 0.4);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .tc-eco-logout-btn:hover {
+      background: #dc2626;
+      color: #ffffff;
+      border-color: #dc2626;
+    }
     @media (max-width: 1024px) {
-      .tc-eco-quick-stats {
+      .tc-eco-quick-stats, .tc-eco-user-badge {
         display: none;
       }
       .tc-eco-dd-grid {
@@ -238,17 +282,46 @@
   `;
   document.head.appendChild(style);
 
+  const basePrefix = hubBaseUrl ? hubBaseUrl + "/" : "";
   const publicLinkHtml =
     isAdminPage || isLoginPage
-      ? `<a href="${hubBaseUrl}/index.html" class="tc-eco-link">🌍 Về Trang Public</a>`
+      ? `<a href="${basePrefix}index.html" class="tc-eco-link">🌍 Về Trang Public</a>`
       : `<a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="tc-eco-link" style="color:#38bdf8;font-weight:700;">🤖 Sàn Việc làm JobAI ↗</a>`;
+
+  function buildRightAuthHtml() {
+    const savedSession = getSavedSsoSession();
+    if (!savedSession) {
+      return `
+        ${publicLinkHtml}
+        <a href="${basePrefix}login.html" class="tc-eco-sso-btn" id="tcEcoSsoStatus">
+          🔐 Đăng nhập
+        </a>
+      `;
+    }
+    const workspaceLabel =
+      savedSession.roleCode === "super_admin"
+        ? "👑 Quản trị Hệ sinh thái"
+        : "⚙️ Không gian Quản trị";
+    return `
+      ${publicLinkHtml}
+      <span class="tc-eco-user-badge" id="tcEcoSsoStatus">
+        👤 ${savedSession.name} • <span style="color:#38bdf8;">${savedSession.roleBadge || "Thành viên"}</span>
+      </span>
+      <a href="${basePrefix}admin.html" class="tc-eco-link ${isAdminPage ? "active" : ""}">
+        ${workspaceLabel}
+      </a>
+      <button type="button" class="tc-eco-logout-btn" onclick="window.handleGlobalSsoLogout(event)">
+        🚪 Đăng xuất
+      </button>
+    `;
+  }
 
   const bar = document.createElement("div");
   bar.className = "tc-eco-bar";
   bar.innerHTML = `
     <div class="tc-eco-inner">
       <div class="tc-eco-left">
-        <a href="${hubBaseUrl}/index.html" class="tc-eco-brand">
+        <a href="${basePrefix}index.html" class="tc-eco-brand">
           <span class="tc-eco-dot"></span>
           TECHCORP CLOUD ECOSYSTEM
         </a>
@@ -264,7 +337,7 @@
                 <strong style="font-size:13.5px;color:#071936;">Danh mục 16 Hệ thống Phần mềm Đang Vận hành Thực tế (*.techcorp.info.vn)</strong>
                 <div style="font-size:11.5px;color:#64748b;">100% Trực tuyến (HTTP 200 & SSL) • Kết nối định danh tập trung TechCorp ID</div>
               </div>
-              <a href="${hubBaseUrl}/index.html#sec-products" style="font-size:12px;font-weight:700;color:#0055e5;text-decoration:none;">Xem chi tiết 16 Sản phẩm →</a>
+              <a href="${basePrefix}index.html#sec-products" style="font-size:12px;font-weight:700;color:#0055e5;text-decoration:none;">Xem chi tiết 16 Sản phẩm →</a>
             </div>
             <div class="tc-eco-dd-grid" id="tcEcoDropdownGrid"></div>
           </div>
@@ -272,20 +345,21 @@
         <div class="tc-eco-quick-stats">
           <span>● 17/17 Domains Online</span>
           <span>•</span>
-          <span>SSO JWT v6.1</span>
+          <span>SSO JWT v6.6</span>
         </div>
       </div>
-      <div class="tc-eco-right">
-        ${publicLinkHtml}
-        <a href="${hubBaseUrl}/admin.html" class="tc-eco-link ${isAdminPage ? "active" : ""}">
-          🛡️ Cổng Quản trị
-        </a>
-        <a href="${hubBaseUrl}/login.html" class="tc-eco-sso-btn" id="tcEcoSsoStatus">
-          ${savedSession && savedSession.name ? "👤 " + savedSession.name + " (Đổi Vai trò)" : "🔐 Đăng nhập Quản trị (SSO)"}
-        </a>
+      <div class="tc-eco-right" id="tcEcoRightActions">
+        ${buildRightAuthHtml()}
       </div>
     </div>
   `;
+
+  window.refreshTechCorpTopbarAuth = function () {
+    const rightEl = bar.querySelector("#tcEcoRightActions");
+    if (rightEl) {
+      rightEl.innerHTML = buildRightAuthHtml();
+    }
+  };
 
   function renderDropdownApps(apps) {
     const grid = bar.querySelector("#tcEcoDropdownGrid");
@@ -299,15 +373,17 @@
     ];
 
     grid.innerHTML = groups
-      .map((g) => {
+      .map(function (g) {
         const items = apps
-          .filter((a) => (a.badge || "") === g.badge)
-          .map((a) => {
-            const cleanDomain = (a.appUrl || "").replace("https://", "");
+          .filter(function (a) {
+            return (a.badge || "") === g.badge;
+          })
+          .map(function (a) {
+            const domain = (a.appUrl || "").replace("https://", "");
             return `
-              <a href="${a.appUrl || "#"}" target="_blank" rel="noopener" class="tc-eco-dd-item">
-                <div>${a.name} ↗</div>
-                <span class="tc-eco-dd-domain">${cleanDomain}</span>
+              <a href="${basePrefix}product.html?id=${encodeURIComponent(a.id)}" class="tc-eco-dd-item">
+                <div>${a.name}</div>
+                <span class="tc-eco-dd-domain">🌐 ${domain} • Xem chi tiết & Dùng thử →</span>
               </a>
             `;
           })
@@ -322,47 +398,38 @@
       .join("");
   }
 
+  function mountBar() {
+    if (!document.body) return;
+    document.body.insertBefore(bar, document.body.firstChild);
+    renderDropdownApps(FALLBACK_PRODUCTS);
+
+    const btn = bar.querySelector("#tcEcoLauncherBtn");
+    const dd = bar.querySelector("#tcEcoDropdown");
+    const wrap = bar.querySelector("#tcEcoLauncherWrap");
+
+    if (btn && dd) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        dd.classList.toggle("open");
+      });
+      document.addEventListener("click", function (e) {
+        if (wrap && !wrap.contains(e.target)) {
+          dd.classList.remove("open");
+        }
+      });
+    }
+  }
+
   window.refreshTechCorpTopbar = function (apps) {
     if (Array.isArray(apps) && apps.length) {
       renderDropdownApps(apps);
     }
+    window.refreshTechCorpTopbarAuth();
   };
 
-  renderDropdownApps(FALLBACK_PRODUCTS);
-
-  if (document.body) {
-    document.body.insertBefore(bar, document.body.firstChild);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mountBar);
   } else {
-    window.addEventListener("DOMContentLoaded", () => {
-      document.body.insertBefore(bar, document.body.firstChild);
-    });
-  }
-
-  const btn = bar.querySelector("#tcEcoLauncherBtn");
-  const dd = bar.querySelector("#tcEcoDropdown");
-  const wrap = bar.querySelector("#tcEcoLauncherWrap");
-
-  if (btn && dd) {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      dd.classList.toggle("open");
-    });
-    document.addEventListener("click", (e) => {
-      if (wrap && !wrap.contains(e.target)) {
-        dd.classList.remove("open");
-      }
-    });
-  }
-
-  const apiEndpoint = `${hubBaseUrl}/api/v1/apps`;
-  if (window.location.protocol.startsWith("http")) {
-    fetch(apiEndpoint)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data && Array.isArray(data.apps) && data.apps.length) {
-          renderDropdownApps(data.apps);
-        }
-      })
-      .catch(() => {});
+    mountBar();
   }
 })();

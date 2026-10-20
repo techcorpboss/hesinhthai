@@ -1070,7 +1070,7 @@ window.activeMemberSubTab = "overview";
 window.activateAdminPanel = function (panelId, memberSubTab) {
   const roleCode = getCurrentRoleCode();
   // Strict RBAC isolation: Only super_admin can access Master Admin panels
-  if (roleCode !== "super_admin" && panelId && panelId.indexOf("panel-master-") === 0) {
+  if (roleCode !== "super_admin") {
     panelId = "panel-role-workspace";
     if (!memberSubTab) {
       memberSubTab = window.activeMemberSubTab || "overview";
@@ -1083,7 +1083,14 @@ window.activateAdminPanel = function (panelId, memberSubTab) {
   const panels = document.querySelectorAll(".tab-panel");
   if (panels.length > 0) {
     panels.forEach((p) => {
-      p.classList.toggle("active", p.id === panelId);
+      const isMasterPanel = p.id && p.id.indexOf("panel-master-") === 0;
+      if (roleCode !== "super_admin" && isMasterPanel) {
+        p.classList.remove("active");
+        p.style.display = "none";
+      } else {
+        p.style.display = "";
+        p.classList.toggle("active", p.id === panelId);
+      }
     });
   }
   document.querySelectorAll("#dynamicRoleSidebarNav .nav-btn").forEach((btn) => {
@@ -1113,10 +1120,10 @@ window.switchToTab = function (tabId) {
   }
   // If on Public Page (index.html), scroll to relevant section
   const publicSectionMap = {
-    "view-plaza": "section-bulletins",
-    "view-workspace": "section-roles",
-    "view-forum-b2b": "section-forum",
-    "view-talent-lms": "section-talent"
+    "view-plaza": "sec-bulletins",
+    "view-workspace": "sec-products",
+    "view-forum-b2b": "sec-exchange",
+    "view-talent-lms": "sec-talent-lms"
   };
   const secId = publicSectionMap[tabId] || tabId;
   const secEl = document.getElementById(secId);
@@ -1141,7 +1148,42 @@ window.openAdminSubtab = function (subtabId) {
   }
 };
 
+function renderPublicHeaderAuthState() {
+  const box = document.getElementById("publicHeaderAuthActions");
+  if (!box) return;
+  try {
+    const raw = localStorage.getItem("tc_sso_session");
+    if (!raw) {
+      box.innerHTML = `
+        <a href="login.html" class="btn btn-primary" style="text-decoration:none;padding:9px 18px;white-space:nowrap;">
+          🔐 Đăng nhập
+        </a>
+      `;
+      return;
+    }
+    const sess = JSON.parse(raw);
+    if (!sess || !sess.personaKey) {
+      box.innerHTML = `
+        <a href="login.html" class="btn btn-primary" style="text-decoration:none;padding:9px 18px;white-space:nowrap;">
+          🔐 Đăng nhập
+        </a>
+      `;
+      return;
+    }
+    const isSuper = sess.personaKey === "super-admin" || sess.roleCode === "super_admin";
+    box.innerHTML = `
+      <a href="admin.html" class="btn btn-outline btn-sm" style="text-decoration:none;white-space:nowrap;">
+        ${isSuper ? "👑 Quản trị Hệ sinh thái" : "⚙️ Không gian Quản trị"} (${escapeHtml(sess.name || sess.email)})
+      </a>
+      <button type="button" class="btn btn-danger btn-sm" style="white-space:nowrap;" onclick="logoutSsoSession()">
+        🚪 Đăng xuất
+      </button>
+    `;
+  } catch (_) {}
+}
+
 function renderAllViews() {
+  renderPublicHeaderAuthState();
   renderPublicHeroSlider();
   renderPublicProductsShowcase();
   renderRoleContextAndSidebar();
@@ -1272,11 +1314,11 @@ function renderPublicHeroSlider() {
               🤖 Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
             </a>
             <a
-              href="${escapeHtml(slide.secondaryCtaLink || "login.html")}"
+              href="#sec-pricing"
               class="btn"
               style="background:rgba(255,255,255,0.18);color:#ffffff;border:1px solid rgba(255,255,255,0.45);padding:12px 18px;font-size:13.5px;text-decoration:none;"
             >
-              ${escapeHtml(slide.secondaryCtaText || "🔐 Quản trị Hệ sinh thái")}
+              💳 Báo giá Gói Combo
             </a>
           </div>
         </div>
@@ -2151,20 +2193,27 @@ function renderForumPosts() {
 
   if (!container) return;
 
+  let isLoggedIn = false;
+  try {
+    const raw = localStorage.getItem("tc_sso_session");
+    if (raw && JSON.parse(raw).personaKey) {
+      isLoggedIn = true;
+    }
+  } catch (_) {}
+
   const cat = STATE.selectedForumCategory || "all";
-  // Hiển thị các bài đã duyệt (approved) hoặc bài đang chờ thẩm định (kèm nút Duyệt nhanh)
+  // Trang Public chỉ hiển thị các bài đã được thẩm định & duyệt (status === "approved") từ trang Admin
   const filtered = STATE.forumPosts.filter(
-    (p) => p.status !== "rejected" && (cat === "all" || p.category === cat)
+    (p) => p.status === "approved" && (cat === "all" || p.category === cat)
   );
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="padding:24px;text-align:center;color:#475569;">Chưa có bài thảo luận nào trong chuyên mục này.</div>`;
+    container.innerHTML = `<div style="padding:24px;text-align:center;color:#475569;">Chưa có bài viết đã duyệt nào trong chuyên mục này.</div>`;
     return;
   }
 
   container.innerHTML = filtered
     .map((post) => {
-      const isPending = post.status === "pending";
       const isLocked = Boolean(post.locked);
       return `
         <div class="forum-post-card ${post.pinned ? "pinned" : ""}">
@@ -2173,12 +2222,8 @@ function renderForumPosts() {
               <span class="badge ${post.pinned ? "badge-amber" : "badge-blue"}">
                 ${post.pinned ? "📌 GHIM VIP • " : ""}${escapeHtml(post.categoryLabel)}
               </span>
-              ${
-                isPending
-                  ? `<span class="badge badge-amber">⏳ Chờ Quản trị viên thẩm định</span>`
-                  : `<span class="badge badge-green">✔ Đã thẩm định & Xác thực SSO</span>`
-              }
-              ${isLocked ? `<span class="badge badge-red">🔒 Đã khóa bình luận (Clocked)</span>` : ""}
+              <span class="badge badge-green">✔ Đã thẩm định & Xác thực SSO</span>
+              ${isLocked ? `<span class="badge badge-red">🔒 Đã đóng bình luận</span>` : ""}
             </div>
             <span style="font-size:11.5px;color:#475569;">🕒 ${escapeHtml(post.createdAt)} • 👁️ ${post.views || 1} lượt xem</span>
           </div>
@@ -2212,14 +2257,6 @@ function renderForumPosts() {
               <button class="btn btn-emerald btn-sm" onclick="connectB2B('${escapeHtml(post.author?.org || post.author?.name)}')">
                 🤝 Kết nối Giao thương / Nhận Ưu đãi
               </button>
-              ${
-                isPending
-                  ? `<button class="btn btn-primary btn-sm" onclick="moderateForumStatus('${post.id}', 'approved')">✅ Thẩm định Duyệt ngay</button>`
-                  : ""
-              }
-              <button class="btn btn-warning btn-sm" onclick="toggleForumLock('${post.id}')">
-                ${isLocked ? "🔓 Mở khóa (Unlock)" : "🔒 Clock / Khóa bình luận"}
-              </button>
             </div>
             <span style="font-size:12px;color:#475569;">💬 ${(post.comments || []).length} phản hồi</span>
           </div>
@@ -2242,19 +2279,23 @@ function renderForumPosts() {
             ${
               isLocked
                 ? `<div style="background:#fff1f2;border:1px solid #fda4af;color:#be123c;padding:9px 12px;border-radius:8px;font-size:12.5px;margin-top:8px;">
-                    🔒 <strong>Chủ đề đã bị khóa bình luận (Clocked):</strong> Quản trị viên đã đóng chức năng gửi phản hồi mới cho bài viết này.
+                    🔒 <strong>Chủ đề đã đóng phản hồi:</strong> Quản trị viên đã khóa bình luận cho chủ đề này.
                   </div>`
-                : `<div style="display:flex;gap:8px;margin-top:8px;">
+                : isLoggedIn
+                ? `<div style="display:flex;gap:8px;margin-top:8px;">
                     <input
                       type="text"
                       id="cmtInput_${post.id}"
                       class="input-control"
                       style="flex:1;padding:7px 11px;font-size:12.5px;"
-                      placeholder="Gửi báo giá / phản hồi trực tiếp với tư cách TechCorp ID của bạn..."
+                      placeholder="Gửi báo giá / phản hồi trực tiếp với tư cách TechCorp ID đã đăng nhập..."
                     />
                     <button class="btn btn-primary btn-sm" onclick="submitForumComment('${post.id}')">
                       Gửi phản hồi
                     </button>
+                  </div>`
+                : `<div style="margin-top:8px;font-size:12px;color:#475569;">
+                    <a href="login.html" style="color:#0052d4;font-weight:700;text-decoration:none;">🔐 Đăng nhập TechCorp ID</a> để gửi báo giá hoặc phản hồi giao thương.
                   </div>`
             }
           </div>
@@ -3150,9 +3191,9 @@ function renderTalents() {
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid rgba(148,163,184,0.14);">
           <span style="font-size:12px;color:#059669;">● ${escapeHtml(t.status)} ${t.syncedToErpCount ? `(Đã đồng bộ ${t.syncedToErpCount} DN)` : ""}</span>
-          <button class="btn btn-primary" onclick="importCandidateToERP('${t.id}', '${t.name}')">
-            Đẩy hồ sơ vào HRM (ERP)
-          </button>
+          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+            🤖 Xem Hồ sơ trên JobAI ↗
+          </a>
         </div>
       </div>
     `
@@ -3243,11 +3284,11 @@ function renderContests() {
         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid rgba(148,163,184,0.14);">
           <div>
             <span style="font-size:13px;font-weight:700;color:#0052d4;">${c.participants.toLocaleString()} thí sinh</span>
-            <span style="font-size:12px;color:#d97706;margin-left:8px;">(${c.leadsGenerated} Lead học viên mới)</span>
+            <span style="font-size:12px;color:#d97706;margin-left:8px;">(${c.leadsGenerated} Học viên quan tâm)</span>
           </div>
-          <button class="btn btn-outline" onclick="pushLeadsToCenter('${c.id}', '${c.title}')">
-            Đồng bộ Lead về CRM Trung tâm
-          </button>
+          <a href="https://lms.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="text-decoration:none;">
+            📝 Tham gia Thi trên LMS ↗
+          </a>
         </div>
       </div>
     `
@@ -3589,7 +3630,7 @@ function renderRoleContextAndSidebar() {
 
       const postNewsBtn = perms.postMemberNews
         ? `
-          <button class="nav-btn" onclick="openBulletinModal('member')">
+          <button class="nav-btn" data-panel="panel-role-workspace" data-subtab="news" onclick="activateAdminPanel('panel-role-workspace', 'news')">
             <span>📢 5. Đăng Tin Đơn vị lên Public</span>
             <span class="nav-badge">✔ Mở</span>
           </button>
@@ -3605,10 +3646,10 @@ function renderRoleContextAndSidebar() {
           <span>🌍 Xem Trang Public Hệ sinh thái</span>
           <span class="nav-badge">↗</span>
         </a>
-        <a href="login.html" onclick="logoutSsoSession()" class="nav-btn" style="text-decoration:none;">
-          <span>🔄 Đổi Tài khoản / Đăng xuất</span>
-          <span class="nav-badge">SSO</span>
-        </a>
+        <button type="button" onclick="logoutSsoSession()" class="nav-btn" style="width:100%;text-align:left;color:#dc2626;">
+          <span>🚪 Đăng xuất khỏi Hệ thống</span>
+          <span class="nav-badge" style="background:#fee2e2;color:#b91c1c;">Thoát</span>
+        </button>
       `;
     }
 
@@ -3668,7 +3709,7 @@ function renderRoleContextAndSidebar() {
           sub: "● ERP, BSC-KPI, PMS Khách sạn, BĐS, Nội thất"
         },
         {
-          label: "HỒ SƠ ỨNG VIÊN ĐÃ XÁC THỰC",
+          label: "HỒ SƠ ỨNG VIÊN ĐÃ NHẬN",
           badge: "Từ ĐH & TT",
           badgeClass: "badge-blue",
           value: "14 Ứng viên",
@@ -3823,12 +3864,12 @@ function renderRoleContextAndSidebar() {
         ? `
           <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-master-overview')">👑 Tổng quan Hệ sinh thái</button>
           <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-master-rbac')">🔐 Cấu hình Phân quyền RBAC</button>
-          <a href="login.html" class="btn btn-outline btn-sm" style="text-decoration:none;">🔄 Đổi Vai trò Test</a>
+          <button class="btn btn-danger btn-sm" onclick="logoutSsoSession()">🚪 Đăng xuất</button>
         `
         : `
           <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'overview')">🏢 Tổng quan Workspace</button>
           <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'apps')">🚀 Mở ${assignedApps.length} Hệ thống Được cấp phép</button>
-          <a href="login.html" onclick="logoutSsoSession()" class="btn btn-outline btn-sm" style="text-decoration:none;">🔄 Đổi Tài khoản Khác</a>
+          <button class="btn btn-danger btn-sm" onclick="logoutSsoSession()">🚪 Đăng xuất</button>
         `;
 
     bannerEl.innerHTML = `
@@ -3930,27 +3971,19 @@ function renderCentralBulletins() {
 }
 
 window.openBulletinModal = function (sourceType) {
-  if (sourceType === "master" && !hasRbacPermission("publishMasterBulletin")) {
-    showToast(`<span style="color:#d97706">🔒 Theo phân quyền RBAC, chỉ Chủ Hệ sinh thái mới được phát Thông báo Điều hành! Bạn có thể bấm "Thành viên Đăng tin Mới".</span>`);
+  if (sourceType === "master") {
+    if (!hasRbacPermission("publishMasterBulletin")) {
+      showToast(`<span style="color:#d97706">🔒 Theo phân quyền RBAC, chỉ Chủ Hệ sinh thái mới được phát Thông báo Điều hành!</span>`);
+      return;
+    }
+    window.activateAdminPanel("panel-master-bulletins");
     return;
   }
-  if (sourceType === "member" && !hasRbacPermission("postMemberNews")) {
+  if (!hasRbacPermission("postMemberNews")) {
     showToast(`<span style="color:#d97706">🔒 Vai trò hiện tại chưa được bật quyền "Đăng Tin Tiêu điểm Thành viên" trong Ma trận RBAC!</span>`);
     return;
   }
-  const modal = document.getElementById("quickBulletinModal");
-  if (!modal) return;
-  document.getElementById("newBulletinSourceType").value = sourceType;
-  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
-  document.getElementById("newBulletinBadge").value =
-    sourceType === "master"
-      ? "👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP"
-      : `🌟 TIN TỪ THÀNH VIÊN: ${persona.org.toUpperCase()}`;
-  document.getElementById("quickBulletinModalTitle").textContent =
-    sourceType === "master"
-      ? "👑 Phát hành Thông báo Điều hành Chính thức từ Chủ Hệ sinh thái"
-      : `✍️ Đăng Tin Tiêu điểm / Sự kiện của Đơn vị (${persona.org}) lên Trang chính`;
-  modal.style.display = "block";
+  window.activateAdminPanel("panel-role-workspace", "news");
 };
 
 window.closeBulletinModal = function () {
@@ -3988,10 +4021,10 @@ window.submitNewAnnouncement = async function () {
       STATE.announcements = data.announcements;
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
       closeBulletinModal();
-      document.getElementById("newBulletinTitle").value = "";
-      document.getElementById("newBulletinSummary").value = "";
+      if (document.getElementById("newBulletinTitle")) document.getElementById("newBulletinTitle").value = "";
+      if (document.getElementById("newBulletinSummary")) document.getElementById("newBulletinSummary").value = "";
       renderAllViews();
-      showToast("📢 Đã phát hành Bản tin lên Cổng Chung Hệ sinh thái thành công!");
+      showToast("📢 Đã phát hành Bản tin lên Trang Public Hệ sinh thái thành công!");
       return;
     }
   } catch (_) {}
@@ -4012,7 +4045,121 @@ window.submitNewAnnouncement = async function () {
   recordLocalAuditLog("ANNOUNCEMENT_PUBLISH", title, "INFO", `Đăng bản tin mới lên Cổng Chung (${badge}).`);
   closeBulletinModal();
   renderAllViews();
-  showToast("📢 Đã phát hành Bản tin lên Cổng Chung Hệ sinh thái!");
+  showToast("📢 Đã phát hành Bản tin lên Trang Public Hệ sinh thái!");
+};
+
+window.submitWorkspaceMemberNews = async function () {
+  const badge = document.getElementById("wsBulletinBadge")?.value.trim() || "🌟 TIN TỪ ĐƠN VỊ THÀNH VIÊN";
+  const title = document.getElementById("wsBulletinTitle")?.value.trim();
+  const summary = document.getElementById("wsBulletinSummary")?.value.trim();
+  if (!title || !summary) {
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Tiêu đề và Nội dung bản tin của đơn vị!</span>`);
+    return;
+  }
+  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["ceo-sme"];
+
+  try {
+    const res = await fetch("/api/v1/announcements", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sourceType: "member",
+        badge,
+        title,
+        summary,
+        authorName: persona.name,
+        authorOrg: persona.org,
+        actorKey: STATE.currentPersona
+      })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.announcements = data.announcements;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast("📢 Đã đăng tải Bản tin của Đơn vị lên Trang Public thành công!");
+      return;
+    }
+  } catch (_) {}
+
+  STATE.announcements.unshift({
+    id: "ANN-" + Date.now(),
+    sourceType: "member",
+    badge,
+    title,
+    summary,
+    authorName: persona.name,
+    authorOrg: persona.org,
+    createdAt: "Vừa xong",
+    pinned: false,
+    actionLabel: "Kết nối ngay",
+    actionView: "view-talent-lms"
+  });
+  recordLocalAuditLog("ANNOUNCEMENT_PUBLISH", title, "INFO", `Đơn vị thành viên đăng bản tin mới (${badge}).`);
+  renderAllViews();
+  showToast("📢 Đã đăng tải Bản tin của Đơn vị lên Trang Public thành công!");
+};
+
+window.submitWorkspaceForumPost = async function () {
+  const category = document.getElementById("wsForumCategory")?.value || "rfq";
+  const title = document.getElementById("wsForumTitle")?.value.trim();
+  const content = document.getElementById("wsForumContent")?.value.trim();
+  const memberDeal = document.getElementById("wsForumDeal")?.value.trim();
+
+  if (!title || !content) {
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Tiêu đề và Nội dung tin Giao thương B2B!</span>`);
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/v1/forum/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        category,
+        title,
+        content,
+        memberDeal,
+        personaKey: STATE.currentPersona
+      })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.forumPosts = data.forumPosts;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      STATE.activityLogs = data.activityLogs || STATE.activityLogs;
+      renderAllViews();
+      showToast("🚀 Đã gửi bài viết Giao thương B2B từ trang Quản trị (Sẵn sàng hiển thị trên Public sau khi duyệt)!");
+      return;
+    }
+  } catch (_) {}
+
+  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["ceo-sme"];
+  STATE.forumPosts.unshift({
+    id: "POST-" + Date.now(),
+    category,
+    categoryLabel: CATEGORY_MAP[category] || CATEGORY_MAP.rfq,
+    pinned: false,
+    status: STATE.currentPersona === "super-admin" ? "approved" : "pending",
+    locked: false,
+    title,
+    content,
+    memberDeal: memberDeal || "Ưu đãi nội bộ dành cho thành viên Hệ sinh thái TechCorp",
+    author: {
+      personaKey: STATE.currentPersona,
+      name: persona.name,
+      org: persona.org,
+      roleBadge: persona.roleBadge,
+      verifiedApp: "TechCorp SSO"
+    },
+    createdAt: "Vừa xong",
+    likes: 1,
+    views: 1,
+    comments: []
+  });
+  recordLocalAuditLog("FORUM_POST_CREATE", title, "INFO", "Đăng bài Giao thương B2B từ Không gian Quản trị.");
+  renderAllViews();
+  showToast("🚀 Đã gửi bài viết Giao thương B2B từ trang Quản trị!");
 };
 
 function renderAdminBulletinsTable() {
@@ -4063,6 +4210,7 @@ window.deleteAnnouncementAdmin = async function (annId) {
 // ==================== DEDICATED MEMBER ORGANIZATION WORKSPACES (VIEW-WORKSPACE) ====================
 window.setPreviewTenantRole = function (roleCode) {
   STATE.previewTenantRole = roleCode;
+  window.activeMemberSubTab = "overview";
   renderMemberWorkspace();
 };
 
@@ -4081,14 +4229,63 @@ function renderMemberWorkspace() {
   const allowedAppIds = (roleUser && roleUser.assignedApps) || [];
   const allowedAppsList = STATE.apps.filter((a) => allowedAppIds.includes(a.id));
 
+  const roleTabsMap = {
+    ceo_sme: [
+      { id: "overview", label: "🏢 1. Tổng quan Doanh nghiệp" },
+      { id: "apps", label: `🚀 2. Phần mềm Đã cấp phép (${allowedAppsList.length})` },
+      { id: "recruitment", label: `👨‍💼 3. Tuyển dụng Liên thông & CV (${STATE.talents.length})` },
+      { id: "b2b", label: "🎁 4. Chiến dịch E-Voucher & B2B" },
+      { id: "news", label: "📢 5. Đăng Tin Đơn vị lên Public" }
+    ],
+    center_director: [
+      { id: "overview", label: "🏫 1. Tổng quan Trung tâm" },
+      { id: "apps", label: `🚀 2. Phần mềm Đã cấp phép (${allowedAppsList.length})` },
+      { id: "contests", label: `🏆 3. Đấu trường Thi Online & Lead (${STATE.contests.length})` },
+      { id: "b2b", label: "🤝 4. Hợp đồng Đào tạo DN (RFQ)" },
+      { id: "news", label: "📢 5. Đăng Tin Đơn vị lên Public" }
+    ],
+    school_principal: [
+      { id: "overview", label: "🎓 1. Tổng quan Học vụ & QR" },
+      { id: "apps", label: `🚀 2. Phần mềm Đã cấp phép (${allowedAppsList.length})` },
+      { id: "scholarships", label: "🎁 3. Duyệt Học bổng & Phúc lợi PH" },
+      { id: "b2b", label: "🍱 4. Nhà cung ứng Học đường B2B" },
+      { id: "news", label: "📢 5. Đăng Tin Đơn vị lên Public" }
+    ],
+    student_parent: [
+      { id: "overview", label: "🏅 1. Hồ sơ Năng lực Số (Passport)" },
+      { id: "apps", label: `🚀 2. Nền tảng Học & Thi Trực tuyến (${allowedAppsList.length})` },
+      { id: "jobs", label: "💼 3. Ứng tuyển Thực tập 1-Click" },
+      { id: "vouchers", label: "🎁 4. Ví Học bổng & E-Voucher" }
+    ]
+  };
+
+  const tabsForRole = roleTabsMap[activeRole] || roleTabsMap.ceo_sme;
+  const subTabNavHtml = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;padding:10px 12px;background:#ffffff;border:1.5px solid #dbe6f5;border-radius:14px;">
+      ${tabsForRole
+        .map(
+          (t) => `
+          <button
+            type="button"
+            class="btn ${subTab === t.id ? "btn-primary" : "btn-outline"} btn-sm"
+            onclick="activateAdminPanel('panel-role-workspace', '${t.id}')"
+          >
+            ${escapeHtml(t.label)}
+          </button>
+        `
+        )
+        .join("")}
+    </div>
+  `;
+
   const roleAppsHtml = `
-    <div class="card" style="${subTab === "apps" ? "border:2px solid #0052d4;box-shadow:0 12px 28px rgba(0,82,212,0.12);" : ""}">
+    <div class="card" style="border:2px solid #0052d4;box-shadow:0 12px 28px rgba(0,82,212,0.12);">
       <div class="card-header">
         <div>
           <span class="badge badge-green">🚀 HỆ THỐNG PHẦN MỀM ĐƯỢC CẤP QUYỀN SSO CHO VAI TRÒ NÀY (${allowedAppsList.length} NỀN TẢNG LIVE)</span>
-          <h3 class="card-title" style="margin-top:6px;">Danh sách các Ứng dụng Thực tế thuộc Phạm vi Quản trị của Đơn vị</h3>
+          <h3 class="card-title" style="margin-top:6px;">Danh sách các Ứng dụng Thực tế thuộc Phạm vi Quản trị của: ${escapeHtml((roleUser && roleUser.org) || "Đơn vị Thành viên")}</h3>
           <p class="card-subtitle">
-            Tài khoản của vai trò này chỉ nhìn thấy và truy cập trực tiếp các hệ thống phần mềm được cấp phép dưới đây:
+            Tài khoản của vai trò <strong>${escapeHtml((roleUser && roleUser.roleBadge) || activeRole)}</strong> chỉ nhìn thấy và truy cập trực tiếp các hệ thống phần mềm được cấp phép dưới đây (các ứng dụng ngoài phạm vi vai trò được ẩn hoàn toàn):
           </p>
         </div>
       </div>
@@ -4108,9 +4305,14 @@ function renderMemberWorkspace() {
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid #dbeafe;">
                   <code style="font-size:11px;color:#0052d4;font-weight:700;">${escapeHtml(app.appUrl.replace("https://", ""))}</code>
-                  <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
-                    Mở Hệ thống ↗
-                  </a>
+                  <div style="display:flex;gap:6px;">
+                    <a href="product.html?id=${encodeURIComponent(app.id)}" class="btn btn-outline btn-sm" style="text-decoration:none;">
+                      Chi tiết
+                    </a>
+                    <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+                      Mở Hệ thống ↗
+                    </a>
+                  </div>
                 </div>
               </div>
             `;
@@ -4150,54 +4352,236 @@ function renderMemberWorkspace() {
     `
       : "";
 
+  // TAB 2: PHẦN MỀM ĐÃ CẤP PHÉP (CHO TẤT CẢ CÁC VAI TRÒ)
   if (subTab === "apps") {
-    container.innerHTML = `${masterInspectorBar}${roleAppsHtml}`;
+    container.innerHTML = `${masterInspectorBar}${subTabNavHtml}${roleAppsHtml}`;
     return;
   }
 
-  if (activeRole === "ceo_sme") {
+  // TAB 5: ĐĂNG BẢN TIN ĐƠN VỊ THÀNH VIÊN LÊN TRANG PUBLIC (CHO DOANH NGHIỆP, TRUNG TÂM, TRƯỜNG HỌC)
+  if (subTab === "news") {
+    const memberBulletins = (STATE.announcements || []).filter((a) => a.sourceType !== "master");
     container.innerHTML = `
       ${masterInspectorBar}
-      ${roleAppsHtml}
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <span class="badge badge-blue">🏢 WORKSPACE QUẢN TRỊ DOANH NGHIỆP THÀNH VIÊN (SME TENANT PORTAL)</span>
-            <h3 class="card-title" style="margin-top:6px;">Đơn vị: Nha Trang Bay Resort & Travel — Quản trị bởi: Nguyễn Hải Đăng (CEO)</h3>
-            <p class="card-subtitle">
-              Giao diện dành riêng cho Chủ Doanh nghiệp quản lý gói phần mềm ERP/Website, tuyển dụng nhân sự từ các Trường ĐH/Trung tâm và phát hành ưu đãi B2B.
-            </p>
+      ${subTabNavHtml}
+      <div class="grid-2">
+        <div class="card" style="border:2px solid #0052d4;">
+          <div class="card-header">
+            <div>
+              <span class="badge badge-blue">📢 PHÁT HÀNH NỘI DUNG TỪ ADMIN RA TRANG PUBLIC</span>
+              <h3 class="card-title" style="margin-top:6px;">Đăng Bản tin / Sự kiện / Tuyển dụng của Đơn vị lên Trang Public</h3>
+              <p class="card-subtitle">
+                Đơn vị: <strong>${escapeHtml((roleUser && roleUser.org) || "Đơn vị Thành viên")}</strong> — Nội dung đăng từ đây sẽ hiển thị trực tiếp tại mục "Bản tin Đơn vị Thành viên" trên Trang chủ Public.
+              </p>
+            </div>
           </div>
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-primary btn-sm" onclick="simulateCrossSync('erp-job')">
-              ➕ Đẩy Tin Tuyển dụng Mới sang Trường ĐH & Trung tâm
-            </button>
-            <button class="btn btn-emerald btn-sm" onclick="openBulletinModal('member')">
-              📢 Đăng Thông báo Doanh nghiệp lên Cổng Chung
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nhãn Chuyên mục / Đơn vị:</label>
+              <input type="text" id="wsBulletinBadge" class="input-control" style="width:100%;" value="🌟 TIN TỪ ${escapeHtml(((roleUser && roleUser.org) || "ĐƠN VỊ THÀNH VIÊN").toUpperCase())}" />
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Tiêu đề Bản tin / Sự kiện / Chương trình Ưu đãi:</label>
+              <input type="text" id="wsBulletinTitle" class="input-control" style="width:100%;" placeholder="VD: Khai giảng khóa học mới / Tuyển dụng nhân sự / Ưu đãi nội bộ..." />
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung chi tiết cung cấp ra Trang Public:</label>
+              <textarea id="wsBulletinSummary" class="input-control" style="width:100%;min-height:95px;" placeholder="Nhập nội dung chi tiết chương trình, thời gian áp dụng và quyền lợi dành cho thành viên hệ sinh thái..."></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="submitWorkspaceMemberNews()" style="justify-content:center;padding:12px;">
+              🚀 Phát hành Bản tin lên Trang Public Hệ sinh thái
             </button>
           </div>
         </div>
 
-        <div class="kpi-grid" style="margin-bottom:18px;">
-          <div class="kpi-card">
-            <div class="kpi-top"><span>GÓI ỨNG DỤNG ĐANG DÙNG</span><span class="badge badge-green">Active</span></div>
-            <div class="kpi-value" style="font-size:20px;">ERP + Web + LMS</div>
-            <div class="kpi-sub">● 35/50 Tài khoản nhân sự SSO</div>
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <span class="badge badge-green">📋 DANH SÁCH BẢN TIN ĐƠN VỊ ĐANG HIỂN THỊ TRÊN PUBLIC (${memberBulletins.length})</span>
+              <h3 class="card-title" style="margin-top:6px;">Các Bản tin Thành viên Đã Đăng tải</h3>
+            </div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>HỒ SƠ ỨNG VIÊN ĐÃ NHẬN</span><span class="badge badge-blue">Từ ĐH & TT</span></div>
-            <div class="kpi-value" style="font-size:20px;">14 Ứng viên</div>
-            <div class="kpi-sub">● 100% đã xác thực điểm Ngoại ngữ/TH</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            ${memberBulletins
+              .map(
+                (item) => `
+                <div style="background:#f8fbff;border:1px solid #dbeafe;border-radius:12px;padding:12px 14px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
+                    <span class="badge badge-blue">${escapeHtml(item.badge)}</span>
+                    <span style="font-size:11px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
+                  </div>
+                  <strong style="font-size:13.5px;color:#0f172a;display:block;">${escapeHtml(item.title)}</strong>
+                  <p style="font-size:12.5px;color:#334155;margin-top:4px;">${escapeHtml(item.summary)}</p>
+                  <div style="font-size:11.5px;color:#0052d4;margin-top:6px;font-weight:700;">🏢 Đơn vị: ${escapeHtml(item.authorOrg)} (${escapeHtml(item.authorName)})</div>
+                </div>
+              `
+              )
+              .join("")}
           </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>CHIẾN DỊCH E-VOUCHER B2B</span><span class="badge badge-amber">Give-to-Get</span></div>
-            <div class="kpi-value" style="font-size:20px;">420 Lượt nhận</div>
-            <div class="kpi-sub">● Từ Phụ huynh các Trường Mầm non - PT</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // TAB 4: GIAO THƯƠNG B2B & ĐĂNG TIN DIỄN ĐÀN TỪ ADMIN WORKSPACE (CHO DOANH NGHIỆP, TRUNG TÂM, TRƯỜNG HỌC)
+  if (subTab === "b2b" && activeRole !== "student_parent") {
+    container.innerHTML = `
+      ${masterInspectorBar}
+      ${subTabNavHtml}
+      <div class="grid-2">
+        <div class="card" style="border:2px solid #059669;">
+          <div class="card-header">
+            <div>
+              <span class="badge badge-green">✍️ ĐĂNG TIN GIAO THƯƠNG B2B TỪ TRANG QUẢN TRỊ</span>
+              <h3 class="card-title" style="margin-top:6px;">Tạo Chủ đề Hợp tác (RFQ) / Ưu đãi Chéo (Give-to-Get)</h3>
+              <p class="card-subtitle">
+                Đơn vị đăng: <strong>${escapeHtml((roleUser && roleUser.fullName) || "")} — ${escapeHtml((roleUser && roleUser.org) || "")}</strong>. Bài viết được gửi từ trang Quản trị và sau khi Super Admin duyệt sẽ hiển thị công khai trên Trang Public.
+              </p>
+            </div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>ĐỐI TÁC ĐÀO TẠO LIÊN KẾT</span><span class="badge badge-purple">MOU Nội bộ</span></div>
-            <div class="kpi-value" style="font-size:20px;">03 Đơn vị</div>
-            <div class="kpi-sub">● Ocean English, ĐH Nha Trang, CĐ Du lịch</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Chuyên mục Giao thương B2B:</label>
+              <select id="wsForumCategory" class="select-control" style="width:100%;">
+                <option value="rfq">📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ)</option>
+                <option value="spotlight">🎁 Quảng bá Sản phẩm & Đặc quyền Thành viên (Give-to-Get)</option>
+                <option value="comarketing">🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện</option>
+                <option value="knowledge">💡 Chia sẻ Kinh nghiệm Quản trị & Chuyển đổi số</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Tiêu đề Tin Giao thương / Hợp tác:</label>
+              <input type="text" id="wsForumTitle" class="input-control" style="width:100%;" placeholder="VD: [Nha Trang] Cần tìm đối tác đào tạo ngoại ngữ / Cung ứng dịch vụ..." />
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung chi tiết nhu cầu hoặc gói hợp tác:</label>
+              <textarea id="wsForumContent" class="input-control" style="width:100%;min-height:85px;" placeholder="Mô tả chi tiết yêu cầu hợp tác giữa các đơn vị thành viên..."></textarea>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#059669;display:block;margin-bottom:4px;">🎁 Ưu đãi cam kết dành cho Thành viên cùng Hệ sinh thái (Give-to-Get):</label>
+              <input type="text" id="wsForumDeal" class="input-control" style="width:100%;border-color:#6ee7b7;background:#f0fdf4;" placeholder="VD: Giảm 25% chi phí dịch vụ cho các đơn vị thành viên TechCorp..." />
+            </div>
+            <button type="button" class="btn btn-emerald" onclick="submitWorkspaceForumPost()" style="justify-content:center;padding:12px;">
+              🚀 Gửi Bài viết lên Diễn đàn Giao thương Hệ sinh thái
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <span class="badge badge-amber">🎁 ĐẶC QUYỀN & GÓI ƯU ĐÃI B2B ĐANG MỞ (${STATE.b2bOffers.length})</span>
+              <h3 class="card-title" style="margin-top:6px;">Kết nối Giao thương Nội bộ Giữa Các Đơn vị Thành viên</h3>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            ${STATE.b2bOffers
+              .map(
+                (b) => `
+                <div class="item-card">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                      <span class="badge badge-amber">${escapeHtml(b.category)}</span>
+                      <span style="font-size:11.5px;color:#475569;">${escapeHtml(b.usingTech)}</span>
+                    </div>
+                    <h4>${escapeHtml(b.company)}</h4>
+                    <p style="font-size:12.5px;color:#0f172a;margin-top:6px;">${escapeHtml(b.offer)}</p>
+                    <p style="font-size:12px;color:#0052d4;margin-top:4px;">🎯 Áp dụng: ${escapeHtml(b.target)}</p>
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;padding-top:8px;border-top:1px solid #e2e8f0;">
+                    <button class="btn btn-primary btn-sm" onclick="connectB2B('${escapeHtml(b.company)}')">
+                      🤝 Nhận Ưu đãi / Kết nối B2B
+                    </button>
+                  </div>
+                </div>
+              `
+              )
+              .join("")}
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // ==================== VAI TRÒ 2: CHỦ DOANH NGHIỆP SME (CEO_SME) ====================
+  if (activeRole === "ceo_sme") {
+    if (subTab === "recruitment") {
+      container.innerHTML = `
+        ${masterInspectorBar}
+        ${subTabNavHtml}
+        <div class="card" style="border:2px solid #0052d4;">
+          <div class="card-header">
+            <div>
+              <span class="badge badge-blue">👨‍💼 TUYỂN DỤNG LIÊN THÔNG TỪ SÀN JOBAI & ĐẠI HỌC VỀ ERP HRM</span>
+              <h3 class="card-title" style="margin-top:6px;">Kho Hồ sơ Ứng viên & Thực tập sinh Đã Xác thực Điểm Thi Online (${STATE.talents.length} Hồ sơ)</h3>
+              <p class="card-subtitle">
+                Chủ Doanh nghiệp & HR duyệt trực tiếp hồ sơ ứng viên từ Đại học Nha Trang, CĐ Du lịch và các Trung tâm Ngoại ngữ để đẩy 1-Click vào phân hệ Nhân sự (TechCorp ERP).
+              </p>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="simulateCrossSync('erp-job')">
+                📡 Phát Tin Tuyển dụng từ ERP sang Trường ĐH & Trung tâm
+              </button>
+              <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-emerald btn-sm" style="text-decoration:none;">
+                🤖 Mở Sàn Việc làm JobAI ↗
+              </a>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;">
+            ${STATE.talents
+              .map(
+                (t) => `
+                <div class="item-card">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                      <h4>${escapeHtml(t.name)} <code style="font-size:11.5px;color:#0052d4;">(${escapeHtml(t.id)})</code></h4>
+                      <span class="badge badge-green">✔ Verified QR</span>
+                    </div>
+                    <p style="font-size:12.5px;color:#475569;margin-top:6px;">🎓 <strong>Trường:</strong> ${escapeHtml(t.school)}</p>
+                    <p style="font-size:12.5px;color:#475569;">🏫 <strong>Trung tâm:</strong> ${escapeHtml(t.center)}</p>
+                    <p style="font-size:13px;color:#0f172a;margin-top:6px;">🎯 <strong>Vị trí ứng tuyển:</strong> ${escapeHtml(t.targetRole)} (GPA: ${escapeHtml(t.gpa)})</p>
+                    <div class="skill-tags" style="margin-top:8px;">
+                      ${t.certs.map((c) => `<span class="badge badge-blue">${escapeHtml(c)}</span>`).join("")}
+                    </div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid #e2e8f0;">
+                    <span style="font-size:12px;color:#059669;font-weight:700;">● ${escapeHtml(t.status)}</span>
+                    <button class="btn btn-primary btn-sm" onclick="importCandidateToERP('${t.id}', '${escapeHtml(t.name)}')">
+                      📥 Đẩy Hồ sơ vào HRM (ERP)
+                    </button>
+                  </div>
+                </div>
+              `
+              )
+              .join("")}
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Default subTab === 'overview' for ceo_sme
+    container.innerHTML = `
+      ${masterInspectorBar}
+      ${subTabNavHtml}
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <span class="badge badge-blue">🏢 WORKSPACE QUẢN TRỊ DOANH NGHIỆP THÀNH VIÊN (SME TENANT PORTAL)</span>
+            <h3 class="card-title" style="margin-top:6px;">Đơn vị: Nha Trang Bay Resort & Hưng Phát Land — Quản trị bởi: Nguyễn Hải Đăng (CEO)</h3>
+            <p class="card-subtitle">
+              Giao diện dành riêng cho Chủ Doanh nghiệp quản lý gói phần mềm ERP/KPI/PMS/BĐS, tuyển dụng nhân sự từ các Trường ĐH/Trung tâm và phát hành ưu đãi B2B.
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'recruitment')">
+              👨‍💼 Mở Sàn Tuyển dụng & CV (${STATE.talents.length})
+            </button>
+            <button class="btn btn-emerald btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'news')">
+              📢 Đăng Thông báo Doanh nghiệp lên Public
+            </button>
           </div>
         </div>
 
@@ -4206,7 +4590,7 @@ function renderMemberWorkspace() {
             <div>
               <h4>👨‍💼 1. Quản trị Tuyển dụng Liên thông (ERP HRM ↔ Trường học & Trung tâm)</h4>
               <p style="font-size:12.5px;color:#475569;margin-top:4px;">
-                Danh sách vị trí tuyển dụng của Doanh nghiệp đang phát tự động trên Cổng Sinh viên và danh sách ứng viên sẵn sàng nhận việc:
+                Danh sách ứng viên nổi bật đã xác thực chứng chỉ Ngoại ngữ & Tin học sẵn sàng nhận việc tại Doanh nghiệp:
               </p>
               <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
                 ${STATE.talents
@@ -4218,14 +4602,14 @@ function renderMemberWorkspace() {
                       <strong style="color:#0f172a;font-size:13px;">${escapeHtml(t.name)}</strong>
                       <div style="font-size:11.5px;color:#475569;">${escapeHtml(t.school)} • <span style="color:#0052d4;font-weight:700;">${escapeHtml(t.certs[0])}</span></div>
                     </div>
-                    <button class="btn btn-primary btn-sm" onclick="importCandidateToERP('${t.id}', '${t.name}')">Nhập vào HRM</button>
+                    <button class="btn btn-primary btn-sm" onclick="importCandidateToERP('${t.id}', '${escapeHtml(t.name)}')">Nhập vào HRM</button>
                   </div>
                 `
                   )
                   .join("")}
               </div>
             </div>
-            <button class="btn btn-outline btn-sm" onclick="switchToTab('view-talent-lms')">Xem toàn bộ Sàn Nhân lực →</button>
+            <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'recruitment')">Xem toàn bộ Hồ sơ Ứng viên →</button>
           </div>
 
           <div class="item-card">
@@ -4243,15 +4627,72 @@ function renderMemberWorkspace() {
                 <div style="color:#475569;">• Kế toán trưởng: Được quyền truy cập ERP Tài chính & đối soát công nợ B2B</div>
               </div>
             </div>
-            <button class="btn btn-emerald btn-sm" onclick="simulateCrossSync('parent-voucher')">🚀 Bắn đợt E-Voucher mới sang App Phụ huynh</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-emerald btn-sm" onclick="simulateCrossSync('parent-voucher')">🚀 Bắn E-Voucher sang App Phụ huynh</button>
+              <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'b2b')">✍️ Đăng Tin B2B Mới →</button>
+            </div>
           </div>
         </div>
       </div>
+      ${roleAppsHtml}
     `;
-  } else if (activeRole === "center_director") {
+    return;
+  }
+
+  // ==================== VAI TRÒ 3: GIÁM ĐỐC TRUNG TÂM NN-TH (CENTER_DIRECTOR) ====================
+  if (activeRole === "center_director") {
+    if (subTab === "contests") {
+      container.innerHTML = `
+        ${masterInspectorBar}
+        ${subTabNavHtml}
+        <div class="card" style="border:2px solid #0052d4;">
+          <div class="card-header">
+            <div>
+              <span class="badge badge-blue">🏆 QUẢN LÝ ĐẤU TRƯỜNG THI THỬ TRỰC TUYẾN & ĐỒNG BỘ LEAD VỀ CRM TRUNG TÂM</span>
+              <h3 class="card-title" style="margin-top:6px;">Danh sách Kỳ thi Năng lực Ngoại ngữ & Tin học trên TechCorp LMS (${STATE.contests.length} Kỳ thi)</h3>
+              <p class="card-subtitle">
+                Giám đốc Trung tâm điều phối các kỳ thi thử IELTS, TOEIC, MOS trực tuyến cho học sinh/sinh viên toàn tỉnh và kéo danh sách thí sinh tiềm năng (Lead) về CRM Tuyển sinh.
+              </p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="simulateCrossSync('exam-cert')">
+              ⚡ Phát Chứng chỉ Số QR & Chia Lead Tự động
+            </button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;">
+            ${STATE.contests
+              .map(
+                (c) => `
+                <div class="item-card">
+                  <div>
+                    <span class="badge badge-purple" style="margin-bottom:8px;">Phễu Tuyển sinh LMS</span>
+                    <h4>${escapeHtml(c.title)}</h4>
+                    <p style="font-size:12.5px;color:#475569;margin-top:6px;">🤝 <strong>Đơn vị tổ chức:</strong> ${escapeHtml(c.organizer)}</p>
+                    <p style="font-size:12.5px;color:#475569;margin-top:4px;">👥 <strong>Đối tượng dự thi:</strong> ${escapeHtml(c.targetGroup)}</p>
+                    <p style="font-size:12.5px;color:#059669;margin-top:4px;">🎁 <strong>Học bổng tài trợ:</strong> ${escapeHtml(c.reward)}</p>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid #e2e8f0;">
+                    <div>
+                      <strong style="color:#0052d4;font-size:13px;">${c.participants.toLocaleString()} thí sinh</strong>
+                      <div style="font-size:11.5px;color:#d97706;font-weight:700;">+${c.leadsGenerated} Lead học viên mới</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="pushLeadsToCenter('${c.id}', '${escapeHtml(c.title)}')">
+                      📥 Đồng bộ Lead về CRM Trung tâm
+                    </button>
+                  </div>
+                </div>
+              `
+              )
+              .join("")}
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Default subTab === 'overview' for center_director
     container.innerHTML = `
       ${masterInspectorBar}
-      ${roleAppsHtml}
+      ${subTabNavHtml}
       <div class="card">
         <div class="card-header">
           <div>
@@ -4261,36 +4702,13 @@ function renderMemberWorkspace() {
               Giao diện dành riêng cho Giám đốc Trung tâm Ngoại ngữ - Tin học quản lý kỳ thi thử trên LMS, nhận Lead học viên từ Trường học và đề cử học viên giỏi sang Doanh nghiệp.
             </p>
           </div>
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-primary btn-sm" onclick="simulateCrossSync('exam-cert')">
-              🏆 Mở Đấu trường Thi thử & Cấp Chứng chỉ QR
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'contests')">
+              🏆 Quản lý Đấu trường Thi & Lead CRM
             </button>
-            <button class="btn btn-emerald btn-sm" onclick="openBulletinModal('member')">
-              📢 Đăng Chương trình Học bổng lên Cổng Chung
+            <button class="btn btn-emerald btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'news')">
+              📢 Đăng Chương trình Học bổng lên Public
             </button>
-          </div>
-        </div>
-
-        <div class="kpi-grid" style="margin-bottom:18px;">
-          <div class="kpi-card">
-            <div class="kpi-top"><span>THÍ SINH DỰ THI LMS</span><span class="badge badge-blue">IELTS/TOEIC/MOS</span></div>
-            <div class="kpi-value" style="font-size:20px;">1.420 Thí sinh</div>
-            <div class="kpi-sub">● Từ 15 Trường học liên kết tại Nha Trang</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>LEAD HỌC VIÊN MỚI VỀ CRM</span><span class="badge badge-green">Tự động phân bổ</span></div>
-            <div class="kpi-value" style="font-size:20px;">385 Học viên</div>
-            <div class="kpi-sub">● Tỷ lệ chuyển đổi nhập học đạt 28.5%</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>HỌC VIÊN ĐƯỢC DN TUYỂN</span><span class="badge badge-purple">Đầu ra đảm bảo</span></div>
-            <div class="kpi-value" style="font-size:20px;">42 Học viên</div>
-            <div class="kpi-sub">● Được các Resort & SME Nha Trang nhận</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>HỢP ĐỒNG ĐÀO TẠO B2B</span><span class="badge badge-amber">Doanh nghiệp đặt</span></div>
-            <div class="kpi-value" style="font-size:20px;">04 Hợp đồng</div>
-            <div class="kpi-sub">● Đào tạo tiếng Anh/Hàn cho nhân sự Resort</div>
           </div>
         </div>
 
@@ -4310,13 +4728,14 @@ function renderMemberWorkspace() {
                       <strong style="color:#0f172a;font-size:12.5px;">${escapeHtml(c.title)}</strong>
                       <div style="font-size:11.5px;color:#059669;font-weight:700;">+${c.leadsGenerated} Lead học viên mới chờ tư vấn</div>
                     </div>
-                    <button class="btn btn-primary btn-sm" onclick="pushLeadsToCenter('${c.id}', '${c.title}')">Kéo Lead về CRM</button>
+                    <button class="btn btn-primary btn-sm" onclick="pushLeadsToCenter('${c.id}', '${escapeHtml(c.title)}')">Kéo Lead về CRM</button>
                   </div>
                 `
                   )
                   .join("")}
               </div>
             </div>
+            <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'contests')">Mở Chi tiết Đấu trường Thi Online →</button>
           </div>
 
           <div class="item-card">
@@ -4329,51 +4748,90 @@ function renderMemberWorkspace() {
                 <strong>🔥 Đang cần gấp:</strong> Nha Trang Bay Resort cần tìm Trung tâm đào tạo Tiếng Anh & Tiếng Hàn giao tiếp cho 25 nhân sự Lễ tân - Nhà hàng (Hợp đồng 12 tháng).
               </div>
             </div>
-            <button class="btn btn-emerald btn-sm" onclick="switchToTab('view-forum-b2b')">💬 Gửi Báo giá Đào tạo trên Diễn đàn B2B →</button>
+            <button class="btn btn-emerald btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'b2b')">💬 Gửi Báo giá Đào tạo trên Chợ B2B →</button>
           </div>
         </div>
       </div>
+      ${roleAppsHtml}
     `;
-  } else if (activeRole === "school_principal") {
+    return;
+  }
+
+  // ==================== VAI TRÒ 4: HIỆU TRƯỞNG TRƯỜNG HỌC (SCHOOL_PRINCIPAL) ====================
+  if (activeRole === "school_principal") {
+    if (subTab === "scholarships") {
+      container.innerHTML = `
+        ${masterInspectorBar}
+        ${subTabNavHtml}
+        <div class="card" style="border:2px solid #0052d4;">
+          <div class="card-header">
+            <div>
+              <span class="badge badge-blue">🎁 PHÊ DUYỆT HỌC BỔNG & PHÚC LỢI GỬI TỚI PHỤ HUYNH NHÀ TRƯỜNG</span>
+              <h3 class="card-title" style="margin-top:6px;">Quản lý Gói Tài trợ Học bổng & Kiểm tra Năng lực Miễn phí cho Học sinh / Sinh viên</h3>
+              <p class="card-subtitle">
+                Ban Giám hiệu kiểm duyệt các chương trình học bổng từ Trung tâm Ngoại ngữ - Tin học & Doanh nghiệp thành viên trước khi phát hành thông báo qua Sổ liên lạc Điện tử tới Phụ huynh.
+              </p>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="background:#f5f9ff;border:1.5px solid #cfe2ff;padding:16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+              <div>
+                <span class="badge badge-green">✔ Đã xác thực Đối tác Giáo dục</span>
+                <h4 style="font-size:15px;color:#0f172a;margin-top:6px;">1. Ocean English & IT Center: Tài trợ 120 suất Test Tiếng Anh chuẩn Cambridge & Học bổng 40%</h4>
+                <p style="font-size:12.5px;color:#475569;margin-top:4px;">Áp dụng cho học sinh khối Tiểu học, THCS & THPT đạt điểm chuyên cần tốt trên hệ thống EduManager Pro.</p>
+              </div>
+              <button class="btn btn-emerald btn-sm" onclick="showToast('✅ Đã phê duyệt gửi 120 suất Học bổng Tiếng Anh tới Sổ liên lạc Điện tử của Phụ huynh!')">
+                ✔ Phê duyệt Gửi Phụ huynh
+              </button>
+            </div>
+
+            <div style="background:#f5f9ff;border:1.5px solid #cfe2ff;padding:16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+              <div>
+                <span class="badge badge-blue">✔ Đối tác Y tế Học đường</span>
+                <h4 style="font-size:15px;color:#0f172a;margin-top:6px;">2. Hệ thống Nha khoa Quốc tế Sài Gòn - Nha Trang: Khám răng học đường miễn phí 100%</h4>
+                <p style="font-size:12.5px;color:#475569;margin-top:4px;">Tài trợ toàn bộ chi phí khám & tư vấn chăm sóc răng miệng định kỳ học kỳ I cho 1.250 học sinh.</p>
+              </div>
+              <button class="btn btn-emerald btn-sm" onclick="showToast('✅ Đã xác nhận lịch phối hợp khám nha khoa học đường và thông báo cho Giáo viên chủ nhiệm!')">
+                ✔ Duyệt Lịch Y tế Học đường
+              </button>
+            </div>
+
+            <div style="background:#f5f9ff;border:1.5px solid #cfe2ff;padding:16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+              <div>
+                <span class="badge badge-amber">✔ Liên kết Trải nghiệm Hướng nghiệp</span>
+                <h4 style="font-size:15px;color:#0f172a;margin-top:6px;">3. Nha Trang Bay Resort: Chương trình Tham quan Hướng nghiệp & Thực tập Sinh viên Năm cuối</h4>
+                <p style="font-size:12.5px;color:#475569;margin-top:4px;">Tiếp nhận 35 sinh viên khối Du lịch - Nhà hàng - CNTT thực tập có hưởng phụ cấp và xét tuyển thẳng.</p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="showToast('✅ Đã mở cổng đăng ký thực tập doanh nghiệp cho sinh viên năm cuối trên TC COMPASS!')">
+                ✔ Mở Đăng ký Thực tập
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Default subTab === 'overview' for school_principal
     container.innerHTML = `
       ${masterInspectorBar}
-      ${roleAppsHtml}
+      ${subTabNavHtml}
       <div class="card">
         <div class="card-header">
           <div>
             <span class="badge badge-blue">🎓 WORKSPACE QUẢN TRỊ TRƯỜNG HỌC THÀNH VIÊN (SCHOOL PORTAL)</span>
-            <h3 class="card-title" style="margin-top:6px;">Đơn vị: Hệ thống Giáo dục Sao Biển Nha Trang — Hiệu trưởng: ThS. Lê Thị Minh Hương</h3>
+            <h3 class="card-title" style="margin-top:6px;">Đơn vị: Hệ thống Giáo dục Liên cấp & ĐH Nha Trang — Hiệu trưởng: ThS. Lê Thị Minh Hương</h3>
             <p class="card-subtitle">
               Giao diện dành riêng cho Ban Giám hiệu Nhà trường quản lý học vụ, thu học phí QR không tiền mặt, Sổ liên lạc Phụ huynh và phê duyệt gói tài trợ/thực tập từ Doanh nghiệp & Trung tâm.
             </p>
           </div>
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-primary btn-sm" onclick="openBulletinModal('member')">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'scholarships')">
+              🎁 Duyệt Học bổng & Phúc lợi PH
+            </button>
+            <button class="btn btn-emerald btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'news')">
               📢 Đăng Thông báo Sự kiện Nhà trường
             </button>
-          </div>
-        </div>
-
-        <div class="kpi-grid" style="margin-bottom:18px;">
-          <div class="kpi-card">
-            <div class="kpi-top"><span>QUY MÔ HỌC SINH / SV</span><span class="badge badge-green">Sổ liên lạc Số</span></div>
-            <div class="kpi-value" style="font-size:20px;">1.250 Học sinh</div>
-            <div class="kpi-sub">● 100% Phụ huynh cài App Sổ liên lạc</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>THU HỌC PHÍ QR TỰ ĐỘNG</span><span class="badge badge-blue">Gạch nợ 3 giây</span></div>
-            <div class="kpi-value" style="font-size:20px;">96.4% Hoàn tất</div>
-            <div class="kpi-sub">● Giảm 80% thời gian đối soát kế toán</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>HỌC BỔNG NHẬN TỪ HỆ SINH THÁI</span><span class="badge badge-amber">Từ 10 Trung tâm</span></div>
-            <div class="kpi-value" style="font-size:20px;">500 Suất</div>
-            <div class="kpi-sub">● Kiểm tra Tiếng Anh & Kỹ năng miễn phí</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-top"><span>NHÀ CUNG ỨNG & ĐỐI TÁC B2B</span><span class="badge badge-purple">Ưu đãi Nội bộ</span></div>
-            <div class="kpi-value" style="font-size:20px;">06 Doanh nghiệp</div>
-            <div class="kpi-sub">● Suất ăn VietGAP, Nha khoa, Tour dã ngoại</div>
           </div>
         </div>
 
@@ -4401,6 +4859,7 @@ function renderMemberWorkspace() {
                 </div>
               </div>
             </div>
+            <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'scholarships')">Xem toàn bộ Danh sách Học bổng →</button>
           </div>
 
           <div class="item-card">
@@ -4413,68 +4872,156 @@ function renderMemberWorkspace() {
                 <strong>Ưu đãi đang mở:</strong> Giảm 12% hợp đồng suất ăn bán trú chuẩn VietGAP (Công ty Thực phẩm Biển Xanh Nha Trang) & Miễn 100% phí gạch nợ QR học phí từ Ngân hàng đối tác.
               </div>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="switchToTab('view-forum-b2b')">🤝 Mở Chợ Giao thương B2B Học đường →</button>
+            <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'b2b')">🤝 Mở Chợ Giao thương B2B Học đường →</button>
           </div>
         </div>
       </div>
+      ${roleAppsHtml}
     `;
-  } else {
+    return;
+  }
+
+  // ==================== VAI TRÒ 5: HỌC VIÊN / SINH VIÊN / PHỤ HUYNH (STUDENT_PARENT) ====================
+  if (subTab === "jobs") {
     container.innerHTML = `
       ${masterInspectorBar}
-      ${roleAppsHtml}
-      <div class="card">
+      ${subTabNavHtml}
+      <div class="card" style="border:2px solid #0052d4;">
         <div class="card-header">
           <div>
-            <span class="badge badge-green">👨‍🎓 CỔNG CÔNG DÂN SỐ TECHCORP ID (SINH VIÊN / HỌC VIÊN / PHỤ HUYNH)</span>
-            <h3 class="card-title" style="margin-top:6px;">Hồ sơ Năng lực Số: Nguyễn Minh Khôi — Sinh viên Năm cuối ĐH Nha Trang (#TC-KH-8821)</h3>
+            <span class="badge badge-blue">💼 ỨNG TUYỂN THỰC TẬP & VIỆC LÀM 1-CLICK TRÊN SÀN JOBAI</span>
+            <h3 class="card-title" style="margin-top:6px;">Các Vị trí Thực tập & Tuyển dụng Đang Mở cho Hồ sơ Năng lực Số #TC-KH-8821</h3>
             <p class="card-subtitle">
-              Giao diện dành cho Học viên, Sinh viên và Phụ huynh theo dõi kết quả học tập, Chứng chỉ Thi Online QR, ứng tuyển thực tập/việc làm 1-Click và nhận E-Voucher ưu đãi.
+              Hệ thống AI Matching tự động gợi ý các vị trí phù hợp với chứng chỉ TOEIC 750 & Quản trị ERP của bạn tại 30 Doanh nghiệp thành viên TechCorp.
             </p>
           </div>
+          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+            🤖 Mở Sàn Việc làm JobAI ↗
+          </a>
         </div>
-
-        <div class="grid-2-equal">
-          <div class="item-card">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="background:#f8fbff;border:1.5px solid #cfe2ff;padding:16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
             <div>
-              <h4>🏅 1. Hồ sơ Năng lực Số & Chứng chỉ Xác thực (Verified Talent Passport)</h4>
-              <p style="font-size:12.5px;color:#475569;margin-top:4px;">
-                Điểm thi và chứng chỉ của bạn được xác thực tự động từ Trường Đại học & Trung tâm Ngoại ngữ - Tin học:
-              </p>
-              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
-                <span class="badge badge-blue">✔ TOEIC 750 (Xác thực Thi Online)</span>
-                <span class="badge badge-blue">✔ Quản trị Hệ thống TechCorp ERP</span>
-                <span class="badge badge-green">✔ GPA: 3.5 / 4.0 (ĐH Nha Trang)</span>
-              </div>
-              <div style="margin-top:12px;background:#f5f9ff;border:1px solid #cfe2ff;padding:12px;border-radius:10px;font-size:12.5px;">
-                <strong>Trạng thái Hồ sơ:</strong> Đã mở hiển thị cho <strong>30 Doanh nghiệp SME & Resort tại Nha Trang</strong> trên Sàn Nhân lực.
-              </div>
+              <span class="badge badge-green">Độ tương thích AI: 96%</span>
+              <h4 style="font-size:15px;color:#0f172a;margin-top:6px;">1. Chuyên viên Quản trị Hệ thống ERP & Chuyển đổi số (Full-time / Thực tập)</h4>
+              <p style="font-size:12.5px;color:#475569;margin-top:4px;">🏢 <strong>Đơn vị:</strong> Nha Trang Bay Resort & Travel • 💰 Thu nhập: 10 - 15 triệu VNĐ/tháng</p>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="showToast('Đã gửi Hồ sơ Năng lực Số QR của bạn tới phòng Nhân sự Nha Trang Bay Resort!')">
-              🚀 Ứng tuyển 1-Click vào Doanh nghiệp SME trong Hệ sinh thái
+            <button class="btn btn-primary btn-sm" onclick="showToast('🚀 Đã gửi Hồ sơ Năng lực Số QR (#TC-KH-8821) tới Phòng Nhân sự Nha Trang Bay Resort!')">
+              🚀 Ứng tuyển 1-Click
             </button>
           </div>
 
-          <div class="item-card">
+          <div style="background:#f8fbff;border:1.5px solid #cfe2ff;padding:16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
             <div>
-              <h4>🎁 2. Ví Học bổng & E-Voucher Đặc quyền Thành viên TechCorp ID</h4>
-              <p style="font-size:12.5px;color:#475569;margin-top:4px;">
-                Các ưu đãi giảm học phí và dịch vụ dành riêng cho tài khoản TechCorp ID của bạn:
-              </p>
-              <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
-                <div style="background:#ecfdf5;border:1px solid #6ee7b7;padding:10px 12px;border-radius:10px;font-size:12px;color:#065f46;">
-                  🎁 <strong>Học bổng 40% Khóa IELTS/TOEIC</strong> tại Ocean English & IT Center Nha Trang
-                </div>
-                <div style="background:#fffbeb;border:1px solid #fcd34d;padding:10px 12px;border-radius:10px;font-size:12px;color:#92400e;">
-                  🦷 <strong>Giảm 30% Dịch vụ Nha khoa</strong> tại Hệ thống Nha khoa Quốc tế Sài Gòn - Nha Trang
-                </div>
-              </div>
+              <span class="badge badge-blue">Độ tương thích AI: 92%</span>
+              <h4 style="font-size:15px;color:#0f172a;margin-top:6px;">2. Trợ lý Điều hành Dự án & Phân tích Dữ liệu Kinh doanh</h4>
+              <p style="font-size:12.5px;color:#475569;margin-top:4px;">🏢 <strong>Đơn vị:</strong> Sàn Giao dịch BĐS Hưng Phát Land • 💰 Thu nhập: 12 - 18 triệu VNĐ/tháng</p>
             </div>
-            <button class="btn btn-emerald btn-sm" onclick="switchToTab('view-talent-lms')">🏆 Vào Phòng Thi Thử Online để Nâng hạng Hồ sơ →</button>
+            <button class="btn btn-primary btn-sm" onclick="showToast('🚀 Đã gửi Hồ sơ Năng lực Số QR (#TC-KH-8821) tới Phòng Nhân sự Hưng Phát Land!')">
+              🚀 Ứng tuyển 1-Click
+            </button>
           </div>
         </div>
       </div>
     `;
+    return;
   }
+
+  if (subTab === "vouchers") {
+    container.innerHTML = `
+      ${masterInspectorBar}
+      ${subTabNavHtml}
+      <div class="card" style="border:2px solid #059669;">
+        <div class="card-header">
+          <div>
+            <span class="badge badge-green">🎁 VÍ HỌC BỔNG & E-VOUCHER CÁ NHÂN (TECHCORP CITIZEN WALLET)</span>
+            <h3 class="card-title" style="margin-top:6px;">Danh sách 05 Đặc quyền Học bổng & Ưu đãi Dịch vụ trong Ví TechCorp ID của Bạn</h3>
+            <p class="card-subtitle">
+              Sử dụng mã QR định danh cá nhân để kích hoạt học bổng và chiết khấu trực tiếp tại các Trung tâm Đào tạo & Doanh nghiệp thành viên.
+            </p>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;">
+          <div style="background:#ecfdf5;border:1.5px solid #6ee7b7;padding:16px;border-radius:14px;">
+            <span class="badge badge-green">Mã Voucher: TC-IELTS40</span>
+            <h4 style="font-size:15px;color:#065f46;margin-top:8px;">🎁 Học bổng 40% Khóa Luyện thi IELTS / TOEIC Quốc tế</h4>
+            <p style="font-size:12.5px;color:#047857;margin-top:6px;">Đơn vị tài trợ: Ocean English & IT Center Nha Trang</p>
+            <button class="btn btn-emerald btn-sm" style="margin-top:10px;" onclick="showToast('✅ Đã kích hoạt mã Học bổng TC-IELTS40 cho tài khoản Nguyễn Minh Khôi!')">
+              Sử dụng Học bổng
+            </button>
+          </div>
+
+          <div style="background:#fffbeb;border:1.5px solid #fcd34d;padding:16px;border-radius:14px;">
+            <span class="badge badge-amber">Mã Voucher: TC-DENTAL30</span>
+            <h4 style="font-size:15px;color:#92400e;margin-top:8px;">🦷 Giảm 30% Dịch vụ Chăm sóc & Thẩm mỹ Nha khoa</h4>
+            <p style="font-size:12.5px;color:#b45309;margin-top:6px;">Đơn vị tài trợ: Hệ thống Nha khoa Quốc tế Sài Gòn - Nha Trang</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:10px;" onclick="showToast('✅ Đã lấy mã QR ưu đãi Nha khoa TC-DENTAL30!')">
+              Nhận Mã QR Ưu đãi
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // Default subTab === 'overview' for student_parent
+  container.innerHTML = `
+    ${masterInspectorBar}
+    ${subTabNavHtml}
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="badge badge-green">👨‍🎓 CỔNG CÔNG DÂN SỐ TECHCORP ID (SINH VIÊN / HỌC VIÊN / PHỤ HUYNH)</span>
+          <h3 class="card-title" style="margin-top:6px;">Hồ sơ Năng lực Số: Nguyễn Minh Khôi — Sinh viên Năm cuối ĐH Nha Trang (#TC-KH-8821)</h3>
+          <p class="card-subtitle">
+            Giao diện dành riêng cho Học viên, Sinh viên và Phụ huynh theo dõi kết quả học tập, Chứng chỉ Thi Online QR, ứng tuyển thực tập/việc làm 1-Click và nhận E-Voucher ưu đãi.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-2-equal">
+        <div class="item-card">
+          <div>
+            <h4>🏅 1. Hồ sơ Năng lực Số & Chứng chỉ Xác thực (Verified Talent Passport)</h4>
+            <p style="font-size:12.5px;color:#475569;margin-top:4px;">
+              Điểm thi và chứng chỉ của bạn được xác thực tự động từ Trường Đại học & Trung tâm Ngoại ngữ - Tin học:
+            </p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+              <span class="badge badge-blue">✔ TOEIC 750 (Xác thực Thi Online)</span>
+              <span class="badge badge-blue">✔ Quản trị Hệ thống TechCorp ERP</span>
+              <span class="badge badge-green">✔ GPA: 3.5 / 4.0 (ĐH Nha Trang)</span>
+            </div>
+            <div style="margin-top:12px;background:#f5f9ff;border:1px solid #cfe2ff;padding:12px;border-radius:10px;font-size:12.5px;">
+              <strong>Trạng thái Hồ sơ:</strong> Đã mở hiển thị cho <strong>30 Doanh nghiệp SME & Resort tại Nha Trang</strong> trên Sàn Nhân lực.
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'jobs')">
+            💼 Xem Vị trí Thực tập & Ứng tuyển 1-Click →
+          </button>
+        </div>
+
+        <div class="item-card">
+          <div>
+            <h4>🎁 2. Ví Học bổng & E-Voucher Đặc quyền Thành viên TechCorp ID</h4>
+            <p style="font-size:12.5px;color:#475569;margin-top:4px;">
+              Các ưu đãi giảm học phí và dịch vụ dành riêng cho tài khoản TechCorp ID của bạn:
+            </p>
+            <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+              <div style="background:#ecfdf5;border:1px solid #6ee7b7;padding:10px 12px;border-radius:10px;font-size:12px;color:#065f46;">
+                🎁 <strong>Học bổng 40% Khóa IELTS/TOEIC</strong> tại Ocean English & IT Center Nha Trang
+              </div>
+              <div style="background:#fffbeb;border:1px solid #fcd34d;padding:10px 12px;border-radius:10px;font-size:12px;color:#92400e;">
+                🦷 <strong>Giảm 30% Dịch vụ Nha khoa</strong> tại Hệ thống Nha khoa Quốc tế Sài Gòn - Nha Trang
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-emerald btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'vouchers')">🎁 Mở Ví Học bổng & E-Voucher →</button>
+        </div>
+      </div>
+    </div>
+    ${roleAppsHtml}
+  `;
 }
 
 // ==================== INTERACTIVE RBAC PERMISSION MATRIX (SUB-PANEL 5.1) ====================
@@ -4596,10 +5143,25 @@ function setupForumCategoryFilter() {
   });
 }
 
-window.logoutSsoSession = function () {
+window.logoutSsoSession = async function () {
+  try {
+    const raw = localStorage.getItem("tc_sso_session");
+    const sess = raw ? JSON.parse(raw) : {};
+    await fetch("/api/v1/auth/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ personaKey: sess.personaKey, email: sess.email })
+    }).catch(() => {});
+  } catch (_) {}
   try {
     localStorage.removeItem("tc_sso_session");
   } catch (_) {}
+  const isAdminPage = Boolean(document.getElementById("dynamicRoleSidebarNav"));
+  if (isAdminPage) {
+    window.location.replace("login.html");
+  } else {
+    window.location.reload();
+  }
 };
 
 function persistRoleSessionToStorage(personaKey) {
@@ -5043,18 +5605,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let resolvedRole = null;
 
   try {
-    const params = new URLSearchParams(window.location.search);
-    const roleParam = params.get("role");
-    if (roleParam && PERSONA_TO_ROLE[roleParam]) {
-      resolvedRole = roleParam;
-      persistRoleSessionToStorage(roleParam);
-    } else {
-      const savedRaw = localStorage.getItem("tc_sso_session");
-      if (savedRaw) {
-        const savedObj = JSON.parse(savedRaw);
-        if (savedObj && savedObj.personaKey && PERSONA_TO_ROLE[savedObj.personaKey]) {
-          resolvedRole = savedObj.personaKey;
-        }
+    const savedRaw = localStorage.getItem("tc_sso_session");
+    if (savedRaw) {
+      const savedObj = JSON.parse(savedRaw);
+      if (savedObj && savedObj.personaKey && PERSONA_TO_ROLE[savedObj.personaKey]) {
+        resolvedRole = savedObj.personaKey;
       }
     }
   } catch (_) {}

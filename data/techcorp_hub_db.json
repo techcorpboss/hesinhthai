@@ -3,7 +3,7 @@
     "domain": "hesinhthai.techcorp.info.vn",
     "version": "6.4.0",
     "region": "Nha Trang - Khánh Hòa",
-    "updatedAt": "2026-10-20T10:27:02.510Z"
+    "updatedAt": "2026-10-20T11:49:54.245Z"
   },
   "apps": [
     {
@@ -724,7 +724,7 @@
       ],
       "status": "active",
       "lastLogin": "Vừa xong",
-      "ipAddress": "103.170.122.138",
+      "ipAddress": "127.0.0.1",
       "createdAt": "2026-10-01T07:00:00.000Z"
     },
     {
@@ -748,8 +748,8 @@
         "techcorp"
       ],
       "status": "active",
-      "lastLogin": "10 phút trước",
-      "ipAddress": "113.160.214.88",
+      "lastLogin": "Vừa xong",
+      "ipAddress": "127.0.0.1",
       "createdAt": "2026-10-02T08:30:00.000Z"
     },
     {
@@ -771,8 +771,8 @@
         "kpi"
       ],
       "status": "active",
-      "lastLogin": "25 phút trước",
-      "ipAddress": "14.161.45.120",
+      "lastLogin": "Vừa xong",
+      "ipAddress": "127.0.0.1",
       "createdAt": "2026-10-03T09:15:00.000Z"
     },
     {
@@ -797,8 +797,8 @@
         "jobai"
       ],
       "status": "active",
-      "lastLogin": "1 giờ trước",
-      "ipAddress": "27.68.112.41",
+      "lastLogin": "Vừa xong",
+      "ipAddress": "127.0.0.1",
       "createdAt": "2026-10-04T10:00:00.000Z"
     },
     {
@@ -819,12 +819,84 @@
         "ttnn"
       ],
       "status": "active",
-      "lastLogin": "2 giờ trước",
-      "ipAddress": "171.244.19.72",
+      "lastLogin": "Vừa xong",
+      "ipAddress": "127.0.0.1",
       "createdAt": "2026-10-05T14:20:00.000Z"
     }
   ],
   "auditLogs": [
+    {
+      "id": "AUD-1792496994245-91",
+      "timestamp": "2026-10-20 18:49:54",
+      "actorId": "USR-ADMIN-00",
+      "actorName": "Quản trị viên Hệ sinh thái TechCorp",
+      "actorOrg": "TechCorp Headquarters (Điều hành 16 Hệ thống Live)",
+      "ipAddress": "127.0.0.1",
+      "action": "AUTH_LOGOUT",
+      "target": "Đăng xuất phiên SSO (admin@techcorp.info.vn)",
+      "severity": "INFO",
+      "details": "Người dùng đã đăng xuất khỏi Cổng Quản trị Hệ sinh thái TechCorp."
+    },
+    {
+      "id": "AUD-1792496994215-22",
+      "timestamp": "2026-10-20 18:49:54",
+      "actorId": "USR-NT-004",
+      "actorName": "Nguyễn Minh Khôi (Sinh viên / Học viên)",
+      "actorOrg": "Đại học Nha Trang • Hồ sơ số #TC-KH-8821 (LMS + TechCorpLearn)",
+      "ipAddress": "127.0.0.1",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "target": "Đăng nhập hệ thống (khoi.nm.64cntt@ntu.edu.vn)",
+      "severity": "INFO",
+      "details": "Đăng nhập thành công với vai trò \"Cộng đồng Học viên / SV\" (student-user) tại đơn vị \"Đại học Nha Trang • Hồ sơ số #TC-KH-8821\"."
+    },
+    {
+      "id": "AUD-1792496994191-30",
+      "timestamp": "2026-10-20 18:49:54",
+      "actorId": "USR-NT-003",
+      "actorName": "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
+      "actorOrg": "Hệ thống Giáo dục Liên cấp & ĐH Nha Trang (Mầm non - THPT & TC COMPASS)",
+      "ipAddress": "127.0.0.1",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "target": "Đăng nhập hệ thống (bgh@saobienschool.edu.vn)",
+      "severity": "INFO",
+      "details": "Đăng nhập thành công với vai trò \"Khối Cơ sở Giáo dục\" (school-principal) tại đơn vị \"Hệ thống Giáo dục Liên cấp & ĐH Nha Trang\"."
+    },
+    {
+      "id": "AUD-1792496994168-83",
+      "timestamp": "2026-10-20 18:49:54",
+      "actorId": "USR-NT-002",
+      "actorName": "Trần Thanh Tâm (Giám đốc Trung tâm NN-TH)",
+      "actorOrg": "Ocean English & IT Center Nha Trang (Đang dùng: TTNN, LMS, Learn)",
+      "ipAddress": "127.0.0.1",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "target": "Đăng nhập hệ thống (director@oceanenglish.edu.vn)",
+      "severity": "INFO",
+      "details": "Đăng nhập thành công với vai trò \"Khối Đào tạo NN-TH\" (center-dir) tại đơn vị \"Ocean English & IT Center Nha Trang\"."
+    },
+    {
+      "id": "AUD-1792496994130-29",
+      "timestamp": "2026-10-20 18:49:54",
+      "actorId": "USR-NT-001",
+      "actorName": "Nguyễn Hải Đăng (CEO Resort & Doanh nghiệp)",
+      "actorOrg": "Nha Trang Bay Resort & Hưng Phát Land (Đang dùng: ERP, KPI, PMS, BĐS)",
+      "ipAddress": "127.0.0.1",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "target": "Đăng nhập hệ thống (ceo@nhatrangbayresort.vn)",
+      "severity": "INFO",
+      "details": "Đăng nhập thành công với vai trò \"Khối Doanh nghiệp SME\" (ceo-sme) tại đơn vị \"Nha Trang Bay Resort & Hưng Phát Land\"."
+    },
+    {
+      "id": "AUD-1792496994087-30",
+      "timestamp": "2026-10-20 18:49:54",
+      "actorId": "USR-ADMIN-00",
+      "actorName": "Quản trị viên Hệ sinh thái TechCorp",
+      "actorOrg": "TechCorp Headquarters (Điều hành 16 Hệ thống Live)",
+      "ipAddress": "127.0.0.1",
+      "action": "AUTH_LOGIN_SUCCESS",
+      "target": "Đăng nhập hệ thống (admin@techcorp.info.vn)",
+      "severity": "INFO",
+      "details": "Đăng nhập thành công với vai trò \"🛡️ Super Admin TechCorp\" (super-admin) tại đơn vị \"TechCorp Headquarters (Nha Trang - Khánh Hòa)\"."
+    },
     {
       "id": "AUD-10004",
       "timestamp": "2026-10-20 11:35:10",
