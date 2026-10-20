@@ -13,55 +13,156 @@ const STATE = {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2hlc2luaHRoYWkudGVjaGNvcnAuaW5mby52biIsInN1YiI6IlVTUi1BRE1JTi0wMCIsInBlcnNvbmFLZXkiOiJzdXBlci1hZG1pbiIsImVjb3N5c3RlbVJlZ2lvbiI6Iktow6FuaCBIw7JhIn0.techcorp_verified_signature",
   currentPersona: "super-admin",
   selectedForumCategory: "all",
+  selectedProductCategory: "all",
   apps: [
     {
-      id: "edu-school",
-      name: "QL Trường học (Mầm non - ĐH)",
-      badge: "EdTech",
-      appUrl: "https://truonghoc.techcorp.info.vn",
-      webhookUrl: "https://truonghoc.techcorp.info.vn/api/webhooks/techcorp-hub",
-      desc: "Học vụ, Sổ liên lạc điện tử, Thu học phí QR",
-      apiKeyMasked: "tc_live_edus...2b1c",
+      id: "mamnon",
+      name: "EduManager Pro — Quản lý Trường Mầm non & AI",
+      badge: "EdTech K-12",
+      appUrl: "https://mamnon.techcorp.info.vn",
+      webhookUrl: "https://mamnon.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Quản lý hồ sơ trẻ, điểm danh AI, thực đơn dinh dưỡng, Sổ liên lạc điện tử Phụ huynh & thu học phí QR tự động.",
+      apiKeyMasked: "tc_live_mamn...2b01",
       status: "active"
     },
     {
-      id: "edu-center",
-      name: "QL Trung tâm Ngoại ngữ - Tin học",
-      badge: "EdTech",
-      appUrl: "https://trungtam.techcorp.info.vn",
-      webhookUrl: "https://trungtam.techcorp.info.vn/api/webhooks/techcorp-hub",
-      desc: "CRM Tuyển sinh, Lớp học, Học viên, Học phí",
-      apiKeyMasked: "tc_live_educ...8877",
+      id: "tieuhoc",
+      name: "EduManager Pro — Quản lý Trường Tiểu học & AI",
+      badge: "EdTech K-12",
+      appUrl: "https://tieuhoc.techcorp.info.vn",
+      webhookUrl: "https://tieuhoc.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Quản lý học vụ Tiểu học, đánh giá phẩm chất & năng lực theo Thông tư Bộ GD&ĐT, học bạ số và kết nối Phụ huynh.",
+      apiKeyMasked: "tc_live_tieu...2b02",
       status: "active"
     },
     {
-      id: "lms-exam",
-      name: "Học & Thi Online (LMS)",
-      badge: "Core Funnel",
-      appUrl: "https://thionline.techcorp.info.vn",
-      webhookUrl: "https://thionline.techcorp.info.vn/api/webhooks/techcorp-hub",
-      desc: "Phòng thi trực tuyến, Cấp chứng chỉ số QR, Ngân hàng đề",
-      apiKeyMasked: "tc_live_lmse...ccdd",
+      id: "thcs",
+      name: "EduManager Pro — Quản lý Trường THCS & Trợ lý AI",
+      badge: "EdTech K-12",
+      appUrl: "https://thcs.techcorp.info.vn",
+      webhookUrl: "https://thcs.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Quản lý giáo vụ Trung học Cơ sở, phân công giảng dạy, sổ điểm điện tử, học bạ số và kiểm tra định kỳ trên LMS.",
+      apiKeyMasked: "tc_live_thcs...2b03",
       status: "active"
     },
     {
-      id: "biz-web",
-      name: "Website Doanh nghiệp Số",
-      badge: "BizTech",
-      appUrl: "https://web.techcorp.info.vn",
-      webhookUrl: "https://web.techcorp.info.vn/api/webhooks/techcorp-hub",
-      desc: "Thương hiệu số, SEO đa ngôn ngữ, Cổng tuyển dụng nhúng",
-      apiKeyMasked: "tc_live_bizw...2211",
+      id: "thpt",
+      name: "EduManager Pro — Quản lý Trường THPT & Hướng nghiệp AI",
+      badge: "EdTech K-12",
+      appUrl: "https://thpt.techcorp.info.vn",
+      webhookUrl: "https://thpt.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Quản lý toàn diện trường THPT, phân ban tổ hợp môn Chương trình GDPT 2018, luyện thi tốt nghiệp & hướng nghiệp AI.",
+      apiKeyMasked: "tc_live_thpt...2b04",
       status: "active"
     },
     {
-      id: "biz-erp",
-      name: "Quản trị Doanh nghiệp (ERP)",
-      badge: "BizTech",
+      id: "gdtx",
+      name: "EduManager Pro — Quản lý Trung tâm GDNN - GDTX",
+      badge: "EdTech K-12",
+      appUrl: "https://gdtx.techcorp.info.vn",
+      webhookUrl: "https://gdtx.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Quản lý học viên Giáo dục Thường xuyên, liên kết đào tạo nghề, văn bằng chứng chỉ và giới thiệu việc làm doanh nghiệp.",
+      apiKeyMasked: "tc_live_gdtx...2b05",
+      status: "active"
+    },
+    {
+      id: "qldt",
+      name: "TC COMPASS — Quản trị Đại học & Đánh giá Hiệu suất",
+      badge: "EdTech & LMS",
+      appUrl: "https://qldt.techcorp.info.vn",
+      webhookUrl: "https://qldt.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Hệ thống TC COMPASS v1.0 quản trị đào tạo Đại học/Cao đẳng theo học chế tín chỉ, KPI giảng viên & cổng thực tập sinh viên.",
+      apiKeyMasked: "tc_live_qldt...2b06",
+      status: "active"
+    },
+    {
+      id: "ttnn",
+      name: "Quản lý Trung tâm Ngoại ngữ & Tin học Chuẩn Quốc tế",
+      badge: "EdTech & LMS",
+      appUrl: "https://ttnn.techcorp.info.vn",
+      webhookUrl: "https://ttnn.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "CRM Tuyển sinh đa kênh, quản lý lớp học, lịch giáo viên bản xứ, học phí và liên thông phòng thi IELTS/TOEIC/MOS.",
+      apiKeyMasked: "tc_live_ttnn...2b07",
+      status: "active"
+    },
+    {
+      id: "lms",
+      name: "TechCorp LMS & E-Testing — Đào tạo & Khảo thí Trực tuyến",
+      badge: "EdTech & LMS",
+      appUrl: "https://lms.techcorp.info.vn",
+      webhookUrl: "https://lms.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Phòng thi trực tuyến chống gian lận, ngân hàng đề chuẩn hóa, chấm điểm tự động và cấp Chứng chỉ Năng lực Số QR.",
+      apiKeyMasked: "tc_live_lms_...2b08",
+      status: "active"
+    },
+    {
+      id: "learn",
+      name: "TechCorpLearn — Nền tảng Học Trực tuyến & Khóa học Số",
+      badge: "EdTech & LMS",
+      appUrl: "https://learn.techcorp.info.vn",
+      webhookUrl: "https://learn.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Cổng học tập trực tuyến ('Học để dẫn đầu') cung cấp khóa học video tương tác, lộ trình kỹ năng số, AI & ngoại ngữ thực chiến.",
+      apiKeyMasked: "tc_live_lear...2b09",
+      status: "active"
+    },
+    {
+      id: "kpi",
+      name: "TechCorp BSC-KPI — Quản trị Mục tiêu & Hiệu suất Thông minh",
+      badge: "Enterprise & KPI",
+      appUrl: "https://kpi.techcorp.info.vn",
+      webhookUrl: "https://kpi.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Hệ thống Thẻ điểm cân bằng BSC & quản trị mục tiêu KPI/OKR tự động từ Ban Giám đốc xuống từng phòng ban và nhân sự.",
+      apiKeyMasked: "tc_live_kpi_...2b10",
+      status: "active"
+    },
+    {
+      id: "erp",
+      name: "TechCorp ERP — Quản trị Doanh nghiệp Tổng thể",
+      badge: "Enterprise & KPI",
       appUrl: "https://erp.techcorp.info.vn",
       webhookUrl: "https://erp.techcorp.info.vn/api/webhooks/techcorp-hub",
-      desc: "HRM Nhân sự, CRM Khách hàng, Tài chính, Kho vận, Công việc",
-      apiKeyMasked: "tc_live_bize...8899",
+      desc: "Điều hành doanh nghiệp hợp nhất: HRM Nhân sự & Tuyển dụng 1-Click, CRM Khách hàng, Tài chính - Kế toán, Kho vận & Dự án.",
+      apiKeyMasked: "tc_live_erp_...2b11",
+      status: "active"
+    },
+    {
+      id: "techcorp",
+      name: "TechCorp Academy — Giải pháp PMS, ERP, LMS & Đào tạo",
+      badge: "Enterprise & KPI",
+      appUrl: "https://techcorp.info.vn",
+      webhookUrl: "https://techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Cổng thông tin chính thức TechCorp Academy: Cung cấp giải pháp phần mềm quản trị PMS, ERP, LMS và đào tạo chuyển đổi số thực chiến.",
+      apiKeyMasked: "tc_live_tech...2b12",
+      status: "active"
+    },
+    {
+      id: "qldh",
+      name: "TechCorp PMS — Hệ thống Quản lý Khách sạn & Resort",
+      badge: "Chuyên ngành",
+      appUrl: "https://qldh.techcorp.info.vn",
+      webhookUrl: "https://qldh.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Phần mềm Quản lý Khách sạn & Resort (PMS): Đặt phòng, Lễ tân (Front Office), Buồng phòng, POS Nhà hàng & kết nối nhân sự du lịch.",
+      apiKeyMasked: "tc_live_qldh...2b13",
+      status: "active"
+    },
+    {
+      id: "bds",
+      name: "Hưng Phát Land — Sàn Giao dịch Bất động sản & Trợ lý AI",
+      badge: "Chuyên ngành",
+      appUrl: "https://bds.techcorp.info.vn",
+      webhookUrl: "https://bds.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Sàn giao dịch Bất động sản cao cấp tích hợp Trợ lý AI tư vấn 24/7, quản lý giỏ hàng dự án, CRM môi giới & pháp lý số.",
+      apiKeyMasked: "tc_live_bds_...2b14",
+      status: "active"
+    },
+    {
+      id: "noithat",
+      name: "TechCorp Interior — Thiết kế, Thi công & Showroom Nội thất",
+      badge: "Chuyên ngành",
+      appUrl: "https://noithat.techcorp.info.vn",
+      webhookUrl: "https://noithat.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Nền tảng Kiến tạo Không gian Hoàn mỹ: Trưng bày sản phẩm nội thất, báo giá dự toán thiết kế - thi công & quản lý công trình.",
+      apiKeyMasked: "tc_live_noit...2b15",
       status: "active"
     }
   ],
@@ -72,11 +173,27 @@ const STATE = {
       fullName: "Quản trị viên Hệ sinh thái TechCorp",
       email: "admin@techcorp.info.vn",
       phone: "0905.111.999",
-      org: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      org: "TechCorp Headquarters (Điều hành 15 Hệ thống Live)",
       role: "super_admin",
       roleBadge: "🛡️ Super Admin TechCorp",
-      defaultAppId: "biz-erp",
-      assignedApps: ["edu-school", "edu-center", "lms-exam", "biz-web", "biz-erp"],
+      defaultAppId: "erp",
+      assignedApps: [
+        "mamnon",
+        "tieuhoc",
+        "thcs",
+        "thpt",
+        "gdtx",
+        "qldt",
+        "ttnn",
+        "lms",
+        "learn",
+        "kpi",
+        "erp",
+        "techcorp",
+        "qldh",
+        "bds",
+        "noithat"
+      ],
       status: "active",
       lastLogin: "Vừa xong",
       ipAddress: "103.170.122.138"
@@ -84,14 +201,14 @@ const STATE = {
     {
       id: "USR-NT-001",
       personaKey: "ceo-sme",
-      fullName: "Nguyễn Hải Đăng (CEO Resort & Travel)",
+      fullName: "Nguyễn Hải Đăng (CEO Resort & Doanh nghiệp)",
       email: "ceo@nhatrangbayresort.vn",
       phone: "0914.222.333",
-      org: "Nha Trang Bay Resort & Travel",
+      org: "Nha Trang Bay Resort & Hưng Phát Land",
       role: "ceo_sme",
       roleBadge: "Khối Doanh nghiệp SME",
-      defaultAppId: "biz-erp",
-      assignedApps: ["biz-erp", "biz-web", "lms-exam"],
+      defaultAppId: "erp",
+      assignedApps: ["erp", "kpi", "qldh", "bds", "noithat", "lms", "techcorp"],
       status: "active",
       lastLogin: "10 phút trước",
       ipAddress: "113.160.214.88"
@@ -105,8 +222,8 @@ const STATE = {
       org: "Ocean English & IT Center Nha Trang",
       role: "center_director",
       roleBadge: "Khối Đào tạo NN-TH",
-      defaultAppId: "edu-center",
-      assignedApps: ["edu-center", "lms-exam", "biz-web"],
+      defaultAppId: "ttnn",
+      assignedApps: ["ttnn", "lms", "learn", "gdtx", "kpi"],
       status: "active",
       lastLogin: "25 phút trước",
       ipAddress: "14.161.45.120"
@@ -117,11 +234,11 @@ const STATE = {
       fullName: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
       email: "bgh@saobienschool.edu.vn",
       phone: "0903.666.777",
-      org: "Hệ thống Giáo dục Sao Biển Nha Trang",
+      org: "Hệ thống Giáo dục Liên cấp & ĐH Nha Trang",
       role: "school_principal",
       roleBadge: "Khối Cơ sở Giáo dục",
-      defaultAppId: "edu-school",
-      assignedApps: ["edu-school", "lms-exam"],
+      defaultAppId: "thpt",
+      assignedApps: ["mamnon", "tieuhoc", "thcs", "thpt", "gdtx", "qldt", "lms", "learn"],
       status: "active",
       lastLogin: "1 giờ trước",
       ipAddress: "27.68.112.41"
@@ -129,14 +246,14 @@ const STATE = {
     {
       id: "USR-NT-004",
       personaKey: "student-user",
-      fullName: "Nguyễn Minh Khôi (Sinh viên Năm cuối)",
+      fullName: "Nguyễn Minh Khôi (Sinh viên / Học viên)",
       email: "khoi.nm.64cntt@ntu.edu.vn",
       phone: "0399.888.111",
       org: "Đại học Nha Trang • Hồ sơ số #TC-KH-8821",
       role: "student_parent",
       roleBadge: "Cộng đồng Học viên / SV",
-      defaultAppId: "lms-exam",
-      assignedApps: ["lms-exam", "edu-school"],
+      defaultAppId: "lms",
+      assignedApps: ["lms", "learn", "qldt", "ttnn"],
       status: "active",
       lastLogin: "2 giờ trước",
       ipAddress: "171.244.19.72"
@@ -147,35 +264,35 @@ const STATE = {
       id: "super-admin",
       userId: "USR-ADMIN-00",
       name: "Quản trị viên Hệ sinh thái TechCorp",
-      org: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      org: "TechCorp Headquarters (Điều hành 15 Hệ thống Live)",
       roleBadge: "🛡️ Super Admin TechCorp"
     },
     "ceo-sme": {
       id: "ceo-sme",
       userId: "USR-NT-001",
-      name: "Nguyễn Hải Đăng (CEO Resort & Travel)",
-      org: "Nha Trang Bay Resort & Travel (Đang dùng: ERP + Website)",
+      name: "Nguyễn Hải Đăng (CEO Resort & Doanh nghiệp)",
+      org: "Nha Trang Bay Resort & Hưng Phát Land (ERP, KPI, PMS, BĐS)",
       roleBadge: "Khối Doanh nghiệp SME"
     },
     "center-dir": {
       id: "center-dir",
       userId: "USR-NT-002",
       name: "Trần Thanh Tâm (Giám đốc Trung tâm NN-TH)",
-      org: "Ocean English & IT Center Nha Trang (Đang dùng: QL Trung tâm + Thi Online)",
+      org: "Ocean English & IT Center Nha Trang (TTNN, LMS, TechCorpLearn)",
       roleBadge: "Khối Đào tạo NN-TH"
     },
     "school-principal": {
       id: "school-principal",
       userId: "USR-NT-003",
       name: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
-      org: "Hệ thống Giáo dục Sao Biển Nha Trang (Đang dùng: QL Trường học + LMS)",
+      org: "Hệ thống Giáo dục Liên cấp & ĐH Nha Trang (Mầm non - THPT & TC COMPASS)",
       roleBadge: "Khối Cơ sở Giáo dục"
     },
     "student-user": {
       id: "student-user",
       userId: "USR-NT-004",
-      name: "Nguyễn Minh Khôi (Sinh viên Năm cuối)",
-      org: "Đại học Nha Trang • Hồ sơ số #TC-KH-8821",
+      name: "Nguyễn Minh Khôi (Sinh viên / Học viên)",
+      org: "Đại học Nha Trang • Hồ sơ số #TC-KH-8821 (LMS + TechCorpLearn)",
       roleBadge: "Cộng đồng Học viên / SV"
     }
   },
@@ -527,8 +644,8 @@ const STATE = {
       id: "ANN-MASTER-01",
       sourceType: "master",
       badge: "👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP",
-      title: "Chính thức vận hành Trục Liên thông SSO TechCorp ID v4.0 & Cơ chế Phân quyền Đa Tầng (Multi-Tenant RBAC)",
-      summary: "Toàn bộ 05 nền tảng (QL Trường học, QL Trung tâm NN-TH, Học & Thi Online LMS, Website DN và Quản trị ERP) đã được kết nối tập trung. Các Chủ Doanh nghiệp, Giám đốc Trung tâm và Hiệu trưởng có Không gian Quản trị Đơn vị riêng biệt.",
+      title: "Chính thức Liên thông 15 Nền tảng Phần mềm Thực tế trên *.techcorp.info.vn qua Trục SSO TechCorp ID v5.1",
+      summary: "Toàn bộ 15 hệ thống đang chạy thực tế gồm: Giáo dục K12 (mamnon, tieuhoc, thcs, thpt, gdtx), Đại học & Khảo thí (qldt TC COMPASS, ttnn, lms, learn), Quản trị Doanh nghiệp (erp, kpi, techcorp) và Chuyên ngành (qldh PMS Khách sạn, bds AI, noithat) đã được kết nối tập trung.",
       authorName: "Ban Điều hành Hệ sinh thái TechCorp",
       authorOrg: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
       createdAt: "Hôm nay, 08:00",
@@ -838,66 +955,187 @@ function renderAllViews() {
   updateTotalKPIs();
 }
 
-// ==================== 0. PUBLIC PRODUCTS SHOWCASE GRID (INDEX.HTML) ====================
+// ==================== 0. PUBLIC PRODUCTS SHOWCASE GRID (INDEX.HTML - 15 REAL LIVE SYSTEMS) ====================
 const PRODUCT_SHOWCASE_META = {
-  "edu-school": {
-    icon: "🎓",
-    targetAudience: "Trường Mầm non, Tiểu học, THCS, THPT & Đại học - Cao đẳng",
+  mamnon: {
+    icon: "🧸",
+    targetAudience: "Trường Mầm non Tư thục, Quốc tế & Nhóm trẻ Chất lượng cao",
     highlights: [
-      "Quản lý hồ sơ học sinh/sinh viên, điểm danh AI & Sổ liên lạc điện tử đa chiều",
-      "Gạch nợ học phí tự động bằng QR động 3 giây, xuất biên lai điện tử tức thì",
-      "Liên thông học bổng từ Trung tâm Ngoại ngữ & cổng thực tập Doanh nghiệp"
+      "Điểm danh AI nhận diện khuôn mặt, quản lý hồ sơ sức khỏe & cân đo định kỳ",
+      "Quản lý thực đơn dinh dưỡng chuẩn Viện Dinh dưỡng & Sổ liên lạc Phụ huynh",
+      "Gạch nợ học phí tự động bằng mã QR động 3 giây, xuất biên lai điện tử"
     ],
-    ecoFlow: "🔄 Liên thông: Đẩy hồ sơ SV năm cuối sang Sàn Nhân lực & Nhận học bổng/tài trợ cho Phụ huynh"
+    ecoFlow: "🔄 Liên thông: Nhận học bổng tiếng Anh thiếu nhi từ Trung tâm NN & E-Voucher gia đình từ Doanh nghiệp"
   },
-  "edu-center": {
-    icon: "🏫",
+  tieuhoc: {
+    icon: "🎒",
+    targetAudience: "Trường Tiểu học Công lập, Tư thục & Liên cấp Quốc tế",
+    highlights: [
+      "Quản lý học vụ Tiểu học, đánh giá phẩm chất & năng lực theo Thông tư Bộ GD&ĐT",
+      "Học bạ số ký số điện tử, Sổ liên lạc đa chiều giữa Giáo viên chủ nhiệm & Phụ huynh",
+      "Tích hợp cổng thanh toán học phí, tiền ăn bán trú & xe đưa đón không tiền mặt"
+    ],
+    ecoFlow: "🔄 Liên thông: Kết nối kỳ thi đánh giá tư duy/tiếng Anh trên LMS & Nhà cung ứng suất ăn học đường B2B"
+  },
+  thcs: {
+    icon: "📘",
+    targetAudience: "Trường Trung học Cơ sở (THCS) & Trường Phổ thông Liên cấp",
+    highlights: [
+      "EduManager Pro K12: Phân công chuyên môn, thời khóa biểu & sổ điểm điện tử",
+      "Tích hợp Trợ lý AI hỗ trợ giáo viên soạn giảng và phân tích kết quả học tập",
+      "Tổ chức kiểm tra 15 phút, 1 tiết và thi học kỳ trực tuyến chống gian lận"
+    ],
+    ecoFlow: "🔄 Liên thông: Đồng bộ ngân hàng đề và kết quả khảo thí trực tiếp với nền tảng TechCorp LMS"
+  },
+  thpt: {
+    icon: "🎓",
+    targetAudience: "Trường Trung học Phổ thông (THPT) & Trường Chuyên",
+    highlights: [
+      "Quản lý đăng ký tổ hợp môn tự chọn theo Chương trình GDPT 2018 & xếp lớp thông minh",
+      "Trợ lý AI tư vấn hướng nghiệp, phân tích năng lực học sinh & ôn thi Tốt nghiệp THPT",
+      "Quản lý toàn diện hồ sơ học sinh, kỷ luật tích cực, học bạ số và thu học phí QR"
+    ],
+    ecoFlow: "🔄 Liên thông: Kết nối trực tiếp Đấu trường Thi thử IELTS/TOEIC & Cổng Tuyển sinh Đại học TC COMPASS"
+  },
+  gdtx: {
+    icon: "🏛️",
+    targetAudience: "Trung tâm Giáo dục Nghề nghiệp - Giáo dục Thường xuyên (GDNN - GDTX)",
+    highlights: [
+      "Quản lý học viên hệ GDTX cấp THPT kết hợp đào tạo trung cấp nghề song song",
+      "Theo dõi chuyên cần, quản lý kỳ thi sát hạch kỹ năng nghề & cấp chứng chỉ",
+      "Kết nối doanh nghiệp địa phương nhận học viên thực hành và tuyển dụng ngay"
+    ],
+    ecoFlow: "🔄 Liên thông: Đẩy hồ sơ học viên tốt nghiệp nghề sang phân hệ Tuyển dụng HRM trên TechCorp ERP"
+  },
+  qldt: {
+    icon: "🧭",
+    targetAudience: "Trường Đại học, Học viện & Trường Cao đẳng (TC COMPASS v1.0)",
+    highlights: [
+      "Quản trị đào tạo tín chỉ toàn diện: Chương trình khung, đăng ký học phần, xét tốt nghiệp",
+      "Đánh giá hiệu suất làm việc (KPI) giảng viên, quản lý nghiên cứu khoa học & kiểm định",
+      "Cổng Thực tập & Việc làm Sinh viên kết nối trực tiếp với các Doanh nghiệp trong hệ sinh thái"
+    ],
+    ecoFlow: "🔄 Liên thông: Tự động xuất Hồ sơ Năng lực Số (Talent Passport) của SV năm cuối sang Sàn Nhân lực"
+  },
+  ttnn: {
+    icon: "🌐",
     targetAudience: "Trung tâm Ngoại ngữ (IELTS/TOEIC/Giao tiếp), Tin học & Kỹ năng",
     highlights: [
-      "CRM Tuyển sinh thông minh, quản lý xếp lớp, lịch giáo viên bản xứ & học phí",
-      "Tích hợp trực tiếp Phòng Thi Online LMS để tổ chức thi thử toàn tỉnh thu Lead",
-      "Nhận đặt hàng đào tạo ngoại ngữ/tin học trực tiếp từ các Doanh nghiệp SME"
+      "CRM Tuyển sinh đa kênh, quản lý kiểm tra đầu vào (Placement Test) & xếp lớp tự động",
+      "Quản lý lịch dạy giáo viên bản xứ/trợ giảng, điểm danh bù buổi & nhắc học phí tự động",
+      "Đồng tổ chức các kỳ thi thử IELTS/TOEIC/MOS trực tuyến toàn tỉnh để thu hút học viên"
     ],
-    ecoFlow: "🔄 Liên thông: Nhận Lead thí sinh tự động từ Đấu trường Thi Online & Giới thiệu học viên vào DN"
+    ecoFlow: "🔄 Liên thông: Nhận Lead thí sinh tự động từ TechCorp LMS & Đề cử học viên xuất sắc sang Doanh nghiệp"
   },
-  "lms-exam": {
+  lms: {
     icon: "📝",
-    targetAudience: "Trường học, Trung tâm Đào tạo, Doanh nghiệp sát hạch nội bộ & Thí sinh",
+    targetAudience: "Trường học K12, Đại học, Trung tâm Đào tạo & Doanh nghiệp Sát hạch Nội bộ",
     highlights: [
-      "Ngân hàng đề thi chuẩn hóa, chấm điểm tự động & chống gian lận trực tuyến",
-      "Cấp Chứng chỉ Năng lực Số kèm mã QR xác thực chống giả mạo trên toàn hệ thống",
-      "Phễu thu hút hàng ngàn học sinh, sinh viên tham gia thi thử mỗi học kỳ"
+      "Hệ thống Đào tạo & Khảo thí Trực tuyến (E-Testing) chịu tải cao, chống gian lận AI",
+      "Ngân hàng câu hỏi chuẩn hóa theo ma trận đề, chấm điểm tự động & phân tích phổ điểm",
+      "Cấp Chứng chỉ Năng lực Số kèm mã QR xác thực chống giả mạo trên toàn hệ sinh thái"
     ],
-    ecoFlow: "🔄 Liên thông: Tự động gắn huy hiệu Chứng chỉ Xác thực vào Hồ sơ Ứng viên gửi sang ERP"
+    ecoFlow: "🔄 Liên thông: Tự động đính kèm Chứng chỉ QR vào Hồ sơ Ứng viên để Doanh nghiệp nhập 1-Click vào ERP"
   },
-  "biz-web": {
-    icon: "🌐",
-    targetAudience: "Doanh nghiệp Du lịch, Resort, F&B, Thương mại, Trường học & Trung tâm",
+  learn: {
+    icon: "💻",
+    targetAudience: "Sinh viên, Học viên, Người đi làm & Doanh nghiệp Đào tạo Nội bộ (L&D)",
     highlights: [
-      "Kiến trúc Website chuẩn SEO Quốc tế đa ngôn ngữ (Việt - Anh - Hàn - Trung)",
-      "Nhúng tự động Cổng Tuyển dụng từ ERP & Khung đăng ký nhận ưu đãi B2B",
-      "Triển khai siêu tốc, đồng bộ nhận diện thương hiệu trong Hệ sinh thái Số TechCorp"
+      "Nền tảng TechCorpLearn ('Học để dẫn đầu'): Kho khóa học Video HD, SCORM & Live Class",
+      "Lộ trình học tập cá nhân hóa về Công nghệ, Quản trị, AI, Ngoại ngữ & Kỹ năng mềm",
+      "Tích hợp bài tập thực hành, thảo luận trực tuyến và cấp chứng nhận hoàn thành khóa học"
     ],
-    ecoFlow: "🔄 Liên thông: Đồng bộ tin tuyển dụng, sản phẩm & ưu đãi thành viên lên Chợ Giao thương B2B"
+    ecoFlow: "🔄 Liên thông: Đồng bộ tiến độ tự học của nhân sự về hệ thống đánh giá năng lực BSC-KPI & ERP"
   },
-  "biz-erp": {
+  kpi: {
+    icon: "📊",
+    targetAudience: "Ban Giám đốc, CEO, Giám đốc Nhân sự (CHRO) & Trưởng bộ phận Doanh nghiệp",
+    highlights: [
+      "Hệ thống quản trị chiến lược theo Thẻ điểm cân bằng (BSC) & phân rã mục tiêu KPI/OKR",
+      "Theo dõi tiến độ hoàn thành chỉ tiêu theo thời gian thực với biểu đồ trực quan đa chiều",
+      "Tự động tính điểm hiệu suất làm việc hàng tháng/quý làm cơ sở tính lương thưởng"
+    ],
+    ecoFlow: "🔄 Liên thông: Kết nối hai chiều với phân hệ HRM/Payroll trên TechCorp ERP & Hệ thống Đại học TC COMPASS"
+  },
+  erp: {
     icon: "🏢",
-    targetAudience: "Doanh nghiệp SME, Tập đoàn Dịch vụ, Khách sạn, Sản xuất & Phân phối",
+    targetAudience: "Doanh nghiệp SME, Tập đoàn Dịch vụ, Thương mại, Sản xuất & Phân phối",
     highlights: [
-      "Quản trị toàn diện: HRM Nhân sự - Chấm công, CRM Khách hàng, Tài chính - Kế toán, Kho vận",
-      "Tuyển dụng 1-Click: Nhập trực tiếp hồ sơ ứng viên đã xác thực điểm thi từ LMS vào HRM",
-      "Phát hành E-Voucher khuyến mãi chéo tới hơn 15.000 Phụ huynh & Sinh viên"
+      "Quản trị Doanh nghiệp hợp nhất: Nhân sự (HRM), Khách hàng (CRM), Tài chính - Kế toán, Kho vận",
+      "Tuyển dụng 1-Click: Nhập trực tiếp hồ sơ ứng viên đã xác thực từ LMS/Đại học vào HRM",
+      "Phát hành chiến dịch E-Voucher khuyến mãi chéo tới hàng chục ngàn Phụ huynh & Sinh viên"
     ],
-    ecoFlow: "🔄 Liên thông: Kết nối trực tiếp nguồn nhân lực trẻ từ Trường ĐH & Trung tâm Đào tạo"
+    ecoFlow: "🔄 Liên thông: Trục trung tâm kết nối Nhân sự, Tài chính và Giao thương B2B toàn Hệ sinh thái"
+  },
+  techcorp: {
+    icon: "🚀",
+    targetAudience: "Doanh nghiệp, Tổ chức Giáo dục & Học viên Thực chiến tại Khánh Hòa & Toàn quốc",
+    highlights: [
+      "Cổng chính thức TechCorp Academy: Cung cấp giải pháp PMS, ERP, LMS & Tư vấn Chuyển đổi số",
+      "Đào tạo nhân sự công nghệ và quản trị vận hành phần mềm thực chiến cho doanh nghiệp",
+      "Trung tâm điều phối triển khai, bảo hành và hỗ trợ kỹ thuật 24/7 cho toàn hệ sinh thái"
+    ],
+    ecoFlow: "🔄 Liên thông: Cổng tư vấn giải pháp Combo và kết nối đối tác chiến lược toàn Hệ sinh thái TechCorp"
+  },
+  qldh: {
+    icon: "🏨",
+    targetAudience: "Khách sạn 3-5 Sao, Resort Nghỉ dưỡng, Villa & Chuỗi Lưu trú Du lịch",
+    highlights: [
+      "Hệ thống Quản lý Khách sạn (TechCorp PMS): Đặt phòng (Booking), Lễ tân (Front Desk), Buồng phòng",
+      "Quản lý điểm bán hàng POS Nhà hàng, Spa, Dịch vụ giải trí và đối soát công nợ đoàn/OTA",
+      "Báo cáo doanh thu, công suất phòng (Occupancy Rate) & RevPAR theo thời gian thực"
+    ],
+    ecoFlow: "🔄 Liên thông: Tuyển thẳng nhân sự Lễ tân/F&B giỏi ngoại ngữ từ Trung tâm NN-TH & ĐH trong hệ sinh thái"
+  },
+  bds: {
+    icon: "🏙️",
+    targetAudience: "Sàn Giao dịch Bất động sản, Chủ đầu tư Dự án & Chuyên viên Môi giới",
+    highlights: [
+      "Sàn Giao dịch BĐS Cao cấp tích hợp Trợ lý AI tư vấn dự án, phong thủy & dòng tiền 24/7",
+      "Quản lý bảng hàng trực quan, giỏ hàng độc quyền, đặt cọc giữ chỗ & CRM chăm sóc khách đầu tư",
+      "Tích hợp bản đồ vị trí, thông tin quy hoạch và công cụ tính lãi suất vay ngân hàng"
+    ],
+    ecoFlow: "🔄 Liên thông: Kết nối chéo với nền tảng Thiết kế Nội thất (noithat.techcorp.info.vn) & Quản trị ERP"
+  },
+  noithat: {
+    icon: "🛋️",
+    targetAudience: "Công ty Thiết kế - Thi công Nội thất, Kiến trúc & Showroom Nội thất Cao cấp",
+    highlights: [
+      "Nền tảng 'Kiến tạo Không gian Hoàn mỹ': Trưng bày Portfolio dự án & Danh mục sản phẩm 3D",
+      "Công cụ nhận yêu cầu tư vấn thiết kế, lập dự toán báo giá thi công nội thất tự động",
+      "Quản lý tiến độ sản xuất xưởng, lắp đặt công trình và bảo hành điện tử cho khách hàng"
+    ],
+    ecoFlow: "🔄 Liên thông: Nhận khách hàng mua căn hộ/biệt thự từ Sàn BĐS AI & Cung ứng nội thất cho Resort/Trường học"
   }
+};
+
+window.filterPublicProducts = function (categoryBadge) {
+  STATE.selectedProductCategory = categoryBadge || "all";
+  const bar = document.getElementById("productCategoryFilterBar");
+  if (bar) {
+    bar.querySelectorAll(".forum-cat-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-prod-cat") === STATE.selectedProductCategory);
+    });
+  }
+  renderPublicProductsShowcase();
 };
 
 function renderPublicProductsShowcase() {
   const gridEl = document.getElementById("publicProductsShowcaseGrid");
+  const statEl = document.getElementById("pubStatApps");
+  const activeApps = STATE.apps.filter((a) => a.status !== "locked");
+  if (statEl) {
+    statEl.textContent = `${activeApps.length} Hệ thống`;
+  }
   if (!gridEl) return;
 
-  const activeApps = STATE.apps.filter((a) => a.status !== "locked");
-  gridEl.innerHTML = activeApps
+  const selectedCat = STATE.selectedProductCategory || "all";
+  const filteredApps =
+    selectedCat === "all"
+      ? activeApps
+      : activeApps.filter((a) => (a.badge || "").toLowerCase() === selectedCat.toLowerCase());
+
+  gridEl.innerHTML = filteredApps
     .map((app) => {
       const meta = PRODUCT_SHOWCASE_META[app.id] || {
         icon: "🚀",
@@ -919,7 +1157,10 @@ function renderPublicProductsShowcase() {
           <div>
             <div class="pub-prod-top">
               <div class="pub-prod-icon">${meta.icon}</div>
-              <span class="badge badge-blue">${escapeHtml(app.badge || "TechCorp Cloud")}</span>
+              <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                <span class="badge badge-green">● HTTP 200 Live</span>
+                <span class="badge badge-blue">${escapeHtml(app.badge || "TechCorp Cloud")}</span>
+              </div>
             </div>
             <h3>${escapeHtml(app.name)}</h3>
             <div style="font-size:12px;font-weight:700;color:#0052d4;margin-bottom:6px;">
@@ -934,10 +1175,12 @@ function renderPublicProductsShowcase() {
             </div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:10px;border-top:1px solid #e2e8f0;flex-wrap:wrap;">
-            <code style="font-size:11.5px;color:#0052d4;font-weight:700;">${escapeHtml(app.appUrl)}</code>
+            <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" style="font-size:11.5px;color:#0052d4;font-weight:800;text-decoration:none;">
+              🌐 ${escapeHtml(app.appUrl.replace("https://", ""))} ↗
+            </a>
             <div style="display:flex;gap:6px;">
               <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
-                🚀 Mở Nền tảng ↗
+                🚀 Truy cập Hệ thống Live ↗
               </a>
               <a href="admin.html" class="btn btn-outline btn-sm" style="text-decoration:none;">
                 🛡️ Quản trị
