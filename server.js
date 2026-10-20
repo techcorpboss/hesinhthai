@@ -53,7 +53,7 @@ function parseBody(req) {
     let body = "";
     req.on("data", (chunk) => {
       body += chunk;
-      if (body.length > 1e6) {
+      if (body.length > 10e6) {
         req.destroy();
         reject(new Error("Payload too large"));
       }
@@ -129,6 +129,7 @@ async function handleApi(req, res, parsedUrl) {
       ok: true,
       meta: db.state.meta,
       sso,
+      heroSliders: db.state.heroSliders || [],
       apps: db.getPublicApps(),
       users: db.state.users || [],
       personas: db.state.personas,
@@ -683,6 +684,45 @@ async function handleApi(req, res, parsedUrl) {
         ok: true,
         removed,
         announcements: db.state.announcements,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  // 17. Hero Sliders CMS (6 Slides on Public Page)
+  if (pathname === "/api/v1/hero-sliders" && method === "GET") {
+    return sendJson(res, 200, {
+      ok: true,
+      heroSliders: db.state.heroSliders || []
+    });
+  }
+
+  if (pathname === "/api/v1/hero-sliders/reset" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const resetList = db.resetHeroSliders(body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        heroSliders: resetList,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  const sliderMatch = pathname.match(/^\/api\/v1\/hero-sliders\/([^/]+)$/);
+  if (sliderMatch && method === "PUT") {
+    try {
+      const slideId = decodeURIComponent(sliderMatch[1]);
+      const body = await parseBody(req);
+      const updated = db.updateHeroSlider(slideId, body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        slide: updated,
+        heroSliders: db.state.heroSliders,
         auditLogs: db.state.auditLogs
       });
     } catch (err) {

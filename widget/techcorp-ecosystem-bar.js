@@ -20,6 +20,7 @@
     { id: "learn", name: "TechCorpLearn — E-Learning", badge: "EdTech & LMS", appUrl: "https://learn.techcorp.info.vn" },
     { id: "kpi", name: "Hệ thống Quản trị BSC-KPI", badge: "Enterprise & KPI", appUrl: "https://kpi.techcorp.info.vn" },
     { id: "erp", name: "TechCorp ERP — Quản trị Doanh nghiệp", badge: "Enterprise & KPI", appUrl: "https://erp.techcorp.info.vn" },
+    { id: "jobai", name: "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc", badge: "Enterprise & KPI", appUrl: "https://jobai.techcorp.info.vn" },
     { id: "techcorp", name: "TechCorp Academy & Giải pháp Số", badge: "Enterprise & KPI", appUrl: "https://techcorp.info.vn" },
     { id: "qldh", name: "TechCorp PMS — Quản lý Khách sạn", badge: "Chuyên ngành", appUrl: "https://qldh.techcorp.info.vn" },
     { id: "bds", name: "Hưng Phát Land — Sàn BĐS & AI", badge: "Chuyên ngành", appUrl: "https://bds.techcorp.info.vn" },
@@ -120,7 +121,7 @@
       position: absolute;
       top: calc(100% + 8px);
       left: 0;
-      width: 860px;
+      width: 880px;
       max-width: 92vw;
       background: #ffffff;
       color: #0f172a;
@@ -237,6 +238,11 @@
   `;
   document.head.appendChild(style);
 
+  const publicLinkHtml =
+    isAdminPage || isLoginPage
+      ? `<a href="${hubBaseUrl}/index.html" class="tc-eco-link">🌍 Về Trang Public</a>`
+      : `<a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="tc-eco-link" style="color:#38bdf8;font-weight:700;">🤖 Sàn Việc làm JobAI ↗</a>`;
+
   const bar = document.createElement("div");
   bar.className = "tc-eco-bar";
   bar.innerHTML = `
@@ -249,30 +255,28 @@
         <span class="tc-eco-divider"></span>
         <div class="tc-eco-launcher-wrap" id="tcEcoLauncherWrap">
           <button type="button" class="tc-eco-launcher-btn" id="tcEcoLauncherBtn">
-            <span>🌐 Khám phá 15 Nền tảng Live</span>
+            <span>🌐 Khám phá 16 Nền tảng Live</span>
             <span style="font-size:10px;opacity:0.85;">▼</span>
           </button>
           <div class="tc-eco-dropdown" id="tcEcoDropdown">
             <div class="tc-eco-dd-header">
               <div>
-                <strong style="font-size:13.5px;color:#071936;">Danh mục 15 Hệ thống Phần mềm Đang Vận hành Thực tế (*.techcorp.info.vn)</strong>
+                <strong style="font-size:13.5px;color:#071936;">Danh mục 16 Hệ thống Phần mềm Đang Vận hành Thực tế (*.techcorp.info.vn)</strong>
                 <div style="font-size:11.5px;color:#64748b;">100% Trực tuyến (HTTP 200 & SSL) • Kết nối định danh tập trung TechCorp ID</div>
               </div>
-              <a href="${hubBaseUrl}/index.html#sec-products" style="font-size:12px;font-weight:700;color:#0055e5;text-decoration:none;">Xem chi tiết trên Trang Public →</a>
+              <a href="${hubBaseUrl}/index.html#sec-products" style="font-size:12px;font-weight:700;color:#0055e5;text-decoration:none;">Xem chi tiết 16 Sản phẩm →</a>
             </div>
             <div class="tc-eco-dd-grid" id="tcEcoDropdownGrid"></div>
           </div>
         </div>
         <div class="tc-eco-quick-stats">
-          <span>● 16/16 Domains Online</span>
+          <span>● 17/17 Domains Online</span>
           <span>•</span>
-          <span>SSO JWT v5.2</span>
+          <span>SSO JWT v6.1</span>
         </div>
       </div>
       <div class="tc-eco-right">
-        <a href="${hubBaseUrl}/index.html" class="tc-eco-link ${!isAdminPage && !isLoginPage ? "active" : ""}">
-          🌍 Trang Public Hệ sinh thái
-        </a>
+        ${publicLinkHtml}
         <a href="${hubBaseUrl}/admin.html" class="tc-eco-link ${isAdminPage ? "active" : ""}">
           🛡️ Cổng Quản trị
         </a>

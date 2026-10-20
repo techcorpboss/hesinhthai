@@ -164,6 +164,116 @@ const STATE = {
       desc: "Nền tảng Kiến tạo Không gian Hoàn mỹ: Trưng bày sản phẩm nội thất, báo giá dự toán thiết kế - thi công & quản lý công trình.",
       apiKeyMasked: "tc_live_noit...2b15",
       status: "active"
+    },
+    {
+      id: "jobai",
+      name: "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc AI ATS",
+      badge: "Enterprise & KPI",
+      appUrl: "https://jobai.techcorp.info.vn",
+      webhookUrl: "https://jobai.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Sàn Tuyển dụng & Tìm việc thông minh tích hợp AI ATS đa ngôn ngữ: Chấm điểm CV tự động, gợi ý việc làm phù hợp năng lực số và kết nối trực tiếp Doanh nghiệp với Trường ĐH & Trung tâm đào tạo.",
+      apiKeyMasked: "tc_live_joba...2b16",
+      status: "active"
+    }
+  ],
+  currentHeroSlideIndex: 0,
+  heroSliderPaused: false,
+  heroSliders: [
+    {
+      id: "SLIDE-01",
+      order: 1,
+      badge: "⚡ HỆ SINH THÁI SỐ ĐA CHIỀU • 16 NỀN TẢNG LIVE",
+      title: "Kết nối Trường học – Trung tâm Đào tạo – Sàn Việc làm AI & Doanh nghiệp trên Một Trục SSO",
+      subtitle:
+        "Hệ sinh thái TechCorp liên thông trực tiếp 16 nền tảng phần mềm đang vận hành thực tế trên *.techcorp.info.vn: từ Giáo dục K12, Đại học, Trung tâm Ngoại ngữ - Tin học, Sàn Tuyển dụng AI (JobAI) đến Quản trị Doanh nghiệp ERP, KPI, Khách sạn PMS & BĐS.",
+      imageUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+      imageCaption: "Trục Liên thông 16 Hệ thống Phần mềm Thực tế • hesinhthai.techcorp.info.vn",
+      primaryCtaText: "🚀 Khám phá 16 Sản phẩm Thực tế",
+      primaryCtaLink: "#sec-products",
+      secondaryCtaText: "🔐 Đăng nhập Cổng Quản trị",
+      secondaryCtaLink: "login.html",
+      accentGradient: "linear-gradient(135deg, #002b7f 0%, #0055e8 55%, #0088ff 100%)",
+      highlights: ["16 Hệ thống Live (HTTP 200)", "Định danh tập trung TechCorp ID", "Quà tặng chéo Give-to-Get"]
+    },
+    {
+      id: "SLIDE-02",
+      order: 2,
+      badge: "🤖 SÀN TUYỂN DỤNG & TÌM VIỆC AI • JOBAI.TECHCORP.INFO.VN",
+      title: "TechCorp HireMind AI — Sàn Tuyển dụng Thông minh & Chấm điểm CV bằng AI Đa ngôn ngữ",
+      subtitle:
+        "Tự động kết nối Hồ sơ Năng lực Số (Talent Passport) của Sinh viên ĐH & Học viên Trung tâm với nhu cầu tuyển dụng thực tế của Doanh nghiệp. AI phân tích độ khớp JD - CV và đẩy ứng viên 1-Click về phân hệ HRM trên ERP.",
+      imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
+      imageCaption: "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc AI • jobai.techcorp.info.vn",
+      primaryCtaText: "🤖 Truy cập Sàn Việc làm JobAI ↗",
+      primaryCtaLink: "https://jobai.techcorp.info.vn",
+      secondaryCtaText: "🏅 Xem Hồ sơ Nhân lực Xác thực",
+      secondaryCtaLink: "#sec-talent-lms",
+      accentGradient: "linear-gradient(135deg, #003580 0%, #026aa7 55%, #00a8cc 100%)",
+      highlights: ["AI ATS Chấm điểm & Xếp hạng CV", "Kết nối Sinh viên ĐH & Doanh nghiệp", "Đồng bộ 1-Click về ERP HRM"]
+    },
+    {
+      id: "SLIDE-03",
+      order: 3,
+      badge: "🎓 KHỐI GIÁO DỤC MẦM NON – K12 & GDTX • EDUMANAGER PRO",
+      title: "Hệ sinh thái Quản trị Trường học Thông minh từ Mầm non, Tiểu học, THCS, THPT đến GDTX",
+      subtitle:
+        "Bộ 05 nền tảng EduManager Pro chuyên biệt cho từng cấp học: Điểm danh AI, Sổ liên lạc điện tử Phụ huynh, Học bạ số chuẩn Thông tư Bộ GD&ĐT, Hướng nghiệp AI và Cổng gạch nợ Học phí QR động trong 3 giây.",
+      imageUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+      imageCaption: "05 Nền tảng EduManager Pro (Mầm non, Tiểu học, THCS, THPT, GDTX)",
+      primaryCtaText: "🎓 Xem 05 Phần mềm Trường học",
+      primaryCtaLink: "#sec-products",
+      secondaryCtaText: "🏫 Vào Workspace Hiệu trưởng",
+      secondaryCtaLink: "login.html?role=school-principal",
+      accentGradient: "linear-gradient(135deg, #0b2559 0%, #1d4ed8 55%, #3b82f6 100%)",
+      highlights: ["Học bạ số & Sổ liên lạc Phụ huynh", "Thu học phí QR tự động 3 giây", "Trợ lý AI soạn giảng & hướng nghiệp"]
+    },
+    {
+      id: "SLIDE-04",
+      order: 4,
+      badge: "🏫 ĐẠI HỌC TC COMPASS, TRUNG TÂM NN-TH & KHẢO THÍ LMS",
+      title: "Liên thông Quản trị Đại học Tín chỉ, Trung tâm Ngoại ngữ - Tin học & Phòng Thi Online",
+      subtitle:
+        "Kết nối liền mạch giữa quản trị học vụ Đại học (qldt.techcorp.info.vn), Trung tâm Ngoại ngữ - Tin học (ttnn), Khảo thí trực tuyến chống gian lận (lms) và Cổng khóa học số TechCorpLearn (learn.techcorp.info.vn).",
+      imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+      imageCaption: "TC COMPASS Đại học • QL Trung tâm NN-TH • LMS Khảo thí & TechCorpLearn",
+      primaryCtaText: "📝 Khám phá Khối ĐH & LMS",
+      primaryCtaLink: "#sec-products",
+      secondaryCtaText: "🏆 Đấu trường Thi Online",
+      secondaryCtaLink: "#sec-talent-lms",
+      accentGradient: "linear-gradient(135deg, #1e1b4b 0%, #1e40af 55%, #0284c7 100%)",
+      highlights: ["Khảo thí IELTS/TOEIC/MOS Online", "Cấp Chứng chỉ Năng lực Số QR", "Tự động đẩy Lead về CRM Trung tâm"]
+    },
+    {
+      id: "SLIDE-05",
+      order: 5,
+      badge: "🏢 QUẢN TRỊ DOANH NGHIỆP TỔNG THỂ • ERP & BSC-KPI",
+      title: "Điều hành Doanh nghiệp Hợp nhất với TechCorp ERP, Thẻ điểm Cân bằng BSC-KPI & Chợ B2B",
+      subtitle:
+        "Số hóa toàn diện hoạt động doanh nghiệp trên erp.techcorp.info.vn và kpi.techcorp.info.vn: Quản trị mục tiêu chiến lược BSC-KPI, Nhân sự - Tiền lương, CRM Bán hàng, Tài chính - Kế toán và phát hành E-Voucher nội bộ.",
+      imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+      imageCaption: "TechCorp ERP (erp.techcorp.info.vn) & Quản trị Hiệu suất BSC-KPI (kpi.techcorp.info.vn)",
+      primaryCtaText: "🏢 Mở Giải pháp ERP & KPI",
+      primaryCtaLink: "#sec-products",
+      secondaryCtaText: "💬 Chợ Giao thương B2B",
+      secondaryCtaLink: "#sec-exchange",
+      accentGradient: "linear-gradient(135deg, #00296b 0%, #00509d 55%, #0077b6 100%)",
+      highlights: ["Bản đồ Chiến lược BSC & KPI/OKR", "HRM, CRM, Tài chính, Kho vận & Dự án", "Ưu đãi chéo B2B giữa các Thành viên"]
+    },
+    {
+      id: "SLIDE-06",
+      order: 6,
+      badge: "🏨 HỆ SINH THÁI CHUYÊN NGÀNH • KHÁCH SẠN PMS, BĐS AI & NỘI THẤT",
+      title: "Giải pháp Chuyên sâu cho Khách sạn & Resort (PMS), Sàn Giao dịch BĐS AI & Thiết kế Nội thất",
+      subtitle:
+        "Bộ 03 nền tảng chuyên ngành đang vận hành thực tế: Quản lý Khách sạn & Resort (qldh.techcorp.info.vn), Sàn BĐS Hưng Phát Land tích hợp AI (bds.techcorp.info.vn) và Showroom Thiết kế - Thi công Nội thất (noithat.techcorp.info.vn).",
+      imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+      imageCaption: "TechCorp PMS Resort • Sàn BĐS Hưng Phát Land AI • TechCorp Interior Nội thất",
+      primaryCtaText: "🏨 Xem Khối PMS, BĐS & Nội thất",
+      primaryCtaLink: "#sec-products",
+      secondaryCtaText: "💳 Tính Giá Gói Combo",
+      secondaryCtaLink: "#sec-pricing",
+      accentGradient: "linear-gradient(135deg, #0f172a 0%, #0369a1 55%, #0ea5e9 100%)",
+      highlights: ["Quản lý Đặt phòng, Lễ tân & POS Resort", "Sàn BĐS tích hợp Trợ lý AI 24/7", "Báo giá & Quản lý Thi công Nội thất"]
     }
   ],
   users: [
@@ -173,7 +283,7 @@ const STATE = {
       fullName: "Quản trị viên Hệ sinh thái TechCorp",
       email: "admin@techcorp.info.vn",
       phone: "0905.111.999",
-      org: "TechCorp Headquarters (Điều hành 15 Hệ thống Live)",
+      org: "TechCorp Headquarters (Điều hành 16 Hệ thống Live)",
       role: "super_admin",
       roleBadge: "🛡️ Super Admin TechCorp",
       defaultAppId: "erp",
@@ -192,7 +302,8 @@ const STATE = {
         "techcorp",
         "qldh",
         "bds",
-        "noithat"
+        "noithat",
+        "jobai"
       ],
       status: "active",
       lastLogin: "Vừa xong",
@@ -208,7 +319,7 @@ const STATE = {
       role: "ceo_sme",
       roleBadge: "Khối Doanh nghiệp SME",
       defaultAppId: "erp",
-      assignedApps: ["erp", "kpi", "qldh", "bds", "noithat", "lms", "techcorp"],
+      assignedApps: ["erp", "kpi", "jobai", "qldh", "bds", "noithat", "lms", "techcorp"],
       status: "active",
       lastLogin: "10 phút trước",
       ipAddress: "113.160.214.88"
@@ -223,7 +334,7 @@ const STATE = {
       role: "center_director",
       roleBadge: "Khối Đào tạo NN-TH",
       defaultAppId: "ttnn",
-      assignedApps: ["ttnn", "lms", "learn", "gdtx", "kpi"],
+      assignedApps: ["ttnn", "lms", "learn", "jobai", "gdtx", "kpi"],
       status: "active",
       lastLogin: "25 phút trước",
       ipAddress: "14.161.45.120"
@@ -238,7 +349,7 @@ const STATE = {
       role: "school_principal",
       roleBadge: "Khối Cơ sở Giáo dục",
       defaultAppId: "thpt",
-      assignedApps: ["mamnon", "tieuhoc", "thcs", "thpt", "gdtx", "qldt", "lms", "learn"],
+      assignedApps: ["mamnon", "tieuhoc", "thcs", "thpt", "gdtx", "qldt", "lms", "learn", "jobai"],
       status: "active",
       lastLogin: "1 giờ trước",
       ipAddress: "27.68.112.41"
@@ -252,8 +363,8 @@ const STATE = {
       org: "Đại học Nha Trang • Hồ sơ số #TC-KH-8821",
       role: "student_parent",
       roleBadge: "Cộng đồng Học viên / SV",
-      defaultAppId: "lms",
-      assignedApps: ["lms", "learn", "qldt", "ttnn"],
+      defaultAppId: "jobai",
+      assignedApps: ["jobai", "lms", "learn", "qldt", "ttnn"],
       status: "active",
       lastLogin: "2 giờ trước",
       ipAddress: "171.244.19.72"
@@ -264,14 +375,14 @@ const STATE = {
       id: "super-admin",
       userId: "USR-ADMIN-00",
       name: "Quản trị viên Hệ sinh thái TechCorp",
-      org: "TechCorp Headquarters (Điều hành 15 Hệ thống Live)",
+      org: "TechCorp Headquarters (Điều hành 16 Hệ thống Live)",
       roleBadge: "🛡️ Super Admin TechCorp"
     },
     "ceo-sme": {
       id: "ceo-sme",
       userId: "USR-NT-001",
       name: "Nguyễn Hải Đăng (CEO Resort & Doanh nghiệp)",
-      org: "Nha Trang Bay Resort & Hưng Phát Land (ERP, KPI, PMS, BĐS)",
+      org: "Nha Trang Bay Resort & Hưng Phát Land (ERP, KPI, JobAI, PMS)",
       roleBadge: "Khối Doanh nghiệp SME"
     },
     "center-dir": {
@@ -291,8 +402,8 @@ const STATE = {
     "student-user": {
       id: "student-user",
       userId: "USR-NT-004",
-      name: "Nguyễn Minh Khôi (Sinh viên / Học viên)",
-      org: "Đại học Nha Trang • Hồ sơ số #TC-KH-8821 (LMS + TechCorpLearn)",
+      name: "Nguyễn Minh Khôi (Sinh viên / Ứng viên)",
+      org: "Đại học Nha Trang • Hồ sơ số #TC-KH-8821 (JobAI + LMS + TechCorpLearn)",
       roleBadge: "Cộng đồng Học viên / SV"
     }
   },
@@ -943,11 +1054,13 @@ window.openAdminSubtab = function (subtabId) {
 };
 
 function renderAllViews() {
+  renderPublicHeroSlider();
   renderPublicProductsShowcase();
   renderRoleContextAndSidebar();
   renderCentralBulletins();
   renderMemberWorkspace();
   renderRbacMatrixTable();
+  renderAdminHeroSlidersManager();
   renderAdminBulletinsTable();
   renderConnectedApps();
   renderAdminAppsTable();
@@ -963,8 +1076,396 @@ function renderAllViews() {
   updateTotalKPIs();
 }
 
-// ==================== 0. PUBLIC PRODUCTS SHOWCASE GRID (INDEX.HTML - 15 REAL LIVE SYSTEMS) ====================
+// ==================== 0A. 6-SLIDE CONTINUOUS HERO SLIDER & ADMIN IMAGE MANAGER ====================
+let heroSliderIntervalId = null;
+
+function loadCachedHeroSliders() {
+  try {
+    const raw = localStorage.getItem("tc_hero_sliders_backup");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length === 6) {
+        STATE.heroSliders = parsed;
+      }
+    }
+  } catch (_) {}
+}
+
+function saveCachedHeroSliders() {
+  try {
+    localStorage.setItem("tc_hero_sliders_backup", JSON.stringify(STATE.heroSliders));
+  } catch (_) {}
+}
+
+window.pauseHeroSliderAutoPlay = function (paused) {
+  STATE.heroSliderPaused = Boolean(paused);
+};
+
+window.goToHeroSlide = function (idx) {
+  const slides = STATE.heroSliders || [];
+  if (!slides.length) return;
+  STATE.currentHeroSlideIndex = ((idx % slides.length) + slides.length) % slides.length;
+  renderPublicHeroSlider();
+};
+
+window.nextHeroSlide = function () {
+  window.goToHeroSlide((STATE.currentHeroSlideIndex || 0) + 1);
+};
+
+window.prevHeroSlide = function () {
+  window.goToHeroSlide((STATE.currentHeroSlideIndex || 0) - 1);
+};
+
+function startHeroSliderAutoPlay() {
+  if (heroSliderIntervalId) {
+    clearInterval(heroSliderIntervalId);
+  }
+  heroSliderIntervalId = setInterval(() => {
+    if (!STATE.heroSliderPaused && document.getElementById("publicHeroSliderContainer")) {
+      window.nextHeroSlide();
+    }
+  }, 5000);
+}
+
+function renderPublicHeroSlider() {
+  const container = document.getElementById("publicHeroSliderContainer");
+  if (!container) return;
+
+  const slides = STATE.heroSliders || [];
+  if (!slides.length) return;
+
+  const activeIdx = ((STATE.currentHeroSlideIndex || 0) % slides.length + slides.length) % slides.length;
+  const slide = slides[activeIdx];
+  const bgStyle = slide.accentGradient || "linear-gradient(135deg, #002b7f 0%, #0055e8 55%, #0088ff 100%)";
+  const highlights = Array.isArray(slide.highlights)
+    ? slide.highlights
+    : ["16 Hệ thống Live (HTTP 200)", "Định danh SSO TechCorp ID", "Liên thông dữ liệu thời gian thực"];
+
+  const shortLabels = [
+    "1. Hệ sinh thái (16 App)",
+    "2. Sàn Việc làm JobAI",
+    "3. Giáo dục K12",
+    "4. Đại học & LMS",
+    "5. ERP & BSC-KPI",
+    "6. PMS, BĐS & Nội thất"
+  ];
+
+  const isExternalPrimary = (slide.primaryCtaLink || "").indexOf("http") === 0;
+
+  container.innerHTML = `
+    <div class="hero-slide-card" style="background:${bgStyle};">
+      <div class="hero-slide-grid">
+        <div>
+          <span class="hero-slide-badge">${escapeHtml(slide.badge || "⚡ TECHCORP ECOSYSTEM")}</span>
+          <h2 class="hero-slide-title">${escapeHtml(slide.title)}</h2>
+          <p class="hero-slide-subtitle">${escapeHtml(slide.subtitle)}</p>
+
+          <div class="hero-slide-highlights">
+            ${highlights.map((h) => `<span class="hero-highlight-pill">✔ ${escapeHtml(h)}</span>`).join("")}
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <a
+              href="${escapeHtml(slide.primaryCtaLink || "#sec-products")}"
+              ${isExternalPrimary ? 'target="_blank" rel="noopener"' : ""}
+              class="btn"
+              style="background:#ffffff;color:#0043b8;padding:12px 20px;font-size:14px;text-decoration:none;"
+            >
+              ${escapeHtml(slide.primaryCtaText || "🚀 Khám phá Ngay")}
+            </a>
+            <a
+              href="https://jobai.techcorp.info.vn"
+              target="_blank"
+              rel="noopener"
+              class="btn"
+              style="background:#ff6b00;color:#ffffff;padding:12px 20px;font-size:14px;text-decoration:none;"
+            >
+              🤖 Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
+            </a>
+            <a
+              href="${escapeHtml(slide.secondaryCtaLink || "login.html")}"
+              class="btn"
+              style="background:rgba(255,255,255,0.18);color:#ffffff;border:1px solid rgba(255,255,255,0.45);padding:12px 18px;font-size:13.5px;text-decoration:none;"
+            >
+              ${escapeHtml(slide.secondaryCtaText || "🔐 Quản trị Hệ sinh thái")}
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-slide-visual">
+          <img
+            src="${escapeHtml(slide.imageUrl)}"
+            alt="${escapeHtml(slide.title)}"
+            onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'"
+          />
+          <div class="hero-slide-visual-caption">
+            <span>📸 Slide ${activeIdx + 1}/${slides.length}: ${escapeHtml(slide.imageCaption || slide.title)}</span>
+            <a href="admin.html?role=super-admin" style="color:#fde047;text-decoration:none;white-space:nowrap;">
+              🖼️ Đổi ảnh từ Admin →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-slider-controls">
+        <div class="hero-slider-dots">
+          ${slides
+            .map(
+              (s, idx) => `
+              <button
+                type="button"
+                class="hero-dot-btn ${idx === activeIdx ? "active" : ""}"
+                onclick="goToHeroSlide(${idx})"
+              >
+                ${escapeHtml(shortLabels[idx] || `Slide ${idx + 1}`)}
+              </button>
+            `
+            )
+            .join("")}
+        </div>
+
+        <div class="hero-arrow-group">
+          <span style="font-size:11.5px;color:#dbeafe;font-weight:600;">⟳ Tự động chuyển liên tục (5s)</span>
+          <button type="button" class="hero-arrow-btn" onclick="prevHeroSlide()">◀ Trước</button>
+          <button type="button" class="hero-arrow-btn" onclick="nextHeroSlide()">Tiếp ▶</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderAdminHeroSlidersManager() {
+  const tbody = document.getElementById("adminHeroSlidersTableBody");
+  if (!tbody) return;
+
+  const slides = STATE.heroSliders || [];
+  const currentEditId = document.getElementById("editHeroSlideId")?.value || "SLIDE-01";
+
+  tbody.innerHTML = slides
+    .map(
+      (s, idx) => `
+      <tr style="${s.id === currentEditId ? "background:#eff6ff;" : ""}">
+        <td>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <img
+              src="${escapeHtml(s.imageUrl)}"
+              alt="${escapeHtml(s.id)}"
+              class="admin-slider-thumb"
+              onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'"
+            />
+            <div>
+              <span class="badge badge-blue">Slide #${idx + 1} (${escapeHtml(s.id)})</span>
+              <div style="font-size:11px;color:#64748b;margin-top:4px;">${escapeHtml((s.imageCaption || "").slice(0, 42))}...</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <strong style="color:#0b2559;font-size:13px;">${escapeHtml(s.title)}</strong>
+          <div style="font-size:11.5px;color:#0052d4;margin-top:3px;">
+            🔗 CTA: <code>${escapeHtml(s.primaryCtaText)}</code> → <code>${escapeHtml(s.primaryCtaLink)}</code>
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-primary btn-sm" onclick="selectHeroSliderForEdit('${escapeHtml(s.id)}')">
+            🖼️ Đổi Ảnh & Sửa
+          </button>
+        </td>
+      </tr>
+    `
+    )
+    .join("");
+
+  // Populate form on initial render if empty
+  const titleInput = document.getElementById("editHeroTitle");
+  if (titleInput && !titleInput.value && slides.length > 0) {
+    window.selectHeroSliderForEdit(currentEditId);
+  }
+}
+
+window.selectHeroSliderForEdit = function (slideId) {
+  const slide = (STATE.heroSliders || []).find((s) => s.id === slideId) || STATE.heroSliders[0];
+  if (!slide) return;
+
+  const idEl = document.getElementById("editHeroSlideId");
+  const headerEl = document.getElementById("heroSliderFormTitle");
+  const badgePill = document.getElementById("heroSliderActiveBadge");
+  const previewImg = document.getElementById("editHeroImagePreview");
+  const urlInput = document.getElementById("editHeroImageUrl");
+  const badgeInput = document.getElementById("editHeroBadge");
+  const captionInput = document.getElementById("editHeroCaption");
+  const titleInput = document.getElementById("editHeroTitle");
+  const subtitleInput = document.getElementById("editHeroSubtitle");
+  const primaryTextInput = document.getElementById("editHeroPrimaryText");
+  const primaryLinkInput = document.getElementById("editHeroPrimaryLink");
+  const fileInput = document.getElementById("editHeroImageFileInput");
+
+  if (idEl) idEl.value = slide.id;
+  if (headerEl) headerEl.textContent = `🖼️ Chỉnh sửa & Đổi Hình ảnh: Slide #${slide.order || 1} (${slide.id})`;
+  if (badgePill) badgePill.textContent = `Đang chọn: ${slide.id}`;
+  if (previewImg) previewImg.src = slide.imageUrl || "";
+  if (urlInput) urlInput.value = slide.imageUrl || "";
+  if (badgeInput) badgeInput.value = slide.badge || "";
+  if (captionInput) captionInput.value = slide.imageCaption || "";
+  if (titleInput) titleInput.value = slide.title || "";
+  if (subtitleInput) subtitleInput.value = slide.subtitle || "";
+  if (primaryTextInput) primaryTextInput.value = slide.primaryCtaText || "";
+  if (primaryLinkInput) primaryLinkInput.value = slide.primaryCtaLink || "";
+  if (fileInput) fileInput.value = "";
+
+  renderAdminHeroSlidersManager();
+};
+
+window.previewHeroImageUrlInput = function (url) {
+  const previewImg = document.getElementById("editHeroImagePreview");
+  if (previewImg && url && url.trim()) {
+    previewImg.src = url.trim();
+  }
+};
+
+window.handleHeroImageUpload = function (event) {
+  const file = event && event.target && event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (loadEvt) {
+    const rawDataUrl = loadEvt.target.result;
+    const img = new Image();
+    img.onload = function () {
+      const maxW = 1280;
+      const maxH = 720;
+      let w = img.width;
+      let h = img.height;
+      if (w > maxW) {
+        h = Math.round((h * maxW) / w);
+        w = maxW;
+      }
+      if (h > maxH) {
+        w = Math.round((w * maxH) / h);
+        h = maxH;
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, w, h);
+      const optimizedDataUrl = canvas.toDataURL("image/jpeg", 0.86);
+
+      const previewImg = document.getElementById("editHeroImagePreview");
+      const urlInput = document.getElementById("editHeroImageUrl");
+      if (previewImg) previewImg.src = optimizedDataUrl;
+      if (urlInput) urlInput.value = optimizedDataUrl;
+
+      showToast(
+        `📸 Đã nạp ảnh mới từ máy tính (${w}x${h}px)! Bấm <b>"Lưu Hình ảnh & Cập nhật Slide"</b> để áp dụng ra Trang chủ.`
+      );
+    };
+    img.src = rawDataUrl;
+  };
+  reader.readAsDataURL(file);
+};
+
+window.saveHeroSliderConfig = async function () {
+  const slideId = document.getElementById("editHeroSlideId")?.value || "SLIDE-01";
+  const imageUrl = document.getElementById("editHeroImageUrl")?.value.trim();
+  const badge = document.getElementById("editHeroBadge")?.value.trim();
+  const imageCaption = document.getElementById("editHeroCaption")?.value.trim();
+  const title = document.getElementById("editHeroTitle")?.value.trim();
+  const subtitle = document.getElementById("editHeroSubtitle")?.value.trim();
+  const primaryCtaText = document.getElementById("editHeroPrimaryText")?.value.trim();
+  const primaryCtaLink = document.getElementById("editHeroPrimaryLink")?.value.trim();
+
+  if (!imageUrl || !title) {
+    showToast(`<span style="color:#d97706">Vui lòng chọn Hình ảnh (Upload hoặc URL) và nhập Tiêu đề cho Slide!</span>`);
+    return;
+  }
+
+  const idx = (STATE.heroSliders || []).findIndex((s) => s.id === slideId);
+  if (idx !== -1) {
+    STATE.heroSliders[idx] = {
+      ...STATE.heroSliders[idx],
+      imageUrl,
+      badge: badge || STATE.heroSliders[idx].badge,
+      imageCaption: imageCaption || STATE.heroSliders[idx].imageCaption,
+      title,
+      subtitle: subtitle || STATE.heroSliders[idx].subtitle,
+      primaryCtaText: primaryCtaText || STATE.heroSliders[idx].primaryCtaText,
+      primaryCtaLink: primaryCtaLink || STATE.heroSliders[idx].primaryCtaLink
+    };
+  }
+  saveCachedHeroSliders();
+
+  try {
+    const res = await fetch(`/api/v1/hero-sliders/${encodeURIComponent(slideId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        imageUrl,
+        badge,
+        imageCaption,
+        title,
+        subtitle,
+        primaryCtaText,
+        primaryCtaLink,
+        actorKey: STATE.currentPersona
+      })
+    });
+    const data = await res.json();
+    if (data && data.ok && Array.isArray(data.heroSliders)) {
+      STATE.heroSliders = data.heroSliders;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      saveCachedHeroSliders();
+    }
+  } catch (_) {
+    recordLocalAuditLog(
+      "HERO_SLIDER_UPDATE",
+      `${slideId} (${title.slice(0, 32)})`,
+      "INFO",
+      `Cập nhật hình ảnh & nội dung Hero Slider ${slideId} trên Trang chủ.`
+    );
+  }
+
+  renderAllViews();
+  showToast(`🖼️ Đã lưu hình ảnh & nội dung mới cho <b>${escapeHtml(slideId)}</b> lên Trang chủ Hệ sinh thái!`);
+};
+
+window.resetDefaultHeroSliders = async function () {
+  try {
+    localStorage.removeItem("tc_hero_sliders_backup");
+  } catch (_) {}
+
+  try {
+    const res = await fetch("/api/v1/hero-sliders/reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok && Array.isArray(data.heroSliders)) {
+      STATE.heroSliders = data.heroSliders;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      saveCachedHeroSliders();
+      window.selectHeroSliderForEdit("SLIDE-01");
+      renderAllViews();
+      showToast("🔄 Đã khôi phục 6 Hero Slider mặc định trên Trang chủ!");
+      return;
+    }
+  } catch (_) {}
+
+  window.location.reload();
+};
+
+// ==================== 0B. PUBLIC PRODUCTS SHOWCASE GRID (INDEX.HTML - 16 REAL LIVE SYSTEMS) ====================
 const PRODUCT_SHOWCASE_META = {
+  jobai: {
+    icon: "🤖",
+    targetAudience: "Doanh nghiệp Tuyển dụng, HR Manager, Sinh viên Đại học & Ứng viên Tìm việc",
+    highlights: [
+      "Sàn Tuyển dụng & Tìm việc thông minh tích hợp AI ATS Đa ngôn ngữ (TechCorp HireMind AI)",
+      "Tự động phân tích CV, chấm điểm độ phù hợp (AI Matching Score) và gợi ý việc làm tức thì",
+      "Kết nối trực tiếp Hồ sơ Năng lực Số từ Trường Đại học & Trung tâm NN-TH về phân hệ HRM trên ERP"
+    ],
+    ecoFlow: "🔄 Liên thông: Nhận Hồ sơ Năng lực Số QR từ LMS/Đại học & Đẩy ứng viên trúng tuyển 1-Click về TechCorp ERP"
+  },
   mamnon: {
     icon: "🧸",
     targetAudience: "Trường Mầm non Tư thục, Quốc tế & Nhóm trẻ Chất lượng cao",
@@ -1013,7 +1514,7 @@ const PRODUCT_SHOWCASE_META = {
       "Theo dõi chuyên cần, quản lý kỳ thi sát hạch kỹ năng nghề & cấp chứng chỉ",
       "Kết nối doanh nghiệp địa phương nhận học viên thực hành và tuyển dụng ngay"
     ],
-    ecoFlow: "🔄 Liên thông: Đẩy hồ sơ học viên tốt nghiệp nghề sang phân hệ Tuyển dụng HRM trên TechCorp ERP"
+    ecoFlow: "🔄 Liên thông: Đẩy hồ sơ học viên tốt nghiệp nghề sang Sàn Tuyển dụng JobAI & TechCorp ERP"
   },
   qldt: {
     icon: "🧭",
@@ -1021,9 +1522,9 @@ const PRODUCT_SHOWCASE_META = {
     highlights: [
       "Quản trị đào tạo tín chỉ toàn diện: Chương trình khung, đăng ký học phần, xét tốt nghiệp",
       "Đánh giá hiệu suất làm việc (KPI) giảng viên, quản lý nghiên cứu khoa học & kiểm định",
-      "Cổng Thực tập & Việc làm Sinh viên kết nối trực tiếp với các Doanh nghiệp trong hệ sinh thái"
+      "Cổng Thực tập & Việc làm Sinh viên kết nối trực tiếp với Sàn Tuyển dụng JobAI & Doanh nghiệp"
     ],
-    ecoFlow: "🔄 Liên thông: Tự động xuất Hồ sơ Năng lực Số (Talent Passport) của SV năm cuối sang Sàn Nhân lực"
+    ecoFlow: "🔄 Liên thông: Tự động xuất Hồ sơ Năng lực Số (Talent Passport) của SV năm cuối sang Sàn Việc làm JobAI"
   },
   ttnn: {
     icon: "🌐",
@@ -1033,7 +1534,7 @@ const PRODUCT_SHOWCASE_META = {
       "Quản lý lịch dạy giáo viên bản xứ/trợ giảng, điểm danh bù buổi & nhắc học phí tự động",
       "Đồng tổ chức các kỳ thi thử IELTS/TOEIC/MOS trực tuyến toàn tỉnh để thu hút học viên"
     ],
-    ecoFlow: "🔄 Liên thông: Nhận Lead thí sinh tự động từ TechCorp LMS & Đề cử học viên xuất sắc sang Doanh nghiệp"
+    ecoFlow: "🔄 Liên thông: Nhận Lead thí sinh tự động từ TechCorp LMS & Đề cử học viên xuất sắc lên JobAI"
   },
   lms: {
     icon: "📝",
@@ -1043,7 +1544,7 @@ const PRODUCT_SHOWCASE_META = {
       "Ngân hàng câu hỏi chuẩn hóa theo ma trận đề, chấm điểm tự động & phân tích phổ điểm",
       "Cấp Chứng chỉ Năng lực Số kèm mã QR xác thực chống giả mạo trên toàn hệ sinh thái"
     ],
-    ecoFlow: "🔄 Liên thông: Tự động đính kèm Chứng chỉ QR vào Hồ sơ Ứng viên để Doanh nghiệp nhập 1-Click vào ERP"
+    ecoFlow: "🔄 Liên thông: Tự động đính kèm Chứng chỉ QR vào Hồ sơ Ứng viên trên JobAI & TechCorp ERP"
   },
   learn: {
     icon: "💻",
@@ -1070,10 +1571,10 @@ const PRODUCT_SHOWCASE_META = {
     targetAudience: "Doanh nghiệp SME, Tập đoàn Dịch vụ, Thương mại, Sản xuất & Phân phối",
     highlights: [
       "Quản trị Doanh nghiệp hợp nhất: Nhân sự (HRM), Khách hàng (CRM), Tài chính - Kế toán, Kho vận",
-      "Tuyển dụng 1-Click: Nhập trực tiếp hồ sơ ứng viên đã xác thực từ LMS/Đại học vào HRM",
+      "Tuyển dụng 1-Click: Nhập trực tiếp hồ sơ ứng viên từ Sàn Việc làm JobAI & Đại học vào HRM",
       "Phát hành chiến dịch E-Voucher khuyến mãi chéo tới hàng chục ngàn Phụ huynh & Sinh viên"
     ],
-    ecoFlow: "🔄 Liên thông: Trục trung tâm kết nối Nhân sự, Tài chính và Giao thương B2B toàn Hệ sinh thái"
+    ecoFlow: "🔄 Liên thông: Trục trung tâm kết nối Nhân sự, Sàn Tuyển dụng JobAI, Tài chính và Giao thương B2B"
   },
   techcorp: {
     icon: "🚀",
@@ -1093,7 +1594,7 @@ const PRODUCT_SHOWCASE_META = {
       "Quản lý điểm bán hàng POS Nhà hàng, Spa, Dịch vụ giải trí và đối soát công nợ đoàn/OTA",
       "Báo cáo doanh thu, công suất phòng (Occupancy Rate) & RevPAR theo thời gian thực"
     ],
-    ecoFlow: "🔄 Liên thông: Tuyển thẳng nhân sự Lễ tân/F&B giỏi ngoại ngữ từ Trung tâm NN-TH & ĐH trong hệ sinh thái"
+    ecoFlow: "🔄 Liên thông: Tuyển thẳng nhân sự Lễ tân/F&B giỏi ngoại ngữ qua Sàn Việc làm JobAI & Trung tâm NN-TH"
   },
   bds: {
     icon: "🏙️",
@@ -2899,12 +3400,12 @@ function renderRoleContextAndSidebar() {
           <span class="nav-badge">${STATE.apps.length} App</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-apps" onclick="activateAdminPanel('panel-master-apps')">
-          <span>🚀 2. Quản trị 15 Sản phẩm & App</span>
+          <span>🚀 2. Quản trị 16 Sản phẩm & App</span>
           <span class="nav-badge">API Key</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-bulletins" onclick="activateAdminPanel('panel-master-bulletins')">
-          <span>📢 3. Quản trị Bản tin Public</span>
-          <span class="nav-badge">${totalBulletinsCount} Tin</span>
+          <span>🖼️ 3. Quản trị 6 Slider & Bản tin</span>
+          <span class="nav-badge">6 Slide</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-forum" onclick="activateAdminPanel('panel-master-forum')">
           <span>🛡️ 4. Kiểm duyệt Diễn đàn</span>
@@ -4088,6 +4589,10 @@ async function bootstrapFromServer() {
     if (data && data.ok) {
       STATE.apiOnline = true;
       STATE.apps = data.apps || STATE.apps;
+      if (Array.isArray(data.heroSliders) && data.heroSliders.length > 0) {
+        STATE.heroSliders = data.heroSliders;
+        saveCachedHeroSliders();
+      }
       STATE.users = data.users || STATE.users;
       STATE.personas = data.personas || STATE.personas;
       STATE.announcements = data.announcements || STATE.announcements;
@@ -4104,7 +4609,7 @@ async function bootstrapFromServer() {
         if (tokenBox) tokenBox.textContent = data.sso.token;
       }
       if (badgeEl) {
-        badgeEl.textContent = "● API & SQLite Online";
+        badgeEl.textContent = "● 17/17 Hệ thống *.techcorp.info.vn Online (HTTP 200)";
         badgeEl.className = "badge badge-green";
       }
       syncPersonaDropdown();
@@ -4124,6 +4629,9 @@ async function bootstrapFromServer() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadCachedHeroSliders();
+  startHeroSliderAutoPlay();
+
   const isAdminPage = Boolean(document.getElementById("dynamicRoleSidebarNav"));
   let resolvedRole = null;
 

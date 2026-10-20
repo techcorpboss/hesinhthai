@@ -4,37 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hệ sinh thái Số TechCorp — hesinhthai.techcorp.info.vn (Cổng Quảng bá Sản phẩm, Kết nối Giao thương & Liên thông Thành viên)</title>
-  <link rel="icon" type="image/png" href="logo.png?v=5.0" />
-  <link rel="stylesheet" href="styles.css?v=5.0" />
+  <link rel="icon" type="image/png" href="logo.png?v=6.1" />
+  <link rel="stylesheet" href="styles.css?v=6.1" />
   <!-- Thanh Liên thông Hệ sinh thái (Topbar SSO dùng chung) -->
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=5.0"
-    data-app-id="biz-erp"
-    data-org-name="Cổng Public Hệ sinh thái"
-    data-user-role="Khách & Thành viên"
+    src="widget/techcorp-ecosystem-bar.js?v=6.1"
+    data-app-id="erp"
+    data-org-name="TechCorp Ecosystem Hub"
+    data-user-role="SSO Connected"
     defer
   ></script>
 </head>
 <body>
-  <!-- HEADER TRANG PUBLIC HỆ SINH THÁI TECHCORP (CLEAN 3-COLUMN ENTERPRISE HEADER) -->
+  <!-- HEADER HỆ SINH THÁI TECHCORP (CLEAN 3-COLUMN ENTERPRISE HEADER - ĐÃ BỎ NHÃN PUBLIC DƯ THỪA) -->
   <header class="hub-header">
     <div class="hub-header-inner">
       <a href="index.html" class="brand-box">
         <div class="brand-logo">
-          <img src="logo.png?v=6.0" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+          <img src="logo.png?v=6.1" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
         </div>
         <div class="brand-title">
           <h1>
             TechCorp Ecosystem
-            <span class="brand-domain-pill">🌍 Cổng Public</span>
+            <span class="brand-domain-pill">⚡ 16 Nền tảng Live</span>
           </h1>
-          <p>Trục Liên thông 15 Nền tảng Giáo dục, Đào tạo, Nhân lực & Quản trị Doanh nghiệp</p>
+          <p>Trục Liên thông 16 Nền tảng Giáo dục, Đào tạo, Sàn Tuyển dụng AI & Quản trị Doanh nghiệp</p>
         </div>
       </a>
 
       <!-- Menu Điều hướng Trung tâm (Gọn gàng, Thoáng đãng) -->
       <nav class="pub-nav-links">
-        <a href="#sec-products" class="pub-nav-link">🚀 Sản phẩm (15)</a>
+        <a href="#sec-products" class="pub-nav-link">🚀 Sản phẩm (16)</a>
+        <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="pub-nav-link" style="color:#0052d4;">🤖 Sàn Việc làm JobAI ↗</a>
         <a href="#sec-bulletins" class="pub-nav-link">📢 Bản tin Chung</a>
         <a href="#sec-exchange" class="pub-nav-link">💬 Diễn đàn B2B</a>
         <a href="#sec-talent-lms" class="pub-nav-link">🎓 Nhân lực & LMS</a>
@@ -51,44 +52,42 @@
   </header>
 
   <main class="pub-container">
-    <!-- 1. HERO BANNER QUẢNG BÁ HỆ SINH THÁI CHUẨN QUỐC TẾ -->
-    <section class="pub-hero">
-      <div class="pub-hero-grid">
-        <div>
-          <span class="pub-hero-badge">⚡ NỀN TẢNG HỆ SINH THÁI SỐ ĐA CHIỀU • TECHCORP CLOUD v6.0</span>
-          <h2>Kết nối Trường học – Trung tâm Đào tạo – Sàn Nhân lực & Doanh nghiệp trên Một Trục Liên thông Duy nhất</h2>
-          <p>
-            Không chỉ cung cấp các phần mềm quản lý chuyên sâu, <strong>Hệ sinh thái TechCorp</strong> tạo ra thị trường nội bộ sôi động: nơi các <strong>Trường học, Trung tâm Ngoại ngữ - Tin học, Doanh nghiệp SME và Học viên/Phụ huynh</strong> trao đổi cơ hội hợp tác, chia sẻ nguồn nhân lực đã xác thực và hưởng đặc quyền chéo bằng tài khoản định danh <strong>TechCorp ID (SSO)</strong>.
-          </p>
-          <div style="display:flex;flex-wrap:wrap;gap:12px;">
-            <a href="#sec-products" class="btn" style="background:#ffffff;color:#0043b8;padding:12px 20px;font-size:14px;text-decoration:none;">
-              🚀 Khám phá 15 Sản phẩm Thực tế
-            </a>
-            <a href="#sec-exchange" class="btn" style="background:rgba(255,255,255,0.18);color:#ffffff;border:1px solid rgba(255,255,255,0.45);padding:12px 20px;font-size:14px;text-decoration:none;">
-              💬 Xem Diễn đàn & Ưu đãi Thành viên
-            </a>
-            <a href="login.html" class="btn" style="background:#ff6b00;color:#ffffff;padding:12px 20px;font-size:14px;text-decoration:none;">
-              🔐 Đăng nhập Trang Quản trị (Theo Vai trò) →
-            </a>
+    <!-- 1. HERO SLIDER 6 SLIDE CHẠY LIÊN TỤC (ĐỔI HÌNH ẢNH & NỘI DUNG TRỰC TIẾP TỪ TRANG ADMIN) -->
+    <section
+      class="hero-slider-shell"
+      id="publicHeroSliderContainer"
+      onmouseenter="pauseHeroSliderAutoPlay(true)"
+      onmouseleave="pauseHeroSliderAutoPlay(false)"
+    >
+      <!-- Nội dung 6 Slide được render & chạy tự động liên tục bởi renderPublicHeroSlider() trong app.js -->
+      <div class="hero-slide-card" style="background:linear-gradient(135deg, #002b7f 0%, #0055e8 55%, #0088ff 100%);">
+        <div class="hero-slide-grid">
+          <div>
+            <span class="hero-slide-badge">⚡ HỆ SINH THÁI SỐ ĐA CHIỀU • 16 NỀN TẢNG LIVE</span>
+            <h2 class="hero-slide-title">Kết nối Trường học – Trung tâm Đào tạo – Sàn Việc làm AI & Doanh nghiệp trên Một Trục SSO</h2>
+            <p class="hero-slide-subtitle">
+              Hệ sinh thái TechCorp liên thông trực tiếp 16 nền tảng phần mềm đang vận hành thực tế trên *.techcorp.info.vn: từ Giáo dục K12, Đại học, Trung tâm Ngoại ngữ - Tin học, Sàn Tuyển dụng AI (JobAI) đến Quản trị Doanh nghiệp ERP, KPI, Khách sạn PMS & BĐS.
+            </p>
+            <div class="hero-slide-highlights">
+              <span class="hero-highlight-pill">✔ 16 Hệ thống Live (HTTP 200)</span>
+              <span class="hero-highlight-pill">✔ Định danh tập trung TechCorp ID</span>
+              <span class="hero-highlight-pill">✔ Quà tặng চéo Give-to-Get</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;">
+              <a href="#sec-products" class="btn" style="background:#ffffff;color:#0043b8;padding:12px 20px;font-size:14px;text-decoration:none;">
+                🚀 Khám phá 16 Sản phẩm Thực tế
+              </a>
+              <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn" style="background:#ff6b00;color:#ffffff;padding:12px 20px;font-size:14px;text-decoration:none;">
+                🤖 Mở Sàn Tuyển dụng JobAI ↗
+              </a>
+            </div>
           </div>
-        </div>
-
-        <div class="pub-hero-stats">
-          <div class="pub-stat-box">
-            <div class="pub-stat-num" id="pubStatApps">15 Hệ thống</div>
-            <div class="pub-stat-label">Đang vận hành thực tế (HTTP 200 & SSL) trên *.techcorp.info.vn</div>
-          </div>
-          <div class="pub-stat-box">
-            <div class="pub-stat-num">04 Khối Ngành</div>
-            <div class="pub-stat-label">Giáo dục K12 • Đại học & LMS • ERP/KPI • BĐS/PMS/Nội thất</div>
-          </div>
-          <div class="pub-stat-box">
-            <div class="pub-stat-num">2.920+ Hồ sơ</div>
-            <div class="pub-stat-label">Sinh viên & Học viên Xác thực Điểm Thi Online</div>
-          </div>
-          <div class="pub-stat-box">
-            <div class="pub-stat-num">15% - 40%</div>
-            <div class="pub-stat-label">Ưu đãi Nội bộ (Give-to-Get) giữa các Thành viên</div>
+          <div class="hero-slide-visual">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="TechCorp Ecosystem" />
+            <div class="hero-slide-visual-caption">
+              <span>🌐 Slide 1/6 • hesinhthai.techcorp.info.vn</span>
+              <a href="admin.html?role=super-admin" style="color:#fde047;text-decoration:none;">🖼️ Đổi ảnh từ Admin →</a>
+            </div>
           </div>
         </div>
       </div>
@@ -101,7 +100,7 @@
           <div class="role-switcher-title">
             <span>🔐 ĐĂNG NHẬP VÀO CỔNG QUẢN TRỊ THEO ĐÚNG VAI TRÒ CỦA BẠN (MỖI VAI TRÒ CHỈ HIỂN THỊ NỘI DUNG QUẢN TRỊ CỦA ĐƠN VỊ MÌNH):</span>
           </div>
-          <span class="badge badge-green" id="apiStatusBadge">● 16/16 Hệ thống *.techcorp.info.vn Online (HTTP 200)</span>
+          <span class="badge badge-green" id="apiStatusBadge">● 17/17 Hệ thống *.techcorp.info.vn Online (HTTP 200)</span>
         </div>
 
         <div class="role-cards-grid">
@@ -111,7 +110,7 @@
               <span class="badge badge-amber">Toàn quyền Hệ thống</span>
             </div>
             <div class="role-pill-org">Chủ Hệ sinh thái TechCorp</div>
-            <div class="role-pill-scope">→ Đăng nhập: Quản trị 15 App, User, RBAC & Audit</div>
+            <div class="role-pill-scope">→ Đăng nhập: Quản trị 16 App, 6 Slider, User & RBAC</div>
           </a>
 
           <a href="login.html?role=ceo-sme" class="role-pill-card" style="text-decoration:none;">
@@ -120,7 +119,7 @@
               <span class="badge badge-blue">SME Portal</span>
             </div>
             <div class="role-pill-org">Giám đốc / HR Doanh nghiệp Thành viên</div>
-            <div class="role-pill-scope">→ Đăng nhập: Quản trị ERP/KPI/PMS, Tuyển dụng & B2B</div>
+            <div class="role-pill-scope">→ Đăng nhập: Quản trị ERP/KPI/PMS, Sàn JobAI & B2B</div>
           </a>
 
           <a href="login.html?role=center-dir" class="role-pill-card" style="text-decoration:none;">
@@ -143,29 +142,32 @@
 
           <a href="login.html?role=student-user" class="role-pill-card" style="text-decoration:none;">
             <div class="role-pill-top">
-              <span>👨‍🎓 5. Học viên / Phụ huynh</span>
+              <span>👨‍🎓 5. Học viên / Ứng viên</span>
               <span class="badge badge-green">Citizen ID</span>
             </div>
             <div class="role-pill-org">Sinh viên, Học viên & Phụ huynh</div>
-            <div class="role-pill-scope">→ Đăng nhập: Hồ sơ Năng lực Số QR, Ứng tuyển & Ví Ưu đãi</div>
+            <div class="role-pill-scope">→ Đăng nhập: Hồ sơ Số QR, Tìm việc JobAI & Ví Ưu đãi</div>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- 2. TRƯNG BÀY & QUẢNG BÁ HỆ THỐNG 15 SẢN PHẨM PHẦN MỀM ĐANG CHẠY THỰC TẾ CỦA TECHCORP -->
+    <!-- 2. TRƯNG BÀY & QUẢNG BÁ HỆ THỐNG 16 SẢN PHẨM PHẦN MỀM ĐANG CHẠY THỰC TẾ CỦA TECHCORP -->
     <section id="sec-products" class="pub-section">
       <div class="pub-section-header">
         <div>
-          <div class="pub-section-tag">🚀 DANH MỤC 15 NỀN TẢNG PHẦN MỀM ĐANG VẬN HÀNH THỰC TẾ TRÊN SERVER (*.TECHCORP.INFO.VN)</div>
-          <h3 class="pub-section-title">Hệ thống Sản phẩm Công nghệ & Giải pháp Chuyển đổi Số Toàn diện của TechCorp</h3>
+          <div class="pub-section-tag">🚀 DANH MỤC 16 NỀN TẢNG PHẦN MỀM ĐANG VẬN HÀNH THỰC TẾ TRÊN SERVER (*.TECHCORP.INFO.VN)</div>
+          <h3 class="pub-section-title">Hệ thống Sản phẩm Công nghệ, Sàn Tuyển dụng AI & Giải pháp Chuyển đổi Số của TechCorp</h3>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-emerald btn-sm">
+            🤖 Mở Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
+          </a>
           <a href="admin.html?role=super-admin" class="btn btn-outline btn-sm">
-            ➕ Quản trị / Bổ sung Sản phẩm Mới
+            ➕ Quản trị Sản phẩm & Hero Slider
           </a>
           <a href="#sec-pricing" class="btn btn-primary btn-sm">
-            💳 Tính Giá Gói Combo Nhiều Sản phẩm →
+            💳 Tính Giá Gói Combo →
           </a>
         </div>
       </div>
@@ -173,7 +175,7 @@
       <!-- Thanh Lọc Danh mục Sản phẩm theo Khối ngành -->
       <div class="forum-cat-bar" id="productCategoryFilterBar" style="margin-bottom:20px;">
         <button class="forum-cat-btn active" data-prod-cat="all" onclick="filterPublicProducts('all')">
-          🌐 Tất cả Sản phẩm (15 Hệ thống Live)
+          🌐 Tất cả Sản phẩm (16 Hệ thống Live)
         </button>
         <button class="forum-cat-btn" data-prod-cat="EdTech K-12" onclick="filterPublicProducts('EdTech K-12')">
           🎓 Giáo dục Mầm non – K12 & GDTX (05)
@@ -182,7 +184,7 @@
           🏫 Đại học, Trung tâm NN-TH & LMS (04)
         </button>
         <button class="forum-cat-btn" data-prod-cat="Enterprise & KPI" onclick="filterPublicProducts('Enterprise & KPI')">
-          🏢 Quản trị Doanh nghiệp ERP & BSC-KPI (03)
+          🏢 Quản trị Doanh nghiệp ERP, KPI & Sàn Việc làm AI (04)
         </button>
         <button class="forum-cat-btn" data-prod-cat="Chuyên ngành" onclick="filterPublicProducts('Chuyên ngành')">
           🏨 Khách sạn PMS, Bất động sản AI & Nội thất (03)
@@ -377,12 +379,17 @@
       </div>
     </section>
 
-    <!-- 5. SÀN NHÂN LỰC ĐÃ XÁC THỰC & ĐẤU TRƯỜNG THI ONLINE KHÁNH HÒA -->
+    <!-- 5. SÀN TUYỂN DỤNG & TÌM VIỆC AI (JOBAI.TECHCORP.INFO.VN) & ĐẤU TRƯỜNG THI ONLINE KHÁNH HÒA -->
     <section id="sec-talent-lms" class="pub-section">
       <div class="pub-section-header">
         <div>
-          <div class="pub-section-tag">🎓 LIÊN THÔNG ĐÀO TẠO & TUYỂN DỤNG NHÂN SỰ</div>
-          <h3 class="pub-section-title">Sàn Nhân lực Đã Xác thực Năng lực & Đấu trường Thi Online Khánh Hòa</h3>
+          <div class="pub-section-tag">🤖 SÀN TUYỂN DỤNG AI (JOBAI.TECHCORP.INFO.VN) & LIÊN THÔNG KHẢO THÍ TRỰC TUYẾN</div>
+          <h3 class="pub-section-title">Sàn Tuyển dụng & Tìm việc AI (TechCorp HireMind AI) & Đấu trường Thi Online</h3>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+            🤖 Mở Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
+          </a>
         </div>
       </div>
 
@@ -503,16 +510,17 @@
       <div>
         <div style="font-size:17px;font-weight:800;">TECHCORP ECOSYSTEM HUB • HESINHTHAI.TECHCORP.INFO.VN</div>
         <div style="font-size:13px;color:#dbeafe;margin-top:4px;">
-          Nền tảng Liên thông Giáo dục Số – Đào tạo – Nguồn nhân lực & Quản trị Doanh nghiệp • Trụ sở: Nha Trang, Khánh Hòa
+          Nền tảng Liên thông Giáo dục Số – Đào tạo – Sàn Tuyển dụng AI & Quản trị Doanh nghiệp • Trụ sở: Nha Trang, Khánh Hòa
         </div>
       </div>
-      <div style="display:flex;gap:10px;">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn" style="background:#059669;color:#ffffff;">🤖 Sàn Tuyển dụng JobAI ↗</a>
         <a href="admin.html" class="btn" style="background:#ff6b00;color:#ffffff;">🛡️ Vào Cổng Quản trị Theo Vai trò (admin.html)</a>
       </div>
     </div>
   </footer>
 
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=5.0"></script>
+  <script src="app.js?v=6.1"></script>
 </body>
 </html>

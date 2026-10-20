@@ -54,6 +54,7 @@ const INITIAL_USERS = [
       "learn",
       "kpi",
       "erp",
+      "jobai",
       "qldh",
       "bds",
       "noithat",
@@ -74,7 +75,7 @@ const INITIAL_USERS = [
     role: "ceo_sme",
     roleBadge: "Khối Doanh nghiệp SME",
     defaultAppId: "erp",
-    assignedApps: ["erp", "kpi", "qldh", "bds", "noithat", "lms", "techcorp"],
+    assignedApps: ["erp", "kpi", "jobai", "qldh", "bds", "noithat", "lms", "techcorp"],
     status: "active",
     lastLogin: "10 phút trước",
     ipAddress: "113.160.214.88",
@@ -90,7 +91,7 @@ const INITIAL_USERS = [
     role: "center_director",
     roleBadge: "Khối Đào tạo NN-TH",
     defaultAppId: "ttnn",
-    assignedApps: ["ttnn", "lms", "learn", "gdtx", "kpi"],
+    assignedApps: ["ttnn", "lms", "learn", "jobai", "gdtx", "kpi"],
     status: "active",
     lastLogin: "25 phút trước",
     ipAddress: "14.161.45.120",
@@ -106,7 +107,7 @@ const INITIAL_USERS = [
     role: "school_principal",
     roleBadge: "Khối Cơ sở Giáo dục",
     defaultAppId: "thpt",
-    assignedApps: ["mamnon", "tieuhoc", "thcs", "thpt", "gdtx", "qldt", "lms", "learn"],
+    assignedApps: ["mamnon", "tieuhoc", "thcs", "thpt", "gdtx", "qldt", "lms", "learn", "jobai"],
     status: "active",
     lastLogin: "1 giờ trước",
     ipAddress: "27.68.112.41",
@@ -122,7 +123,7 @@ const INITIAL_USERS = [
     role: "student_parent",
     roleBadge: "Cộng đồng Học viên / SV",
     defaultAppId: "lms",
-    assignedApps: ["lms", "learn", "qldt", "ttnn"],
+    assignedApps: ["lms", "learn", "jobai", "qldt", "ttnn"],
     status: "active",
     lastLogin: "2 giờ trước",
     ipAddress: "171.244.19.72",
@@ -298,13 +299,125 @@ const INITIAL_AUDIT_LOGS = [
   }
 ];
 
+const INITIAL_HERO_SLIDERS = [
+  {
+    id: "slide-1",
+    order: 1,
+    badge: "⚡ NỀN TẢNG HỆ SINH THÁI SỐ ĐA CHIỀU • 16 HỆ THỐNG LIVE",
+    title: "Kết nối Trường học – Trung tâm Đào tạo – Sàn Tuyển dụng AI & Doanh nghiệp trên Một Trục Duy nhất",
+    subtitle:
+      "Hệ sinh thái TechCorp hợp nhất 16 nền tảng phần mềm chuyên sâu đang vận hành thực tế trên *.techcorp.info.vn: nơi các Trường học, Trung tâm Ngoại ngữ - Tin học, Doanh nghiệp SME và Học viên/Phụ huynh liên thông dữ liệu và trao đổi cơ hội bằng định danh duy nhất TechCorp ID (SSO).",
+    imageUrl:
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+    ctaPrimaryText: "🚀 Khám phá 16 Sản phẩm Thực tế",
+    ctaPrimaryUrl: "#sec-products",
+    ctaSecondaryText: "🔐 Đăng nhập Quản trị (Theo Vai trò)",
+    ctaSecondaryUrl: "login.html",
+    metric1Value: "16 Hệ thống",
+    metric1Sub: "Vận hành thực tế trên *.techcorp.info.vn",
+    metric2Value: "2.920+ Hồ sơ",
+    metric2Sub: "Ứng viên & Học viên xác thực Điểm Thi Online"
+  },
+  {
+    id: "slide-2",
+    order: 2,
+    badge: "🤖 SÀN TUYỂN DỤNG & TÌM VIỆC THÔNG MINH • JOBAI.TECHCORP.INFO.VN",
+    title: "TechCorp HireMind AI — Sàn Tuyển dụng, Tìm việc & Phân tích Nhân sự Đa ngôn ngữ AI ATS",
+    subtitle:
+      "Kết nối trực tiếp Sinh viên các Trường Đại học/Cao đẳng, Học viên Trung tâm Ngoại ngữ - Tin học với hàng trăm Doanh nghiệp & Resort. Sàng lọc CV tự động bằng AI đa ngôn ngữ (Việt - Anh - Hàn - Nhật - Trung) và đồng bộ 1-Click về phân hệ HRM trên TechCorp ERP.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+    ctaPrimaryText: "💼 Truy cập Sàn Tuyển dụng JobAI ↗",
+    ctaPrimaryUrl: "https://jobai.techcorp.info.vn",
+    ctaSecondaryText: "👨‍🎓 Xem Sàn Nhân lực Xác thực",
+    ctaSecondaryUrl: "#sec-talent-b2b",
+    metric1Value: "AI ATS 7 Ngôn ngữ",
+    metric1Sub: "Chấm điểm độ phù hợp CV & JD tự động",
+    metric2Value: "1-Click HRM Sync",
+    metric2Sub: "Đẩy thẳng hồ sơ ứng viên vào TechCorp ERP"
+  },
+  {
+    id: "slide-3",
+    order: 3,
+    badge: "🎓 KHỐI GIÁO DỤC MẦM NON & PHỔ THÔNG K-12 • 05 NỀN TẢNG CHUYÊN SÂU",
+    title: "EduManager Pro K-12 — Quản trị Toàn diện Trường Mầm non, Tiểu học, THCS, THPT & GDTX",
+    subtitle:
+      "Tự động hóa điểm danh AI, thực đơn dinh dưỡng, học bạ số theo Thông tư Bộ GD&ĐT, phân ban GDPT 2018, Sổ liên lạc điện tử Phụ huynh và gạch nợ học phí QR động trong 3 giây.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+    ctaPrimaryText: "🏫 Khám phá Khối Trường học K-12",
+    ctaPrimaryUrl: "#sec-products",
+    ctaSecondaryText: "🎓 Đăng nhập Workspace Hiệu trưởng",
+    ctaSecondaryUrl: "login.html?role=school-principal",
+    metric1Value: "05 Cấp học",
+    metric1Sub: "Mầm non • Tiểu học • THCS • THPT • GDTX",
+    metric2Value: "96.4% QR Auto",
+    metric2Sub: "Gạch nợ học phí tự động không tiền mặt"
+  },
+  {
+    id: "slide-4",
+    order: 4,
+    badge: "🏫 ĐẠI HỌC, NGOẠI NGỮ & KHẢO THÍ TRỰC TUYẾN • 04 NỀN TẢNG SỐ",
+    title: "TC COMPASS, Trung tâm Ngoại ngữ - Tin học, TechCorp LMS & Cổng Học tập TechCorpLearn",
+    subtitle:
+      "Quản trị đào tạo tín chỉ Đại học, CRM tuyển sinh Trung tâm Ngoại ngữ - Tin học, phòng thi trực tuyến chống gian lận AI (IELTS/TOEIC/MOS) và cấp Chứng chỉ Năng lực Số kèm mã QR xác thực.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+    ctaPrimaryText: "📝 Mở Nền tảng Thi Online LMS ↗",
+    ctaPrimaryUrl: "https://lms.techcorp.info.vn",
+    ctaSecondaryText: "🏫 Đăng nhập Workspace Trung tâm",
+    ctaSecondaryUrl: "login.html?role=center-dir",
+    metric1Value: "1.420+ Thí sinh",
+    metric1Sub: "Dự thi IELTS/TOEIC/Tin học trên TechCorp LMS",
+    metric2Value: "Chứng chỉ QR",
+    metric2Sub: "Xác thực năng lực trực tiếp trên Talent Passport"
+  },
+  {
+    id: "slide-5",
+    order: 5,
+    badge: "🏢 ĐIỀU HÀNH DOANH NGHIỆP & QUẢN TRỊ HIỆU SUẤT • ERP & BSC-KPI",
+    title: "TechCorp ERP, Quản trị Mục tiêu BSC-KPI & Giải pháp Chuyển đổi Số TechCorp Academy",
+    subtitle:
+      "Hợp nhất mọi quy trình điều hành doanh nghiệp: Nhân sự - Tiền lương (HRM), Chăm sóc khách hàng (CRM), Tài chính - Kế toán, Kho vận và Thẻ điểm cân bằng BSC-KPI từ Ban Giám đốc tới từng nhân viên.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    ctaPrimaryText: "📊 Truy cập Hệ thống TechCorp ERP ↗",
+    ctaPrimaryUrl: "https://erp.techcorp.info.vn",
+    ctaSecondaryText: "🏢 Đăng nhập Workspace Doanh nghiệp",
+    ctaSecondaryUrl: "login.html?role=ceo-sme",
+    metric1Value: "ERP + BSC-KPI",
+    metric1Sub: "Quản trị mục tiêu & điều hành doanh nghiệp số",
+    metric2Value: "Give-to-Get B2B",
+    metric2Sub: "Phát hành E-Voucher tới >10.000 Phụ huynh & SV"
+  },
+  {
+    id: "slide-6",
+    order: 6,
+    badge: "🏨 GIẢI PHÁP CHUYÊN NGÀNH • KHÁCH SẠN PMS, BẤT ĐỘNG SẢN AI & NỘI THẤT",
+    title: "TechCorp PMS Khách sạn - Resort, Sàn BĐS Hưng Phát Land AI & Showroom Nội thất 3D",
+    subtitle:
+      "Bộ giải pháp chuyên ngành may đo cho nền kinh tế Du lịch - Dịch vụ & Đô thị biển: Quản lý vận hành Khách sạn & Resort (PMS), Sàn giao dịch Bất động sản tích hợp Trợ lý AI 24/7 và Thiết kế - Thi công Nội thất.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+    ctaPrimaryText: "🏨 Xem Hệ thống PMS Khách sạn ↗",
+    ctaPrimaryUrl: "https://qldh.techcorp.info.vn",
+    ctaSecondaryText: "💬 Diễn đàn Giao thương B2B",
+    ctaSecondaryUrl: "#sec-forum",
+    metric1Value: "03 Chuyên ngành",
+    metric1Sub: "Khách sạn PMS • Sàn BĐS AI • Nội thất 3D",
+    metric2Value: "15% – 40%",
+    metric2Sub: "Đặc quyền chiết khấu nội bộ trong Hệ sinh thái"
+  }
+];
+
 const INITIAL_SEED = {
   meta: {
     domain: "hesinhthai.techcorp.info.vn",
-    version: "5.1.0",
+    version: "6.1.0",
     region: "Nha Trang - Khánh Hòa",
     updatedAt: new Date().toISOString()
   },
+  heroSliders: INITIAL_HERO_SLIDERS,
   apps: [
     {
       id: "mamnon",
@@ -461,6 +574,20 @@ const INITIAL_SEED = {
       createdAt: "2026-10-01T08:20:00.000Z"
     },
     {
+      id: "jobai",
+      name: "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc AI ATS",
+      badge: "Enterprise & KPI",
+      category: "enterprise_erp",
+      color: "#0d9488",
+      appUrl: "https://jobai.techcorp.info.vn",
+      webhookUrl: "https://jobai.techcorp.info.vn/api/webhooks/techcorp-hub",
+      desc: "Sàn Tuyển dụng & Tìm việc thông minh tích hợp AI ATS đa ngôn ngữ: Phân tích CV tự động, gợi ý việc làm chuẩn xác & kết nối Sinh viên - Doanh nghiệp.",
+      apiKey: "tc_live_jobai_9a8b7c6d5e4f3a2b16",
+      status: "active",
+      scopes: ["sso:login", "ai:ats_matching", "talent:import", "job:marketplace"],
+      createdAt: "2026-10-01T08:21:00.000Z"
+    },
+    {
       id: "techcorp",
       name: "TechCorp Academy — Giải pháp PMS, ERP, LMS & Đào tạo",
       badge: "Enterprise & KPI",
@@ -523,7 +650,7 @@ const INITIAL_SEED = {
       id: "super-admin",
       userId: "USR-ADMIN-00",
       name: "Quản trị viên Hệ sinh thái TechCorp",
-      org: "TechCorp Headquarters (Điều hành 15 Hệ thống Live)",
+      org: "TechCorp Headquarters (Điều hành 16 Hệ thống Live)",
       roleBadge: "🛡️ Super Admin TechCorp",
       defaultAppId: "erp"
     },
@@ -971,11 +1098,18 @@ class HubDatabase {
           this.state.personas["super-admin"] = INITIAL_SEED.personas["super-admin"];
           needsSave = true;
         }
-        if (!this.state.meta || this.state.meta.version !== "5.1.0") {
+        if (!Array.isArray(this.state.heroSliders) || this.state.heroSliders.length === 0) {
+          this.state.heroSliders = JSON.parse(JSON.stringify(INITIAL_HERO_SLIDERS));
+          needsSave = true;
+        }
+        if (!this.state.meta || this.state.meta.version !== "6.1.0") {
           this.state.meta = JSON.parse(JSON.stringify(INITIAL_SEED.meta));
           this.state.apps = JSON.parse(JSON.stringify(INITIAL_SEED.apps));
           this.state.users = JSON.parse(JSON.stringify(INITIAL_USERS));
           this.state.personas = JSON.parse(JSON.stringify(INITIAL_SEED.personas));
+          if (!Array.isArray(this.state.heroSliders) || this.state.heroSliders.length < 6) {
+            this.state.heroSliders = JSON.parse(JSON.stringify(INITIAL_HERO_SLIDERS));
+          }
           if (Array.isArray(this.state.announcements) && this.state.announcements.length > 0) {
             this.state.announcements[0] = JSON.parse(JSON.stringify(INITIAL_SEED.announcements[0]));
           }
@@ -1596,6 +1730,58 @@ class HubDatabase {
     });
     this.save();
     return removed;
+  }
+
+  // ==================== HERO SLIDERS CMS (6 SLIDES) ====================
+  updateHeroSlider(slideId, payload, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!Array.isArray(this.state.heroSliders)) {
+      this.state.heroSliders = JSON.parse(JSON.stringify(INITIAL_HERO_SLIDERS));
+    }
+    const slide = this.state.heroSliders.find((s) => s.id === slideId);
+    if (!slide) {
+      throw new Error(`Không tìm thấy Slide '${slideId}'.`);
+    }
+    if (payload.badge !== undefined) slide.badge = String(payload.badge).trim();
+    if (payload.title !== undefined && String(payload.title).trim()) {
+      slide.title = String(payload.title).trim();
+    }
+    if (payload.subtitle !== undefined) slide.subtitle = String(payload.subtitle).trim();
+    if (payload.imageUrl !== undefined && String(payload.imageUrl).trim()) {
+      slide.imageUrl = String(payload.imageUrl).trim();
+    }
+    if (payload.ctaPrimaryText !== undefined) slide.ctaPrimaryText = String(payload.ctaPrimaryText).trim();
+    if (payload.ctaPrimaryUrl !== undefined) slide.ctaPrimaryUrl = String(payload.ctaPrimaryUrl).trim();
+    if (payload.ctaSecondaryText !== undefined) slide.ctaSecondaryText = String(payload.ctaSecondaryText).trim();
+    if (payload.ctaSecondaryUrl !== undefined) slide.ctaSecondaryUrl = String(payload.ctaSecondaryUrl).trim();
+    if (payload.metric1Value !== undefined) slide.metric1Value = String(payload.metric1Value).trim();
+    if (payload.metric1Sub !== undefined) slide.metric1Sub = String(payload.metric1Sub).trim();
+    if (payload.metric2Value !== undefined) slide.metric2Value = String(payload.metric2Value).trim();
+    if (payload.metric2Sub !== undefined) slide.metric2Sub = String(payload.metric2Sub).trim();
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "HERO_SLIDER_UPDATE",
+      target: `Hero Slider #${slide.order} (${slide.id})`,
+      severity: "INFO",
+      details: `Cập nhật hình ảnh & nội dung Slide #${slide.order}: "${slide.title}".`
+    });
+    this.save();
+    return slide;
+  }
+
+  resetHeroSliders(actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    this.state.heroSliders = JSON.parse(JSON.stringify(INITIAL_HERO_SLIDERS));
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "HERO_SLIDER_RESET",
+      target: "Toàn bộ 6 Hero Sliders",
+      severity: "WARNING",
+      details: "Khôi phục cấu hình hình ảnh và nội dung mặc định cho 6 Slide trang chủ Public."
+    });
+    this.save();
+    return this.state.heroSliders;
   }
 
   // ==================== EVENT BUS ====================
