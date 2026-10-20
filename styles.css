@@ -1372,10 +1372,10 @@ body {
 }
 
 .hero-slide-card {
-  padding: 34px 38px 26px;
+  padding: 36px 40px 28px;
   color: #ffffff;
   position: relative;
-  min-height: 410px;
+  min-height: 490px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1384,8 +1384,8 @@ body {
 
 .hero-slide-grid {
   display: grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap: 28px;
+  grid-template-columns: 1.02fr 1.18fr;
+  gap: 32px;
   align-items: center;
   position: relative;
   z-index: 2;
@@ -1447,12 +1447,14 @@ body {
 
 .hero-slide-visual {
   position: relative;
-  border-radius: 18px;
+  border-radius: 20px;
   overflow: hidden;
-  border: 2.5px solid rgba(255, 255, 255, 0.48);
-  box-shadow: 0 18px 40px rgba(0, 15, 45, 0.42);
+  border: 3px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 22px 48px rgba(0, 15, 45, 0.48);
   background: #0f172a;
-  height: 295px;
+  height: 395px;
+  min-height: 385px;
+  width: 100%;
 }
 
 .hero-slide-visual img {
@@ -1469,19 +1471,19 @@ body {
 
 .hero-slide-visual-caption {
   position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
   background: rgba(11, 37, 89, 0.86);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(147, 197, 253, 0.45);
   border-radius: 12px;
-  padding: 9px 14px;
+  padding: 10px 15px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 10px;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
   color: #ffffff;
 }

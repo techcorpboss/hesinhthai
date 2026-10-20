@@ -1200,9 +1200,6 @@ function renderPublicHeroSlider() {
           />
           <div class="hero-slide-visual-caption">
             <span>📸 Slide ${activeIdx + 1}/${slides.length}: ${escapeHtml(slide.imageCaption || slide.title)}</span>
-            <a href="admin.html?role=super-admin" style="color:#fde047;text-decoration:none;white-space:nowrap;">
-              🖼️ Đổi ảnh từ Admin →
-            </a>
           </div>
         </div>
       </div>
@@ -1225,7 +1222,6 @@ function renderPublicHeroSlider() {
         </div>
 
         <div class="hero-arrow-group">
-          <span style="font-size:11.5px;color:#dbeafe;font-weight:600;">⟳ Tự động chuyển liên tục (5s)</span>
           <button type="button" class="hero-arrow-btn" onclick="prevHeroSlide()">◀ Trước</button>
           <button type="button" class="hero-arrow-btn" onclick="nextHeroSlide()">Tiếp ▶</button>
         </div>
