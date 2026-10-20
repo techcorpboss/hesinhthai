@@ -6,13 +6,30 @@
   <title>Chi tiết Sản phẩm & Đăng ký Demo | Hệ sinh thái Số TechCorp</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=13" />
+  <link rel="icon" type="image/png" href="logo.png?v=14" />
+  <link rel="stylesheet" href="styles.css?v=14" />
   <style>
+    /* ==================== MODERN MULTI-DEVICE CONTAINER & LAYOUT (v6.5 UI/UX) ==================== */
+    .container,
+    .prod-page-container {
+      width: 100%;
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: clamp(16px, 3vw, 32px);
+      padding-right: clamp(16px, 3vw, 32px);
+    }
+
+    /* Thanh chuyển đổi nhanh 16 sản phẩm dạng Floating Dock cân đối */
+    .prod-switcher-wrap {
+      padding-top: 18px;
+    }
     .prod-switcher-bar {
-      background: #0f172a;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-      padding: 10px 0;
+      background: linear-gradient(135deg, #0b1930 0%, #0f294a 100%);
+      border: 1.5px solid #3b82f6;
+      border-radius: 16px;
+      padding: 10px 16px;
+      box-shadow: 0 10px 26px -6px rgba(0, 55, 165, 0.22);
     }
     .prod-switcher-inner {
       display: flex;
@@ -22,45 +39,63 @@
       scrollbar-width: thin;
       padding-bottom: 2px;
     }
+    .prod-switcher-inner::-webkit-scrollbar {
+      height: 5px;
+    }
+    .prod-switcher-inner::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+    }
     .prod-chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
+      padding: 7px 13px;
       border-radius: 999px;
-      font-size: 0.78rem;
+      font-size: 0.79rem;
       font-weight: 700;
       color: #cbd5e1;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       text-decoration: none;
       white-space: nowrap;
       transition: all 0.2s ease;
     }
     .prod-chip:hover {
-      background: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.16);
       color: #ffffff;
+      transform: translateY(-1px);
     }
     .prod-chip.active {
-      background: linear-gradient(135deg, #2563eb, #0d9488);
+      background: linear-gradient(135deg, #2563eb 0%, #0d9488 100%);
       color: #ffffff;
-      border-color: rgba(125, 211, 252, 0.6);
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      border-color: #7dd3fc;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.45);
     }
-    .prod-hero {
-      background: radial-gradient(circle at 85% 15%, rgba(14, 165, 233, 0.22), transparent 40%),
-                  linear-gradient(135deg, #0b1930 0%, #0f294a 55%, #111827 100%);
+
+    /* Hero Card nằm gọn trong Container chuẩn 1280px, bo góc hiện đại */
+    .prod-hero-wrap {
+      padding-top: 18px;
+    }
+    .prod-hero-card {
+      background:
+        radial-gradient(circle at 88% 14%, rgba(56, 189, 248, 0.24), transparent 42%),
+        linear-gradient(135deg, #091936 0%, #0d2b5c 55%, #0f172a 100%);
       color: #ffffff;
-      padding: 38px 0 44px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      padding: clamp(24px, 3.2vw, 38px);
+      border-radius: 24px;
+      border: 2px solid rgba(96, 165, 250, 0.55);
+      box-shadow: 0 22px 48px -12px rgba(7, 29, 73, 0.42);
+      position: relative;
+      overflow: hidden;
     }
     .prod-hero-grid {
       display: grid;
-      grid-template-columns: 1.25fr 0.95fr;
-      gap: 28px;
+      grid-template-columns: 1.18fr 0.82fr;
+      gap: clamp(22px, 3vw, 36px);
       align-items: center;
     }
-    @media (max-width: 960px) {
+    @media (max-width: 1024px) {
       .prod-hero-grid {
         grid-template-columns: 1fr;
       }
@@ -68,15 +103,20 @@
     .prod-breadcrumb {
       display: inline-flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 8px;
-      font-size: 0.82rem;
+      font-size: 0.81rem;
       color: #93c5fd;
       margin-bottom: 14px;
+      background: rgba(15, 23, 42, 0.45);
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
     }
     .prod-breadcrumb a {
-      color: #bfdbfe;
+      color: #e0f2fe;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
     }
     .prod-breadcrumb a:hover {
       text-decoration: underline;
@@ -96,56 +136,61 @@
       font-size: 0.76rem;
       font-weight: 700;
       background: rgba(56, 189, 248, 0.16);
-      border: 1px solid rgba(56, 189, 248, 0.4);
+      border: 1px solid rgba(56, 189, 248, 0.42);
       color: #e0f2fe;
     }
     .prod-badge-live {
-      background: rgba(16, 185, 129, 0.18);
-      border-color: rgba(52, 211, 153, 0.45);
+      background: rgba(16, 185, 129, 0.2);
+      border-color: rgba(52, 211, 153, 0.5);
       color: #a7f3d0;
     }
     .prod-hero-title {
-      font-size: clamp(1.65rem, 2.6vw, 2.35rem);
+      font-size: clamp(1.5rem, 2.3vw, 2.15rem);
       font-weight: 800;
-      line-height: 1.25;
-      margin: 0 0 14px;
+      line-height: 1.26;
+      margin: 0 0 12px;
       letter-spacing: -0.02em;
+      color: #ffffff;
     }
     .prod-hero-desc {
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       line-height: 1.65;
-      color: #cbd5e1;
+      color: #dbeafe;
       margin: 0 0 20px;
     }
     .prod-meta-strip {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
-    @media (max-width: 640px) {
+    @media (max-width: 680px) {
       .prod-meta-strip {
         grid-template-columns: 1fr;
       }
     }
     .prod-meta-box {
-      background: rgba(15, 23, 42, 0.65);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.62);
+      border: 1px solid rgba(148, 163, 184, 0.26);
+      border-radius: 14px;
       padding: 12px 14px;
+      backdrop-filter: blur(6px);
     }
     .prod-meta-label {
-      font-size: 0.72rem;
+      font-size: 0.71rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: #94a3b8;
+      color: #93c5fd;
       display: block;
       margin-bottom: 4px;
     }
     .prod-meta-val {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 700;
-      color: #f8fafc;
+      color: #ffffff;
+      line-height: 1.35;
+      display: block;
     }
     .prod-cta-row {
       display: flex;
@@ -156,46 +201,57 @@
     .btn-try-live {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      padding: 13px 22px;
+      padding: 12px 20px;
       border-radius: 12px;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 800;
       color: #ffffff;
-      background: linear-gradient(135deg, #059669, #0d9488);
-      border: 1px solid rgba(110, 231, 183, 0.5);
+      background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+      border: 1px solid rgba(110, 231, 183, 0.55);
       text-decoration: none;
       box-shadow: 0 10px 24px rgba(5, 150, 105, 0.35);
       transition: all 0.2s ease;
     }
     .btn-try-live:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(5, 150, 105, 0.45);
+      box-shadow: 0 14px 28px rgba(5, 150, 105, 0.48);
     }
     .btn-book-demo {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      padding: 13px 22px;
+      padding: 12px 20px;
       border-radius: 12px;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 800;
       color: #ffffff;
-      background: linear-gradient(135deg, #2563eb, #4f46e5);
-      border: 1px solid rgba(147, 197, 253, 0.5);
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+      border: 1px solid rgba(147, 197, 253, 0.55);
       text-decoration: none;
       box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
       transition: all 0.2s ease;
     }
     .btn-book-demo:hover {
       transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.48);
     }
+    @media (max-width: 640px) {
+      .prod-cta-row a {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Khung Browser Preview bên phải Hero */
     .prod-preview-card {
-      background: rgba(15, 23, 42, 0.78);
-      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(15, 23, 42, 0.86);
+      border: 1.5px solid rgba(125, 211, 252, 0.38);
       border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 20px 45px rgba(2, 6, 23, 0.55);
+      box-shadow: 0 20px 44px rgba(2, 6, 23, 0.55);
     }
     .prod-preview-browser {
       display: flex;
@@ -203,12 +259,13 @@
       justify-content: space-between;
       gap: 10px;
       padding: 10px 14px;
-      background: rgba(2, 6, 23, 0.85);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      background: rgba(2, 6, 23, 0.9);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.22);
     }
     .prod-browser-dots {
       display: flex;
       gap: 6px;
+      flex-shrink: 0;
     }
     .prod-browser-dots span {
       width: 10px;
@@ -218,12 +275,12 @@
     }
     .prod-browser-url {
       flex: 1;
-      background: rgba(30, 41, 59, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-family: monospace;
-      font-size: 0.78rem;
+      background: rgba(30, 41, 59, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
       color: #38bdf8;
       text-align: center;
       overflow: hidden;
@@ -232,33 +289,95 @@
     }
     .prod-preview-img-wrap {
       position: relative;
-      height: 250px;
+      height: 280px;
       overflow: hidden;
+      background: #0f172a;
+    }
+    @media (max-width: 640px) {
+      .prod-preview-img-wrap {
+        height: 210px;
+      }
     }
     .prod-preview-img-wrap img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.5s ease;
+    }
+    .prod-preview-card:hover .prod-preview-img-wrap img {
+      transform: scale(1.03);
     }
     .prod-preview-footer {
-      padding: 14px 16px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(15, 23, 42, 0.96);
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
     }
+
+    /* Section Card & Section Header chuẩn SaaS UI/UX */
+    .prod-section-card {
+      background: #ffffff;
+      border: 1.5px solid #cfe2ff;
+      border-radius: 22px;
+      padding: clamp(22px, 3vw, 34px);
+      box-shadow: 0 12px 32px -8px rgba(0, 72, 210, 0.08);
+      margin-bottom: 26px;
+    }
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+      border-bottom: 1.5px solid #e2e8f0;
+    }
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #0052d4;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .section-head h3 {
+      font-size: clamp(1.25rem, 2vw, 1.55rem);
+      font-weight: 800;
+      color: #0b2559;
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .section-head p {
+      font-size: 0.9rem;
+      color: #475569;
+      margin: 0;
+      max-width: 780px;
+      line-height: 1.55;
+    }
+
+    /* Lưới 6 Phân hệ Chức năng Chính cân đối đa thiết bị */
     .prod-modules-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 20px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
     }
-    @media (max-width: 960px) {
+    @media (max-width: 1024px) {
       .prod-modules-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
     @media (max-width: 640px) {
@@ -268,19 +387,27 @@
     }
     .prod-module-card {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1.5px solid #dbeafe;
+      border-top: 4px solid #2563eb;
       border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-      transition: all 0.2s ease;
+      padding: 22px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+      transition: all 0.22s ease;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
     .prod-module-card:hover {
-      transform: translateY(-3px);
-      border-color: #93c5fd;
-      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.1);
+      transform: translateY(-4px);
+      border-color: #60a5fa;
+      border-top-color: #0d9488;
+      box-shadow: 0 16px 32px rgba(37, 99, 235, 0.12);
+    }
+    .prod-module-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 2px;
     }
     .prod-module-icon {
       width: 44px;
@@ -290,31 +417,69 @@
       align-items: center;
       justify-content: center;
       font-size: 1.35rem;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 1px solid #93c5fd;
+      flex-shrink: 0;
     }
     .prod-module-title {
-      font-size: 1.02rem;
+      font-size: 0.98rem;
       font-weight: 800;
-      color: #0f172a;
+      color: #0b2559;
       margin: 0;
+      line-height: 1.35;
     }
     .prod-module-desc {
-      font-size: 0.87rem;
+      font-size: 0.86rem;
       color: #475569;
       line-height: 1.6;
       margin: 0;
     }
     .prod-module-bullets {
-      margin: 4px 0 0;
-      padding-left: 18px;
+      margin: 6px 0 0;
+      padding: 10px 12px 10px 26px;
       font-size: 0.82rem;
-      color: #334155;
-      line-height: 1.6;
+      color: #1e293b;
+      line-height: 1.65;
+      background: #f8fbff;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
     }
+    .prod-module-bullets li {
+      margin-bottom: 3px;
+    }
+    .prod-module-bullets li::marker {
+      color: #059669;
+      font-weight: 800;
+    }
+
+    /* Lưới 3 Luồng Liên thông Hệ sinh thái */
+    .prod-integration-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 960px) {
+      .prod-integration-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .prod-integration-item {
+      background: linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
+      border: 1.5px solid #bfdbfe;
+      border-left: 5px solid #0061ff;
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.2s ease;
+    }
+    .prod-integration-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(0, 82, 212, 0.1);
+    }
+
+    /* Callout Banner Truy cập Dùng thử */
     .prod-live-banner {
-      margin-top: 28px;
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #0f766e 100%);
+      margin-top: 26px;
+      background: linear-gradient(135deg, #0b1930 0%, #1e3a8a 58%, #0f766e 100%);
       border-radius: 18px;
       padding: 24px 28px;
       color: #ffffff;
@@ -323,31 +488,37 @@
       justify-content: space-between;
       gap: 20px;
       flex-wrap: wrap;
+      border: 1.5px solid rgba(96, 165, 250, 0.45);
       box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
     }
+
+    /* Khu vực Form Đăng ký Demo 2 cột cân đối */
     .demo-section-grid {
       display: grid;
-      grid-template-columns: 1fr 1.25fr;
+      grid-template-columns: 1fr 1.22fr;
       gap: 26px;
-      align-items: start;
+      align-items: stretch;
     }
-    @media (max-width: 960px) {
+    @media (max-width: 980px) {
       .demo-section-grid {
         grid-template-columns: 1fr;
       }
     }
     .demo-benefit-card {
-      background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+      background: linear-gradient(160deg, #0b1930 0%, #1e293b 100%);
       color: #f8fafc;
       border-radius: 18px;
-      padding: 26px;
-      border: 1px solid #334155;
+      padding: clamp(22px, 2.8vw, 30px);
+      border: 1.5px solid #334155;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .demo-form-card {
       background: #ffffff;
-      border: 2px solid #bfdbfe;
+      border: 2px solid #93c5fd;
       border-radius: 18px;
-      padding: 26px;
+      padding: clamp(22px, 2.8vw, 30px);
       box-shadow: 0 14px 35px rgba(37, 99, 235, 0.08);
     }
     .demo-form-grid {
@@ -378,7 +549,7 @@
     .demo-field textarea {
       padding: 10px 13px;
       border-radius: 10px;
-      border: 1px solid #cbd5e1;
+      border: 1.5px solid #cbd5e1;
       font-family: inherit;
       font-size: 0.88rem;
       color: #0f172a;
@@ -402,7 +573,7 @@
     <div class="hub-header-inner">
       <a href="index.html" class="brand-box">
         <div class="brand-logo">
-          <img src="logo.png?v=13" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+          <img src="logo.png?v=14" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
         </div>
         <div class="brand-title">
           <h1>
@@ -431,103 +602,107 @@
     </div>
   </header>
 
-  <!-- THANH CHUYỂN ĐỔI NHANH 16 SẢN PHẨM TRONG HỆ SINH THÁI -->
-  <div class="prod-switcher-bar">
-    <div class="container prod-switcher-inner" id="productSwitcherBar">
-      <!-- Render tự động 16 sản phẩm -->
+  <!-- THANH CHUYỂN ĐỔI NHANH 16 SẢN PHẨM TRONG KHUNG CÂN ĐỐI 1280PX -->
+  <div class="prod-page-container prod-switcher-wrap">
+    <div class="prod-switcher-bar">
+      <div class="prod-switcher-inner" id="productSwitcherBar">
+        <!-- Render tự động 16 sản phẩm -->
+      </div>
     </div>
   </div>
 
-  <!-- HERO BANNER GIỚI THIỆU SẢN PHẨM -->
-  <section class="prod-hero">
-    <div class="container prod-hero-grid">
-      <div>
-        <div class="prod-breadcrumb">
-          <a href="index.html">🌐 Hệ sinh thái TechCorp</a>
-          <span>/</span>
-          <span id="prodBreadcrumbCat">Danh mục Giải pháp</span>
-          <span>/</span>
-          <strong id="prodBreadcrumbName" style="color:#ffffff;">Chi tiết Sản phẩm</strong>
+  <!-- HERO BANNER GIỚI THIỆU SẢN PHẨM (NẰM TRONG KHUNG CÂN ĐỐI 1280PX, BO GÓC HIỆN ĐẠI) -->
+  <section class="prod-page-container prod-hero-wrap">
+    <div class="prod-hero-card">
+      <div class="prod-hero-grid">
+        <div>
+          <div class="prod-breadcrumb">
+            <a href="index.html">🌐 Hệ sinh thái TechCorp</a>
+            <span>/</span>
+            <span id="prodBreadcrumbCat">Danh mục Giải pháp</span>
+            <span>/</span>
+            <strong id="prodBreadcrumbName" style="color:#ffffff;">Chi tiết Sản phẩm</strong>
+          </div>
+
+          <div class="prod-hero-badges">
+            <span class="prod-badge-pill" id="prodCategoryBadge">📦 Giải pháp Số TechCorp</span>
+            <span class="prod-badge-pill prod-badge-live">🟢 Hệ thống Live 24/7 • Dùng thử Ngay</span>
+            <span class="prod-badge-pill" id="prodCodeBadge">Mã App: erp</span>
+          </div>
+
+          <h2 class="prod-hero-title" id="prodHeroTitle">Đang tải thông tin sản phẩm...</h2>
+          <p class="prod-hero-desc" id="prodHeroDesc"></p>
+
+          <div class="prod-meta-strip">
+            <div class="prod-meta-box">
+              <span class="prod-meta-label">🎯 Đối tượng Triển khai</span>
+              <span class="prod-meta-val" id="prodTargetAudience">Đơn vị Thành viên</span>
+            </div>
+            <div class="prod-meta-box">
+              <span class="prod-meta-label">⚡ Thời gian Khởi tạo</span>
+              <span class="prod-meta-val" id="prodDeployTime">Kích hoạt trong 15 phút</span>
+            </div>
+            <div class="prod-meta-box">
+              <span class="prod-meta-label">🔐 Chuẩn Liên thông</span>
+              <span class="prod-meta-val" id="prodSsoScopes">TechCorp SSO ID + API</span>
+            </div>
+          </div>
+
+          <div class="prod-cta-row">
+            <a href="https://erp.techcorp.info.vn" target="_blank" rel="noopener" id="prodHeroLiveBtn" class="btn-try-live">
+              🚀 Truy cập Hệ thống Xem &amp; Dùng thử Live ↗
+            </a>
+            <a href="#demo-form" class="btn-book-demo">
+              📝 Đăng ký Nhận Tài khoản Demo
+            </a>
+            <a href="index.html#sec-products" class="btn btn-outline btn-sm" style="background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.28); text-decoration:none; padding:11px 16px;">
+              ← Quay lại 16 Sản phẩm
+            </a>
+          </div>
         </div>
 
-        <div class="prod-hero-badges">
-          <span class="prod-badge-pill" id="prodCategoryBadge">📦 Giải pháp Số TechCorp</span>
-          <span class="prod-badge-pill prod-badge-live">🟢 Hệ thống Live 24/7 • Dùng thử Ngay</span>
-          <span class="prod-badge-pill" id="prodCodeBadge">Mã App: erp</span>
-        </div>
-
-        <h2 class="prod-hero-title" id="prodHeroTitle">Đang tải thông tin sản phẩm...</h2>
-        <p class="prod-hero-desc" id="prodHeroDesc"></p>
-
-        <div class="prod-meta-strip">
-          <div class="prod-meta-box">
-            <span class="prod-meta-label">🎯 Đối tượng Triển khai</span>
-            <span class="prod-meta-val" id="prodTargetAudience">Đơn vị Thành viên</span>
+        <!-- KHUNG PREVIEW HỆ THỐNG LIVE -->
+        <div class="prod-preview-card">
+          <div class="prod-preview-browser">
+            <div class="prod-browser-dots">
+              <span style="background:#ef4444;"></span>
+              <span style="background:#f59e0b;"></span>
+              <span style="background:#10b981;"></span>
+            </div>
+            <div class="prod-browser-url" id="prodBrowserUrl">https://erp.techcorp.info.vn</div>
+            <span class="badge badge-green" style="font-size:0.7rem;">SSL ACTIVE</span>
           </div>
-          <div class="prod-meta-box">
-            <span class="prod-meta-label">⚡ Thời gian Khởi tạo</span>
-            <span class="prod-meta-val" id="prodDeployTime">Kích hoạt trong 15 phút</span>
+          <div class="prod-preview-img-wrap">
+            <img id="prodPreviewImage" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" alt="Product Preview" />
           </div>
-          <div class="prod-meta-box">
-            <span class="prod-meta-label">🔐 Chuẩn Liên thông</span>
-            <span class="prod-meta-val" id="prodSsoScopes">TechCorp SSO ID + API</span>
+          <div class="prod-preview-footer">
+            <div>
+              <div style="font-size:0.74rem; color:#94a3b8;">Địa chỉ truy cập hệ thống thực tế:</div>
+              <strong id="prodLiveDomainText" style="font-size:0.9rem; color:#38bdf8;">https://erp.techcorp.info.vn</strong>
+            </div>
+            <a href="https://erp.techcorp.info.vn" target="_blank" rel="noopener" id="prodPreviewOpenBtn" class="btn btn-primary btn-sm" style="text-decoration:none;">
+              Mở Trang Dùng thử ↗
+            </a>
           </div>
-        </div>
-
-        <div class="prod-cta-row">
-          <a href="https://erp.techcorp.info.vn" target="_blank" rel="noopener" id="prodHeroLiveBtn" class="btn-try-live">
-            🚀 Truy cập Hệ thống Xem &amp; Dùng thử Live ↗
-          </a>
-          <a href="#demo-form" class="btn-book-demo">
-            📝 Đăng ký Nhận Tài khoản Demo
-          </a>
-          <a href="index.html#sec-products" class="btn btn-outline btn-sm" style="background:rgba(255,255,255,0.08); color:#fff; border-color:rgba(255,255,255,0.25);">
-            ← Quay lại 16 Sản phẩm
-          </a>
-        </div>
-      </div>
-
-      <!-- KHUNG PREVIEW HỆ THỐNG LIVE -->
-      <div class="prod-preview-card">
-        <div class="prod-preview-browser">
-          <div class="prod-browser-dots">
-            <span style="background:#ef4444;"></span>
-            <span style="background:#f59e0b;"></span>
-            <span style="background:#10b981;"></span>
-          </div>
-          <div class="prod-browser-url" id="prodBrowserUrl">https://erp.techcorp.info.vn</div>
-          <span class="badge badge-green" style="font-size:0.7rem;">SSL ACTIVE</span>
-        </div>
-        <div class="prod-preview-img-wrap">
-          <img id="prodPreviewImage" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" alt="Product Preview" />
-        </div>
-        <div class="prod-preview-footer">
-          <div>
-            <div style="font-size:0.75rem; color:#94a3b8;">Địa chỉ truy cập hệ thống thực tế:</div>
-            <strong id="prodLiveDomainText" style="font-size:0.9rem; color:#38bdf8;">https://erp.techcorp.info.vn</strong>
-          </div>
-          <a href="https://erp.techcorp.info.vn" target="_blank" rel="noopener" id="prodPreviewOpenBtn" class="btn btn-primary btn-sm">
-            Mở Trang Dùng thử ↗
-          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- MAIN CONTENT -->
-  <main class="container main-content" style="padding-top: 32px; padding-bottom: 48px;">
+  <!-- MAIN CONTENT TRONG KHUNG CÂN ĐỐI 1280PX -->
+  <main class="prod-page-container" style="padding-top: 26px; padding-bottom: 48px;">
 
     <!-- PHẦN 1: CHI TIẾT 6 PHÂN HỆ CHỨC NĂNG CHÍNH CỦA SẢN PHẨM -->
-    <section id="sec-modules" class="card">
+    <section id="sec-modules" class="prod-section-card">
       <div class="section-head">
         <div>
           <span class="section-kicker">🧩 KIẾN TRÚC PHÂN HỆ &amp; TÍNH NĂNG CỐT LÕI</span>
           <h3 id="prodModulesHeading">Các Chức năng Chính của Sản phẩm</h3>
           <p id="prodModulesSubheading">Tất cả các phân hệ dưới đây đều đã được triển khai sẵn sàng trên máy chủ đám mây TechCorp và cho phép khách hàng truy cập dùng thử trực tiếp.</p>
         </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <a href="#demo-form" class="btn btn-primary btn-sm">📝 Đăng ký Demo Chuyên sâu</a>
-          <a href="https://erp.techcorp.info.vn" target="_blank" rel="noopener" id="prodTopTryBtn" class="btn btn-outline btn-sm">🚀 Xem &amp; Dùng thử ↗</a>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; flex-shrink:0;">
+          <a href="#demo-form" class="btn btn-primary btn-sm" style="text-decoration:none; padding:9px 16px;">📝 Đăng ký Demo Chuyên sâu</a>
+          <a href="https://erp.techcorp.info.vn" target="_blank" rel="noopener" id="prodTopTryBtn" class="btn btn-outline btn-sm" style="text-decoration:none; padding:9px 16px;">🚀 Xem &amp; Dùng thử ↗</a>
         </div>
       </div>
 
@@ -552,7 +727,7 @@
           <a href="https://erp.techcorp.info.vn" target="_blank" rel="noopener" id="prodBannerLiveLink" class="btn-try-live">
             🚀 Truy cập Hệ thống Xem &amp; Dùng thử ↗
           </a>
-          <a href="#demo-form" class="btn btn-outline" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3);">
+          <a href="#demo-form" class="btn btn-outline" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3); text-decoration:none;">
             📝 Đăng ký Nhận Tài khoản Demo
           </a>
         </div>
@@ -560,22 +735,22 @@
     </section>
 
     <!-- PHẦN 2: CƠ CHẾ LIÊN THÔNG TRONG HỆ SINH THÁI TECHCORP -->
-    <section id="sec-integration" class="card" style="margin-top: 24px;">
+    <section id="sec-integration" class="prod-section-card">
       <div class="section-head">
         <div>
           <span class="section-kicker">🔗 GIÁ TRỊ CỘNG HƯỞNG ĐỘC QUYỀN TRÊN TECHCORP HUB</span>
           <h3>Khả năng Liên thông Dữ liệu Đa chiều với 15 Nền tảng Khác</h3>
-          <p>Khác với các phần mềm rời rạc, mỗi sản phẩm của TechCorp đều được tích hợp sẵn định danh một cửa <strong>TechCorp ID (SSO)</strong> và <strong>Event Bus</strong> giúp nhân배 hiệu quả vận hành.</p>
+          <p>Khác với các phần mềm rời rạc, mỗi sản phẩm của TechCorp đều được tích hợp sẵn định danh một cửa <strong>TechCorp ID (SSO)</strong> và <strong>Event Bus</strong> giúp nhân đôi hiệu quả vận hành.</p>
         </div>
       </div>
 
-      <div class="grid-3" id="prodIntegrationHighlights">
+      <div class="prod-integration-grid" id="prodIntegrationHighlights">
         <!-- Render 3 luồng liên thông đặc thù của sản phẩm -->
       </div>
     </section>
 
     <!-- PHẦN 3: FORM ĐĂNG KÝ DEMO & NHẬN TƯ VẤN TRIỂN KHAI -->
-    <section id="demo-form" class="card" style="margin-top: 24px; background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);">
+    <section id="demo-form" class="prod-section-card" style="background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);">
       <div class="demo-section-grid">
         <!-- Cột trái: Quyền lợi khi đăng ký Demo -->
         <div class="demo-benefit-card">
@@ -1778,8 +1953,10 @@
       if (modulesGrid) {
         modulesGrid.innerHTML = prod.modules.map((m) => `
           <article class="prod-module-card">
-            <div class="prod-module-icon">${m.icon}</div>
-            <h4 class="prod-module-title">${m.title}</h4>
+            <div class="prod-module-head">
+              <div class="prod-module-icon">${m.icon}</div>
+              <h4 class="prod-module-title">${m.title}</h4>
+            </div>
             <p class="prod-module-desc">${m.desc}</p>
             <ul class="prod-module-bullets">
               ${(m.bullets || []).map((b) => `<li>${b}</li>`).join("")}
@@ -1791,9 +1968,9 @@
       const integrationGrid = document.getElementById("prodIntegrationHighlights");
       if (integrationGrid) {
         integrationGrid.innerHTML = (prod.integrations || []).map((it) => `
-          <div class="mini-panel" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:18px;">
-            <h4 style="margin:0 0 8px; font-size:0.96rem; color:#0f172a;">${it.title}</h4>
-            <p style="margin:0; font-size:0.85rem; color:#475569; line-height:1.6;">${it.desc}</p>
+          <div class="prod-integration-item">
+            <h4>${it.title}</h4>
+            <p>${it.desc}</p>
           </div>
         `).join("");
       }

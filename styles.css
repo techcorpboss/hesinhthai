@@ -1835,4 +1835,13 @@ body {
   color: #ffffff;
 }
 
-
+/* ==================== v6.5 GLOBAL RESPONSIVE CONTAINER ==================== */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(16px, 3vw, 32px);
+  padding-right: clamp(16px, 3vw, 32px);
+  box-sizing: border-box;
+}
