@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechCorp Promo Video Studio — Tạo Video Quảng bá TikTok (9:16) & Facebook (16:9)</title>
+  <link rel="icon" type="image/png" href="logo.png?v=18" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #040b1a;
+      --bg-panel: #0b1730;
+      --primary: #0061ff;
+      --cyan: #00d4ff;
+      --amber: #ff7a00;
+      --emerald: #10b981;
+      --border: rgba(148, 163, 184, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #0d224c 0%, #040b1a 75%);
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ==================== STUDIO CONTROL BAR ==================== */
+    .studio-topbar {
+      background: rgba(7, 18, 40, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    body.clean-record-mode .studio-topbar,
+    body.clean-record-mode .studio-sidebar,
+    body.clean-record-mode .floating-exit-hint-hide {
+      display: none !important;
+    }
+
+    body.clean-record-mode .studio-workspace {
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #020611;
+    }
+
+    .studio-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .studio-brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #fff;
+      padding: 3px;
+      object-fit: contain;
+    }
+
+    .studio-brand h1 {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .studio-brand p {
+      font-size: 11px;
+      color: #93c5fd;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-pill-group {
+      display: inline-flex;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .ctrl-btn {
+      background: transparent;
+      color: #cbd5e1;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .ctrl-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .ctrl-btn.active {
+      background: linear-gradient(135deg, #0061ff 0%, #0284c7 100%);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(0, 97, 255, 0.35);
+    }
+
+    .action-btn {
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .action-btn-play {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    }
+
+    .action-btn-record {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+    }
+
+    .action-btn-record.recording {
+      animation: pulseRed 1.2s infinite;
+    }
+
+    .action-btn-clean {
+      background: rgba(56, 189, 248, 0.15);
+      color: #7dd3fc;
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    @keyframes pulseRed {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    }
+
+    /* ==================== WORKSPACE LAYOUT ==================== */
+    .studio-workspace {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 370px;
+      gap: 20px;
+      padding: 18px 24px;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    @media (max-width: 1180px) {
+      .studio-workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stage-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: calc(100vh - 110px);
+    }
+
+    /* ==================== VIDEO CANVAS STAGE (16:9, 9:16, 1:1) ==================== */
+    .video-stage {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(0, 212, 255, 0.22), transparent 40%),
+        radial-gradient(circle at 15% 85%, rgba(255, 122, 0, 0.18), transparent 45%),
+        linear-gradient(145deg, #051129 0%, #0a1f47 52%, #06122b 100%);
+      border: 2px solid rgba(96, 165, 250, 0.45);
+      box-shadow: 0 28px 75px rgba(0, 0, 0, 0.65);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: width 0.35s ease, height 0.35s ease;
+      user-select: none;
+    }
+
+    /* 16:9 Landscape (Facebook / YouTube) */
+    .video-stage.ratio-16-9 {
+      width: min(100%, 1040px);
+      aspect-ratio: 16 / 9;
+      padding: clamp(20px, 3vw, 36px);
+    }
+
+    /* 9:16 Vertical (TikTok / Facebook Reels / Shorts) */
+    .video-stage.ratio-9-16 {
+      height: min(84vh, 790px);
+      aspect-ratio: 9 / 16;
+      padding: 22px 18px;
+    }
+
+    /* 1:1 Square (Facebook Feed Ads) */
+    .video-stage.ratio-1-1 {
+      height: min(80vh, 680px);
+      aspect-ratio: 1 / 1;
+      padding: 26px;
+    }
+
+    /* Ambient Animated Grid inside Video */
+    .stage-bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+      background-size: 38px 38px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stage-glow-orb {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 140, 255, 0.32) 0%, transparent 70%);
+      filter: blur(25px);
+      top: -80px;
+      right: -80px;
+      animation: floatOrb 8s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-40px, 45px) scale(1.18); }
+    }
+
+    /* Top Brand Bar Inside Video */
+    .vid-header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .vid-logo-box {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .vid-logo-box img {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 3px;
+      object-fit: contain;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .vid-logo-text strong {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.2px;
+    }
+
+    .vid-logo-text span {
+      display: block;
+      font-size: 10.5px;
+      color: #7dd3fc;
+      font-weight: 700;
+    }
+
+    .vid-live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(52, 211, 153, 0.5);
+      color: #6ee7b7;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .vid-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: blinkDot 1.2s infinite;
+    }
+
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    /* Center Scene Content */
+    .vid-scene-body {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+      padding: 12px 0;
+      animation: sceneEnter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes sceneEnter {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .scene-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      background: linear-gradient(135deg, rgba(255, 122, 0, 0.24), rgba(234, 88, 12, 0.2));
+      border: 1px solid rgba(251, 146, 60, 0.55);
+      color: #fed7aa;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .scene-title {
+      font-size: clamp(20px, 2.6vw, 33px);
+      font-weight: 900;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .video-stage.ratio-9-16 .scene-title {
+      font-size: 21px;
+    }
+
+    .scene-title .hl-cyan {
+      background: linear-gradient(90deg, #38bdf8, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .scene-title .hl-amber {
+      background: linear-gradient(90deg, #fbbf24, #ff7a00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .scene-subtitle {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .video-stage.ratio-9-16 .scene-subtitle {
+      font-size: 12px;
+    }
+
+    /* Scene Dynamic Cards Grid */
+    .scene-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .video-stage.ratio-9-16 .scene-cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .scene-feature-card {
+      background: rgba(15, 28, 58, 0.82);
+      border: 1px solid rgba(96, 165, 250, 0.32);
+      border-radius: 13px;
+      padding: 11px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      animation: cardPop 0.5s ease backwards;
+    }
+
+    @keyframes cardPop {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .scene-feature-card .f-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .scene-feature-card .f-icon {
+      font-size: 18px;
+    }
+
+    .scene-feature-card .f-tag {
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.16);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .scene-feature-card h4 {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .video-stage.ratio-9-16 .scene-feature-card h4 {
+      font-size: 11.5px;
+    }
+
+    .scene-feature-card p {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.35;
+    }
+
+    .video-stage.ratio-9-16 .scene-feature-card p {
+      font-size: 10.2px;
+    }
+
+    /* Subtitle / Karaoke Caption Bar (TikTok / Reels Standard) */
+    .vid-caption-box {
+      position: relative;
+      z-index: 3;
+      background: rgba(4, 12, 28, 0.88);
+      border: 1.5px solid rgba(251, 191, 36, 0.65);
+      border-radius: 14px;
+      padding: 10px 14px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+      margin-bottom: 6px;
+    }
+
+    .vid-caption-text {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #fef08a;
+      line-height: 1.45;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .video-stage.ratio-9-16 .vid-caption-text {
+      font-size: 12.2px;
+    }
+
+    /* Bottom CTA Strip Inside Video */
+    .vid-footer {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 11px;
+      flex-wrap: wrap;
+    }
+
+    .vid-domain-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #0061ff 0%, #00c6ff 100%);
+      color: #ffffff;
+      font-weight: 900;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      box-shadow: 0 4px 12px rgba(0, 97, 255, 0.4);
+    }
+
+    .vid-hotline {
+      color: #fcd34d;
+      font-weight: 800;
+      font-size: 11px;
+    }
+
+    /* Progress Bar at Bottom of Video Stage */
+    .vid-progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.12);
+      z-index: 5;
+    }
+
+    .vid-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00d4ff 0%, #ff7a00 100%);
+      transition: width 0.25s linear;
+    }
+
+    /* Scene Dots Timeline Below Stage */
+    .timeline-strip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .timeline-step-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border);
+      color: #94a3b8;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .timeline-step-btn.active {
+      background: #0061ff;
+      color: #ffffff;
+      border-color: #60a5fa;
+      box-shadow: 0 4px 12px rgba(0, 97, 255, 0.35);
+    }
+
+    /* ==================== SIDEBAR: CAPTION & GUIDE ==================== */
+    .studio-sidebar {
+      background: rgba(11, 23, 48, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: calc(100vh - 95px);
+      overflow-y: auto;
+    }
+
+    .side-box {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 12px;
+      padding: 13px;
+    }
+
+    .side-box h3 {
+      font-size: 13px;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .post-caption-textarea {
+      width: 100%;
+      min-height: 155px;
+      background: #050d1f;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 9px;
+      color: #e2e8f0;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 12px;
+      line-height: 1.55;
+      resize: vertical;
+    }
+
+    /* Floating button when in Clean Record Mode */
+    .clean-mode-exit-btn {
+      display: none;
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 9999;
+      background: rgba(15, 23, 42, 0.65);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0.25;
+      transition: opacity 0.2s;
+    }
+
+    .clean-mode-exit-btn:hover {
+      opacity: 1;
+    }
+
+    body.clean-record-mode .clean-mode-exit-btn {
+      display: inline-flex;
+    }
+  </style>
+</head>
+<body>
+  <button type="button" class="clean-mode-exit-btn" onclick="toggleCleanMode(false)">
+    ✕ Hiện lại Thanh Điều khiển (hoặc nhấn phím ESC)
+  </button>
+
+  <!-- THANH ĐIỀU KHIỂN STUDIO -->
+  <header class="studio-topbar">
+    <a href="index.html" class="studio-brand">
+      <img src="logo.png?v=18" alt="TechCorp Logo" />
+      <div>
+        <h1>🎬 TechCorp Promo Video Studio</h1>
+        <p>Trình chiếu & Quay Video Quảng bá Tự động cho TikTok (9:16) & Facebook (16:9)</p>
+      </div>
+    </a>
+
+    <!-- Chọn Kịch bản -->
+    <div class="control-group">
+      <div class="ctrl-pill-group" id="scriptSelectorGroup">
+        <button type="button" class="ctrl-btn active" data-script="ecosystem" onclick="selectPromoScript('ecosystem')">
+          🌐 Kịch bản 1: Toàn Hệ sinh thái (16 App)
+        </button>
+        <button type="button" class="ctrl-btn" data-script="education" onclick="selectPromoScript('education')">
+          🎓 Kịch bản 2: Trường học & Khảo thí LMS
+        </button>
+        <button type="button" class="ctrl-btn" data-script="enterprise" onclick="selectPromoScript('enterprise')">
+          🏢 Kịch bản 3: Doanh nghiệp, JobAI & B2B
+        </button>
+      </div>
+
+      <!-- Chọn Tỷ lệ Khung hình -->
+      <div class="ctrl-pill-group" id="ratioSelectorGroup">
+        <button type="button" class="ctrl-btn active" data-ratio="9-16" onclick="setStageRatio('9-16')">
+          📱 TikTok / Reels (9:16 Dọc)
+        </button>
+        <button type="button" class="ctrl-btn" data-ratio="16-9" onclick="setStageRatio('16-9')">
+          🖥️ Facebook / YouTube (16:9 Ngang)
+        </button>
+        <button type="button" class="ctrl-btn" data-ratio="1-1" onclick="setStageRatio('1-1')">
+          🔲 FB Feed Ads (1:1 Vuông)
+        </button>
+      </div>
+    </div>
+
+    <!-- Cụm Nút Phát, Âm thanh & Quay Video -->
+    <div class="control-group">
+      <button type="button" class="action-btn action-btn-play" id="btnPlayPause" onclick="togglePlayPromo()">
+        ⏸ Đang chạy tự động
+      </button>
+      <button type="button" class="ctrl-btn active" id="btnToggleMusic" onclick="toggleBgMusic()" style="border:1px solid var(--border);">
+        🎵 Nhạc nền: BẬT
+      </button>
+      <button type="button" class="ctrl-btn" id="btnToggleVoice" onclick="toggleVoiceover()" style="border:1px solid var(--border);">
+        🗣️ Đọc thuyết minh: TẮT
+      </button>
+      <button type="button" class="action-btn action-btn-record" id="btnRecordVideo" onclick="startOrStopRecording()">
+        🔴 Quay & Tải Video (.webm)
+      </button>
+      <button type="button" class="action-btn action-btn-clean" onclick="toggleCleanMode(true)">
+        🕶️ Ẩn khung để quay
+      </button>
+    </div>
+  </header>
+
+  <!-- KHÔNG GIAN TRÌNH CHIẾU & BÀI ĐĂNG MẪU -->
+  <div class="studio-workspace">
+    <div class="stage-wrapper">
+      <!-- KHUNG VIDEO CHÍNH -->
+      <div class="video-stage ratio-9-16" id="promoVideoStage">
+        <div class="stage-bg-grid"></div>
+        <div class="stage-glow-orb"></div>
+
+        <!-- Header cố định trong Video -->
+        <div class="vid-header">
+          <div class="vid-logo-box">
+            <img src="logo.png?v=18" alt="TechCorp" />
+            <div class="vid-logo-text">
+              <strong>HỆ SINH THÁI TECHCORP</strong>
+              <span>hesinhthai.techcorp.info.vn</span>
+            </div>
+          </div>
+          <div class="vid-live-pill">
+            <span class="vid-live-dot"></span>
+            <span>16 HỆ THỐNG LIVE 24/7</span>
+          </div>
+        </div>
+
+        <!-- Nội dung Cảnh động (Scene Body) -->
+        <div class="vid-scene-body" id="vidSceneBody">
+          <!-- Render tự động bằng JS -->
+        </div>
+
+        <!-- Phụ đề Thuyết minh Tự động (TikTok / Reels Captions) -->
+        <div class="vid-caption-box">
+          <div class="vid-caption-text" id="vidCaptionText">
+            Đang khởi tạo trình chiếu Hệ sinh thái TechCorp...
+          </div>
+        </div>
+
+        <!-- Footer Call-To-Action cố định trong Video -->
+        <div class="vid-footer">
+          <span class="vid-domain-cta">🌐 Dùng thử: hesinhthai.techcorp.info.vn</span>
+          <span class="vid-hotline">📞 Demo Miễn phí: 0977.669.623</span>
+        </div>
+
+        <!-- Thanh tiến trình cảnh -->
+        <div class="vid-progress-track">
+          <div class="vid-progress-fill" id="vidProgressFill"></div>
+        </div>
+      </div>
+
+      <!-- Thanh chọn nhanh từng phân cảnh -->
+      <div class="timeline-strip floating-exit-hint-hide" id="sceneTimelineStrip"></div>
+    </div>
+
+    <!-- CỘT PHẢI: CAPTION ĐĂNG FACEBOOK / TIKTOK & HƯỚNG DẪN XUẤT VIDEO -->
+    <aside class="studio-sidebar">
+      <div class="side-box">
+        <h3>
+          <span>📝 Nội dung Bài đăng (Caption + Hashtag)</span>
+          <button type="button" class="ctrl-btn active" onclick="copyPostCaption()" style="padding:4px 10px;font-size:11px;">
+            📋 Copy Bài đăng
+          </button>
+        </h3>
+        <p style="font-size:11.5px;color:#94a3b8;margin-bottom:8px;">
+          Nội dung dưới đây tự động đồng bộ theo kịch bản bạn đang chọn để dán ngay lên Facebook hoặc TikTok:
+        </p>
+        <textarea id="postCaptionBox" class="post-caption-textarea" readonly></textarea>
+      </div>
+
+      <div class="side-box">
+        <h3>🎥 Hướng dẫn Xuất Video Nét 1080p</h3>
+        <ol style="padding-left:16px;font-size:12px;color:#cbd5e1;line-height:1.65;display:flex;flex-direction:column;gap:6px;">
+          <li>
+            <strong>Chọn tỷ lệ khung hình:</strong> Chọn <b>📱 9:16 Dọc</b> nếu đăng TikTok / Facebook Reels, hoặc <b>🖥️ 16:9 Ngang</b> nếu đăng Facebook Video truyền thống.
+          </li>
+          <li>
+            <strong>Cách 1 (Quay trực tiếp trên trình duyệt):</strong> Nhấn nút <b>🔴 Quay & Tải Video (.webm)</b> → Chọn tab hiện tại (nhớ tích <i>"Share tab audio / Chia sẻ âm thanh tab"</i>) → Trình chiếu sẽ tự chạy từ Cảnh 1 đến Cảnh cuối và tự động tải file video về máy!
+          </li>
+          <li>
+            <strong>Cách 2 (Dùng OBS / CapCut):</strong> Nhấn nút <b>🕶️ Ẩn khung để quay</b> (hoặc nhấn <code>F11</code> toàn màn hình) để có khung video sạch 100% không dính thanh công cụ.
+          </li>
+        </ol>
+      </div>
+
+      <div class="side-box">
+        <h3>🔗 Link Gắn Kèm Dưới Bình Luận / Bio</h3>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11.5px;color:#93c5fd;">
+          <div>🌐 <strong>Trang chủ Bản tin:</strong> https://hesinhthai.techcorp.info.vn</div>
+          <div>🚀 <strong>6 Nhóm Sản phẩm:</strong> https://hesinhthai.techcorp.info.vn/?page=products</div>
+          <div>💬 <strong>Diễn đàn B2B:</strong> https://hesinhthai.techcorp.info.vn/?page=forum</div>
+          <div>💳 <strong>Báo giá Combo:</strong> https://hesinhthai.techcorp.info.vn/?page=pricing</div>
+          <div>📞 <strong>Đăng ký Demo:</strong> https://hesinhthai.techcorp.info.vn/?page=contact</div>
+        </div>
+      </div>
+
+      <a href="index.html" class="action-btn" style="justify-content:center;background:rgba(255,255,255,0.08);color:#fff;">
+        ← Quay về Trang chủ Hệ sinh thái TechCorp
+      </a>
+    </aside>
+  </div>
+
+  <script>
+    // ==================== DỮ LIỆU 3 KỊCH BẢN VIDEO QUẢNG BÁ ====================
+    const PROMO_SCRIPTS = {
+      ecosystem: {
+        name: "Toàn Hệ sinh thái (16 App)",
+        postCaption: `🚀 KHÁM PHÁ HỆ SINH THÁI SỐ TECHCORP — HỢP NHẤT 16 NỀN TẢNG PHẦN MỀM TRÊN MỘT TRỤC SSO DUY NHẤT!
+
+Bạn đang tìm kiếm giải pháp chuyển đổi số đồng bộ cho Trường học, Trung tâm Đào tạo hay Doanh nghiệp?
+Hệ sinh thái TechCorp liên thông trực tiếp 6 Nhóm Sản phẩm (16 hệ thống đang vận hành thực tế 24/7):
+1️⃣ Giáo dục Mầm non & Phổ thông K-12 (Mầm non, Tiểu học, THCS, THPT, GDTX)
+2️⃣ Đại học, Trung tâm Ngoại ngữ - Tin học & Cổng E-Learning
+3️⃣ Khảo thí & Sàn Thi Trực tuyến chống gian lận AI (TechCorp LMS)
+4️⃣ Sàn Tuyển dụng & Tìm việc Thông minh AI đa ngôn ngữ (JobAI)
+5️⃣ Quản trị Doanh nghiệp Tổng thể TechCorp ERP & Đánh giá BSC-KPI
+6️⃣ Giải pháp Chuyên ngành: Khách sạn & Resort PMS, Sàn BĐS AI & Nội thất 3D
+
+🎁 ĐẶC QUYỀN ĐỘC NHẤT:
+✔ Tiết kiệm tới 45% chi phí khi đăng ký Gói Combo Liên thông
+✔ Kết nối giao thương nội bộ B2B (Give-to-Get) & tiếp cận >2.920 hồ sơ nhân lực đã xác thực điểm thi!
+
+👉 Xem trực tiếp & Dùng thử miễn phí tại: https://hesinhthai.techcorp.info.vn
+📝 Đăng ký nhận Tài khoản Admin Demo: https://hesinhthai.techcorp.info.vn/?page=contact
+📞 Hotline tư vấn 24/7: 0977.669.623
+
+#TechCorp #HeSinhThaiTechCorp #ChuyenDoiSo #PhanMemQuanLy #ERP #BSCKPI #EdTech #LMS #TuyenDungAI #JobAI #NhaTrang #KhanhHoa`,
+        scenes: [
+          {
+            kicker: "⚡ CỔNG HỆ SINH THÁI SỐ ĐA CHIỀU • 16 HỆ THỐNG LIVE",
+            title: "Tại sao mua phần mềm rời rạc khi đã có <span class='hl-cyan'>Hệ sinh thái TechCorp</span>?",
+            subtitle: "Hợp nhất Trường học – Trung tâm Đào tạo – Sàn Việc làm AI & Doanh nghiệp trên một định danh SSO duy nhất.",
+            caption: "Bạn đã bao giờ thấy một Hệ sinh thái công nghệ hợp nhất tới 16 nền tảng phần mềm đang chạy thực tế trên cùng một trục chưa?",
+            cards: [
+              { icon: "🌐", tag: "100% Live", title: "16 Nền tảng Thực tế", desc: "Vận hành 24/7 trên *.techcorp.info.vn" },
+              { icon: "🔐", tag: "SSO v6.6", title: "1 Định danh Duy nhất", desc: "Đăng nhập phân quyền RBAC 9×5 chặt chẽ" },
+              { icon: "🤝", tag: "Give-to-Get", title: "Liên thông Đa chiều", desc: "Kết nối Giáo dục – Nhân lực – Doanh nghiệp" },
+              { icon: "💳", tag: "-45% Chi phí", title: "Báo giá Gói Combo", desc: "Tặng kèm Website & Miễn phí khởi tạo" }
+            ]
+          },
+          {
+            kicker: "🚀 06 NHÓM SẢN PHẨM CHUYÊN SÂU (PHẦN 1: KHỐI GIÁO DỤC & ĐÀO TẠO)",
+            title: "Quản trị Toàn diện từ <span class='hl-amber'>Mầm non, K-12 đến Đại học</span> & Trung tâm",
+            subtitle: "Chuẩn hóa theo Thông tư Bộ GD&ĐT, tự động hóa điểm danh AI và gạch nợ học phí QR trong 3 giây.",
+            caption: "Khối Giáo dục có trọn bộ từ Mầm non, Tiểu học, THCS, THPT, GDTX đến Đại học TC COMPASS và Trung tâm Ngoại ngữ - Tin học.",
+            cards: [
+              { icon: "🏫", tag: "05 Cấp học", title: "EduManager Pro K-12", desc: "Mầm non • Tiểu học • THCS • THPT • GDTX" },
+              { icon: "🎓", tag: "Đại học", title: "TC COMPASS Đại học", desc: "Quản trị đào tạo tín chỉ & KPI Giảng viên" },
+              { icon: "🇬🇧", tag: "CRM + Đào tạo", title: "Trung tâm Ngoại ngữ - TH", desc: "Tuyển sinh đa kênh & Xếp lớp thông minh" },
+              { icon: "📝", tag: "AI Proctoring", title: "TechCorp LMS & Learn", desc: "Thi thử IELTS/TOEIC/MOS chống gian lận AI" }
+            ]
+          },
+          {
+            kicker: "🏢 06 NHÓM SẢN PHẨM CHUYÊN SÂU (PHẦN 2: DOANH NGHIỆP & CHUYÊN NGÀNH)",
+            title: "Điều hành Doanh nghiệp <span class='hl-cyan'>ERP, BSC-KPI, Tuyển dụng AI</span> & Chuyên ngành",
+            subtitle: "Từ quản trị nhân sự, tài chính, mục tiêu KPI đến Khách sạn PMS, Sàn BĐS AI và Nội thất 3D.",
+            caption: "Khối Doanh nghiệp sở hữu Sàn Tuyển dụng AI JobAI, hệ thống ERP, đánh giá BSC-KPI, Khách sạn PMS, BĐS AI và Nội thất 3D.",
+            cards: [
+              { icon: "🤖", tag: "AI ATS 7 Ngôn ngữ", title: "Sàn Việc làm JobAI", desc: "Chấm điểm độ khớp CV – JD & đồng bộ HRM" },
+              { icon: "📊", tag: "All-in-One", title: "TechCorp ERP & BSC-KPI", desc: "Quản trị HRM, CRM, Tài chính & Mục tiêu số" },
+              { icon: "🏨", tag: "Hospitality", title: "TechCorp PMS Khách sạn", desc: "Quản lý buồng phòng, Booking & POS Resort" },
+              { icon: "🏙️", tag: "AI + 3D", title: "Sàn BĐS AI & Nội thất", desc: "Giỏ hàng BĐS thời gian thực & Báo giá 3D" }
+            ]
+          },
+          {
+            kicker: "💬 DIỄN ĐÀN GIAO THƯƠNG B2B & SÀN NHÂN LỰC XÁC THỰC",
+            title: "Hơn cả Phần mềm: <span class='hl-amber'>Chợ Giao thương Nội bộ</span> & Nhân lực Thực chiến",
+            subtitle: "Đơn vị thành viên trao đổi cơ hội hợp tác RFQ, phát hành E-Voucher chéo và tuyển thẳng sinh viên xuất sắc.",
+            caption: "Đặc biệt nhất: Học viên thi trên LMS được xác thực điểm tự động và kết nối thẳng tới các Doanh nghiệp trong Diễn đàn B2B!",
+            cards: [
+              { icon: "🏅", tag: "2.920+ Hồ sơ", title: "Talent Passport Số", desc: "Ứng viên có chứng chỉ xác thực QR từ LMS" },
+              { icon: "🎁", tag: "Give-to-Get", title: "Ưu đãi Chéo Nội bộ", desc: "Tiếp cận >10.000 Phụ huynh & Sinh viên" },
+              { icon: "📢", tag: "RFQ B2B", title: "Diễn đàn Hợp tác", desc: "Tìm đối tác cung ứng & đồng tổ chức sự kiện" },
+              { icon: "💳", tag: "Combo Số", title: "Tiết kiệm đến 45%", desc: "Công cụ tự tính giá Combo minh bạch tức thì" }
+            ]
+          },
+          {
+            kicker: "📞 ĐĂNG KÝ DÙNG THỬ LIVE & NHẬN TÀI KHOẢN DEMO NGAY HÔM NAY",
+            title: "Trải nghiệm Trực tiếp tại <span class='hl-cyan'>hesinhthai.techcorp.info.vn</span>",
+            subtitle: "CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP — Đồng hành chuyển đổi số toàn diện.",
+            caption: "Truy cập ngay hesinhthai.techcorp.info.vn để xem trực tiếp 16 hệ thống đang vận hành và đăng ký nhận tài khoản Admin Demo miễn phí!",
+            cards: [
+              { icon: "🚀", tag: "Bước 1", title: "Truy cập Cổng Hệ sinh thái", desc: "hesinhthai.techcorp.info.vn" },
+              { icon: "🖥️", tag: "Bước 2", title: "Xem & Dùng thử 16 App", desc: "Trải nghiệm trực tiếp từng phân hệ Live" },
+              { icon: "📝", tag: "Bước 3", title: "Đăng ký Nhận Demo", desc: "Cấp tài khoản Admin riêng trong 15 phút" },
+              { icon: "📞", tag: "Hotline 24/7", title: "0977.669.623", desc: "Tư vấn & Demo trực tiếp tại đơn vị" }
+            ]
+          }
+        ]
+      },
+
+      education: {
+        name: "Khối Giáo dục & LMS",
+        postCaption: `🎓 GIẢI PHÁP CHUYỂN ĐỔI SỐ TOÀN DIỆN CHO TRƯỜNG HỌC (MẦM NON - K12 - ĐẠI HỌC) & TRUNG TÂM NGOẠI NGỮ - TIN HỌC!
+
+Nhà trường & Trung tâm của bạn vẫn đang mất hàng chục giờ mỗi tháng để điểm danh thủ công, tổng hợp sổ điểm và đối soát tin nhắn chuyển khoản học phí?
+
+Khám phá ngay Bộ Giải pháp Giáo dục Thông minh thuộc Hệ sinh thái TechCorp:
+✅ EduManager Pro K-12 (Mầm non, Tiểu học, THCS, THPT, GDTX): Điểm danh AI khuôn mặt, thực đơn dinh dưỡng, Học bạ số chuẩn Bộ GD&ĐT & Sổ liên lạc điện tử Phụ huynh.
+✅ Gạch nợ Học phí VietQR động tự động 100% chỉ trong 3 giây — xuất biên lai điện tử tức thì!
+✅ Quản lý Trung tâm Ngoại ngữ - Tin học & TC COMPASS Đại học: CRM tuyển sinh đa kênh, xếp lớp tự động, quản trị tín chỉ & KPI giảng viên.
+✅ Nền tảng Thi Online TechCorp LMS: Phòng thi IELTS/TOEIC/MOS chống gian lận bằng AI, cấp chứng chỉ năng lực số kèm QR xác thực.
+
+👉 Dùng thử trực tiếp tại: https://hesinhthai.techcorp.info.vn/?page=products
+📝 Đăng ký nhận Tài khoản Demo cho Trường/Trung tâm: https://hesinhthai.techcorp.info.vn/?page=contact
+📞 Hotline: 0977.669.623
+
+#TechCorp #EduManagerPro #QuanLyTruongHoc #QuanLyTrungTam #ThiOnlineLMS #HocBaSo #ChuyenDoiSoGiaoDuc`,
+        scenes: [
+          {
+            kicker: "🎓 CHUYỂN ĐỔI SỐ GIÁO DỤC TOÀN DIỆN • HỆ SINH THÁI TECHCORP",
+            title: "Kế toán mất 5 ngày dò học phí? <span class='hl-amber'>TechCorp xử lý trong 3 giây!</span>",
+            subtitle: "Bộ 9 nền tảng chuyên sâu từ Mầm non, Tiểu học, THCS, THPT, GDTX đến Đại học & Trung tâm Ngoại ngữ.",
+            caption: "Kế toán nhà trường mất 5 ngày đầu tháng để đối soát học phí? Xem cách Hệ sinh thái Giáo dục TechCorp tự động hóa trong 3 giây!",
+            cards: [
+              { icon: "🧒", tag: "mamnon", title: "Trường Mầm non & AI", desc: "Điểm danh khuôn mặt AI & Thực đơn dinh dưỡng" },
+              { icon: "📘", tag: "tieuhoc • thcs", title: "Tiểu học & THCS Số", desc: "Học bạ điện tử ký số & Sổ điểm thông minh" },
+              { icon: "🎯", tag: "thpt • gdtx", title: "THPT & GDTX Hướng nghiệp", desc: "Xếp thời khóa biểu GDPT 2018 & Tư vấn nghề AI" },
+              { icon: "💳", tag: "VietQR 3s", title: "Gạch nợ Học phí Tự động", desc: "Quét QR 3 giây xuất biên lai điện tử tức thì" }
+            ]
+          },
+          {
+            kicker: "🏫 ĐẠI HỌC, TRUNG TÂM NGOẠI NGỮ - TIN HỌC & KHẢO THÍ AI",
+            title: "Tăng tốc Tuyển sinh & Tổ chức <span class='hl-cyan'>Thi Online Chống Gian lận AI</span>",
+            subtitle: "Đồng bộ từ CRM tuyển sinh, quản lý lớp học đến Phòng thi IELTS/TOEIC/Tin học chuẩn quốc tế.",
+            caption: "Tích hợp CRM tuyển sinh đa kênh cho Trung tâm Ngoại ngữ - Tin học và Phòng thi trực tuyến IELTS, TOEIC chống gian lận bằng AI.",
+            cards: [
+              { icon: "🏛️", tag: "qldt", title: "TC COMPASS Đại học", desc: "Quản trị đào tạo tín chỉ & Đánh giá KPI" },
+              { icon: "🇬🇧", tag: "ttnn", title: "Trung tâm Ngoại ngữ - TH", desc: "CRM chăm sóc Lead học viên & Quản lý ca học" },
+              { icon: "🛡️", tag: "lms", title: "Khảo thí TechCorp LMS", desc: "Giám sát camera AI & Chấm điểm tự động" },
+              { icon: "💻", tag: "learn", title: "Cổng Học tập E-Learning", desc: "Kho bài giảng SCORM/Video & Trợ giảng AI 24/7" }
+            ]
+          },
+          {
+            kicker: "🚀 LIÊN THÔNG HỌC TẬP – CHỨNG CHỈ SỐ – VIỆC LÀM SINH VIÊN",
+            title: "Cấp Chứng chỉ QR & Đẩy Hồ sơ thẳng sang <span class='hl-amber'>Sàn Việc làm JobAI</span>",
+            subtitle: "Mỗi học viên, sinh viên có một Hồ sơ Năng lực Số kết nối trực tiếp với hàng trăm Doanh nghiệp.",
+            caption: "Học viên hoàn thành khóa học được cấp chứng chỉ QR và kết nối thực tập, việc làm trực tiếp với các doanh nghiệp trong hệ sinh thái!",
+            cards: [
+              { icon: "🏅", tag: "QR Verified", title: "Hồ sơ Năng lực Số", desc: "Xác thực điểm thi thật 100% từ LMS" },
+              { icon: "🤖", tag: "jobai", title: "Sàn Tuyển dụng HireMind AI", desc: "1-Click ứng tuyển vào Doanh nghiệp thành viên" },
+              { icon: "🎁", tag: "Học bổng", title: "Tài trợ Chéo Phụ huynh", desc: "Nhận E-Voucher học bổng ngay trên App Trường" },
+              { icon: "📞", tag: "Miễn phí Khởi tạo", title: "Đăng ký Demo Ngay", desc: "hesinhthai.techcorp.info.vn • 0977.669.623" }
+            ]
+          }
+        ]
+      },
+
+      enterprise: {
+        name: "Khối Doanh nghiệp & JobAI",
+        postCaption: `🏢 BỆ PHÓNG SỐ HÓA DOANH NGHIỆP: TECHCORP ERP + BSC-KPI + SÀN TUYỂN DỤNG AI & CHỢ GIAO THƯƠNG B2B!
+
+Làm sao để Doanh nghiệp vừa quản trị vận hành tinh gọn, đánh giá đúng hiệu suất nhân sự (KPI), vừa tuyển được nhân sự chất lượng và mở rộng tệp khách hàng?
+
+Tham gia ngay Hệ sinh thái Doanh nghiệp TechCorp:
+🤖 Sàn Tuyển dụng & Tìm việc TechCorp HireMind AI (jobai.techcorp.info.vn): AI ATS đa ngôn ngữ tự động chấm điểm độ khớp CV – JD và đẩy thẳng hồ sơ ứng viên vào phân hệ HRM chỉ với 1 cú click!
+📊 Quản trị Doanh nghiệp TechCorp ERP & BSC-KPI: Hợp nhất Nhân sự - Tiền lương, CRM, Kế toán, Kho vận và Thẻ điểm cân bằng BSC-KPI từ Ban Giám đốc đến từng vị trí.
+🏨 Giải pháp Chuyên ngành: Quản lý Khách sạn & Resort (TechCorp PMS), Sàn BĐS Hưng Phát Land AI & Showroom Nội thất 3D.
+🤝 Đặc quyền Giao thương B2B (Give-to-Get): Phát hành E-Voucher ưu đãi tới hơn 10.000 Phụ huynh & Học viên trong toàn hệ sinh thái!
+
+👉 Xem chi tiết & Báo giá Combo: https://hesinhthai.techcorp.info.vn/?page=pricing
+📝 Đăng ký nhận Tài khoản Demo: https://hesinhthai.techcorp.info.vn/?page=contact
+📞 Hotline: 0977.669.623
+
+#TechCorp #TechCorpERP #BSCKPI #TuyenDungAI #HireMindAI #QuanTriDoanhNghiep #PMSKhachSan #BatDongSanAI`,
+        scenes: [
+          {
+            kicker: "🏢 BỆ PHÓNG CHUYỂN ĐỔI SỐ DOANH NGHIỆP • HỆ SINH THÁI TECHCORP",
+            title: "Tuyển dụng bằng AI, Quản trị bằng <span class='hl-cyan'>ERP & BSC-KPI</span> trên 1 Nền tảng!",
+            subtitle: "Giải bài toán Nhân sự, Vận hành và Tăng trưởng doanh thu B2B cho Doanh nghiệp SME, Resort & BĐS.",
+            caption: "Tại sao hàng chục Doanh nghiệp và Resort đang chuyển sang Hệ sinh thái TechCorp để đồng bộ từ Tuyển dụng AI đến Quản trị ERP và KPI?",
+            cards: [
+              { icon: "🤖", tag: "jobai.techcorp.info.vn", title: "HireMind AI Tuyển dụng", desc: "AI ATS 7 ngôn ngữ lọc CV & chấm điểm tự động" },
+              { icon: "⚙️", tag: "erp.techcorp.info.vn", title: "TechCorp ERP Tổng thể", desc: "HRM, CRM, Tài chính, Kho vận & Ký số" },
+              { icon: "🎯", tag: "kpi.techcorp.info.vn", title: "Quản trị Mục tiêu BSC-KPI", desc: "Đánh giá hiệu suất tự động gắn liền đãi ngộ" },
+              { icon: "🔄", tag: "1-Click Sync", title: "Liên thông Nhân lực", desc: "Đẩy thẳng ứng viên từ Sàn JobAI về HRM ERP" }
+            ]
+          },
+          {
+            kicker: "🏨 GIẢI PHÁP CHUYÊN NGÀNH: KHÁCH SẠN PMS, BẤT ĐỘNG SẢN AI & NỘI THẤT 3D",
+            title: "May đo Chuyên sâu cho <span class='hl-amber'>Du lịch Biển, Khách sạn, BĐS</span> & Nội thất",
+            subtitle: "Vận hành thực tế 24/7 với giao diện hiện đại, đa ngôn ngữ và trợ lý AI tích hợp sẵn.",
+            caption: "Bộ giải pháp chuyên ngành may đo riêng cho Khách sạn và Resort PMS, Sàn giao dịch Bất động sản tích hợp AI 24/7 và Nội thất 3D.",
+            cards: [
+              { icon: "🏨", tag: "qldh", title: "TechCorp PMS Khách sạn", desc: "Sơ đồ phòng thời gian thực, Booking & POS" },
+              { icon: "🏙️", tag: "bds", title: "Sàn BĐS Hưng Phát Land AI", desc: "Giỏ hàng trực tuyến, CRM môi giới & Định giá AI" },
+              { icon: "🛋️", tag: "noithat", title: "Showroom Nội thất 3D", desc: "Cấu hình không gian 3D & Báo giá thi công" },
+              { icon: "🌐", tag: "techcorp", title: "TechCorp Academy & Web", desc: "Tặng kèm Website chuẩn SEO khi đăng ký Combo" }
+            ]
+          },
+          {
+            kicker: "🤝 ĐẶC QUYỀN GIAO THƯƠNG B2B (GIVE-TO-GET) & GÓI COMBO TIẾT KIỆM 45%",
+            title: "Mua Phần mềm — Tặng thêm <span class='hl-cyan'>Khách hàng & Nhân sự</span> từ Hệ sinh thái!",
+            subtitle: "Quảng bá thương hiệu và phát hành E-Voucher trực tiếp tới hơn 10.000 Phụ huynh & Sinh viên.",
+            caption: "Đăng ký Gói Combo Bệ phóng SME ngay hôm nay tại hesinhthai.techcorp.info.vn để tiết kiệm tới 45% chi phí và nhận tài khoản Demo!",
+            cards: [
+              { icon: "🎁", tag: "10.000+ User", title: "Phát hành E-Voucher Chéo", desc: "Đẩy ưu đãi tới Phụ huynh các Trường học" },
+              { icon: "👨‍🎓", tag: "2.920+ Hồ sơ", title: "Tuyển Thực tập sinh Chuẩn", desc: "Đã xác thực điểm Ngoại ngữ & Tin học trên LMS" },
+              { icon: "💰", tag: "Chỉ từ 1.5Tr/tháng", title: "Gói Bệ phóng SME", desc: "Tặng Website + ERP + KPI + Sàn Tuyển dụng" },
+              { icon: "📞", tag: "Đăng ký Ngay", title: "hesinhthai.techcorp.info.vn", desc: "Hotline tư vấn Demo: 0977.669.623" }
+            ]
+          }
+        ]
+      }
+    };
+
+    // ==================== STATE & TIMING ====================
+    let currentScriptKey = "ecosystem";
+    let currentSceneIndex = 0;
+    let isPlaying = true;
+    let sceneDurationMs = 7000;
+    let elapsedMs = 0;
+    let tickInterval = null;
+    let bgMusicEnabled = true;
+    let voiceoverEnabled = false;
+    let audioCtx = null;
+    let musicTimer = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
+    function renderScene() {
+      const scriptObj = PROMO_SCRIPTS[currentScriptKey];
+      if (!scriptObj) return;
+      const scenes = scriptObj.scenes;
+      currentSceneIndex = ((currentSceneIndex % scenes.length) + scenes.length) % scenes.length;
+      const scene = scenes[currentSceneIndex];
+
+      const bodyEl = document.getElementById("vidSceneBody");
+      const captionEl = document.getElementById("vidCaptionText");
+      const postBox = document.getElementById("postCaptionBox");
+
+      if (postBox && postBox.value !== scriptObj.postCaption) {
+        postBox.value = scriptObj.postCaption;
+      }
+
+      if (bodyEl) {
+        bodyEl.style.animation = "none";
+        void bodyEl.offsetWidth;
+        bodyEl.style.animation = "sceneEnter 0.55s cubic-bezier(0.22, 1, 0.36, 1)";
+
+        bodyEl.innerHTML = `
+          <div class="scene-kicker">${scene.kicker}</div>
+          <h2 class="scene-title">${scene.title}</h2>
+          <p class="scene-subtitle">${scene.subtitle}</p>
+          <div class="scene-cards-grid">
+            ${scene.cards
+              .map(
+                (c, i) => `
+              <div class="scene-feature-card" style="animation-delay:${i * 0.1}s">
+                <div class="f-top">
+                  <span class="f-icon">${c.icon}</span>
+                  <span class="f-tag">${c.tag}</span>
+                </div>
+                <h4>${c.title}</h4>
+                <p>${c.desc}</p>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        `;
+      }
+
+      if (captionEl) {
+        captionEl.textContent = `🎙️ "${scene.caption}"`;
+      }
+
+      renderTimelineButtons();
+      speakSceneCaption(scene.caption);
+    }
+
+    function renderTimelineButtons() {
+      const strip = document.getElementById("sceneTimelineStrip");
+      if (!strip) return;
+      const scenes = PROMO_SCRIPTS[currentScriptKey].scenes;
+      strip.innerHTML = scenes
+        .map(
+          (s, idx) => `
+        <button type="button" class="timeline-step-btn ${idx === currentSceneIndex ? "active" : ""}" onclick="jumpToScene(${idx})">
+          Cảnh ${idx + 1}/${scenes.length}
+        </button>
+      `
+        )
+        .join("");
+    }
+
+    function startTicker() {
+      if (tickInterval) clearInterval(tickInterval);
+      const stepMs = 100;
+      tickInterval = setInterval(() => {
+        if (!isPlaying) return;
+        elapsedMs += stepMs;
+        const pct = Math.min(100, (elapsedMs / sceneDurationMs) * 100);
+        const fill = document.getElementById("vidProgressFill");
+        if (fill) fill.style.width = pct + "%";
+
+        if (elapsedMs >= sceneDurationMs) {
+          elapsedMs = 0;
+          const scenes = PROMO_SCRIPTS[currentScriptKey].scenes;
+          currentSceneIndex = (currentSceneIndex + 1) % scenes.length;
+          renderScene();
+        }
+      }, stepMs);
+    }
+
+    window.selectPromoScript = function (key) {
+      if (!PROMO_SCRIPTS[key]) return;
+      currentScriptKey = key;
+      currentSceneIndex = 0;
+      elapsedMs = 0;
+      document.querySelectorAll("#scriptSelectorGroup .ctrl-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-script") === key);
+      });
+      renderScene();
+    };
+
+    window.setStageRatio = function (ratio) {
+      const stage = document.getElementById("promoVideoStage");
+      if (!stage) return;
+      stage.classList.remove("ratio-9-16", "ratio-16-9", "ratio-1-1");
+      stage.classList.add(`ratio-${ratio}`);
+      document.querySelectorAll("#ratioSelectorGroup .ctrl-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-ratio") === ratio);
+      });
+    };
+
+    window.jumpToScene = function (idx) {
+      currentSceneIndex = idx;
+      elapsedMs = 0;
+      renderScene();
+    };
+
+    window.togglePlayPromo = function () {
+      isPlaying = !isPlaying;
+      const btn = document.getElementById("btnPlayPause");
+      if (btn) {
+        btn.innerHTML = isPlaying ? "⏸ Đang chạy tự động" : "▶ Tiếp tục phát";
+      }
+      if (isPlaying && bgMusicEnabled) {
+        ensureAmbientMusic();
+      }
+    };
+
+    window.toggleCleanMode = function (enable) {
+      document.body.classList.toggle("clean-record-mode", Boolean(enable));
+    };
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        window.toggleCleanMode(false);
+      }
+    });
+
+    // ==================== NHẠC NỀN CÔNG NGHỆ TỰ ĐỘNG (WEB AUDIO SYNTH) ====================
+    function ensureAmbientMusic() {
+      if (!bgMusicEnabled) return;
+      try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        if (musicTimer) return;
+
+        const notes = [261.63, 329.63, 392.0, 523.25, 392.0, 329.63];
+        let noteIdx = 0;
+        musicTimer = setInterval(() => {
+          if (!bgMusicEnabled || !isPlaying || !audioCtx) return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.018, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 0.55);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.55);
+          noteIdx++;
+        }, 620);
+      } catch (_) {}
+    }
+
+    window.toggleBgMusic = function () {
+      bgMusicEnabled = !bgMusicEnabled;
+      const btn = document.getElementById("btnToggleMusic");
+      if (btn) {
+        btn.classList.toggle("active", bgMusicEnabled);
+        btn.textContent = bgMusicEnabled ? "🎵 Nhạc nền: BẬT" : "🔇 Nhạc nền: TẮT";
+      }
+      if (bgMusicEnabled) {
+        ensureAmbientMusic();
+      }
+    };
+
+    // ==================== THUYẾT MINH TIẾNG VIỆT TỰ ĐỘNG (WEB SPEECH TTS) ====================
+    function speakSceneCaption(text) {
+      if (!voiceoverEnabled || !("speechSynthesis" in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "vi-VN";
+        utter.rate = 1.08;
+        const voices = window.speechSynthesis.getVoices();
+        const viVoice = voices.find((v) => v.lang && v.lang.toLowerCase().includes("vi"));
+        if (viVoice) utter.voice = viVoice;
+        window.speechSynthesis.speak(utter);
+      } catch (_) {}
+    }
+
+    window.toggleVoiceover = function () {
+      voiceoverEnabled = !voiceoverEnabled;
+      const btn = document.getElementById("btnToggleVoice");
+      if (btn) {
+        btn.classList.toggle("active", voiceoverEnabled);
+        btn.textContent = voiceoverEnabled ? "🗣️ Đọc thuyết minh: BẬT" : "🗣️ Đọc thuyết minh: TẮT";
+      }
+      if (voiceoverEnabled) {
+        const scene = PROMO_SCRIPTS[currentScriptKey].scenes[currentSceneIndex];
+        if (scene) speakSceneCaption(scene.caption);
+      } else if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+
+    // ==================== COPY BÀI ĐĂNG FACEBOOK / TIKTOK ====================
+    window.copyPostCaption = function () {
+      const box = document.getElementById("postCaptionBox");
+      if (!box) return;
+      box.select();
+      navigator.clipboard.writeText(box.value).then(() => {
+        alert("✅ Đã sao chép toàn bộ Nội dung Bài đăng + Hashtag! Bạn có thể dán ngay lên Facebook hoặc TikTok.");
+      });
+    };
+
+    // ==================== QUAY & TẢI FILE VIDEO (.WEBM) TRỰC TIẾP ====================
+    window.startOrStopRecording = async function () {
+      const btn = document.getElementById("btnRecordVideo");
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: { frameRate: 30 },
+          audio: true
+        });
+
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream, { mimeType: "video/webm;codecs=vp9" });
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) {
+            recordedChunks.push(e.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          stream.getTracks().forEach((t) => t.stop());
+          window.toggleCleanMode(false);
+          if (btn) {
+            btn.classList.remove("recording");
+            btn.innerHTML = "🔴 Quay & Tải Video (.webm)";
+          }
+          const blob = new Blob(recordedChunks, { type: "video/webm" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `TechCorp-Promo-${currentScriptKey}-${Date.now()}.webm`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        };
+
+        // Bật chế độ Clean, quay về Cảnh 1 và bắt đầu ghi
+        window.toggleCleanMode(true);
+        currentSceneIndex = 0;
+        elapsedMs = 0;
+        isPlaying = true;
+        ensureAmbientMusic();
+        renderScene();
+
+        mediaRecorder.start();
+        if (btn) {
+          btn.classList.add("recording");
+          btn.innerHTML = "⏹ Dừng & Lưu File Video";
+        }
+
+        // Tự động dừng sau khi chạy hết 1 vòng kịch bản
+        const totalDuration = PROMO_SCRIPTS[currentScriptKey].scenes.length * sceneDurationMs + 600;
+        setTimeout(() => {
+          if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+          }
+        }, totalDuration);
+      } catch (err) {
+        alert("💡 Để quay video trực tiếp, vui lòng chọn Tab hiện tại khi trình duyệt hỏi quyền Chia sẻ màn hình.");
+      }
+    };
+
+    document.addEventListener("click", () => {
+      if (bgMusicEnabled && !audioCtx) {
+        ensureAmbientMusic();
+      }
+    }, { once: true });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderScene();
+      startTicker();
+    });
+  </script>
+</body>
+</html>
