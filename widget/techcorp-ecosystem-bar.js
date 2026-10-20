@@ -19,7 +19,7 @@
     { id: "learn", name: "TechCorpLearn — E-Learning", badge: "EdTech & LMS", appUrl: "https://learn.techcorp.info.vn" },
     { id: "kpi", name: "Hệ thống Quản trị BSC-KPI", badge: "Enterprise & KPI", appUrl: "https://kpi.techcorp.info.vn" },
     { id: "erp", name: "TechCorp ERP — Quản trị Doanh nghiệp", badge: "Enterprise & KPI", appUrl: "https://erp.techcorp.info.vn" },
-    { id: "jobai", name: "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc", badge: "Enterprise & KPI", appUrl: "https://jobai.techcorp.info.vn" },
+    { id: "jobai", name: "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc", badge: "Enterprise & KPI", appUrl: "https://jobai.techcorp.info.vn/careers.html" },
     { id: "techcorp", name: "TechCorp Academy & Giải pháp Số", badge: "Enterprise & KPI", appUrl: "https://techcorp.info.vn" },
     { id: "qldh", name: "TechCorp PMS — Quản lý Khách sạn", badge: "Chuyên ngành", appUrl: "https://qldh.techcorp.info.vn" },
     { id: "bds", name: "Hưng Phát Land — Sàn BĐS & AI", badge: "Chuyên ngành", appUrl: "https://bds.techcorp.info.vn" },
@@ -286,7 +286,7 @@
   const publicLinkHtml =
     isAdminPage || isLoginPage
       ? `<a href="${basePrefix}index.html" class="tc-eco-link">🌍 Về Trang Public</a>`
-      : `<a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="tc-eco-link" style="color:#38bdf8;font-weight:700;">🤖 Sàn Việc làm JobAI ↗</a>`;
+      : `<a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="tc-eco-link" style="color:#38bdf8;font-weight:700;">🤖 Sàn Việc làm JobAI ↗</a>`;
 
   function buildRightAuthHtml() {
     const savedSession = getSavedSsoSession();

@@ -169,7 +169,7 @@ const STATE = {
       id: "jobai",
       name: "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc AI ATS",
       badge: "Enterprise & KPI",
-      appUrl: "https://jobai.techcorp.info.vn",
+      appUrl: "https://jobai.techcorp.info.vn/careers.html",
       webhookUrl: "https://jobai.techcorp.info.vn/api/webhooks/techcorp-hub",
       desc: "Sàn Tuyển dụng & Tìm việc thông minh tích hợp AI ATS đa ngôn ngữ: Chấm điểm CV tự động, gợi ý việc làm phù hợp năng lực số và kết nối trực tiếp Doanh nghiệp với Trường ĐH & Trung tâm đào tạo.",
       apiKeyMasked: "tc_live_joba...2b16",
@@ -205,7 +205,7 @@ const STATE = {
       imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
       imageCaption: "TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc AI • jobai.techcorp.info.vn",
       primaryCtaText: "🤖 Truy cập Sàn Việc làm JobAI ↗",
-      primaryCtaLink: "https://jobai.techcorp.info.vn",
+      primaryCtaLink: "https://jobai.techcorp.info.vn/careers.html",
       secondaryCtaText: "🏅 Xem Hồ sơ Nhân lực Xác thực",
       secondaryCtaLink: "#sec-talent-lms",
       accentGradient: "linear-gradient(135deg, #003580 0%, #026aa7 55%, #00a8cc 100%)",
@@ -1500,7 +1500,7 @@ function renderPublicHeroSlider() {
               ${escapeHtml(slide.primaryCtaText || "🚀 Khám phá 6 Nhóm Sản phẩm")}
             </a>
             <a
-              href="https://jobai.techcorp.info.vn"
+              href="https://jobai.techcorp.info.vn/careers.html"
               target="_blank"
               rel="noopener"
               class="btn"
@@ -3527,7 +3527,7 @@ function renderTalents() {
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid rgba(148,163,184,0.14);">
           <span style="font-size:12px;color:#059669;">● ${escapeHtml(t.status)} ${t.syncedToErpCount ? `(Đã đồng bộ ${t.syncedToErpCount} DN)` : ""}</span>
-          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+          <a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
             🤖 Xem Hồ sơ trên JobAI ↗
           </a>
         </div>
@@ -4948,7 +4948,7 @@ function renderMemberWorkspace() {
               <button class="btn btn-primary btn-sm" onclick="simulateCrossSync('erp-job')">
                 📡 Phát Tin Tuyển dụng từ ERP sang Trường ĐH & Trung tâm
               </button>
-              <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-emerald btn-sm" style="text-decoration:none;">
+              <a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="btn btn-emerald btn-sm" style="text-decoration:none;">
                 🤖 Mở Sàn Việc làm JobAI ↗
               </a>
             </div>
@@ -5319,7 +5319,7 @@ function renderMemberWorkspace() {
               Hệ thống AI Matching tự động gợi ý các vị trí phù hợp với chứng chỉ TOEIC 750 & Quản trị ERP của bạn tại 30 Doanh nghiệp thành viên TechCorp.
             </p>
           </div>
-          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+          <a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
             🤖 Mở Sàn Việc làm JobAI ↗
           </a>
         </div>
@@ -6151,6 +6151,24 @@ function sanitizeStateTerminology() {
       authorName: normalizeTermText(a.authorName),
       authorOrg: normalizeTermText(a.authorOrg)
     }));
+  }
+
+  if (Array.isArray(STATE.apps)) {
+    STATE.apps = STATE.apps.map((app) => {
+      if (app.id === "jobai" && (!app.appUrl || app.appUrl === "https://jobai.techcorp.info.vn" || app.appUrl === "https://jobai.techcorp.info.vn/")) {
+        return { ...app, appUrl: "https://jobai.techcorp.info.vn/careers.html" };
+      }
+      return app;
+    });
+  }
+
+  if (Array.isArray(STATE.heroSliders)) {
+    STATE.heroSliders = STATE.heroSliders.map((s) => {
+      if (s.primaryCtaLink === "https://jobai.techcorp.info.vn" || s.primaryCtaLink === "https://jobai.techcorp.info.vn/") {
+        return { ...s, primaryCtaLink: "https://jobai.techcorp.info.vn/careers.html" };
+      }
+      return s;
+    });
   }
 
   if (STATE.rbacMatrix && STATE.rbacMatrix.super_admin) {

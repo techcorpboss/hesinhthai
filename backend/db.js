@@ -329,7 +329,7 @@ const INITIAL_HERO_SLIDERS = [
     imageUrl:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
     ctaPrimaryText: "💼 Truy cập Sàn Tuyển dụng JobAI ↗",
-    ctaPrimaryUrl: "https://jobai.techcorp.info.vn",
+    ctaPrimaryUrl: "https://jobai.techcorp.info.vn/careers.html",
     ctaSecondaryText: "👨‍🎓 Xem Sàn Nhân lực Xác thực",
     ctaSecondaryUrl: "#sec-talent-b2b",
     metric1Value: "AI ATS 7 Ngôn ngữ",
@@ -669,7 +669,7 @@ const INITIAL_SEED = {
       badge: "Enterprise & KPI",
       category: "enterprise_erp",
       color: "#0d9488",
-      appUrl: "https://jobai.techcorp.info.vn",
+      appUrl: "https://jobai.techcorp.info.vn/careers.html",
       webhookUrl: "https://jobai.techcorp.info.vn/api/webhooks/techcorp-hub",
       desc: "Sàn Tuyển dụng & Tìm việc thông minh tích hợp AI ATS đa ngôn ngữ: Phân tích CV tự động, gợi ý việc làm chuẩn xác & kết nối Sinh viên - Doanh nghiệp.",
       apiKey: "tc_live_jobai_9a8b7c6d5e4f3a2b16",
@@ -1268,6 +1268,22 @@ class HubDatabase {
             this.state.rbacMatrix.super_admin.roleName = INITIAL_SEED.rbacMatrix.super_admin.roleName;
           }
           needsSave = true;
+        }
+        if (Array.isArray(this.state.apps)) {
+          this.state.apps.forEach((a) => {
+            if (a.id === "jobai" && a.appUrl !== "https://jobai.techcorp.info.vn/careers.html") {
+              a.appUrl = "https://jobai.techcorp.info.vn/careers.html";
+              needsSave = true;
+            }
+          });
+        }
+        if (Array.isArray(this.state.heroSliders)) {
+          this.state.heroSliders.forEach((s) => {
+            if (s.ctaPrimaryUrl === "https://jobai.techcorp.info.vn") {
+              s.ctaPrimaryUrl = "https://jobai.techcorp.info.vn/careers.html";
+              needsSave = true;
+            }
+          });
         }
         if (needsSave) this.save();
       } catch (e) {
