@@ -3,7 +3,7 @@
     "domain": "hesinhthai.techcorp.info.vn",
     "version": "1.0.0",
     "region": "Nha Trang - Khánh Hòa",
-    "updatedAt": "2026-10-20T04:15:40.474Z"
+    "updatedAt": "2026-10-20T04:54:27.406Z"
   },
   "apps": [
     {
@@ -135,6 +135,14 @@
       "org": "Đại học Nha Trang • Hồ sơ số #TC-KH-8821",
       "roleBadge": "Cộng đồng Học viên / SV",
       "defaultAppId": "lms-exam"
+    },
+    "super-admin": {
+      "id": "super-admin",
+      "userId": "USR-ADMIN-00",
+      "name": "Quản trị viên Hệ sinh thái TechCorp",
+      "org": "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      "roleBadge": "🛡️ Super Admin TechCorp",
+      "defaultAppId": "biz-erp"
     }
   },
   "talents": [
@@ -381,7 +389,9 @@
           "text": "Bên mình có đội ngũ giáo viên bản xứ Hàn Quốc chuyên đào tạo cho các resort Bãi Dài - Cam Ranh và Trần Phú. Rất mong được kết nối hợp tác!",
           "time": "8 phút trước"
         }
-      ]
+      ],
+      "status": "approved",
+      "locked": false
     },
     {
       "id": "POST-102",
@@ -409,7 +419,9 @@
           "text": "Chương trình rất thiết thực! Trường Sao Biển đăng ký 120 suất kiểm tra tiếng Anh năng khiếu cuối tuần này cho các bé khối Lá và Tiểu học nhé.",
           "time": "1 giờ trước"
         }
-      ]
+      ],
+      "status": "approved",
+      "locked": false
     },
     {
       "id": "POST-1792469740466",
@@ -428,7 +440,9 @@
       "createdAt": "Hôm nay, 11:15",
       "likes": 1,
       "views": 1,
-      "comments": []
+      "comments": [],
+      "status": "approved",
+      "locked": false
     },
     {
       "id": "POST-103",
@@ -447,7 +461,9 @@
       "createdAt": "5 giờ trước",
       "likes": 27,
       "views": 195,
-      "comments": []
+      "comments": [],
+      "status": "approved",
+      "locked": false
     },
     {
       "id": "POST-104",
@@ -466,7 +482,161 @@
       "createdAt": "1 ngày trước",
       "likes": 41,
       "views": 310,
-      "comments": []
+      "comments": [],
+      "status": "approved",
+      "locked": false
+    }
+  ],
+  "users": [
+    {
+      "id": "USR-ADMIN-00",
+      "personaKey": "super-admin",
+      "fullName": "Quản trị viên Hệ sinh thái TechCorp",
+      "email": "admin@techcorp.info.vn",
+      "phone": "0905.111.999",
+      "org": "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      "role": "super_admin",
+      "roleBadge": "🛡️ Super Admin TechCorp",
+      "defaultAppId": "biz-erp",
+      "assignedApps": [
+        "edu-school",
+        "edu-center",
+        "lms-exam",
+        "biz-web",
+        "biz-erp"
+      ],
+      "status": "active",
+      "lastLogin": "Vừa xong",
+      "ipAddress": "103.170.122.138",
+      "createdAt": "2026-10-01T07:00:00.000Z"
+    },
+    {
+      "id": "USR-NT-001",
+      "personaKey": "ceo-sme",
+      "fullName": "Nguyễn Hải Đăng (CEO Resort & Travel)",
+      "email": "ceo@nhatrangbayresort.vn",
+      "phone": "0914.222.333",
+      "org": "Nha Trang Bay Resort & Travel",
+      "role": "ceo_sme",
+      "roleBadge": "Khối Doanh nghiệp SME",
+      "defaultAppId": "biz-erp",
+      "assignedApps": [
+        "biz-erp",
+        "biz-web",
+        "lms-exam"
+      ],
+      "status": "active",
+      "lastLogin": "10 phút trước",
+      "ipAddress": "113.160.214.88",
+      "createdAt": "2026-10-02T08:30:00.000Z"
+    },
+    {
+      "id": "USR-NT-002",
+      "personaKey": "center-dir",
+      "fullName": "Trần Thanh Tâm (Giám đốc Trung tâm NN-TH)",
+      "email": "director@oceanenglish.edu.vn",
+      "phone": "0988.444.555",
+      "org": "Ocean English & IT Center Nha Trang",
+      "role": "center_director",
+      "roleBadge": "Khối Đào tạo NN-TH",
+      "defaultAppId": "edu-center",
+      "assignedApps": [
+        "edu-center",
+        "lms-exam",
+        "biz-web"
+      ],
+      "status": "active",
+      "lastLogin": "25 phút trước",
+      "ipAddress": "14.161.45.120",
+      "createdAt": "2026-10-03T09:15:00.000Z"
+    },
+    {
+      "id": "USR-NT-003",
+      "personaKey": "school-principal",
+      "fullName": "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
+      "email": "bgh@saobienschool.edu.vn",
+      "phone": "0903.666.777",
+      "org": "Hệ thống Giáo dục Sao Biển Nha Trang",
+      "role": "school_principal",
+      "roleBadge": "Khối Cơ sở Giáo dục",
+      "defaultAppId": "edu-school",
+      "assignedApps": [
+        "edu-school",
+        "lms-exam"
+      ],
+      "status": "active",
+      "lastLogin": "1 giờ trước",
+      "ipAddress": "27.68.112.41",
+      "createdAt": "2026-10-04T10:00:00.000Z"
+    },
+    {
+      "id": "USR-NT-004",
+      "personaKey": "student-user",
+      "fullName": "Nguyễn Minh Khôi (Sinh viên Năm cuối)",
+      "email": "khoi.nm.64cntt@ntu.edu.vn",
+      "phone": "0399.888.111",
+      "org": "Đại học Nha Trang • Hồ sơ số #TC-KH-8821",
+      "role": "student_parent",
+      "roleBadge": "Cộng đồng Học viên / SV",
+      "defaultAppId": "lms-exam",
+      "assignedApps": [
+        "lms-exam",
+        "edu-school"
+      ],
+      "status": "active",
+      "lastLogin": "2 giờ trước",
+      "ipAddress": "171.244.19.72",
+      "createdAt": "2026-10-05T14:20:00.000Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "AUD-10004",
+      "timestamp": "2026-10-20 11:35:10",
+      "actorId": "USR-ADMIN-00",
+      "actorName": "Quản trị viên Hệ sinh thái TechCorp",
+      "actorOrg": "TechCorp Headquarters",
+      "ipAddress": "103.170.122.138",
+      "action": "FORUM_MODERATE_APPROVE",
+      "target": "Bài viết POST-102 (Ocean English Center)",
+      "severity": "INFO",
+      "details": "Thẩm định đạt chuẩn Give-to-Get (Có ưu đãi học bổng 40% cho thành viên) và cho phép hiển thị công khai."
+    },
+    {
+      "id": "AUD-10003",
+      "timestamp": "2026-10-20 11:20:05",
+      "actorId": "USR-ADMIN-00",
+      "actorName": "Quản trị viên Hệ sinh thái TechCorp",
+      "actorOrg": "TechCorp Headquarters",
+      "ipAddress": "103.170.122.138",
+      "action": "FORUM_LOCK_TOPIC",
+      "target": "Bài viết POST-104 (Quy trình thu học phí QR)",
+      "severity": "WARNING",
+      "details": "Đã khóa bình luận (Lock) chủ đề hướng dẫn sau khi chốt tài liệu chuẩn để tránh trôi bài."
+    },
+    {
+      "id": "AUD-10002",
+      "timestamp": "2026-10-20 10:50:42",
+      "actorId": "USR-NT-001",
+      "actorName": "Nguyễn Hải Đăng (CEO Resort & Travel)",
+      "actorOrg": "Nha Trang Bay Resort & Travel",
+      "ipAddress": "113.160.214.88",
+      "action": "HRM_CANDIDATE_IMPORT",
+      "target": "Ứng viên NT-01 (Trần Ngọc Bảo Trâm - IELTS 7.0)",
+      "severity": "INFO",
+      "details": "Đồng bộ 1-Click Hồ sơ Năng lực Số từ Nền tảng Thi Online vào phân hệ HRM trên ERP."
+    },
+    {
+      "id": "AUD-10001",
+      "timestamp": "2026-10-20 09:15:00",
+      "actorId": "USR-ADMIN-00",
+      "actorName": "Quản trị viên Hệ sinh thái TechCorp",
+      "actorOrg": "TechCorp Headquarters",
+      "ipAddress": "103.170.122.138",
+      "action": "SYSTEM_BOOTSTRAP",
+      "target": "Cơ sở dữ liệu Tập trung (SQLite + JSON)",
+      "severity": "INFO",
+      "details": "Khởi tạo 5 ứng dụng lõi và kích hoạt dịch vụ xác thực tập trung TechCorp ID (SSO JWT)."
     }
   ]
 }

@@ -1,16 +1,17 @@
 /**
- * TechCorp Ecosystem Hub - Frontend Application Connected to Backend API, SSO & Verified Forum
- * Target Domain: https://hesinhthai.techcorp.info.vn
- * Hỗ trợ:
- *   1. Kết nối trực tiếp Backend API & SQLite/JSON DB (/api/v1/*)
- *   2. Tự động hoạt động đầy đủ dữ liệu (Fallback + LocalStorage) ngay cả khi chạy chế độ Static Hosting trên aaPanel/Nginx
+ * TechCorp Ecosystem Hub (v2.0) - Frontend Application
+ * Tích hợp đầy đủ:
+ *   1. Quản trị Ứng dụng Hệ sinh thái (Thêm mới, Xem, Sửa, Cấp lại Key, Khóa, Xoá)
+ *   2. Quản trị Diễn đàn (Thẩm định Duyệt/Từ chối, Tạo mới, Xem/Sửa, Xoá, Clock/Lock bình luận)
+ *   3. Quản lý Tài khoản Người dùng TechCorp ID (Xem, Tạo mới, Sửa, Phân quyền, Khóa, Xoá)
+ *   4. Truy vết Người dùng & Nhật ký Kiểm toán (Audit Logs + Xuất CSV)
  */
 
 const STATE = {
   apiOnline: false,
   ssoToken:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2hlc2luaHRoYWkudGVjaGNvcnAuaW5mby52biIsInN1YiI6IlVTUi1OVC0wMDEiLCJwZXJzb25hS2V5IjoiY2VvLXNtZSIsImVjb3N5c3RlbVJlZ2lvbiI6Iktow6FuaCBIw7JhIn0.techcorp_verified_signature",
-  currentPersona: "ceo-sme",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2hlc2luaHRoYWkudGVjaGNvcnAuaW5mby52biIsInN1YiI6IlVTUi1BRE1JTi0wMCIsInBlcnNvbmFLZXkiOiJzdXBlci1hZG1pbiIsImVjb3N5c3RlbVJlZ2lvbiI6Iktow6FuaCBIw7JhIn0.techcorp_verified_signature",
+  currentPersona: "super-admin",
   selectedForumCategory: "all",
   apps: [
     {
@@ -18,59 +19,161 @@ const STATE = {
       name: "QL Trường học (Mầm non - ĐH)",
       badge: "EdTech",
       appUrl: "https://truonghoc.techcorp.info.vn",
+      webhookUrl: "https://truonghoc.techcorp.info.vn/api/webhooks/techcorp-hub",
       desc: "Học vụ, Sổ liên lạc điện tử, Thu học phí QR",
-      apiKeyMasked: "tc_live_edus...2b1c"
+      apiKeyMasked: "tc_live_edus...2b1c",
+      status: "active"
     },
     {
       id: "edu-center",
       name: "QL Trung tâm Ngoại ngữ - Tin học",
       badge: "EdTech",
       appUrl: "https://trungtam.techcorp.info.vn",
+      webhookUrl: "https://trungtam.techcorp.info.vn/api/webhooks/techcorp-hub",
       desc: "CRM Tuyển sinh, Lớp học, Học viên, Học phí",
-      apiKeyMasked: "tc_live_educ...8877"
+      apiKeyMasked: "tc_live_educ...8877",
+      status: "active"
     },
     {
       id: "lms-exam",
       name: "Học & Thi Online (LMS)",
       badge: "Core Funnel",
       appUrl: "https://thionline.techcorp.info.vn",
+      webhookUrl: "https://thionline.techcorp.info.vn/api/webhooks/techcorp-hub",
       desc: "Phòng thi trực tuyến, Cấp chứng chỉ số QR, Ngân hàng đề",
-      apiKeyMasked: "tc_live_lmse...ccdd"
+      apiKeyMasked: "tc_live_lmse...ccdd",
+      status: "active"
     },
     {
       id: "biz-web",
       name: "Website Doanh nghiệp Số",
       badge: "BizTech",
       appUrl: "https://web.techcorp.info.vn",
+      webhookUrl: "https://web.techcorp.info.vn/api/webhooks/techcorp-hub",
       desc: "Thương hiệu số, SEO đa ngôn ngữ, Cổng tuyển dụng nhúng",
-      apiKeyMasked: "tc_live_bizw...2211"
+      apiKeyMasked: "tc_live_bizw...2211",
+      status: "active"
     },
     {
       id: "biz-erp",
       name: "Quản trị Doanh nghiệp (ERP)",
       badge: "BizTech",
       appUrl: "https://erp.techcorp.info.vn",
+      webhookUrl: "https://erp.techcorp.info.vn/api/webhooks/techcorp-hub",
       desc: "HRM Nhân sự, CRM Khách hàng, Tài chính, Kho vận, Công việc",
-      apiKeyMasked: "tc_live_bize...8899"
+      apiKeyMasked: "tc_live_bize...8899",
+      status: "active"
+    }
+  ],
+  users: [
+    {
+      id: "USR-ADMIN-00",
+      personaKey: "super-admin",
+      fullName: "Quản trị viên Hệ sinh thái TechCorp",
+      email: "admin@techcorp.info.vn",
+      phone: "0905.111.999",
+      org: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      role: "super_admin",
+      roleBadge: "🛡️ Super Admin TechCorp",
+      defaultAppId: "biz-erp",
+      assignedApps: ["edu-school", "edu-center", "lms-exam", "biz-web", "biz-erp"],
+      status: "active",
+      lastLogin: "Vừa xong",
+      ipAddress: "103.170.122.138"
+    },
+    {
+      id: "USR-NT-001",
+      personaKey: "ceo-sme",
+      fullName: "Nguyễn Hải Đăng (CEO Resort & Travel)",
+      email: "ceo@nhatrangbayresort.vn",
+      phone: "0914.222.333",
+      org: "Nha Trang Bay Resort & Travel",
+      role: "ceo_sme",
+      roleBadge: "Khối Doanh nghiệp SME",
+      defaultAppId: "biz-erp",
+      assignedApps: ["biz-erp", "biz-web", "lms-exam"],
+      status: "active",
+      lastLogin: "10 phút trước",
+      ipAddress: "113.160.214.88"
+    },
+    {
+      id: "USR-NT-002",
+      personaKey: "center-dir",
+      fullName: "Trần Thanh Tâm (Giám đốc Trung tâm NN-TH)",
+      email: "director@oceanenglish.edu.vn",
+      phone: "0988.444.555",
+      org: "Ocean English & IT Center Nha Trang",
+      role: "center_director",
+      roleBadge: "Khối Đào tạo NN-TH",
+      defaultAppId: "edu-center",
+      assignedApps: ["edu-center", "lms-exam", "biz-web"],
+      status: "active",
+      lastLogin: "25 phút trước",
+      ipAddress: "14.161.45.120"
+    },
+    {
+      id: "USR-NT-003",
+      personaKey: "school-principal",
+      fullName: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
+      email: "bgh@saobienschool.edu.vn",
+      phone: "0903.666.777",
+      org: "Hệ thống Giáo dục Sao Biển Nha Trang",
+      role: "school_principal",
+      roleBadge: "Khối Cơ sở Giáo dục",
+      defaultAppId: "edu-school",
+      assignedApps: ["edu-school", "lms-exam"],
+      status: "active",
+      lastLogin: "1 giờ trước",
+      ipAddress: "27.68.112.41"
+    },
+    {
+      id: "USR-NT-004",
+      personaKey: "student-user",
+      fullName: "Nguyễn Minh Khôi (Sinh viên Năm cuối)",
+      email: "khoi.nm.64cntt@ntu.edu.vn",
+      phone: "0399.888.111",
+      org: "Đại học Nha Trang • Hồ sơ số #TC-KH-8821",
+      role: "student_parent",
+      roleBadge: "Cộng đồng Học viên / SV",
+      defaultAppId: "lms-exam",
+      assignedApps: ["lms-exam", "edu-school"],
+      status: "active",
+      lastLogin: "2 giờ trước",
+      ipAddress: "171.244.19.72"
     }
   ],
   personas: {
+    "super-admin": {
+      id: "super-admin",
+      userId: "USR-ADMIN-00",
+      name: "Quản trị viên Hệ sinh thái TechCorp",
+      org: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      roleBadge: "🛡️ Super Admin TechCorp"
+    },
     "ceo-sme": {
-      name: "CEO Khách sạn & Lữ hành Biển Nha Trang",
+      id: "ceo-sme",
+      userId: "USR-NT-001",
+      name: "Nguyễn Hải Đăng (CEO Resort & Travel)",
       org: "Nha Trang Bay Resort & Travel (Đang dùng: ERP + Website)",
       roleBadge: "Khối Doanh nghiệp SME"
     },
     "center-dir": {
-      name: "Giám đốc Trung tâm Anh ngữ & Tin học Quốc tế",
+      id: "center-dir",
+      userId: "USR-NT-002",
+      name: "Trần Thanh Tâm (Giám đốc Trung tâm NN-TH)",
       org: "Ocean English & IT Center Nha Trang (Đang dùng: QL Trung tâm + Thi Online)",
       roleBadge: "Khối Đào tạo NN-TH"
     },
     "school-principal": {
-      name: "Ban Giám hiệu Trường CĐ / Mầm non Nha Trang",
+      id: "school-principal",
+      userId: "USR-NT-003",
+      name: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
       org: "Hệ thống Giáo dục Sao Biển Nha Trang (Đang dùng: QL Trường học + LMS)",
       roleBadge: "Khối Cơ sở Giáo dục"
     },
     "student-user": {
+      id: "student-user",
+      userId: "USR-NT-004",
       name: "Nguyễn Minh Khôi (Sinh viên Năm cuối)",
       org: "Đại học Nha Trang • Hồ sơ số #TC-KH-8821",
       roleBadge: "Cộng đồng Học viên / SV"
@@ -81,13 +184,15 @@ const STATE = {
       id: "POST-101",
       category: "rfq",
       categoryLabel: "📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ)",
+      status: "approved",
+      locked: false,
       pinned: true,
       title: "[Cần tìm đối tác tại Nha Trang] Tìm Trung tâm đào tạo Tiếng Anh & Tiếng Hàn giao tiếp cho 25 nhân sự Lễ tân - Nhà hàng",
       content:
         "Chào các anh/chị trong Cộng đồng TechCorp Khánh Hòa. Chuẩn bị đón đoàn khách quốc tế mùa cao điểm cuối năm, Nha Trang Bay Resort cần tìm 01 Trung tâm Ngoại ngữ uy tín trong hệ sinh thái để đào tạo cấp tốc 8 tuần (học kết hợp trên LMS Thi Online của TechCorp và thực hành tại khách sạn). Ưu tiên các trung tâm đang dùng hệ thống TechCorp để đồng bộ điểm chuyên cần trực tiếp về phân hệ HRM của chúng tôi.",
       memberDeal: "Ký hợp đồng đào tạo dài hạn 12 tháng + Tài trợ địa điểm tổ chức sự kiện cho Trung tâm tại Resort.",
       author: {
-        name: "CEO Khách sạn & Lữ hành Biển Nha Trang",
+        name: "Nguyễn Hải Đăng (CEO Resort & Travel)",
         org: "Nha Trang Bay Resort & Travel",
         roleBadge: "Khối Doanh nghiệp SME",
         verifiedApp: "Đang dùng: ERP + Website TechCorp"
@@ -98,7 +203,7 @@ const STATE = {
       comments: [
         {
           id: "CMT-1",
-          authorName: "Giám đốc Trung tâm Anh ngữ & Tin học Quốc tế",
+          authorName: "Trần Thanh Tâm (Giám đốc Trung tâm NN-TH)",
           authorOrg: "Ocean English & IT Center Nha Trang",
           roleBadge: "Khối Đào tạo NN-TH",
           text: "Chào anh! Bên em có sẵn khung chương trình Tiếng Anh & Hàn chuyên ngành Hospitality trên LMS TechCorp, giảm ngay 25% học phí cho doanh nghiệp cùng hệ sinh thái. Em vừa gửi báo giá qua Hub nhé ạ!",
@@ -118,13 +223,15 @@ const STATE = {
       id: "POST-102",
       category: "spotlight",
       categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+      status: "approved",
+      locked: false,
       pinned: true,
       title: "[Tài trợ Học bổng & Kiểm tra Năng lực] Tặng 500 suất Thi thử IELTS/TOEIC & Tin học Quốc tế + Học bổng 40% cho con em Doanh nghiệp & Trường học",
       content:
         "Nhằm đồng hành cùng các Trường Mầm non - Phổ thông và gia đình cán bộ nhân viên các Doanh nghiệp SME tại Nha Trang, Ocean English & IT Center mở cổng kiểm tra năng lực Ngoại ngữ - Tin học định kỳ hoàn toàn miễn phí trên nền tảng Thi Online TechCorp. Toàn bộ kết quả được trả tự động về Sổ liên lạc điện tử của Phụ huynh.",
       memberDeal: "🎁 Đặc quyền bắt buộc (Give-to-Get): Giảm 40% học phí khóa đầu tiên + Tặng tài khoản luyện đề Online 6 tháng cho toàn bộ thành viên có TechCorp ID.",
       author: {
-        name: "Giám đốc Trung tâm Anh ngữ & Tin học Quốc tế",
+        name: "Trần Thanh Tâm (Giám đốc Trung tâm NN-TH)",
         org: "Ocean English & IT Center Nha Trang",
         roleBadge: "Khối Đào tạo NN-TH",
         verifiedApp: "Đang dùng: QL Trung tâm + Thi Online"
@@ -135,7 +242,7 @@ const STATE = {
       comments: [
         {
           id: "CMT-3",
-          authorName: "Ban Giám hiệu Trường CĐ / Mầm non Nha Trang",
+          authorName: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
           authorOrg: "Hệ thống Giáo dục Sao Biển Nha Trang",
           roleBadge: "Khối Cơ sở Giáo dục",
           text: "Chương trình rất thiết thực! Trường Sao Biển đăng ký 120 suất kiểm tra tiếng Anh năng khiếu cuối tuần này cho các bé khối Lá và Tiểu học nhé.",
@@ -147,33 +254,37 @@ const STATE = {
       id: "POST-103",
       category: "comarketing",
       categoryLabel: "🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện",
+      status: "pending",
+      locked: false,
       pinned: false,
-      title: "Mời 05 Doanh nghiệp Du lịch / F&B / Nha khoa tại Nha Trang đồng hành Ngày hội Gia đình & Tuyển sinh Mùa Hè (Quy mô 800 Phụ huynh)",
+      title: "[Chờ thẩm định] Mời 05 Doanh nghiệp Du lịch / F&B / Nha khoa tại Nha Trang đồng hành Ngày hội Gia đình & Tuyển sinh Mùa Hè (Quy mô 800 Phụ huynh)",
       content:
         "Tháng tới Hệ thống Giáo dục Sao Biển (KĐT Mỹ Gia & Vĩnh Điềm Trung) tổ chức Ngày hội Trải nghiệm Công nghệ & Kỹ năng cho 800 phụ huynh học sinh. Nhà trường dành tặng 05 gian hàng trưng bày miễn phí và tích hợp phát E-Voucher trên App Sổ liên lạc Điện tử cho các doanh nghiệp cùng thuộc Hệ sinh thái TechCorp.",
       memberDeal: "Miễn phí 100% gian hàng + Đẩy thông báo thương hiệu tài trợ tới 1.200 Phụ huynh trên App Trường.",
       author: {
-        name: "Ban Giám hiệu Trường CĐ / Mầm non Nha Trang",
+        name: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
         org: "Hệ thống Giáo dục Sao Biển Nha Trang",
         roleBadge: "Khối Cơ sở Giáo dục",
         verifiedApp: "Đang dùng: QL Trường học + LMS"
       },
-      createdAt: "5 giờ trước",
-      likes: 27,
-      views: 195,
+      createdAt: "4 giờ trước",
+      likes: 12,
+      views: 95,
       comments: []
     },
     {
       id: "POST-104",
       category: "knowledge",
       categoryLabel: "💡 Góc Chia sẻ Quản trị, HR & Chuyển đổi số",
+      status: "approved",
+      locked: true,
       pinned: false,
-      title: "Kinh nghiệm tự động hóa 95% quy trình thu học phí QR & chấm công giáo viên tại Nha Trang bằng hệ sinh thái TechCorp",
+      title: "[Chủ đề đã chốt quy trình] Kinh nghiệm tự động hóa 95% quy trình thu học phí QR & chấm công giáo viên tại Nha Trang bằng hệ sinh thái TechCorp",
       content:
         "Trước đây mỗi đầu tháng bộ phận kế toán của trường mất gần 5 ngày để đối soát tin nhắn chuyển khoản học phí của phụ huynh. Từ khi bật tính năng gạch nợ tự động qua QR động trên phần mềm Quản lý Trường học và đồng bộ sang phân hệ Tài chính ERP của TechCorp, phụ huynh quét mã 3 giây là biên lai điện tử xuất tự động, kế toán giảm được 80% khối lượng việc thủ công.",
       memberDeal: "Chia sẻ miễn phí bộ quy trình & biểu mẫu thiết lập thu học phí không tiền mặt cho các trường tại Khánh Hòa.",
       author: {
-        name: "Ban Giám hiệu Trường CĐ / Mầm non Nha Trang",
+        name: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
         org: "Hệ thống Giáo dục Sao Biển Nha Trang",
         roleBadge: "Khối Cơ sở Giáo dục",
         verifiedApp: "Đang dùng: QL Trường học + LMS"
@@ -182,6 +293,56 @@ const STATE = {
       likes: 41,
       views: 310,
       comments: []
+    }
+  ],
+  auditLogs: [
+    {
+      id: "AUD-10004",
+      timestamp: "2026-10-20 11:35:10",
+      actorId: "USR-ADMIN-00",
+      actorName: "Quản trị viên Hệ sinh thái TechCorp",
+      actorOrg: "TechCorp Headquarters",
+      ipAddress: "103.170.122.138",
+      action: "FORUM_MODERATE_APPROVE",
+      target: "Bài viết POST-102 (Ocean English Center)",
+      severity: "INFO",
+      details: "Thẩm định đạt chuẩn Give-to-Get (Có ưu đãi học bổng 40% cho thành viên) và cho phép hiển thị công khai."
+    },
+    {
+      id: "AUD-10003",
+      timestamp: "2026-10-20 11:20:05",
+      actorId: "USR-ADMIN-00",
+      actorName: "Quản trị viên Hệ sinh thái TechCorp",
+      actorOrg: "TechCorp Headquarters",
+      ipAddress: "103.170.122.138",
+      action: "FORUM_LOCK_TOPIC",
+      target: "Bài viết POST-104 (Quy trình thu học phí QR)",
+      severity: "WARNING",
+      details: "Đã khóa bình luận (Clock/Lock) chủ đề hướng dẫn sau khi chốt tài liệu chuẩn."
+    },
+    {
+      id: "AUD-10002",
+      timestamp: "2026-10-20 10:50:42",
+      actorId: "USR-NT-001",
+      actorName: "Nguyễn Hải Đăng (CEO Resort & Travel)",
+      actorOrg: "Nha Trang Bay Resort & Travel",
+      ipAddress: "113.160.214.88",
+      action: "HRM_CANDIDATE_IMPORT",
+      target: "Ứng viên NT-01 (Trần Ngọc Bảo Trâm - IELTS 7.0)",
+      severity: "INFO",
+      details: "Đồng bộ 1-Click Hồ sơ Năng lực Số từ Nền tảng Thi Online vào phân hệ HRM trên ERP."
+    },
+    {
+      id: "AUD-10001",
+      timestamp: "2026-10-20 09:15:00",
+      actorId: "USR-ADMIN-00",
+      actorName: "Quản trị viên Hệ sinh thái TechCorp",
+      actorOrg: "TechCorp Headquarters",
+      ipAddress: "103.170.122.138",
+      action: "SYSTEM_BOOTSTRAP",
+      target: "Cơ sở dữ liệu Tập trung (SQLite + JSON)",
+      severity: "INFO",
+      details: "Khởi tạo 5 ứng dụng lõi và kích hoạt dịch vụ xác thực tập trung TechCorp ID (SSO JWT)."
     }
   ],
   talents: [
@@ -370,11 +531,21 @@ const CATEGORY_MAP = {
   spotlight: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)"
 };
 
+const ROLE_BADGES = {
+  super_admin: "🛡️ Super Admin TechCorp",
+  ceo_sme: "Khối Doanh nghiệp SME",
+  center_director: "Khối Đào tạo NN-TH",
+  school_principal: "Khối Cơ sở Giáo dục",
+  hr_manager: "Quản trị Nhân sự (HR)",
+  student_parent: "Cộng đồng Học viên / SV"
+};
+
 function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function showToast(msg) {
@@ -389,11 +560,56 @@ function showToast(msg) {
   }, 4200);
 }
 
+function recordLocalAuditLog(action, target, severity, details) {
+  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
+    now.getHours()
+  )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+  STATE.auditLogs.unshift({
+    id: "AUD-" + Date.now(),
+    timestamp,
+    actorId: persona.userId || "USR-ADMIN-00",
+    actorName: persona.name || "Quản trị viên TechCorp",
+    actorOrg: persona.org || "TechCorp Hub",
+    ipAddress: "103.170.122.138",
+    action,
+    target,
+    severity,
+    details
+  });
+  renderAuditLogsTable();
+}
+
 window.switchToTab = function (tabId) {
   const btn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
   if (btn) btn.click();
 };
 
+window.openAdminSubtab = function (subtabId) {
+  window.switchToTab("tab-admin");
+  const btn = document.querySelector(`.admin-subbtn[data-subtab="${subtabId}"]`);
+  if (btn) btn.click();
+};
+
+function renderAllViews() {
+  renderConnectedApps();
+  renderAdminAppsTable();
+  renderForumPosts();
+  renderAdminForumTable();
+  renderAdminUsersTable();
+  renderAuditLogsTable();
+  renderActivityFeed();
+  renderTalents();
+  renderContests();
+  renderB2B();
+  renderLighthouseTable();
+  updateTotalKPIs();
+}
+
+// ==================== 1. CONNECTED APPS & ADMIN APP REGISTRY CRUD ====================
 function renderConnectedApps() {
   const listEl = document.getElementById("connectedAppsList");
   const kpiEl = document.getElementById("kpiConnectedAppsCount");
@@ -403,135 +619,718 @@ function renderConnectedApps() {
   if (!listEl) return;
 
   listEl.innerHTML = STATE.apps
-    .map(
-      (app, i) => `
-      <div class="product-item">
-        <div class="product-info">
-          <h4>${i + 1}. ${escapeHtml(app.name)} <code style="font-size:11.5px;color:#38bdf8;margin-left:6px;">[${escapeHtml(app.id)}]</code></h4>
-          <p>${escapeHtml(app.desc || "")}</p>
-          <div style="font-size:11.5px;color:#64748b;margin-top:4px;">
-            🌐 URL: <span style="color:#94a3b8;">${escapeHtml(app.appUrl || "")}</span>
-            ${app.apiKeyMasked ? ` • 🔑 API Key: <code>${escapeHtml(app.apiKeyMasked)}</code>` : ""}
+    .map((app, i) => {
+      const statusBadge =
+        app.status === "locked"
+          ? `<span class="badge badge-red">🔴 Tạm khóa</span>`
+          : app.status === "maintenance"
+          ? `<span class="badge badge-amber">🟡 Bảo trì</span>`
+          : `<span class="badge badge-green">🟢 Active</span>`;
+      return `
+        <div class="product-item">
+          <div class="product-info">
+            <h4>${i + 1}. ${escapeHtml(app.name)} <code style="font-size:11.5px;color:#38bdf8;margin-left:6px;">[${escapeHtml(app.id)}]</code></h4>
+            <p>${escapeHtml(app.desc || "")}</p>
+            <div style="font-size:11.5px;color:#64748b;margin-top:4px;">
+              🌐 URL: <span style="color:#94a3b8;">${escapeHtml(app.appUrl || "")}</span>
+              ${app.apiKeyMasked ? ` • 🔑 API Key: <code>${escapeHtml(app.apiKeyMasked)}</code>` : ""}
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="badge badge-blue">${escapeHtml(app.badge || "App")}</span>
+            ${statusBadge}
           </div>
         </div>
-        <span class="badge badge-blue">${escapeHtml(app.badge || "Connected")}</span>
-      </div>
-    `
-    )
+      `;
+    })
     .join("");
 }
 
-function renderActivityFeed() {
-  const feedEl = document.getElementById("liveFeedList");
-  if (!feedEl) return;
-  feedEl.innerHTML = STATE.activityLogs
-    .map(
-      (item) => `
-      <div class="feed-item">
-        <span class="time">${escapeHtml(item.time)} ${item.eventType ? `• <code style="color:#38bdf8">${escapeHtml(item.eventType)}</code>` : ""}</span>
-        <div>${escapeHtml(item.text)}</div>
-      </div>
-    `
-    )
+function renderAdminAppsTable() {
+  const tbody = document.getElementById("adminAppsTableBody");
+  if (!tbody) return;
+
+  tbody.innerHTML = STATE.apps
+    .map((app) => {
+      const stBadge =
+        app.status === "locked"
+          ? `<span class="badge badge-red">🔴 Đã khóa</span>`
+          : app.status === "maintenance"
+          ? `<span class="badge badge-amber">🟡 Bảo trì</span>`
+          : `<span class="badge badge-green">🟢 Hoạt động</span>`;
+
+      return `
+        <tr>
+          <td>
+            <strong>${escapeHtml(app.name)}</strong>
+            <div style="font-size:11.5px;color:#38bdf8;">ID: <code>${escapeHtml(app.id)}</code> • Nhãn: ${escapeHtml(app.badge || "App")}</div>
+            <div style="font-size:11.5px;color:#94a3b8;">${escapeHtml(app.desc || "")}</div>
+          </td>
+          <td>
+            <div style="font-size:12px;color:#f8fafc;">🌐 ${escapeHtml(app.appUrl || "")}</div>
+            <div style="font-size:11.5px;color:#fbbf24;margin-top:3px;">🔑 <code>${escapeHtml(app.apiKeyMasked || "tc_live_...")}</code></div>
+          </td>
+          <td>${stBadge}</td>
+          <td>
+            <div class="action-group">
+              <button class="btn btn-outline btn-sm" onclick="editEcosystemApp('${escapeHtml(app.id)}')">✏️ Sửa</button>
+              <button class="btn btn-warning btn-sm" onclick="toggleAppLock('${escapeHtml(app.id)}')">
+                ${app.status === "locked" ? "🔓 Mở" : "🔒 Khóa"}
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="rotateAppApiKey('${escapeHtml(app.id)}')">🔄 Đổi Key</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteEcosystemApp('${escapeHtml(app.id)}')">🗑️ Xoá</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    })
     .join("");
 }
 
+window.resetAppForm = function () {
+  document.getElementById("editAppMode").value = "create";
+  document.getElementById("appFormTitle").textContent = "➕ Bổ sung Ứng dụng Mới vào Hệ sinh thái";
+  const idInput = document.getElementById("newAppId");
+  idInput.disabled = false;
+  idInput.value = "";
+  document.getElementById("newAppBadge").value = "BizTech";
+  document.getElementById("newAppName").value = "";
+  document.getElementById("newAppStatus").value = "active";
+  document.getElementById("newAppUrl").value = "https://";
+  document.getElementById("newAppWebhook").value = "https://";
+  document.getElementById("newAppDesc").value = "";
+};
+
+window.editEcosystemApp = function (appId) {
+  const app = STATE.apps.find((a) => a.id === appId);
+  if (!app) return;
+  document.getElementById("editAppMode").value = "edit";
+  document.getElementById("appFormTitle").textContent = `✏️ Cập nhật Ứng dụng: ${app.name}`;
+  const idInput = document.getElementById("newAppId");
+  idInput.value = app.id;
+  idInput.disabled = true;
+  document.getElementById("newAppBadge").value = app.badge || "App";
+  document.getElementById("newAppName").value = app.name || "";
+  document.getElementById("newAppStatus").value = app.status || "active";
+  document.getElementById("newAppUrl").value = app.appUrl || "";
+  document.getElementById("newAppWebhook").value = app.webhookUrl || "";
+  document.getElementById("newAppDesc").value = app.desc || "";
+  showToast(`Đang nạp cấu hình ứng dụng <b>${escapeHtml(app.name)}</b> để chỉnh sửa.`);
+};
+
+window.saveEcosystemApp = async function () {
+  const mode = document.getElementById("editAppMode")?.value || "create";
+  const id = document.getElementById("newAppId")?.value.trim();
+  const name = document.getElementById("newAppName")?.value.trim();
+  const badge = document.getElementById("newAppBadge")?.value.trim() || "New App";
+  const status = document.getElementById("newAppStatus")?.value || "active";
+  const appUrl = document.getElementById("newAppUrl")?.value.trim();
+  const webhookUrl = document.getElementById("newAppWebhook")?.value.trim();
+  const desc = document.getElementById("newAppDesc")?.value.trim();
+
+  if (!id || !name) {
+    showToast(`<span style="color:#fbbf24">Vui lòng nhập đầy đủ Mã định danh (App ID) và Tên ứng dụng!</span>`);
+    return;
+  }
+
+  if (mode === "edit") {
+    try {
+      const res = await fetch(`/api/v1/apps/${encodeURIComponent(id)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          badge,
+          status,
+          appUrl,
+          webhookUrl,
+          desc,
+          actorKey: STATE.currentPersona
+        })
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        STATE.apps = data.apps;
+        STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+        renderAllViews();
+        if (typeof window.refreshTechCorpTopbar === "function") {
+          window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
+        }
+        showToast(`Đã cập nhật ứng dụng <b>${escapeHtml(name)}</b> và lưu vào Audit Logs!`);
+        return;
+      }
+    } catch (_) {}
+
+    const app = STATE.apps.find((a) => a.id === id);
+    if (app) {
+      app.name = name;
+      app.badge = badge;
+      app.status = status;
+      app.appUrl = appUrl;
+      app.webhookUrl = webhookUrl;
+      app.desc = desc;
+      recordLocalAuditLog("APP_UPDATE", `${name} (${id})`, "INFO", `Cập nhật cấu hình ứng dụng (${appUrl}), trạng thái: ${status}.`);
+      renderAllViews();
+      if (typeof window.refreshTechCorpTopbar === "function") {
+        window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
+      }
+      showToast(`Đã cập nhật ứng dụng <b>${escapeHtml(name)}</b>!`);
+    }
+    return;
+  }
+
+  // Create mode
+  try {
+    const res = await fetch("/api/v1/apps/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id,
+        name,
+        badge,
+        status,
+        appUrl,
+        webhookUrl,
+        desc,
+        actorKey: STATE.currentPersona
+      })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.apps = data.apps;
+      STATE.activityLogs = data.activityLogs || STATE.activityLogs;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+
+      if (typeof window.refreshTechCorpTopbar === "function") {
+        window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
+      }
+
+      const outEl = document.getElementById("integrationGuideOutput");
+      if (outEl && data.integration) {
+        outEl.innerHTML = `
+          <div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);padding:12px;border-radius:10px;margin-bottom:10px;">
+            <div style="color:#34d399;font-weight:700;font-size:13px;">✅ Đã tích hợp "${escapeHtml(data.app.name)}" & Ghi Audit Log!</div>
+            <div style="font-size:12px;color:#f8fafc;margin-top:4px;">🔑 <strong>API Key:</strong> <code style="color:#fbbf24">${escapeHtml(data.app.apiKey)}</code></div>
+          </div>
+          <p style="font-size:12px;color:#94a3b8;margin-bottom:4px;"><strong>Mã nhúng Thanh Liên thông:</strong></p>
+          <div class="code-box">${escapeHtml(data.integration.widgetSnippet)}</div>
+        `;
+      }
+
+      showToast(`Đã bổ sung ứng dụng <b>${escapeHtml(data.app.name)}</b> vào hệ sinh thái!`);
+      return;
+    } else if (data && data.error) {
+      showToast(`<span style="color:#fbbf24">${escapeHtml(data.error)}</span>`);
+      return;
+    }
+  } catch (_) {}
+
+  const fakeKey = "tc_live_" + id.replace(/[^a-z0-9]/g, "") + "_9988aabb";
+  STATE.apps.push({
+    id,
+    name,
+    badge,
+    status,
+    appUrl,
+    webhookUrl,
+    desc,
+    apiKeyMasked: `${fakeKey.slice(0, 12)}...aabb`
+  });
+  recordLocalAuditLog("APP_CREATE", `${name} (${id})`, "INFO", `Tích hợp ứng dụng mới (${appUrl}) vào hệ sinh thái.`);
+  renderAllViews();
+  if (typeof window.refreshTechCorpTopbar === "function") {
+    window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
+  }
+  showToast(`Đã bổ sung ứng dụng <b>${escapeHtml(name)}</b> vào hệ sinh thái!`);
+};
+
+window.toggleAppLock = async function (appId) {
+  const app = STATE.apps.find((a) => a.id === appId);
+  if (!app) return;
+  const nextStatus = app.status === "locked" ? "active" : "locked";
+
+  try {
+    const res = await fetch(`/api/v1/apps/${encodeURIComponent(appId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: nextStatus, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.apps = data.apps;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      if (typeof window.refreshTechCorpTopbar === "function") {
+        window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
+      }
+      showToast(`Đã chuyển trạng thái ứng dụng <b>${escapeHtml(app.name)}</b> sang: <b>${nextStatus}</b>`);
+      return;
+    }
+  } catch (_) {}
+
+  app.status = nextStatus;
+  recordLocalAuditLog("APP_STATUS_CHANGE", `${app.name} (${appId})`, "WARNING", `Đổi trạng thái ứng dụng sang: ${nextStatus}.`);
+  renderAllViews();
+  if (typeof window.refreshTechCorpTopbar === "function") {
+    window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
+  }
+  showToast(`Đã chuyển trạng thái ứng dụng <b>${escapeHtml(app.name)}</b> sang: <b>${nextStatus}</b>`);
+};
+
+window.rotateAppApiKey = async function (appId) {
+  const app = STATE.apps.find((a) => a.id === appId);
+  if (!app) return;
+  try {
+    const res = await fetch(`/api/v1/apps/${encodeURIComponent(appId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ regenerateApiKey: true, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.apps = data.apps;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast(`Đã cấp lại API Key mới cho <b>${escapeHtml(app.name)}</b>!`);
+      return;
+    }
+  } catch (_) {}
+
+  const rnd = Math.floor(1000 + Math.random() * 9000);
+  app.apiKeyMasked = `tc_live_rot...${rnd}`;
+  recordLocalAuditLog("APP_ROTATE_KEY", `${app.name} (${appId})`, "WARNING", "Cấp lại khóa bảo mật API Key mới.");
+  renderAllViews();
+  showToast(`Đã cấp lại API Key mới cho <b>${escapeHtml(app.name)}</b>!`);
+};
+
+window.deleteEcosystemApp = async function (appId) {
+  const app = STATE.apps.find((a) => a.id === appId);
+  if (!app) return;
+  if (!confirm(`Bạn có chắc chắn muốn XOÁ ứng dụng "${app.name}" (${appId}) khỏi Hệ sinh thái TechCorp?`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/v1/apps/${encodeURIComponent(appId)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.apps = data.apps;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      if (typeof window.refreshTechCorpTopbar === "function") {
+        window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
+      }
+      showToast(`Đã xoá ứng dụng <b>${escapeHtml(app.name)}</b> và lưu vết Audit Log!`);
+      return;
+    }
+  } catch (_) {}
+
+  STATE.apps = STATE.apps.filter((a) => a.id !== appId);
+  recordLocalAuditLog("APP_DELETE", `${app.name} (${appId})`, "CRITICAL", `Xoá ứng dụng ${app.name} khỏi hệ sinh thái.`);
+  renderAllViews();
+  if (typeof window.refreshTechCorpTopbar === "function") {
+    window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
+  }
+  showToast(`Đã xoá ứng dụng <b>${escapeHtml(app.name)}</b>!`);
+};
+
+// ==================== 2. FORUM FEED & ADMIN FORUM MODERATION ====================
 function renderForumPosts() {
   const container = document.getElementById("forumPostsContainer");
   const kpiEl = document.getElementById("kpiForumPostsCount");
+  const pendingBadge = document.getElementById("kpiPendingForumBadge");
+
+  const pendingCount = STATE.forumPosts.filter((p) => p.status === "pending").length;
   if (kpiEl) {
     kpiEl.textContent = `${STATE.forumPosts.length} Chủ đề`;
   }
+  if (pendingBadge) {
+    pendingBadge.textContent = pendingCount > 0 ? `⏳ ${pendingCount} Chờ thẩm định` : `✅ Đã duyệt 100%`;
+    pendingBadge.className = pendingCount > 0 ? "badge badge-amber" : "badge badge-green";
+  }
+
   if (!container) return;
 
   const cat = STATE.selectedForumCategory || "all";
-  const filtered = STATE.forumPosts.filter((p) => cat === "all" || p.category === cat);
+  // Hiển thị các bài đã duyệt (approved) hoặc bài đang chờ thẩm định (kèm nút Duyệt nhanh)
+  const filtered = STATE.forumPosts.filter(
+    (p) => p.status !== "rejected" && (cat === "all" || p.category === cat)
+  );
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="padding:24px;text-align:center;color:#94a3b8;">Chưa có bài thảo luận nào trong chuyên mục này. Hãy là người đầu tiên đăng bài!</div>`;
+    container.innerHTML = `<div style="padding:24px;text-align:center;color:#94a3b8;">Chưa có bài thảo luận nào trong chuyên mục này.</div>`;
     return;
   }
 
   container.innerHTML = filtered
-    .map(
-      (post) => `
-      <div class="forum-post-card ${post.pinned ? "pinned" : ""}">
-        <div class="forum-author-bar">
-          <div>
-            <span class="badge ${post.pinned ? "badge-amber" : "badge-blue"}" style="margin-right:6px;">
-              ${post.pinned ? "📌 GHIM VIP • " : ""}${escapeHtml(post.categoryLabel)}
-            </span>
-            <span class="badge badge-green">✔ Đã xác thực TechCorp ID</span>
+    .map((post) => {
+      const isPending = post.status === "pending";
+      const isLocked = Boolean(post.locked);
+      return `
+        <div class="forum-post-card ${post.pinned ? "pinned" : ""}">
+          <div class="forum-author-bar">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+              <span class="badge ${post.pinned ? "badge-amber" : "badge-blue"}">
+                ${post.pinned ? "📌 GHIM VIP • " : ""}${escapeHtml(post.categoryLabel)}
+              </span>
+              ${
+                isPending
+                  ? `<span class="badge badge-amber">⏳ Chờ Quản trị viên thẩm định</span>`
+                  : `<span class="badge badge-green">✔ Đã thẩm định & Xác thực SSO</span>`
+              }
+              ${isLocked ? `<span class="badge badge-red">🔒 Đã khóa bình luận (Clocked)</span>` : ""}
+            </div>
+            <span style="font-size:11.5px;color:#94a3b8;">🕒 ${escapeHtml(post.createdAt)} • 👁️ ${post.views || 1} lượt xem</span>
           </div>
-          <span style="font-size:11.5px;color:#94a3b8;">🕒 ${escapeHtml(post.createdAt)} • 👁️ ${post.views || 1} lượt xem</span>
-        </div>
 
-        <h4 style="font-size:16px;font-weight:700;color:#f8fafc;margin-bottom:6px;">
-          ${escapeHtml(post.title)}
-        </h4>
+          <h4 style="font-size:16px;font-weight:700;color:#f8fafc;margin-bottom:6px;">
+            ${escapeHtml(post.title)}
+          </h4>
 
-        <div style="font-size:12.5px;color:#38bdf8;margin-bottom:10px;">
-          👤 <strong>${escapeHtml(post.author?.name)}</strong> — ${escapeHtml(post.author?.org)}
-          <span style="color:#94a3b8;">(${escapeHtml(post.author?.verifiedApp || post.author?.roleBadge)})</span>
-        </div>
-
-        <p style="font-size:13.5px;color:#e2e8f0;line-height:1.6;">
-          ${escapeHtml(post.content)}
-        </p>
-
-        ${
-          post.memberDeal
-            ? `<div class="forum-deal-box">
-                <strong>🎁 Quyền lợi / Đặc quyền Nội bộ (Give-to-Get):</strong> ${escapeHtml(post.memberDeal)}
-              </div>`
-            : ""
-        }
-
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:10px;">
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-outline" onclick="likeForumPost('${post.id}')" style="padding:6px 12px;font-size:12.5px;">
-              👍 Quan tâm & Hữu ích (${post.likes || 0})
-            </button>
-            <button class="btn btn-emerald" onclick="connectB2B('${escapeHtml(post.author?.org || post.author?.name)}')" style="padding:6px 12px;font-size:12.5px;">
-              🤝 Kết nối Giao thương / Nhận Ưu đãi
-            </button>
+          <div style="font-size:12.5px;color:#38bdf8;margin-bottom:10px;">
+            👤 <strong>${escapeHtml(post.author?.name)}</strong> — ${escapeHtml(post.author?.org)}
+            <span style="color:#94a3b8;">(${escapeHtml(post.author?.verifiedApp || post.author?.roleBadge)})</span>
           </div>
-          <span style="font-size:12px;color:#94a3b8;">💬 ${(post.comments || []).length} phản hồi xác thực</span>
-        </div>
 
-        <div class="forum-comments-wrap">
-          ${(post.comments || [])
-            .map(
-              (c) => `
-              <div class="forum-comment-item">
-                <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                  <strong style="color:#38bdf8;">✔ ${escapeHtml(c.authorName)} <span style="color:#94a3b8;font-weight:400;">(${escapeHtml(c.roleBadge)})</span></strong>
-                  <span style="font-size:11px;color:#64748b;">${escapeHtml(c.time)}</span>
+          <p style="font-size:13.5px;color:#e2e8f0;line-height:1.6;">
+            ${escapeHtml(post.content)}
+          </p>
+
+          ${
+            post.memberDeal
+              ? `<div class="forum-deal-box">
+                  <strong>🎁 Quyền lợi / Đặc quyền Nội bộ (Give-to-Get):</strong> ${escapeHtml(post.memberDeal)}
+                </div>`
+              : ""
+          }
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" onclick="likeForumPost('${post.id}')">
+                👍 Quan tâm (${post.likes || 0})
+              </button>
+              <button class="btn btn-emerald btn-sm" onclick="connectB2B('${escapeHtml(post.author?.org || post.author?.name)}')">
+                🤝 Kết nối Giao thương / Nhận Ưu đãi
+              </button>
+              ${
+                isPending
+                  ? `<button class="btn btn-primary btn-sm" onclick="moderateForumStatus('${post.id}', 'approved')">✅ Thẩm định Duyệt ngay</button>`
+                  : ""
+              }
+              <button class="btn btn-warning btn-sm" onclick="toggleForumLock('${post.id}')">
+                ${isLocked ? "🔓 Mở khóa (Unlock)" : "🔒 Clock / Khóa bình luận"}
+              </button>
+            </div>
+            <span style="font-size:12px;color:#94a3b8;">💬 ${(post.comments || []).length} phản hồi</span>
+          </div>
+
+          <div class="forum-comments-wrap">
+            ${(post.comments || [])
+              .map(
+                (c) => `
+                <div class="forum-comment-item">
+                  <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                    <strong style="color:#38bdf8;">✔ ${escapeHtml(c.authorName)} <span style="color:#94a3b8;font-weight:400;">(${escapeHtml(c.roleBadge)})</span></strong>
+                    <span style="font-size:11px;color:#64748b;">${escapeHtml(c.time)}</span>
+                  </div>
+                  <div style="color:#f1f5f9;">${escapeHtml(c.text)}</div>
                 </div>
-                <div style="color:#f1f5f9;">${escapeHtml(c.text)}</div>
-              </div>
-            `
-            )
-            .join("")}
+              `
+              )
+              .join("")}
 
-          <div style="display:flex;gap:8px;margin-top:8px;">
-            <input
-              type="text"
-              id="cmtInput_${post.id}"
-              class="input-control"
-              style="flex:1;padding:7px 11px;font-size:12.5px;"
-              placeholder="Gửi báo giá / phản hồi trực tiếp với tư cách TechCorp ID của bạn..."
-            />
-            <button class="btn btn-primary" onclick="submitForumComment('${post.id}')" style="padding:7px 14px;font-size:12.5px;">
-              Gửi phản hồi
-            </button>
+            ${
+              isLocked
+                ? `<div style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.35);color:#fda4af;padding:9px 12px;border-radius:8px;font-size:12.5px;margin-top:8px;">
+                    🔒 <strong>Chủ đề đã bị khóa bình luận (Clocked):</strong> Quản trị viên đã đóng chức năng gửi phản hồi mới cho bài viết này.
+                  </div>`
+                : `<div style="display:flex;gap:8px;margin-top:8px;">
+                    <input
+                      type="text"
+                      id="cmtInput_${post.id}"
+                      class="input-control"
+                      style="flex:1;padding:7px 11px;font-size:12.5px;"
+                      placeholder="Gửi báo giá / phản hồi trực tiếp với tư cách TechCorp ID của bạn..."
+                    />
+                    <button class="btn btn-primary btn-sm" onclick="submitForumComment('${post.id}')">
+                      Gửi phản hồi
+                    </button>
+                  </div>`
+            }
           </div>
         </div>
-      </div>
-    `
-    )
+      `;
+    })
     .join("");
 }
+
+window.renderAdminForumTable = function () {
+  const tbody = document.getElementById("adminForumTableBody");
+  if (!tbody) return;
+
+  const statusFilter = document.getElementById("adminForumStatusFilter")?.value || "all";
+  const kw = (document.getElementById("adminForumSearchInput")?.value || "").toLowerCase();
+
+  const filtered = STATE.forumPosts.filter((p) => {
+    const matchStatus =
+      statusFilter === "all" ||
+      (statusFilter === "locked" ? Boolean(p.locked) : p.status === statusFilter);
+    const matchKw =
+      !kw ||
+      p.title.toLowerCase().includes(kw) ||
+      (p.author?.name || "").toLowerCase().includes(kw) ||
+      (p.author?.org || "").toLowerCase().includes(kw) ||
+      p.id.toLowerCase().includes(kw);
+    return matchStatus && matchKw;
+  });
+
+  tbody.innerHTML = filtered
+    .map((p) => {
+      const stBadge =
+        p.status === "pending"
+          ? `<span class="badge badge-amber">⏳ Chờ thẩm định</span>`
+          : p.status === "rejected"
+          ? `<span class="badge badge-red">🚫 Đã từ chối</span>`
+          : `<span class="badge badge-green">✅ Đã duyệt</span>`;
+
+      const lockBadge = p.locked
+        ? `<span class="badge badge-red">🔒 Đã khóa (Clocked)</span>`
+        : `<span class="badge badge-blue">🔓 Mở bình luận</span>`;
+
+      return `
+        <tr>
+          <td>
+            <div style="font-size:11.5px;color:#38bdf8;">
+              <code>${escapeHtml(p.id)}</code> • ${escapeHtml(p.categoryLabel)}
+              ${p.pinned ? `<span class="badge badge-amber" style="margin-left:4px;">📌 Ghim VIP</span>` : ""}
+            </div>
+            <strong style="font-size:13.5px;color:#f8fafc;">${escapeHtml(p.title)}</strong>
+            <div style="font-size:11.5px;color:#64748b;margin-top:2px;">💬 ${(p.comments || []).length} bình luận • 👍 ${p.likes || 0} quan tâm</div>
+          </td>
+          <td>
+            <div style="font-weight:600;color:#e2e8f0;">${escapeHtml(p.author?.name)}</div>
+            <div style="font-size:11.5px;color:#94a3b8;">${escapeHtml(p.author?.org)}</div>
+            <div style="font-size:11.5px;color:#34d399;margin-top:3px;">🎁 ${escapeHtml((p.memberDeal || "").slice(0, 65))}...</div>
+          </td>
+          <td>${stBadge}</td>
+          <td>${lockBadge}</td>
+          <td>
+            <div class="action-group">
+              <button class="btn btn-emerald btn-sm" onclick="moderateForumStatus('${p.id}', 'approved')" title="Duyệt hiển thị">
+                ✅ Duyệt
+              </button>
+              <button class="btn btn-warning btn-sm" onclick="moderateForumStatus('${p.id}', 'rejected')" title="Từ chối / Ẩn bài">
+                🚫 Từ chối
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="toggleForumLock('${p.id}')" title="Khóa / Mở khóa bình luận">
+                ${p.locked ? "🔓 Mở Lock" : "🔒 Clock/Lock"}
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="toggleForumPin('${p.id}')" title="Ghim VIP đầu trang">
+                ${p.pinned ? "Bỏ ghim" : "📌 Ghim"}
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="openAdminForumModal('${p.id}')">
+                👁️ Xem/Sửa
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="deleteForumPostAdmin('${p.id}')">
+                🗑️ Xoá
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+};
+
+window.moderateForumStatus = async function (postId, newStatus) {
+  try {
+    const res = await fetch(`/api/v1/forum/posts/${encodeURIComponent(postId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.forumPosts = data.forumPosts;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast(`Đã cập nhật trạng thái thẩm định bài viết <b>${postId}</b> sang: <b>${newStatus.toUpperCase()}</b>!`);
+      return;
+    }
+  } catch (_) {}
+
+  const post = STATE.forumPosts.find((p) => p.id === postId);
+  if (post) {
+    post.status = newStatus;
+    recordLocalAuditLog(
+      "FORUM_MODERATE",
+      `${post.id}: ${post.title}`,
+      newStatus === "rejected" ? "WARNING" : "INFO",
+      `Thẩm định bài viết -> ${newStatus.toUpperCase()}`
+    );
+    renderAllViews();
+    showToast(`Đã cập nhật trạng thái thẩm định bài viết <b>${postId}</b> sang: <b>${newStatus.toUpperCase()}</b>!`);
+  }
+};
+
+window.toggleForumLock = async function (postId) {
+  const post = STATE.forumPosts.find((p) => p.id === postId);
+  if (!post) return;
+  const nextLocked = !Boolean(post.locked);
+
+  try {
+    const res = await fetch(`/api/v1/forum/posts/${encodeURIComponent(postId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ locked: nextLocked, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.forumPosts = data.forumPosts;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast(
+        nextLocked
+          ? `🔒 Đã KHÓA bình luận (Clocked) chủ đề <b>${postId}</b>!`
+          : `🔓 Đã MỞ KHÓA bình luận chủ đề <b>${postId}</b>!`
+      );
+      return;
+    }
+  } catch (_) {}
+
+  post.locked = nextLocked;
+  recordLocalAuditLog(
+    "FORUM_LOCK_TOGGLE",
+    `${post.id}: ${post.title}`,
+    nextLocked ? "WARNING" : "INFO",
+    nextLocked ? "Khóa bình luận (Clocked) chủ đề." : "Mở khóa bình luận chủ đề."
+  );
+  renderAllViews();
+  showToast(
+    nextLocked
+      ? `🔒 Đã KHÓA bình luận (Clocked) chủ đề <b>${postId}</b>!`
+      : `🔓 Đã MỞ KHÓA bình luận chủ đề <b>${postId}</b>!`
+  );
+};
+
+window.toggleForumPin = async function (postId) {
+  const post = STATE.forumPosts.find((p) => p.id === postId);
+  if (!post) return;
+  const nextPinned = !Boolean(post.pinned);
+
+  try {
+    const res = await fetch(`/api/v1/forum/posts/${encodeURIComponent(postId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pinned: nextPinned, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.forumPosts = data.forumPosts;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast(nextPinned ? `📌 Đã Ghim VIP bài viết <b>${postId}</b>!` : `Đã bỏ ghim bài viết <b>${postId}</b>!`);
+      return;
+    }
+  } catch (_) {}
+
+  post.pinned = nextPinned;
+  STATE.forumPosts.sort((a, b) => Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)));
+  recordLocalAuditLog("FORUM_PIN_TOGGLE", `${post.id}: ${post.title}`, "INFO", `Ghim VIP: ${nextPinned}`);
+  renderAllViews();
+  showToast(nextPinned ? `📌 Đã Ghim VIP bài viết <b>${postId}</b>!` : `Đã bỏ ghim bài viết <b>${postId}</b>!`);
+};
+
+window.openAdminForumModal = function (postId) {
+  const post = STATE.forumPosts.find((p) => p.id === postId);
+  if (!post) return;
+  const modal = document.getElementById("adminForumEditModal");
+  if (!modal) return;
+  document.getElementById("adminEditPostId").value = post.id;
+  document.getElementById("adminEditPostTitle").value = post.title || "";
+  document.getElementById("adminEditPostDeal").value = post.memberDeal || "";
+  document.getElementById("adminEditPostContent").value = post.content || "";
+  document.getElementById("adminForumModalHeader").textContent = `👁️ Xem & Chỉnh sửa Bài viết: ${post.id} (${post.author?.name})`;
+  modal.style.display = "block";
+};
+
+window.closeAdminForumModal = function () {
+  const modal = document.getElementById("adminForumEditModal");
+  if (modal) modal.style.display = "none";
+};
+
+window.saveAdminForumEdit = async function () {
+  const postId = document.getElementById("adminEditPostId")?.value;
+  const title = document.getElementById("adminEditPostTitle")?.value.trim();
+  const memberDeal = document.getElementById("adminEditPostDeal")?.value.trim();
+  const content = document.getElementById("adminEditPostContent")?.value.trim();
+  if (!postId || !title || !content) return;
+
+  try {
+    const res = await fetch(`/api/v1/forum/posts/${encodeURIComponent(postId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title,
+        memberDeal,
+        content,
+        status: "approved",
+        actorKey: STATE.currentPersona
+      })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.forumPosts = data.forumPosts;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      closeAdminForumModal();
+      renderAllViews();
+      showToast(`Đã lưu chỉnh sửa và duyệt hiển thị bài viết <b>${postId}</b>!`);
+      return;
+    }
+  } catch (_) {}
+
+  const post = STATE.forumPosts.find((p) => p.id === postId);
+  if (post) {
+    post.title = title;
+    post.memberDeal = memberDeal;
+    post.content = content;
+    post.status = "approved";
+    recordLocalAuditLog("FORUM_EDIT_APPROVE", `${post.id}: ${title}`, "INFO", "Chỉnh sửa nội dung và duyệt hiển thị.");
+    closeAdminForumModal();
+    renderAllViews();
+    showToast(`Đã lưu chỉnh sửa và duyệt hiển thị bài viết <b>${postId}</b>!`);
+  }
+};
+
+window.deleteForumPostAdmin = async function (postId) {
+  const post = STATE.forumPosts.find((p) => p.id === postId);
+  if (!post) return;
+  if (!confirm(`Bạn có chắc chắn muốn XOÁ bài viết "${post.title}" (${postId}) khỏi Diễn đàn?`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/v1/forum/posts/${encodeURIComponent(postId)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.forumPosts = data.forumPosts;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast(`🗑️ Đã xoá bài viết <b>${postId}</b> và lưu Audit Log!`);
+      return;
+    }
+  } catch (_) {}
+
+  STATE.forumPosts = STATE.forumPosts.filter((p) => p.id !== postId);
+  recordLocalAuditLog("FORUM_DELETE", `${post.id}: ${post.title}`, "CRITICAL", `Xoá vĩnh viễn bài viết của ${post.author?.name}.`);
+  renderAllViews();
+  showToast(`🗑️ Đã xoá bài viết <b>${postId}</b>!`);
+};
 
 window.submitNewForumPost = async function () {
   const category = document.getElementById("forumPostCategory")?.value || "rfq";
@@ -539,6 +1338,8 @@ window.submitNewForumPost = async function () {
   const content = document.getElementById("forumPostContent")?.value.trim() || "";
   const memberDeal = document.getElementById("forumPostDeal")?.value.trim() || "";
   const pinned = Boolean(document.getElementById("forumPostPinned")?.checked);
+  const isPending = Boolean(document.getElementById("forumPostPending")?.checked);
+  const status = isPending ? "pending" : "approved";
 
   if (!title || !content) {
     showToast(`<span style="color:#fbbf24">Vui lòng nhập đầy đủ Tiêu đề và Nội dung bài viết!</span>`);
@@ -562,23 +1363,28 @@ window.submitNewForumPost = async function () {
         content,
         memberDeal,
         pinned,
+        status,
         personaKey: STATE.currentPersona
       })
     });
     const data = await res.json();
     if (data && data.ok) {
       STATE.forumPosts = data.forumPosts;
-      STATE.activityLogs = data.activityLogs;
+      STATE.activityLogs = data.activityLogs || STATE.activityLogs;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
     } else if (data && data.error) {
       showToast(`<span style="color:#fbbf24">${escapeHtml(data.error)}</span>`);
       return;
     }
   } catch (_) {
-    const persona = STATE.personas[STATE.currentPersona] || STATE.personas["ceo-sme"];
+    const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
+    const newId = "POST-" + Date.now();
     STATE.forumPosts.unshift({
-      id: "POST-" + Date.now(),
+      id: newId,
       category,
       categoryLabel: CATEGORY_MAP[category] || CATEGORY_MAP.rfq,
+      status,
+      locked: false,
       pinned,
       title,
       content,
@@ -594,15 +1400,10 @@ window.submitNewForumPost = async function () {
       views: 1,
       comments: []
     });
-    STATE.activityLogs.unshift({
-      time: "Vừa xong",
-      eventType: "FORUM_POST_PUBLISHED",
-      text: `[Diễn đàn Cộng đồng] ${persona.name} vừa đăng bài mới: "${title}"`
-    });
+    recordLocalAuditLog("FORUM_CREATE", `${newId}: ${title}`, "INFO", `Tạo chủ đề thảo luận mới (${status}).`);
   }
 
-  renderForumPosts();
-  renderActivityFeed();
+  renderAllViews();
 
   const ticker = document.getElementById("tcEcoForumTicker");
   if (ticker) {
@@ -613,11 +1414,20 @@ window.submitNewForumPost = async function () {
   document.getElementById("forumPostContent").value = "";
   document.getElementById("forumPostDeal").value = "";
   document.getElementById("forumPostPinned").checked = false;
+  if (document.getElementById("forumPostPending")) {
+    document.getElementById("forumPostPending").checked = false;
+  }
 
-  showToast(`Đã đăng bài lên Diễn đàn Cộng đồng và đẩy thông báo lên Thanh Liên thông toàn hệ thống!`);
+  showToast(`Đã đăng bài lên Diễn đàn Cộng đồng và ghi nhận vào Audit Logs!`);
 };
 
 window.submitForumComment = async function (postId) {
+  const postCheck = STATE.forumPosts.find((p) => p.id === postId);
+  if (postCheck && postCheck.locked) {
+    showToast(`<span style="color:#fb7185">🔒 Chủ đề này đã bị khóa bình luận (Clocked)!</span>`);
+    return;
+  }
+
   const inputEl = document.getElementById(`cmtInput_${postId}`);
   const text = inputEl?.value.trim() || "";
   if (!text) {
@@ -637,16 +1447,19 @@ window.submitForumComment = async function (postId) {
     const data = await res.json();
     if (data && data.ok) {
       STATE.forumPosts = data.forumPosts;
-      STATE.activityLogs = data.activityLogs;
-      renderForumPosts();
-      renderActivityFeed();
+      STATE.activityLogs = data.activityLogs || STATE.activityLogs;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
       showToast("Đã gửi phản hồi xác thực TechCorp ID lên chủ đề thảo luận!");
+      return;
+    } else if (data && data.error) {
+      showToast(`<span style="color:#fb7185">${escapeHtml(data.error)}</span>`);
       return;
     }
   } catch (_) {}
 
   const post = STATE.forumPosts.find((p) => p.id === postId);
-  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["ceo-sme"];
+  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
   if (post) {
     post.comments.push({
       id: "CMT-" + Date.now(),
@@ -656,7 +1469,8 @@ window.submitForumComment = async function (postId) {
       text,
       time: "Vừa xong"
     });
-    renderForumPosts();
+    recordLocalAuditLog("FORUM_COMMENT", `${post.id}: ${post.title}`, "INFO", `Bình luận: "${text.slice(0, 60)}"`);
+    renderAllViews();
     showToast("Đã gửi phản hồi xác thực TechCorp ID lên chủ đề thảo luận!");
   }
 };
@@ -670,7 +1484,7 @@ window.likeForumPost = async function (postId) {
     const data = await res.json();
     if (data && data.ok) {
       STATE.forumPosts = data.forumPosts;
-      renderForumPosts();
+      renderAllViews();
       return;
     }
   } catch (_) {}
@@ -678,21 +1492,430 @@ window.likeForumPost = async function (postId) {
   const post = STATE.forumPosts.find((p) => p.id === postId);
   if (post) {
     post.likes = (post.likes || 0) + 1;
-    renderForumPosts();
+    renderAllViews();
   }
 };
 
-function setupForumCategoryFilter() {
-  const bar = document.getElementById("forumCategoryBar");
-  if (!bar) return;
-  bar.addEventListener("click", (e) => {
-    const btn = e.target.closest(".forum-cat-btn");
-    if (!btn) return;
-    STATE.selectedForumCategory = btn.getAttribute("data-cat") || "all";
-    bar.querySelectorAll(".forum-cat-btn").forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    renderForumPosts();
+// ==================== 3. USER ACCOUNT MANAGEMENT CRUD (TECHCORP ID) ====================
+window.renderAdminUsersTable = function () {
+  const tbody = document.getElementById("adminUsersTableBody");
+  const kpiUsers = document.getElementById("kpiUsersCount");
+  if (kpiUsers) {
+    kpiUsers.textContent = `${STATE.users.length} Tài khoản`;
+  }
+  if (!tbody) return;
+
+  const kw = (document.getElementById("adminUserSearchInput")?.value || "").toLowerCase();
+  const roleFilter = document.getElementById("adminUserRoleFilter")?.value || "all";
+
+  const filtered = STATE.users.filter((u) => {
+    const matchRole = roleFilter === "all" || u.role === roleFilter;
+    const matchKw =
+      !kw ||
+      (u.fullName || "").toLowerCase().includes(kw) ||
+      (u.email || "").toLowerCase().includes(kw) ||
+      (u.org || "").toLowerCase().includes(kw) ||
+      (u.id || "").toLowerCase().includes(kw);
+    return matchRole && matchKw;
   });
+
+  tbody.innerHTML = filtered
+    .map((u) => {
+      const stBadge =
+        u.status === "locked"
+          ? `<span class="badge badge-red">🔴 Đã khóa</span>`
+          : `<span class="badge badge-green">🟢 Active</span>`;
+
+      const appsList = (u.assignedApps || [])
+        .map((a) => `<code style="font-size:11px;color:#38bdf8;margin-right:4px;">${escapeHtml(a)}</code>`)
+        .join("");
+
+      return `
+        <tr>
+          <td>
+            <strong>${escapeHtml(u.fullName)}</strong>
+            <div style="font-size:11.5px;color:#38bdf8;">ID: <code>${escapeHtml(u.id)}</code></div>
+            <div style="font-size:11.5px;color:#94a3b8;">✉️ ${escapeHtml(u.email)} • 📞 ${escapeHtml(u.phone || "")}</div>
+          </td>
+          <td>
+            <div style="font-size:12.5px;color:#f8fafc;">🏢 ${escapeHtml(u.org)}</div>
+            <span class="badge badge-purple" style="margin-top:4px;">${escapeHtml(u.roleBadge || u.role)}</span>
+          </td>
+          <td>
+            <div>${appsList || "Toàn quyền"}</div>
+            <div style="font-size:11px;color:#64748b;margin-top:4px;">🌐 IP: ${escapeHtml(u.ipAddress || "103.170.122.138")} (${escapeHtml(u.lastLogin || "Mới")})</div>
+          </td>
+          <td>${stBadge}</td>
+          <td>
+            <div class="action-group">
+              <button class="btn btn-outline btn-sm" onclick="editEcosystemUser('${escapeHtml(u.id)}')">✏️ Sửa</button>
+              <button class="btn btn-warning btn-sm" onclick="toggleUserLock('${escapeHtml(u.id)}')">
+                ${u.status === "locked" ? "🔓 Mở" : "🔒 Khóa"}
+              </button>
+              ${
+                u.id !== "USR-ADMIN-00"
+                  ? `<button class="btn btn-danger btn-sm" onclick="deleteEcosystemUser('${escapeHtml(u.id)}')">🗑️ Xoá</button>`
+                  : ""
+              }
+            </div>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+};
+
+window.resetUserForm = function () {
+  document.getElementById("editUserId").value = "";
+  document.getElementById("userFormTitle").textContent = "➕ Tạo mới Tài khoản Người dùng (TechCorp ID)";
+  document.getElementById("userFullName").value = "";
+  document.getElementById("userPhone").value = "";
+  document.getElementById("userEmail").value = "";
+  document.getElementById("userStatus").value = "active";
+  document.getElementById("userOrg").value = "";
+  document.getElementById("userRole").value = "ceo_sme";
+  document.querySelectorAll(".user-app-cb").forEach((cb) => {
+    cb.checked = ["lms-exam", "biz-web", "biz-erp"].includes(cb.value);
+  });
+};
+
+window.editEcosystemUser = function (userId) {
+  const u = STATE.users.find((x) => x.id === userId);
+  if (!u) return;
+  document.getElementById("editUserId").value = u.id;
+  document.getElementById("userFormTitle").textContent = `✏️ Chỉnh sửa Tài khoản: ${u.fullName} (${u.id})`;
+  document.getElementById("userFullName").value = u.fullName || "";
+  document.getElementById("userPhone").value = u.phone || "";
+  document.getElementById("userEmail").value = u.email || "";
+  document.getElementById("userStatus").value = u.status || "active";
+  document.getElementById("userOrg").value = u.org || "";
+  document.getElementById("userRole").value = u.role || "ceo_sme";
+  const assigned = u.assignedApps || [];
+  document.querySelectorAll(".user-app-cb").forEach((cb) => {
+    cb.checked = assigned.includes(cb.value);
+  });
+  showToast(`Đang nạp thông tin tài khoản <b>${escapeHtml(u.fullName)}</b> để chỉnh sửa.`);
+};
+
+function syncPersonaDropdown() {
+  const select = document.getElementById("personaSelect");
+  if (!select) return;
+  const currentVal = select.value;
+  const entries = Object.entries(STATE.personas);
+  select.innerHTML = entries
+    .map(
+      ([key, p], idx) =>
+        `<option value="${escapeHtml(key)}">${idx}. ${escapeHtml(p.name)} (${escapeHtml(p.roleBadge)})</option>`
+    )
+    .join("");
+  if (STATE.personas[currentVal]) {
+    select.value = currentVal;
+  }
+}
+
+window.saveEcosystemUser = async function () {
+  const editId = document.getElementById("editUserId")?.value.trim();
+  const fullName = document.getElementById("userFullName")?.value.trim();
+  const phone = document.getElementById("userPhone")?.value.trim();
+  const email = document.getElementById("userEmail")?.value.trim();
+  const status = document.getElementById("userStatus")?.value || "active";
+  const org = document.getElementById("userOrg")?.value.trim();
+  const role = document.getElementById("userRole")?.value || "ceo_sme";
+
+  const assignedApps = [];
+  document.querySelectorAll(".user-app-cb:checked").forEach((cb) => {
+    assignedApps.push(cb.value);
+  });
+
+  if (!fullName || !email || !org) {
+    showToast(`<span style="color:#fbbf24">Vui lòng nhập đầy đủ Họ tên, Email và Đơn vị/Tổ chức!</span>`);
+    return;
+  }
+
+  if (editId) {
+    // Update existing user
+    try {
+      const res = await fetch(`/api/v1/users/${encodeURIComponent(editId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName,
+          phone,
+          email,
+          status,
+          org,
+          role,
+          assignedApps,
+          actorKey: STATE.currentPersona
+        })
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        STATE.users = data.users;
+        STATE.personas = data.personas || STATE.personas;
+        STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+        syncPersonaDropdown();
+        renderAllViews();
+        resetUserForm();
+        showToast(`Đã cập nhật tài khoản <b>${escapeHtml(fullName)}</b> và ghi Audit Log!`);
+        return;
+      }
+    } catch (_) {}
+
+    const u = STATE.users.find((x) => x.id === editId);
+    if (u) {
+      u.fullName = fullName;
+      u.phone = phone;
+      u.email = email;
+      u.status = status;
+      u.org = org;
+      u.role = role;
+      u.roleBadge = ROLE_BADGES[role] || "SSO Member";
+      u.assignedApps = assignedApps;
+      recordLocalAuditLog("USER_UPDATE", `${fullName} (${editId})`, "INFO", `Cập nhật thông tin tài khoản (${org}).`);
+      renderAllViews();
+      resetUserForm();
+      showToast(`Đã cập nhật tài khoản <b>${escapeHtml(fullName)}</b>!`);
+    }
+    return;
+  }
+
+  // Create new user
+  try {
+    const res = await fetch("/api/v1/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName,
+        phone,
+        email,
+        status,
+        org,
+        role,
+        assignedApps,
+        actorKey: STATE.currentPersona
+      })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.users = data.users;
+      STATE.personas = data.personas || STATE.personas;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      syncPersonaDropdown();
+      renderAllViews();
+      resetUserForm();
+      showToast(`Đã tạo tài khoản TechCorp ID cho <b>${escapeHtml(fullName)}</b>!`);
+      return;
+    } else if (data && data.error) {
+      showToast(`<span style="color:#fbbf24">${escapeHtml(data.error)}</span>`);
+      return;
+    }
+  } catch (_) {}
+
+  const newId = "USR-NT-" + Math.floor(100 + Math.random() * 899);
+  const newUser = {
+    id: newId,
+    personaKey: newId.toLowerCase(),
+    fullName,
+    phone: phone || "0905.000.000",
+    email,
+    org,
+    role,
+    roleBadge: ROLE_BADGES[role] || "SSO Member",
+    assignedApps: assignedApps.length ? assignedApps : ["biz-erp"],
+    status,
+    lastLogin: "Chưa đăng nhập",
+    ipAddress: "103.170.122.138"
+  };
+  STATE.users.unshift(newUser);
+  STATE.personas[newUser.personaKey] = {
+    id: newUser.personaKey,
+    userId: newId,
+    name: fullName,
+    org,
+    roleBadge: newUser.roleBadge
+  };
+  syncPersonaDropdown();
+  recordLocalAuditLog("USER_CREATE", `${fullName} (${newId})`, "INFO", `Tạo mới tài khoản thuộc đơn vị "${org}".`);
+  renderAllViews();
+  resetUserForm();
+  showToast(`Đã tạo tài khoản TechCorp ID cho <b>${escapeHtml(fullName)}</b>!`);
+};
+
+window.toggleUserLock = async function (userId) {
+  const u = STATE.users.find((x) => x.id === userId);
+  if (!u) return;
+  if (userId === "USR-ADMIN-00") {
+    showToast(`<span style="color:#fbbf24">Không thể khóa tài khoản Super Admin gốc!</span>`);
+    return;
+  }
+  const nextStatus = u.status === "locked" ? "active" : "locked";
+
+  try {
+    const res = await fetch(`/api/v1/users/${encodeURIComponent(userId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: nextStatus, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.users = data.users;
+      STATE.personas = data.personas || STATE.personas;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      syncPersonaDropdown();
+      renderAllViews();
+      showToast(
+        nextStatus === "locked"
+          ? `🔒 Đã KHÓA tài khoản <b>${escapeHtml(u.fullName)}</b>!`
+          : `🔓 Đã MỞ KHÓA tài khoản <b>${escapeHtml(u.fullName)}</b>!`
+      );
+      return;
+    }
+  } catch (_) {}
+
+  u.status = nextStatus;
+  recordLocalAuditLog(
+    nextStatus === "locked" ? "USER_LOCK" : "USER_UNLOCK",
+    `${u.fullName} (${u.id})`,
+    nextStatus === "locked" ? "WARNING" : "INFO",
+    `Chuyển trạng thái tài khoản sang: ${nextStatus}`
+  );
+  renderAllViews();
+  showToast(
+    nextStatus === "locked"
+      ? `🔒 Đã KHÓA tài khoản <b>${escapeHtml(u.fullName)}</b>!`
+      : `🔓 Đã MỞ KHÓA tài khoản <b>${escapeHtml(u.fullName)}</b>!`
+  );
+};
+
+window.deleteEcosystemUser = async function (userId) {
+  const u = STATE.users.find((x) => x.id === userId);
+  if (!u) return;
+  if (!confirm(`Bạn có chắc chắn muốn XOÁ tài khoản "${u.fullName}" (${userId}) khỏi hệ thống?`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/v1/users/${encodeURIComponent(userId)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.users = data.users;
+      STATE.personas = data.personas || STATE.personas;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      syncPersonaDropdown();
+      renderAllViews();
+      showToast(`🗑️ Đã xoá tài khoản <b>${escapeHtml(u.fullName)}</b> và lưu Audit Log!`);
+      return;
+    }
+  } catch (_) {}
+
+  STATE.users = STATE.users.filter((x) => x.id !== userId);
+  recordLocalAuditLog("USER_DELETE", `${u.fullName} (${u.id})`, "CRITICAL", `Xoá vĩnh viễn tài khoản khỏi hệ thống.`);
+  renderAllViews();
+  showToast(`🗑️ Đã xoá tài khoản <b>${escapeHtml(u.fullName)}</b>!`);
+};
+
+// ==================== 4. USER TRACEABILITY & AUDIT LOGS ====================
+window.renderAuditLogsTable = function () {
+  const tbody = document.getElementById("auditLogsTableBody");
+  const badgeEl = document.getElementById("kpiAuditCountBadge");
+  if (badgeEl) {
+    badgeEl.textContent = `${STATE.auditLogs.length} Bản ghi truy vết`;
+  }
+  if (!tbody) return;
+
+  const kw = (document.getElementById("auditSearchInput")?.value || "").toLowerCase();
+  const sevFilter = document.getElementById("auditSeverityFilter")?.value || "all";
+
+  const filtered = STATE.auditLogs.filter((log) => {
+    const matchSev = sevFilter === "all" || log.severity === sevFilter;
+    const matchKw =
+      !kw ||
+      (log.actorName || "").toLowerCase().includes(kw) ||
+      (log.actorOrg || "").toLowerCase().includes(kw) ||
+      (log.ipAddress || "").toLowerCase().includes(kw) ||
+      (log.action || "").toLowerCase().includes(kw) ||
+      (log.target || "").toLowerCase().includes(kw) ||
+      (log.details || "").toLowerCase().includes(kw);
+    return matchSev && matchKw;
+  });
+
+  tbody.innerHTML = filtered
+    .map((log) => {
+      const sevBadge =
+        log.severity === "CRITICAL"
+          ? `<span class="badge badge-red">🔴 CRITICAL</span>`
+          : log.severity === "WARNING"
+          ? `<span class="badge badge-amber">🟡 WARNING</span>`
+          : `<span class="badge badge-green">🟢 INFO</span>`;
+
+      return `
+        <tr>
+          <td>
+            <code style="font-size:11.5px;color:#38bdf8;">${escapeHtml(log.id)}</code>
+            <div style="font-size:11.5px;color:#94a3b8;margin-top:2px;">🕒 ${escapeHtml(log.timestamp)}</div>
+          </td>
+          <td>
+            <strong style="font-size:13px;color:#f8fafc;">${escapeHtml(log.actorName)}</strong>
+            <div style="font-size:11.5px;color:#94a3b8;">${escapeHtml(log.actorOrg)} (${escapeHtml(log.actorId)})</div>
+          </td>
+          <td>
+            <code style="font-size:12px;color:#fbbf24;">${escapeHtml(log.ipAddress)}</code>
+          </td>
+          <td>
+            <div><code style="font-weight:700;color:#38bdf8;">${escapeHtml(log.action)}</code></div>
+            <div style="margin-top:4px;">${sevBadge}</div>
+          </td>
+          <td style="font-weight:600;color:#e2e8f0;">${escapeHtml(log.target)}</td>
+          <td style="font-size:12.5px;color:#cbd5e1;max-width:340px;">${escapeHtml(log.details)}</td>
+        </tr>
+      `;
+    })
+    .join("");
+};
+
+window.exportAuditLogsCsv = function () {
+  const headers = ["ID", "Timestamp", "ActorID", "ActorName", "Organization", "IPAddress", "Action", "Severity", "Target", "Details"];
+  const rows = STATE.auditLogs.map((l) => [
+    l.id,
+    l.timestamp,
+    l.actorId,
+    `"${(l.actorName || "").replace(/"/g, '""')}"`,
+    `"${(l.actorOrg || "").replace(/"/g, '""')}"`,
+    l.ipAddress,
+    l.action,
+    l.severity,
+    `"${(l.target || "").replace(/"/g, '""')}"`,
+    `"${(l.details || "").replace(/"/g, '""')}"`
+  ]);
+  const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `TechCorp_Audit_Logs_${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast("📥 Đã xuất file báo cáo Truy vết Người dùng (Audit Logs CSV) thành công!");
+};
+
+// ==================== 5. ACTIVITY FEED, TALENTS, CONTESTS, B2B, LIGHTHOUSE ====================
+function renderActivityFeed() {
+  const feedEl = document.getElementById("liveFeedList");
+  if (!feedEl) return;
+  feedEl.innerHTML = STATE.activityLogs
+    .map(
+      (item) => `
+      <div class="feed-item">
+        <span class="time">${escapeHtml(item.time)} ${item.eventType ? `• <code style="color:#38bdf8">${escapeHtml(item.eventType)}</code>` : ""}</span>
+        <div>${escapeHtml(item.text)}</div>
+      </div>
+    `
+    )
+    .join("");
 }
 
 function renderTalents() {
@@ -749,11 +1972,11 @@ window.importCandidateToERP = async function (id, name) {
     const data = await res.json();
     if (data.ok) {
       STATE.activityLogs = data.activityLogs;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
       const idx = STATE.talents.findIndex((t) => t.id === id);
       if (idx !== -1 && data.talent) STATE.talents[idx] = data.talent;
-      renderTalents();
-      renderActivityFeed();
-      showToast(`Đã gọi API đẩy hồ sơ của <b>${name}</b> vào phân hệ HRM trên ERP!`);
+      renderAllViews();
+      showToast(`Đã gọi API đẩy hồ sơ của <b>${name}</b> vào phân hệ HRM trên ERP & ghi Audit Log!`);
       return;
     }
   } catch (_) {}
@@ -763,7 +1986,8 @@ window.importCandidateToERP = async function (id, name) {
     eventType: "HRM_CANDIDATE_IMPORTED",
     text: `[1-Click HRM Sync] Hồ sơ năng lực số của ${name} (${id}) đã được đồng bộ thẳng vào Phân hệ Tuyển dụng HRM trên ERP Doanh nghiệp.`
   });
-  renderActivityFeed();
+  recordLocalAuditLog("HRM_CANDIDATE_IMPORT", `${name} (${id})`, "INFO", "Đồng bộ Hồ sơ Năng lực Số vào phân hệ HRM.");
+  renderAllViews();
   showToast(`Đã đẩy hồ sơ xác thực của <b>${name}</b> vào phân hệ HRM trên ERP!`);
 };
 
@@ -772,13 +1996,14 @@ window.simulateCrossSync = async function (presetType) {
     const res = await fetch("/api/v1/events/publish", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ presetType })
+      body: JSON.stringify({ presetType, actorKey: STATE.currentPersona })
     });
     const data = await res.json();
     if (data.ok) {
       STATE.activityLogs = data.activityLogs;
-      renderActivityFeed();
-      showToast("Đã thực thi API đồng bộ dữ liệu liên thông và lưu vào CSDL tập trung!");
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast("Đã thực thi API đồng bộ dữ liệu liên thông và lưu vào Audit Logs!");
       return;
     }
   } catch (_) {}
@@ -799,76 +2024,9 @@ window.simulateCrossSync = async function (presetType) {
     eventType: "LIVE_SYNC",
     text: logText
   });
-  renderActivityFeed();
+  recordLocalAuditLog("CROSS_PLATFORM_SYNC", presetType, "INFO", logText);
+  renderAllViews();
   showToast("Đã kích hoạt đồng bộ dữ liệu liên thông thành công!");
-};
-
-window.registerNewEcosystemApp = async function () {
-  const id = document.getElementById("newAppId")?.value.trim();
-  const name = document.getElementById("newAppName")?.value.trim();
-  const badge = document.getElementById("newAppBadge")?.value.trim() || "New App";
-  const appUrl = document.getElementById("newAppUrl")?.value.trim();
-  const webhookUrl = document.getElementById("newAppWebhook")?.value.trim();
-  const desc = document.getElementById("newAppDesc")?.value.trim();
-
-  if (!id || !name) {
-    showToast("Vui lòng nhập đầy đủ Mã định danh (App ID) và Tên ứng dụng!");
-    return;
-  }
-
-  try {
-    const res = await fetch("/api/v1/apps/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, name, badge, appUrl, webhookUrl, desc })
-    });
-    const data = await res.json();
-    if (data && data.ok) {
-      STATE.apps = data.apps;
-      STATE.activityLogs = data.activityLogs;
-      renderConnectedApps();
-      renderActivityFeed();
-
-      if (typeof window.refreshTechCorpTopbar === "function") {
-        window.refreshTechCorpTopbar(STATE.apps);
-      }
-
-      const outEl = document.getElementById("integrationGuideOutput");
-      if (outEl && data.integration) {
-        outEl.innerHTML = `
-          <div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);padding:12px;border-radius:10px;margin-bottom:12px;">
-            <div style="color:#34d399;font-weight:700;font-size:13.5px;">✅ Đã tích hợp "${escapeHtml(data.app.name)}" vào CSDL Tập trung & Thanh Liên thông!</div>
-            <div style="font-size:12.5px;color:#f8fafc;margin-top:4px;">🔑 <strong>API Key cấp riêng:</strong> <code style="color:#fbbf24">${escapeHtml(data.app.apiKey)}</code></div>
-          </div>
-          <p style="font-size:12.5px;color:#94a3b8;margin-bottom:6px;"><strong>1. Mã nhúng Thanh Liên thông (Gắn vào header ứng dụng ${escapeHtml(data.app.id)}):</strong></p>
-          <div class="code-box">${escapeHtml(data.integration.widgetSnippet)}</div>
-          <p style="font-size:12.5px;color:#94a3b8;margin-top:12px;margin-bottom:6px;"><strong>2. Lệnh cURL / Webhook bắn sự kiện từ ${escapeHtml(data.app.id)} lên Hub:</strong></p>
-          <div class="code-box"><pre style="white-space:pre-wrap;font-family:inherit;">${escapeHtml(data.integration.publishEventCurl)}</pre></div>
-          <p style="font-size:12.5px;color:#94a3b8;margin-top:12px;margin-bottom:6px;"><strong>3. Code mẫu đấu nối Backend:</strong></p>
-          <div class="code-box"><pre style="white-space:pre-wrap;font-family:inherit;">${escapeHtml(data.integration.nodeExample)}</pre></div>
-        `;
-      }
-
-      showToast(`Đã cấp API Key và tích hợp <b>${escapeHtml(data.app.name)}</b> lên thanh liên thông toàn hệ thống!`);
-      return;
-    }
-  } catch (_) {}
-
-  const fakeKey = "tc_live_" + id.replace(/[^a-z0-9]/g, "") + "_8899aabbcc";
-  const newApp = {
-    id,
-    name,
-    badge,
-    appUrl,
-    desc,
-    apiKeyMasked: `${fakeKey.slice(0, 12)}...cc`
-  };
-  STATE.apps.push(newApp);
-  renderConnectedApps();
-  if (typeof window.refreshTechCorpTopbar === "function") {
-    window.refreshTechCorpTopbar(STATE.apps);
-  }
-  showToast(`Đã tích hợp <b>${escapeHtml(name)}</b> lên thanh liên thông toàn hệ thống!`);
 };
 
 function renderContests() {
@@ -910,12 +2068,13 @@ window.pushLeadsToCenter = async function (contestId, title) {
     if (data.ok) {
       STATE.contests = data.contests;
       STATE.activityLogs = data.activityLogs;
-      renderContests();
-      renderActivityFeed();
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
       showToast(`Đã gọi API đồng bộ <b>${data.contest.leadsGenerated} data học viên</b> vào CRM Trung tâm!`);
       return;
     }
   } catch (_) {}
+  recordLocalAuditLog("LMS_LEAD_SYNC", title, "INFO", "Phân bổ data thí sinh về CRM Trung tâm.");
   showToast(`Đã phân bổ data học viên từ "${title}" vào CRM Trung tâm!`);
 };
 
@@ -951,16 +2110,18 @@ window.connectB2B = async function (company) {
     const res = await fetch("/api/v1/b2b/connect", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ company })
+      body: JSON.stringify({ company, actorKey: STATE.currentPersona })
     });
     const data = await res.json();
     if (data.ok) {
       STATE.activityLogs = data.activityLogs;
-      renderActivityFeed();
-      showToast(`Đã lưu yêu cầu kết nối B2B tới <b>${company}</b> trên Server!`);
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast(`Đã lưu yêu cầu kết nối B2B tới <b>${company}</b> và ghi Audit Log!`);
       return;
     }
   } catch (_) {}
+  recordLocalAuditLog("B2B_CONNECT", company, "INFO", `Gửi yêu cầu kết nối giao thương tới ${company}.`);
   showToast(`Đã gửi yêu cầu kết nối B2B trực tiếp tới <b>${company}</b>!`);
 };
 
@@ -981,7 +2142,7 @@ function renderLighthouseTable() {
           </td>
           <td style="font-size:12.5px;color:#cbd5e1;">${escapeHtml(item.notes)}</td>
           <td>
-            <button class="btn btn-outline" onclick="incrementSigned(${idx})">+1 Chốt mới</button>
+            <button class="btn btn-outline btn-sm" onclick="incrementSigned(${idx})">+1 Chốt mới</button>
           </td>
         </tr>
       `;
@@ -999,9 +2160,8 @@ window.incrementSigned = async function (idx) {
     if (data.ok) {
       STATE.lighthouseTargets = data.lighthouseTargets;
       STATE.activityLogs = data.activityLogs;
-      renderLighthouseTable();
-      updateTotalKPIs();
-      renderActivityFeed();
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
       showToast(`Đã lưu tiến độ chốt khách hàng hạt nhân Nha Trang vào Database!`);
       return;
     }
@@ -1011,8 +2171,8 @@ window.incrementSigned = async function (idx) {
   if (item) {
     item.currentSigned += 1;
     if (item.inPipeline > 0) item.inPipeline -= 1;
-    renderLighthouseTable();
-    updateTotalKPIs();
+    recordLocalAuditLog("CRM_LIGHTHOUSE_CLOSE", item.segment, "INFO", `Tăng số lượng chốt lên ${item.currentSigned}/${item.targetCount}.`);
+    renderAllViews();
     showToast(`Đã cập nhật tiến độ chốt khách hàng hạt nhân Nha Trang!`);
   }
 };
@@ -1077,6 +2237,31 @@ function setupTabs() {
       document.getElementById(target)?.classList.add("active");
     });
   });
+
+  const subBtns = document.querySelectorAll(".admin-subbtn");
+  const subPanels = document.querySelectorAll(".admin-subpanel");
+  subBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = btn.getAttribute("data-subtab");
+      subBtns.forEach((b) => b.classList.remove("active"));
+      subPanels.forEach((p) => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(target)?.classList.add("active");
+    });
+  });
+}
+
+function setupForumCategoryFilter() {
+  const bar = document.getElementById("forumCategoryBar");
+  if (!bar) return;
+  bar.addEventListener("click", (e) => {
+    const btn = e.target.closest(".forum-cat-btn");
+    if (!btn) return;
+    STATE.selectedForumCategory = btn.getAttribute("data-cat") || "all";
+    bar.querySelectorAll(".forum-cat-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderForumPosts();
+  });
 }
 
 function setupPersonaSwitcher() {
@@ -1098,9 +2283,13 @@ function setupPersonaSwitcher() {
       const data = await res.json();
       if (data.ok) {
         STATE.ssoToken = data.token;
+        STATE.auditLogs = data.auditLogs || STATE.auditLogs;
         if (tokenBox) tokenBox.textContent = data.token;
+        renderAuditLogsTable();
       }
-    } catch (_) {}
+    } catch (_) {
+      recordLocalAuditLog("SSO_SWITCH", val, "INFO", `Chuyển đổi phiên làm việc SSO sang ${val}.`);
+    }
 
     const p = STATE.personas[val];
     if (p) {
@@ -1110,7 +2299,7 @@ function setupPersonaSwitcher() {
       if (ssoBadge) {
         ssoBadge.textContent = `SSO: ${p.name} (${p.roleBadge})`;
       }
-      showToast(`Đã chuyển định danh TechCorp ID (SSO) sang: <b>${p.name}</b>`);
+      showToast(`Đã chuyển định danh TechCorp ID (SSO) sang: <b>${escapeHtml(p.name)}</b>`);
     }
   });
 }
@@ -1126,8 +2315,10 @@ async function bootstrapFromServer() {
     if (data && data.ok) {
       STATE.apiOnline = true;
       STATE.apps = data.apps || STATE.apps;
+      STATE.users = data.users || STATE.users;
       STATE.personas = data.personas || STATE.personas;
       STATE.forumPosts = data.forumPosts || STATE.forumPosts;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
       STATE.talents = data.talents || STATE.talents;
       STATE.contests = data.contests || STATE.contests;
       STATE.b2bOffers = data.b2bOffers || STATE.b2bOffers;
@@ -1141,8 +2332,9 @@ async function bootstrapFromServer() {
         badgeEl.textContent = "● API & SQLite Online";
         badgeEl.className = "badge badge-green";
       }
+      syncPersonaDropdown();
       if (typeof window.refreshTechCorpTopbar === "function") {
-        window.refreshTechCorpTopbar(STATE.apps);
+        window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
       }
     }
   } catch (err) {
@@ -1152,14 +2344,7 @@ async function bootstrapFromServer() {
     }
   }
 
-  renderConnectedApps();
-  renderForumPosts();
-  renderActivityFeed();
-  renderTalents();
-  renderContests();
-  renderB2B();
-  renderLighthouseTable();
-  updateTotalKPIs();
+  renderAllViews();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

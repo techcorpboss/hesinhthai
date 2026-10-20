@@ -1,6 +1,6 @@
 /**
- * TechCorp Ecosystem Hub Server (hesinhthai.techcorp.info.vn)
- * Backend API + Centralized Database + SSO Token Service + Verified Community Forum
+ * TechCorp Ecosystem Hub Server (v2.0 — hesinhthai.techcorp.info.vn)
+ * Full Backend API + Admin CMS + App CRUD + Forum Moderation + User Management + Audit Logs
  */
 
 const http = require("http");
@@ -24,6 +24,14 @@ const MIME_TYPES = {
   ".ico": "image/x-icon",
   ".md": "text/markdown; charset=utf-8"
 };
+
+function getClientIp(req) {
+  const xff = req.headers["x-forwarded-for"];
+  if (xff) return String(xff).split(",")[0].trim();
+  const xri = req.headers["x-real-ip"];
+  if (xri) return String(xri).trim();
+  return req.socket?.remoteAddress || "103.170.122.138";
+}
 
 function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -87,6 +95,7 @@ const response = await fetch("${PUBLIC_DOMAIN}/api/v1/events/publish", {
 async function handleApi(req, res, parsedUrl) {
   const pathname = parsedUrl.pathname;
   const method = req.method;
+  const clientIp = getClientIp(req);
 
   if (method === "OPTIONS") {
     setCorsHeaders(res);
@@ -98,10 +107,12 @@ async function handleApi(req, res, parsedUrl) {
   if (pathname === "/api/v1/health" && method === "GET") {
     return sendJson(res, 200, {
       ok: true,
-      service: "TechCorp Ecosystem Hub API, SSO & Community Forum",
+      service: "TechCorp Ecosystem Hub API, Admin CMS, SSO & Audit Logs",
       domain: PUBLIC_DOMAIN,
       totalConnectedApps: db.state.apps.length,
+      totalUsers: (db.state.users || []).length,
       totalForumPosts: (db.state.forumPosts || []).length,
+      totalAuditLogs: (db.state.auditLogs || []).length,
       storage: {
         sqlitePath: path.basename(SQLITE_DB_PATH),
         jsonPath: path.basename(JSON_DB_PATH)
@@ -112,36 +123,41 @@ async function handleApi(req, res, parsedUrl) {
 
   // 2. Bootstrap Ecosystem State for Portal UI
   if (pathname === "/api/v1/bootstrap" && method === "GET") {
-    const defaultPersona = db.state.personas["ceo-sme"];
+    const defaultPersona = db.state.personas["super-admin"] || db.state.personas["ceo-sme"];
     const sso = issueSsoToken(defaultPersona);
     return sendJson(res, 200, {
       ok: true,
       meta: db.state.meta,
       sso,
       apps: db.getPublicApps(),
+      users: db.state.users || [],
       personas: db.state.personas,
       talents: db.state.talents,
       contests: db.state.contests,
       b2bOffers: db.state.b2bOffers,
       forumPosts: db.state.forumPosts || [],
+      auditLogs: db.state.auditLogs || [],
       lighthouseTargets: db.state.lighthouseTargets,
       activityLogs: db.state.activityLogs
     });
   }
 
-  // 3. List Registered Ecosystem Apps + Latest Forum Ticker (for Topbar Widget)
+  // 3. List Registered Ecosystem Apps + Latest Approved Forum Headline (for Topbar Widget)
   if (pathname === "/api/v1/apps" && method === "GET") {
-    const topPost = (db.state.forumPosts || [])[0] || null;
+    const approvedPosts = (db.state.forumPosts || []).filter((p) => p.status !== "rejected");
+    const topPost = approvedPosts[0] || null;
+    const activeApps = db.getPublicApps().filter((a) => a.status !== "locked");
     return sendJson(res, 200, {
       ok: true,
-      apps: db.getPublicApps(),
+      apps: activeApps,
+      allApps: db.getPublicApps(),
       latestForumHeadline: topPost
         ? { id: topPost.id, title: topPost.title, authorOrg: topPost.author?.org || "" }
         : null
     });
   }
 
-  // 4. Register a New App into the Ecosystem
+  // 4. App Registry CRUD: Create, Update, Delete
   if (pathname === "/api/v1/apps/register" && method === "POST") {
     try {
       const body = await parseBody(req);
@@ -151,7 +167,7 @@ async function handleApi(req, res, parsedUrl) {
           error: "Vui lòng nhập Tên ứng dụng (name) và Mã định danh (id)."
         });
       }
-      const newApp = db.registerApp(body);
+      const newApp = db.registerApp(body, body.actorKey || "super-admin", clientIp);
       const integration = buildIntegrationGuide(newApp);
       return sendJson(res, 201, {
         ok: true,
@@ -159,6 +175,7 @@ async function handleApi(req, res, parsedUrl) {
         app: newApp,
         integration,
         apps: db.getPublicApps(),
+        auditLogs: db.state.auditLogs,
         activityLogs: db.state.activityLogs
       });
     } catch (err) {
@@ -166,7 +183,39 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
-  // 5. Issue SSO JWT Token (TechCorp ID)
+  const appItemMatch = pathname.match(/^\/api\/v1\/apps\/([^/]+)$/);
+  if (appItemMatch && method === "PUT") {
+    try {
+      const appId = decodeURIComponent(appItemMatch[1]);
+      const body = await parseBody(req);
+      const updated = db.updateApp(appId, body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        app: updated,
+        apps: db.getPublicApps(),
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  if (appItemMatch && method === "DELETE") {
+    try {
+      const appId = decodeURIComponent(appItemMatch[1]);
+      const removed = db.deleteApp(appId, "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        removed,
+        apps: db.getPublicApps(),
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  // 5. Issue SSO JWT Token (TechCorp ID) + Audit Log
   if (pathname === "/api/v1/sso/token" && method === "POST") {
     try {
       const body = await parseBody(req);
@@ -180,9 +229,18 @@ async function handleApi(req, res, parsedUrl) {
         defaultAppId: body.defaultAppId || "biz-erp"
       };
       const tokenData = issueSsoToken(persona);
+      db.addAuditLog({
+        actorKey: personaKey,
+        ipAddress: clientIp,
+        action: "SSO_TOKEN_ISSUED",
+        target: `Phiên đăng nhập SSO (${persona.name})`,
+        severity: "INFO",
+        details: `Cấp mới JWT Token cho tài khoản ${persona.userId} thuộc đơn vị "${persona.org}".`
+      });
       return sendJson(res, 200, {
         ok: true,
         persona,
+        auditLogs: db.state.auditLogs,
         ...tokenData
       });
     } catch (err) {
@@ -203,7 +261,7 @@ async function handleApi(req, res, parsedUrl) {
     });
   }
 
-  // 7. Community Forum APIs (Verified B2B & Community Board)
+  // 7. Community Forum APIs & Admin Moderation (Thẩm định, Tạo mới, Xem, Xoá, Lock)
   if (pathname === "/api/v1/forum/posts" && method === "GET") {
     return sendJson(res, 200, {
       ok: true,
@@ -214,12 +272,45 @@ async function handleApi(req, res, parsedUrl) {
   if (pathname === "/api/v1/forum/posts" && method === "POST") {
     try {
       const body = await parseBody(req);
-      const newPost = db.createForumPost(body, body.personaKey || "ceo-sme");
+      const newPost = db.createForumPost(body, body.personaKey || "ceo-sme", clientIp);
       return sendJson(res, 201, {
         ok: true,
         post: newPost,
         forumPosts: db.state.forumPosts,
+        auditLogs: db.state.auditLogs,
         activityLogs: db.state.activityLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  const forumPostItemMatch = pathname.match(/^\/api\/v1\/forum\/posts\/([^/]+)$/);
+  if (forumPostItemMatch && method === "PUT") {
+    try {
+      const postId = decodeURIComponent(forumPostItemMatch[1]);
+      const body = await parseBody(req);
+      const updated = db.moderateForumPost(postId, body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        post: updated,
+        forumPosts: db.state.forumPosts,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  if (forumPostItemMatch && method === "DELETE") {
+    try {
+      const postId = decodeURIComponent(forumPostItemMatch[1]);
+      const removed = db.deleteForumPost(postId, "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        removed,
+        forumPosts: db.state.forumPosts,
+        auditLogs: db.state.auditLogs
       });
     } catch (err) {
       return sendJson(res, 400, { ok: false, error: err.message });
@@ -231,11 +322,17 @@ async function handleApi(req, res, parsedUrl) {
     try {
       const postId = decodeURIComponent(forumCommentMatch[1]);
       const body = await parseBody(req);
-      const updatedPost = db.addForumComment(postId, body.text, body.personaKey || "ceo-sme");
+      const updatedPost = db.addForumComment(
+        postId,
+        body.text,
+        body.personaKey || "ceo-sme",
+        clientIp
+      );
       return sendJson(res, 201, {
         ok: true,
         post: updatedPost,
         forumPosts: db.state.forumPosts,
+        auditLogs: db.state.auditLogs,
         activityLogs: db.state.activityLogs
       });
     } catch (err) {
@@ -258,7 +355,95 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
-  // 8. Publish Cross-Platform Ecosystem Event
+  // 8. User Account Management CRUD (TechCorp ID Users)
+  if (pathname === "/api/v1/users" && method === "GET") {
+    return sendJson(res, 200, {
+      ok: true,
+      users: db.state.users || [],
+      personas: db.state.personas
+    });
+  }
+
+  if (pathname === "/api/v1/users" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const newUser = db.createUser(body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 201, {
+        ok: true,
+        user: newUser,
+        users: db.state.users,
+        personas: db.state.personas,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  const userItemMatch = pathname.match(/^\/api\/v1\/users\/([^/]+)$/);
+  if (userItemMatch && method === "PUT") {
+    try {
+      const userId = decodeURIComponent(userItemMatch[1]);
+      const body = await parseBody(req);
+      const updated = db.updateUser(userId, body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        user: updated,
+        users: db.state.users,
+        personas: db.state.personas,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  if (userItemMatch && method === "DELETE") {
+    try {
+      const userId = decodeURIComponent(userItemMatch[1]);
+      const removed = db.deleteUser(userId, "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        removed,
+        users: db.state.users,
+        personas: db.state.personas,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  // 9. User Traceability & Audit Logs APIs
+  if (pathname === "/api/v1/audit-logs" && method === "GET") {
+    return sendJson(res, 200, {
+      ok: true,
+      auditLogs: db.state.auditLogs || []
+    });
+  }
+
+  if (pathname === "/api/v1/audit-logs" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const log = db.addAuditLog({
+        actorKey: body.actorKey || "super-admin",
+        ipAddress: clientIp,
+        action: body.action || "USER_ACTION",
+        target: body.target || "TechCorp Hub",
+        severity: body.severity || "INFO",
+        details: body.details || ""
+      });
+      return sendJson(res, 201, {
+        ok: true,
+        log,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  // 10. Publish Cross-Platform Ecosystem Event
   if (pathname === "/api/v1/events/publish" && method === "POST") {
     try {
       const body = await parseBody(req);
@@ -301,9 +486,19 @@ async function handleApi(req, res, parsedUrl) {
       }
 
       const evt = db.addEvent({ sourceApp, targetApp, eventType, text: logText });
+      db.addAuditLog({
+        actorKey: body.actorKey || "super-admin",
+        ipAddress: clientIp,
+        action: eventType,
+        target: `${sourceApp} -> ${targetApp}`,
+        severity: "INFO",
+        details: logText
+      });
+
       return sendJson(res, 201, {
         ok: true,
         event: evt,
+        auditLogs: db.state.auditLogs,
         activityLogs: db.state.activityLogs
       });
     } catch (err) {
@@ -311,7 +506,7 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
-  // 9. Push Candidate Profile (Talent Passport) to ERP HRM
+  // 11. Push Candidate Profile (Talent Passport) to ERP HRM
   const pushErpMatch = pathname.match(/^\/api\/v1\/talents\/([^/]+)\/push-erp$/);
   if (pushErpMatch && method === "POST") {
     const talentId = decodeURIComponent(pushErpMatch[1]);
@@ -326,15 +521,24 @@ async function handleApi(req, res, parsedUrl) {
       eventType: "HRM_CANDIDATE_IMPORTED",
       text: `[1-Click HRM Sync] Hồ sơ năng lực số của ${talent.name} (${talent.id}) đã được đồng bộ thẳng vào Phân hệ Tuyển dụng HRM trên ERP Doanh nghiệp.`
     });
+    db.addAuditLog({
+      actorKey: "ceo-sme",
+      ipAddress: clientIp,
+      action: "HRM_CANDIDATE_IMPORT",
+      target: `${talent.name} (${talent.id})`,
+      severity: "INFO",
+      details: `Đồng bộ Hồ sơ Năng lực Số của ứng viên ${talent.name} vào phân hệ HRM trên ERP.`
+    });
     return sendJson(res, 200, {
       ok: true,
       talent,
       event: evt,
+      auditLogs: db.state.auditLogs,
       activityLogs: db.state.activityLogs
     });
   }
 
-  // 10. Sync Leads from Contest to Training Center CRM
+  // 12. Sync Leads from Contest to Training Center CRM
   const syncLeadMatch = pathname.match(/^\/api\/v1\/contests\/([^/]+)\/sync-leads$/);
   if (syncLeadMatch && method === "POST") {
     const contestId = decodeURIComponent(syncLeadMatch[1]);
@@ -350,16 +554,25 @@ async function handleApi(req, res, parsedUrl) {
       eventType: "CENTER_LEADS_SYNCED",
       text: `[Thi Online -> CRM Trung tâm] Đã chuyển ${contest.leadsGenerated} học viên tiềm năng từ kỳ thi "${contest.title}" vào phần mềm Quản lý Trung tâm Ngoại ngữ - Tin học.`
     });
+    db.addAuditLog({
+      actorKey: "center-dir",
+      ipAddress: clientIp,
+      action: "LMS_LEAD_SYNC",
+      target: contest.title,
+      severity: "INFO",
+      details: `Đồng bộ ${contest.leadsGenerated} data thí sinh từ kỳ thi Online về CRM Trung tâm.`
+    });
     return sendJson(res, 200, {
       ok: true,
       contest,
       contests: db.state.contests,
       event: evt,
+      auditLogs: db.state.auditLogs,
       activityLogs: db.state.activityLogs
     });
   }
 
-  // 11. Connect B2B Offer
+  // 13. Connect B2B Offer
   if (pathname === "/api/v1/b2b/connect" && method === "POST") {
     try {
       const body = await parseBody(req);
@@ -370,9 +583,18 @@ async function handleApi(req, res, parsedUrl) {
         eventType: "B2B_MATCH_REQUEST",
         text: `[Kết nối B2B Nội bộ] Đơn vị thành viên vừa gửi yêu cầu hợp tác ưu đãi nội bộ tới "${company}" qua TechCorp Hub.`
       });
+      db.addAuditLog({
+        actorKey: body.actorKey || "ceo-sme",
+        ipAddress: clientIp,
+        action: "B2B_CONNECT",
+        target: company,
+        severity: "INFO",
+        details: `Gửi yêu cầu kết nối giao thương nội bộ tới "${company}".`
+      });
       return sendJson(res, 200, {
         ok: true,
         event: evt,
+        auditLogs: db.state.auditLogs,
         activityLogs: db.state.activityLogs
       });
     } catch (err) {
@@ -380,7 +602,7 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
-  // 12. Increment Lighthouse Customer Deal in Nha Trang
+  // 14. Increment Lighthouse Customer Deal in Nha Trang
   const lighthouseMatch = pathname.match(/^\/api\/v1\/lighthouse\/(\d+)\/increment$/);
   if (lighthouseMatch && method === "POST") {
     const idx = parseInt(lighthouseMatch[1], 10);
@@ -396,10 +618,19 @@ async function handleApi(req, res, parsedUrl) {
       eventType: "LIGHTHOUSE_DEAL_CLOSED",
       text: `[Chiến dịch Hạt nhân Nha Trang] Chúc mừng! Vừa chốt thêm 01 khách hàng thuộc nhóm "${item.segment}" (Tổng: ${item.currentSigned}/${item.targetCount}).`
     });
+    db.addAuditLog({
+      actorKey: "super-admin",
+      ipAddress: clientIp,
+      action: "CRM_LIGHTHOUSE_CLOSE",
+      target: item.segment,
+      severity: "INFO",
+      details: `Cập nhật tiến độ chốt khách hàng hạt nhân Nha Trang lên ${item.currentSigned}/${item.targetCount}.`
+    });
     return sendJson(res, 200, {
       ok: true,
       lighthouseTargets: db.state.lighthouseTargets,
       event: evt,
+      auditLogs: db.state.auditLogs,
       activityLogs: db.state.activityLogs
     });
   }
@@ -443,13 +674,13 @@ const server = http.createServer(async (req, res) => {
 
 if (process.argv.includes("--seed")) {
   db.save();
-  console.log("✅ Đã khởi tạo dữ liệu mẫu (bao gồm Diễn đàn Cộng đồng) vào CSDL tập trung thành công!");
+  console.log("✅ Đã khởi tạo dữ liệu mẫu v2.0 (Admin CMS, Users, Forum Moderation & Audit Logs) thành công!");
   process.exit(0);
 }
 
 server.listen(PORT, HOST, () => {
   console.log("==================================================================");
-  console.log(`🚀 TECHCORP ECOSYSTEM HUB, SSO & FORUM SERVER ĐANG CHẠY!`);
+  console.log(`🚀 TECHCORP ECOSYSTEM HUB v2.0 (ADMIN CMS & AUDIT LOGS) ĐANG CHẠY!`);
   console.log(`🌐 Local URL   : http://localhost:${PORT}`);
   console.log(`🌍 Domain đích : ${PUBLIC_DOMAIN}`);
   console.log(`🗄️  SQLite DB   : ${SQLITE_DB_PATH}`);
