@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  techcorp-hub:
+    build: .
+    container_name: techcorp-ecosystem-hub
+    restart: always
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - TECHCORP_HUB_DOMAIN=https://hesinhthai.techcorp.info.vn
+      - TECHCORP_SSO_SECRET=${TECHCORP_SSO_SECRET:-techcorp_khanhhoa_sso_secret_key_2026}
+    volumes:
+      - ./data:/app/data

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechCorp Ecosystem Hub — hesinhthai.techcorp.info.vn (Cổng Liên thông, SSO & Diễn đàn B2B)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Nhúng Thanh Liên thông Hệ sinh thái (Dùng chung cho mọi phần mềm thuộc TechCorp) -->
+  <script
+    src="widget/techcorp-ecosystem-bar.js"
+    data-app-id="biz-erp"
+    data-org-name="Nha Trang Bay Resort & Travel"
+    data-user-role="CEO Doanh nghiệp SME"
+    defer
+  ></script>
+</head>
+<body>
+  <!-- Header chính của Cổng Trung tâm TechCorp Hub -->
+  <header class="hub-header">
+    <div class="hub-header-inner">
+      <div class="brand-box">
+        <div class="brand-logo">TC</div>
+        <div class="brand-title">
+          <h1>TechCorp Ecosystem Hub • <span style="color:#38bdf8;">hesinhthai.techcorp.info.vn</span></h1>
+          <p id="currentPersonaDesc">Nha Trang Bay Resort & Travel (Đang dùng: ERP + Website) • [Khối Doanh nghiệp SME]</p>
+        </div>
+      </div>
+
+      <div class="sso-control">
+        <label for="personaSelect">Tài khoản TechCorp ID (SSO JWT):</label>
+        <select id="personaSelect" class="sso-select">
+          <option value="ceo-sme">1. CEO Doanh nghiệp SME (ERP & Website)</option>
+          <option value="center-dir">2. Giám đốc Trung tâm Ngoại ngữ - Tin học</option>
+          <option value="school-principal">3. Hiệu trưởng Trường học (Mầm non - ĐH)</option>
+          <option value="student-user">4. Sinh viên / Học viên / Phụ huynh</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Dải chỉ số thực thi Giai đoạn 1 tại Nha Trang -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span>ỨNG DỤNG ĐÃ TÍCH HỢP VÀO HUB</span>
+          <span class="badge badge-green" id="apiStatusBadge">● API & DB Online</span>
+        </div>
+        <div class="kpi-value" id="kpiConnectedAppsCount">5 Ứng dụng</div>
+        <div class="kpi-sub">● Sẵn sàng cắm thêm ứng dụng mới qua API Key</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span>DIỄN ĐÀN CỘNG ĐỒNG & GIAO THƯƠNG</span>
+          <span class="badge badge-amber">Verified B2B</span>
+        </div>
+        <div class="kpi-value" id="kpiForumPostsCount">4 Chủ đề</div>
+        <div class="kpi-sub">● 100% Định danh thực & Kèm đặc quyền nội bộ</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span>TIẾN ĐỘ HẠT NHÂN NHA TRANG (GĐ1)</span>
+          <span class="badge badge-blue">Mục tiêu 90 ngày</span>
+        </div>
+        <div class="kpi-value" id="kpiLighthouseCount">22 / 57</div>
+        <div class="kpi-sub">● 2 ĐH/CĐ • 10 TT NN-TH • 15 Mầm non • 30 SME</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <span>DOANH THU ĐỊNH KỲ TẠI NHA TRANG (MRR)</span>
+          <span class="badge badge-purple">SaaS + Combo</span>
+        </div>
+        <div class="kpi-value">112.5 Tr/tháng</div>
+        <div class="kpi-sub">▲ Tỷ lệ bán chéo (Cross-sell) đạt 68%</div>
+      </div>
+    </section>
+
+    <!-- Thanh điều hướng 7 Phân hệ Cốt lõi -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="tab-bridge">
+        1. Trục Liên thông & Live Event Bus
+      </button>
+      <button class="tab-btn" data-tab="tab-forum">
+        💬 2. Diễn đàn Cộng đồng & Quảng bá Chéo (Forum)
+      </button>
+      <button class="tab-btn" data-tab="tab-app-registry">
+        3. Tích hợp Ứng dụng Mới & SSO API
+      </button>
+      <button class="tab-btn" data-tab="tab-talent">
+        4. Sàn Nhân lực & Thực tập Nha Trang (EdTech ↔ ERP)
+      </button>
+      <button class="tab-btn" data-tab="tab-lms">
+        5. Phễu Thi Online & Tuyển sinh Chéo (LMS Hub)
+      </button>
+      <button class="tab-btn" data-tab="tab-b2b">
+        6. Chợ Giao thương B2B & Đặc quyền Phụ huynh
+      </button>
+      <button class="tab-btn" data-tab="tab-phase1">
+        7. Quản trị 57 Hạt nhân Nha Trang & Báo giá Combo
+      </button>
+    </nav>
+
+    <!-- TAB 1: TRỤC LIÊN THÔNG SẢN PHẨM -->
+    <section id="tab-bridge" class="tab-panel active">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Danh sách Ứng dụng Đang Kết nối vào CSDL Tập trung</h3>
+              <p class="card-subtitle">
+                Mọi ứng dụng trong danh sách này dùng chung <strong>TechCorp ID (SSO)</strong> và bắn sự kiện qua <strong>Hub API Gateway</strong>
+              </p>
+            </div>
+            <button class="btn btn-outline" onclick="switchToTab('tab-app-registry')">
+              + Tích hợp Ứng dụng Mới
+            </button>
+          </div>
+
+          <div class="product-list" id="connectedAppsList"></div>
+
+          <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border-color);">
+            <h4 style="font-size:14px;margin-bottom:10px;color:#38bdf8;">⚡ Kích hoạt Luồng Đồng bộ API Thực tế (Lưu vào SQLite/JSON DB):</h4>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="simulateCrossSync('erp-job')">
+                1. Đẩy Tin tuyển dụng từ ERP → Trường ĐH & Trung tâm
+              </button>
+              <button class="btn btn-emerald" onclick="simulateCrossSync('exam-cert')">
+                2. Cấp Chứng chỉ Thi Online → Chia Lead cho Trung tâm
+              </button>
+              <button class="btn btn-outline" onclick="simulateCrossSync('parent-voucher')">
+                3. Gửi E-Voucher Doanh nghiệp → App Phụ huynh Mầm non
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Nhật ký Đồng bộ Tập trung (Hub Event Bus Logs)</h3>
+              <p class="card-subtitle">Dữ liệu thời gian thực từ API <code>POST /api/v1/events/publish</code> & Diễn đàn</p>
+            </div>
+          </div>
+          <div class="feed-list" id="liveFeedList"></div>
+
+          <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border-color);">
+            <h4 style="font-size:13.5px;color:#f8fafc;">SSO JWT Token hiện tại của phiên làm việc (<code>TechCorp ID</code>):</h4>
+            <div class="code-box" id="currentSsoTokenBox" style="word-break:break-all;max-height:85px;overflow-y:auto;">
+              Đang khởi tạo JWT Token từ /api/v1/sso/token...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: DIỄN ĐÀN CỘNG ĐỒNG & QUẢNG BÁ CHÉO CÓ KIỂM CHỨNG -->
+    <section id="tab-forum" class="tab-panel">
+      <div class="grid-2">
+        <!-- Cột trái: Danh sách bài thảo luận & giao thương -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Diễn đàn Cộng đồng & Giao thương Có Kiểm Chứng (TechCorp Verified Board)</h3>
+              <p class="card-subtitle">
+                100% thành viên đăng bài được xác thực qua <strong>TechCorp ID</strong>. Áp dụng quy tắc <strong>"Give-to-Get"</strong>: Mọi bài quảng bá đều kèm đặc quyền riêng cho thành viên!
+              </p>
+            </div>
+          </div>
+
+          <!-- Bộ lọc 4 chuyên mục -->
+          <div class="forum-cat-pills" id="forumCategoryBar">
+            <button class="forum-cat-btn active" data-cat="all">Tất cả chủ đề</button>
+            <button class="forum-cat-btn" data-cat="rfq">📢 Cần Mua / Tìm Đối tác (RFQ)</button>
+            <button class="forum-cat-btn" data-cat="spotlight">🎁 Quảng bá & Đặc quyền (Give-to-Get)</button>
+            <button class="forum-cat-btn" data-cat="comarketing">🤝 Hợp tác Sự kiện & Tuyển sinh</button>
+            <button class="forum-cat-btn" data-cat="knowledge">💡 Chia sẻ Quản trị & Chuyển đổi số</button>
+          </div>
+
+          <div id="forumPostsContainer"></div>
+        </div>
+
+        <!-- Cột phải: Khung đăng bài mới (Verified Composer) -->
+        <div class="card" style="align-self:start;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">✍️ Đăng Tin Thảo luận / Tìm Đối tác / Quảng bá</h3>
+              <p class="card-subtitle">
+                Bài đăng sẽ hiển thị với tư cách định danh thực của tài khoản SSO đang chọn và đẩy thông báo lên Thanh Liên thông toàn hệ thống.
+              </p>
+            </div>
+          </div>
+
+          <div
+            style="background:rgba(14,165,233,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12.5px;"
+          >
+            <div style="color:#38bdf8;font-weight:700;">✔ Định danh người đăng (TechCorp ID):</div>
+            <div id="forumComposerIdentity" style="color:#f8fafc;margin-top:4px;">
+              CEO Khách sạn & Lữ hành Biển Nha Trang • Nha Trang Bay Resort & Travel
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">1. Chọn chuyên mục đăng bài:</label>
+              <select id="forumPostCategory" class="select-control" style="width:100%;">
+                <option value="rfq">📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ - Hiệu quả nhất)</option>
+                <option value="spotlight">🎁 Quảng bá Thương hiệu & Đặc quyền Thành viên (Give-to-Get)</option>
+                <option value="comarketing">🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện</option>
+                <option value="knowledge">💡 Góc Chia sẻ Quản trị, HR & Chuyển đổi số (Cấm bán hàng)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">2. Tiêu đề bài viết (Rõ nhu cầu & Địa bàn):</label>
+              <input
+                type="text"
+                id="forumPostTitle"
+                class="input-control"
+                style="width:100%;"
+                placeholder="VD: [Nha Trang] Cần tìm đối tác cung cấp đồng phục / Đào tạo tiếng Anh..."
+              />
+            </div>
+
+            <div>
+              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">3. Nội dung chi tiết:</label>
+              <textarea
+                id="forumPostContent"
+                class="input-control"
+                style="width:100%;min-height:95px;resize:vertical;font-family:inherit;"
+                placeholder="Mô tả chi tiết nhu cầu kết nối, số lượng, thời gian hoặc kinh nghiệm muốn chia sẻ với cộng đồng TechCorp Khánh Hòa..."
+              ></textarea>
+            </div>
+
+            <div>
+              <label style="font-size:12.5px;color:#34d399;display:block;margin-bottom:6px;font-weight:600;">
+                4. 🎁 Đặc quyền / Quyền lợi cam kết dành cho Thành viên TechCorp (Quy tắc Give-to-Get):
+              </label>
+              <input
+                type="text"
+                id="forumPostDeal"
+                class="input-control"
+                style="width:100%;border-color:rgba(16,185,129,0.4);"
+                placeholder="VD: Giảm 25% học phí / Chiết khấu 15% hợp đồng cho đơn vị có TechCorp ID..."
+              />
+            </div>
+
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#fbbf24;cursor:pointer;margin-top:4px;">
+              <input type="checkbox" id="forumPostPinned" />
+              <span>📌 Ghim bài VIP lên đầu Diễn đàn & Đẩy lên Thanh Liên thông (Sponsored / VIP)</span>
+            </label>
+
+            <button class="btn btn-primary" onclick="submitNewForumPost()" style="padding:12px;font-size:14px;margin-top:4px;">
+              🚀 Đăng lên Diễn đàn Cộng đồng TechCorp (POST /api/v1/forum/posts)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: CỔNG TÍCH HỢP ỨNG DỤNG MỚI & SSO API (APP REGISTRY) -->
+    <section id="tab-app-registry" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Đăng ký Ứng dụng Mới vào Hệ sinh thái TechCorp (Plug & Play)</h3>
+              <p class="card-subtitle">
+                Khi TechCorp có thêm sản phẩm mới (VD: Quản lý Khách sạn, Quản lý Phòng khám, Cổng Phụ huynh...), chỉ cần điền thông tin bên dưới để cấp <strong>API Key</strong>, <strong>SSO</strong> và tự động gắn lên thanh liên thông toàn hệ thống!
+              </p>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">Mã định danh Ứng dụng (App ID):</label>
+                <input type="text" id="newAppId" class="input-control" style="width:100%;" placeholder="VD: biz-hotel-pms" value="biz-hotel-pms" />
+              </div>
+              <div>
+                <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">Nhãn phân loại (Badge):</label>
+                <input type="text" id="newAppBadge" class="input-control" style="width:100%;" placeholder="VD: Hospitality / EdTech / BizTech" value="Hospitality" />
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">Tên hiển thị trên Thanh Liên thông Hệ sinh thái:</label>
+              <input type="text" id="newAppName" class="input-control" style="width:100%;" placeholder="VD: Quản lý Khách sạn & Resort (PMS)" value="QL Khách sạn & Resort (PMS)" />
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">Địa chỉ Web của Ứng dụng (App URL):</label>
+                <input type="text" id="newAppUrl" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn" />
+              </div>
+              <div>
+                <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">Webhook nhận sự kiện từ Hub:</label>
+                <input type="text" id="newAppWebhook" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn/api/webhooks/techcorp-hub" />
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">Mô tả chức năng & Luồng dữ liệu liên thông:</label>
+              <input
+                type="text"
+                id="newAppDesc"
+                class="input-control"
+                style="width:100%;"
+                value="Quản lý buồng phòng, đặt phòng & kết nối tuyển thực tập sinh Du lịch Nha Trang"
+              />
+            </div>
+
+            <button class="btn btn-primary" onclick="registerNewEcosystemApp()" style="padding:12px;font-size:14px;">
+              🚀 Cấp API Key & Tích hợp Ngay vào Hệ sinh thái (POST /api/v1/apps/register)
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Bộ Mã Nhúng & Tài liệu Đấu nối Tự động</h3>
+              <p class="card-subtitle">Sinh tự động cho ứng dụng trên server <code>https://hesinhthai.techcorp.info.vn</code></p>
+            </div>
+          </div>
+
+          <div id="integrationGuideOutput">
+            <p style="font-size:13px;color:#94a3b8;margin-bottom:8px;">
+              <strong>Bước 1:</strong> Nhúng 1 dòng dưới đây vào thẻ <code>&lt;head&gt;</code> của bất kỳ ứng dụng web nào để có ngay Thanh Liên thông & SSO:
+            </p>
+            <div class="code-box">&lt;script
+  src="https://hesinhthai.techcorp.info.vn/widget/techcorp-ecosystem-bar.js"
+  data-hub-url="https://hesinhthai.techcorp.info.vn"
+  data-app-id="biz-erp"
+  data-org-name="Đơn vị Thành viên Khánh Hòa"
+  data-user-role="SSO Member"
+  defer
+&gt;&lt;/script&gt;</div>
+
+            <p style="font-size:13px;color:#94a3b8;margin-top:14px;margin-bottom:8px;">
+              <strong>Bước 2:</strong> Gọi API xác thực SSO Token từ Backend ứng dụng vệ tinh:
+            </p>
+            <div class="code-box">GET https://hesinhthai.techcorp.info.vn/api/v1/sso/verify
+Authorization: Bearer &lt;TECHCORP_SSO_JWT_TOKEN&gt;</div>
+
+            <p style="font-size:13px;color:#94a3b8;margin-top:14px;margin-bottom:8px;">
+              <strong>Bước 3:</strong> Đẩy sự kiện liên thông (Tuyển dụng, Chứng chỉ số, Lead học viên, Voucher) lên Hub:
+            </p>
+            <div class="code-box">POST https://hesinhthai.techcorp.info.vn/api/v1/events/publish
+X-TechCorp-Api-Key: tc_live_bizerp_112233445566778899
+Content-Type: application/json
+
+{
+  "sourceApp": "biz-erp",
+  "targetApp": "edu-school",
+  "eventType": "ERP_JOB_POSTED",
+  "text": "[ERP -> Trường ĐH] Tuyển 05 Thực tập sinh tiếng Anh tại Nha Trang"
+}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: SÀN NHÂN LỰC & THỰC TẬP SỐ NHA TRANG -->
+    <section id="tab-talent" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Sàn Nhân lực & Thực tập Sinh Đã Xác Thực Năng Lực (Nha Trang - Khánh Hòa)</h3>
+            <p class="card-subtitle">
+              Mỗi ứng viên đều có điểm thi thực tế từ <strong>Nền tảng Thi Online</strong> và xác nhận từ <strong>Trường CĐ/ĐH & Trung tâm NN-TH</strong>. Bấm nút để gọi API đẩy thẳng vào ERP HRM.
+            </p>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <input
+            type="text"
+            id="talentSearchInput"
+            class="input-control"
+            style="min-width:280px;"
+            placeholder="Tìm theo tên, trường (ĐH Nha Trang...), chứng chỉ (IELTS, TOEIC, ERP)..."
+          />
+          <select id="talentDomainFilter" class="select-control">
+            <option value="all">Tất cả lĩnh vực tại Nha Trang</option>
+            <option value="tourism">Du lịch - Khách sạn - Nhà hàng - Ngoại ngữ</option>
+            <option value="it">Công nghệ thông tin - Quản trị ERP - Chuyển đổi số</option>
+            <option value="finance">Kế toán - Tài chính - Hành chính Nhân sự</option>
+          </select>
+        </div>
+
+        <div class="grid-2" id="talentGrid"></div>
+      </div>
+    </section>
+
+    <!-- TAB 5: PHỄU THI ONLINE & TUYỂN SINH CHÉO -->
+    <section id="tab-lms" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Đấu trường Học & Thi Online Khánh Hòa — Phễu Thu hút Học viên (Wedge Product)</h3>
+            <p class="card-subtitle">
+              Vũ khí giúp TechCorp chốt nhanh <strong>10 Trung tâm Ngoại ngữ - Tin học</strong> và <strong>15 Trường Mầm non/Phổ thông</strong> tại Nha Trang trong Giai đoạn 1.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-3" id="contestList"></div>
+      </div>
+    </section>
+
+    <!-- TAB 6: CHỢ GIAO THƯƠNG B2B & ĐẶC QUYỀN NỘI BỘ -->
+    <section id="tab-b2b" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Chợ Giao thương B2B & Đặc quyền Thành viên Hệ sinh thái TechCorp</h3>
+            <p class="card-subtitle">
+              Kết nối cung - cầu nội bộ giữa 30 Doanh nghiệp SME dùng ERP/Website với các Trường học, Trung tâm và hàng chục ngàn Phụ huynh tại Nha Trang.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2" id="b2bGrid"></div>
+      </div>
+    </section>
+
+    <!-- TAB 7: QUẢN TRỊ CHIẾN DỊCH NHA TRANG & CÔNG CỤ BÁO GIÁ COMBO -->
+    <section id="tab-phase1" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Bảng Theo dõi 57 Khách hàng Hạt nhân tại Nha Trang (Lưu CSDL Tập trung)</h3>
+              <p class="card-subtitle">Bấm "+1 Chốt mới" để lưu trực tiếp tiến độ vào Database trên Server</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="tc-table">
+              <thead>
+                <tr>
+                  <th>Phân khúc & Khu vực</th>
+                  <th>Gói Combo Mũi nhọn</th>
+                  <th>Tiến độ Chốt</th>
+                  <th>Ghi chú Thực chiến</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="lighthouseTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Công cụ Tính Giá Gói Combo & Quyền lợi Hệ sinh thái (Sales Kit)</h3>
+              <p class="card-subtitle">Dành cho chuyên viên tư vấn TechCorp khi đi gặp trực tiếp Hiệu trưởng / Giám đốc tại Nha Trang</p>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div>
+              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">1. Chọn loại hình khách hàng tại Nha Trang:</label>
+              <select id="calcCustomerType" class="select-control" style="width:100%;">
+                <option value="sme">Doanh nghiệp SME (Combo Website + Micro-ERP + Tuyển dụng)</option>
+                <option value="center">Trung tâm Ngoại ngữ - Tin học (Combo QL Trung tâm + Thi Online + Web)</option>
+                <option value="kindergarten">Trường Mầm non / Phổ thông Tư thục (QL Trường + Sổ liên lạc + QR Học phí)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">
+                2. Quy mô đơn vị (Số nhân sự DN / Số học viên Trung tâm / Số học sinh Trường):
+              </label>
+              <input type="number" id="calcScaleInput" class="input-control" style="width:100%;" value="25" min="5" max="5000" />
+            </div>
+
+            <div>
+              <label style="font-size:12.5px;color:#94a3b8;display:block;margin-bottom:6px;">3. Chu kỳ thanh toán:</label>
+              <select id="calcPeriod" class="select-control" style="width:100%;">
+                <option value="12">Thanh toán 12 tháng (Nhận trọn bộ quà tặng Website & Đặc quyền Hạt nhân)</option>
+                <option value="6">Thanh toán 6 tháng</option>
+              </select>
+            </div>
+
+            <div
+              id="calcResultBox"
+              style="background:rgba(15,23,42,0.85);border:1px solid var(--border-accent);border-radius:12px;padding:16px;margin-top:6px;"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="app.js"></script>
+</body>
+</html>
