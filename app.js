@@ -749,18 +749,76 @@ function recordLocalAuditLog(action, target, severity, details) {
   renderAuditLogsTable();
 }
 
+window.activeAdminPanelId = "panel-master-overview";
+window.activeMemberSubTab = "overview";
+
+window.activateAdminPanel = function (panelId, memberSubTab) {
+  if (memberSubTab) {
+    window.activeMemberSubTab = memberSubTab;
+  }
+  window.activeAdminPanelId = panelId;
+  const panels = document.querySelectorAll(".tab-panel");
+  if (panels.length > 0) {
+    panels.forEach((p) => {
+      p.classList.toggle("active", p.id === panelId);
+    });
+  }
+  document.querySelectorAll("#dynamicRoleSidebarNav .nav-btn").forEach((btn) => {
+    const matchPanel = btn.getAttribute("data-panel") === panelId;
+    const btnSub = btn.getAttribute("data-subtab") || "";
+    const matchSub = !memberSubTab || !btnSub || btnSub === memberSubTab;
+    btn.classList.toggle("active", matchPanel && matchSub);
+  });
+  if (panelId === "panel-role-workspace") {
+    renderMemberWorkspace();
+  }
+};
+
 window.switchToTab = function (tabId) {
-  const btn = document.querySelector(`.nav-btn[data-tab="${tabId}"], .tab-btn[data-tab="${tabId}"]`);
-  if (btn) btn.click();
+  // Support both legacy tab IDs and v5.0 panel IDs / Public anchors
+  const panelMap = {
+    "view-plaza": "panel-master-overview",
+    "view-workspace": "panel-role-workspace",
+    "view-forum-b2b": "panel-master-forum",
+    "view-talent-lms": "panel-role-workspace",
+    "view-master-admin": "panel-master-rbac"
+  };
+  const mappedPanel = panelMap[tabId] || tabId;
+  if (document.getElementById(mappedPanel)) {
+    window.activateAdminPanel(mappedPanel);
+    return;
+  }
+  // If on Public Page (index.html), scroll to relevant section
+  const publicSectionMap = {
+    "view-plaza": "section-bulletins",
+    "view-workspace": "section-roles",
+    "view-forum-b2b": "section-forum",
+    "view-talent-lms": "section-talent"
+  };
+  const secId = publicSectionMap[tabId] || tabId;
+  const secEl = document.getElementById(secId);
+  if (secEl) {
+    secEl.scrollIntoView({ behavior: "smooth" });
+  }
 };
 
 window.openAdminSubtab = function (subtabId) {
-  window.switchToTab("view-master-admin");
-  const btn = document.querySelector(`.admin-subbtn[data-subtab="${subtabId}"]`);
-  if (btn) btn.click();
+  const map = {
+    "admin-rbac": "panel-master-rbac",
+    "admin-bulletins": "panel-master-bulletins",
+    "admin-apps": "panel-master-apps",
+    "admin-forum": "panel-master-forum",
+    "admin-users": "panel-master-users",
+    "admin-audit": "panel-master-audit"
+  };
+  const targetPanel = map[subtabId] || "panel-master-rbac";
+  if (document.getElementById(targetPanel)) {
+    window.activateAdminPanel(targetPanel);
+  }
 };
 
 function renderAllViews() {
+  renderPublicProductsShowcase();
   renderRoleContextAndSidebar();
   renderCentralBulletins();
   renderMemberWorkspace();
@@ -778,6 +836,118 @@ function renderAllViews() {
   renderB2B();
   renderLighthouseTable();
   updateTotalKPIs();
+}
+
+// ==================== 0. PUBLIC PRODUCTS SHOWCASE GRID (INDEX.HTML) ====================
+const PRODUCT_SHOWCASE_META = {
+  "edu-school": {
+    icon: "🎓",
+    targetAudience: "Trường Mầm non, Tiểu học, THCS, THPT & Đại học - Cao đẳng",
+    highlights: [
+      "Quản lý hồ sơ học sinh/sinh viên, điểm danh AI & Sổ liên lạc điện tử đa chiều",
+      "Gạch nợ học phí tự động bằng QR động 3 giây, xuất biên lai điện tử tức thì",
+      "Liên thông học bổng từ Trung tâm Ngoại ngữ & cổng thực tập Doanh nghiệp"
+    ],
+    ecoFlow: "🔄 Liên thông: Đẩy hồ sơ SV năm cuối sang Sàn Nhân lực & Nhận học bổng/tài trợ cho Phụ huynh"
+  },
+  "edu-center": {
+    icon: "🏫",
+    targetAudience: "Trung tâm Ngoại ngữ (IELTS/TOEIC/Giao tiếp), Tin học & Kỹ năng",
+    highlights: [
+      "CRM Tuyển sinh thông minh, quản lý xếp lớp, lịch giáo viên bản xứ & học phí",
+      "Tích hợp trực tiếp Phòng Thi Online LMS để tổ chức thi thử toàn tỉnh thu Lead",
+      "Nhận đặt hàng đào tạo ngoại ngữ/tin học trực tiếp từ các Doanh nghiệp SME"
+    ],
+    ecoFlow: "🔄 Liên thông: Nhận Lead thí sinh tự động từ Đấu trường Thi Online & Giới thiệu học viên vào DN"
+  },
+  "lms-exam": {
+    icon: "📝",
+    targetAudience: "Trường học, Trung tâm Đào tạo, Doanh nghiệp sát hạch nội bộ & Thí sinh",
+    highlights: [
+      "Ngân hàng đề thi chuẩn hóa, chấm điểm tự động & chống gian lận trực tuyến",
+      "Cấp Chứng chỉ Năng lực Số kèm mã QR xác thực chống giả mạo trên toàn hệ thống",
+      "Phễu thu hút hàng ngàn học sinh, sinh viên tham gia thi thử mỗi học kỳ"
+    ],
+    ecoFlow: "🔄 Liên thông: Tự động gắn huy hiệu Chứng chỉ Xác thực vào Hồ sơ Ứng viên gửi sang ERP"
+  },
+  "biz-web": {
+    icon: "🌐",
+    targetAudience: "Doanh nghiệp Du lịch, Resort, F&B, Thương mại, Trường học & Trung tâm",
+    highlights: [
+      "Kiến trúc Website chuẩn SEO Quốc tế đa ngôn ngữ (Việt - Anh - Hàn - Trung)",
+      "Nhúng tự động Cổng Tuyển dụng từ ERP & Khung đăng ký nhận ưu đãi B2B",
+      "Triển khai siêu tốc, đồng bộ nhận diện thương hiệu trong Hệ sinh thái Số TechCorp"
+    ],
+    ecoFlow: "🔄 Liên thông: Đồng bộ tin tuyển dụng, sản phẩm & ưu đãi thành viên lên Chợ Giao thương B2B"
+  },
+  "biz-erp": {
+    icon: "🏢",
+    targetAudience: "Doanh nghiệp SME, Tập đoàn Dịch vụ, Khách sạn, Sản xuất & Phân phối",
+    highlights: [
+      "Quản trị toàn diện: HRM Nhân sự - Chấm công, CRM Khách hàng, Tài chính - Kế toán, Kho vận",
+      "Tuyển dụng 1-Click: Nhập trực tiếp hồ sơ ứng viên đã xác thực điểm thi từ LMS vào HRM",
+      "Phát hành E-Voucher khuyến mãi chéo tới hơn 15.000 Phụ huynh & Sinh viên"
+    ],
+    ecoFlow: "🔄 Liên thông: Kết nối trực tiếp nguồn nhân lực trẻ từ Trường ĐH & Trung tâm Đào tạo"
+  }
+};
+
+function renderPublicProductsShowcase() {
+  const gridEl = document.getElementById("publicProductsShowcaseGrid");
+  if (!gridEl) return;
+
+  const activeApps = STATE.apps.filter((a) => a.status !== "locked");
+  gridEl.innerHTML = activeApps
+    .map((app) => {
+      const meta = PRODUCT_SHOWCASE_META[app.id] || {
+        icon: "🚀",
+        targetAudience: "Đơn vị Thành viên Hệ sinh thái TechCorp",
+        highlights: [
+          app.desc || "Nền tảng thành viên kết nối trực tiếp vào Trục dữ liệu SSO TechCorp ID",
+          "Tích hợp sẵn thanh điều hướng Ecosystem Topbar và xác thực tập trung JWT",
+          "Chia sẻ dữ liệu liên thông hai chiều qua REST API & Webhook thời gian thực"
+        ],
+        ecoFlow: "🔄 Liên thông: Kết nối SSO TechCorp ID & Đồng bộ dữ liệu tự động qua Event Bus"
+      };
+
+      const bulletsHtml = meta.highlights
+        .map((h) => `<div style="font-size:12.5px;color:#334155;margin-top:4px;">✔ ${escapeHtml(h)}</div>`)
+        .join("");
+
+      return `
+        <div class="pub-product-card">
+          <div>
+            <div class="pub-prod-top">
+              <div class="pub-prod-icon">${meta.icon}</div>
+              <span class="badge badge-blue">${escapeHtml(app.badge || "TechCorp Cloud")}</span>
+            </div>
+            <h3>${escapeHtml(app.name)}</h3>
+            <div style="font-size:12px;font-weight:700;color:#0052d4;margin-bottom:6px;">
+              🎯 Đối tượng: ${escapeHtml(meta.targetAudience)}
+            </div>
+            <p>${escapeHtml(app.desc)}</p>
+            <div style="margin:8px 0;padding:10px 12px;background:#f8fbff;border-radius:10px;border:1px solid #dbeafe;">
+              ${bulletsHtml}
+            </div>
+            <div class="pub-prod-flow">
+              ${escapeHtml(meta.ecoFlow)}
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:10px;border-top:1px solid #e2e8f0;flex-wrap:wrap;">
+            <code style="font-size:11.5px;color:#0052d4;font-weight:700;">${escapeHtml(app.appUrl)}</code>
+            <div style="display:flex;gap:6px;">
+              <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+                🚀 Mở Nền tảng ↗
+              </a>
+              <a href="admin.html" class="btn btn-outline btn-sm" style="text-decoration:none;">
+                🛡️ Quản trị
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
 }
 
 // ==================== 1. CONNECTED APPS & ROLE-BASED APP LAUNCHER ====================
@@ -2417,42 +2587,361 @@ function renderRoleContextAndSidebar() {
   const roleConfig = STATE.rbacMatrix[roleCode] || STATE.rbacMatrix.super_admin;
   const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
   const userObj = getCurrentUserObject();
+  const perms = (roleConfig && roleConfig.permissions) || {};
 
-  // Highlight Role Pill Cards
+  // 1. Highlight Role Pill Cards
   document.querySelectorAll(".role-pill-card").forEach((card) => {
     card.classList.toggle("active", card.getAttribute("data-persona") === STATE.currentPersona);
   });
 
-  // Update Sidebar Badges
-  const navWorkspaceBadge = document.getElementById("navBadgeWorkspace");
-  if (navWorkspaceBadge) {
-    const shortLabels = {
-      super_admin: "Giám sát 4 Khối",
-      ceo_sme: "DN SME",
-      center_director: "Trung tâm",
-      school_principal: "Nhà trường",
-      student_parent: "Hồ sơ Số"
+  // 2. Dynamically Render Role-Specific Left Sidebar (#dynamicRoleSidebarNav in admin.html)
+  const sidebarNavEl = document.getElementById("dynamicRoleSidebarNav");
+  if (sidebarNavEl) {
+    const pendingForumCount = STATE.forumPosts.filter((p) => p.status === "pending").length;
+    const totalBulletinsCount = (STATE.announcements || []).length;
+
+    if (roleCode === "super_admin") {
+      sidebarNavEl.innerHTML = `
+        <div class="sidebar-section-label">👑 ĐIỀU HÀNH HỆ SINH THÁI (MASTER)</div>
+        <button class="nav-btn" data-panel="panel-master-overview" onclick="activateAdminPanel('panel-master-overview')">
+          <span>📊 1. Tổng quan & Event Bus</span>
+          <span class="nav-badge">${STATE.apps.length} App</span>
+        </button>
+        <button class="nav-btn" data-panel="panel-master-apps" onclick="activateAdminPanel('panel-master-apps')">
+          <span>🚀 2. Quản trị Sản phẩm & App</span>
+          <span class="nav-badge">API Key</span>
+        </button>
+        <button class="nav-btn" data-panel="panel-master-bulletins" onclick="activateAdminPanel('panel-master-bulletins')">
+          <span>📢 3. Quản trị Bản tin Public</span>
+          <span class="nav-badge">${totalBulletinsCount} Tin</span>
+        </button>
+        <button class="nav-btn" data-panel="panel-master-forum" onclick="activateAdminPanel('panel-master-forum')">
+          <span>🛡️ 4. Kiểm duyệt Diễn đàn</span>
+          <span class="nav-badge">${pendingForumCount} Chờ</span>
+        </button>
+        <button class="nav-btn" data-panel="panel-master-users" onclick="activateAdminPanel('panel-master-users')">
+          <span>👥 5. Quản lý Thành viên & SSO</span>
+          <span class="nav-badge">${STATE.users.length} User</span>
+        </button>
+        <button class="nav-btn" data-panel="panel-master-rbac" onclick="activateAdminPanel('panel-master-rbac')">
+          <span>🔐 6. Cấu hình Phân quyền RBAC</span>
+          <span class="nav-badge">9 Quyền</span>
+        </button>
+        <button class="nav-btn" data-panel="panel-master-audit" onclick="activateAdminPanel('panel-master-audit')">
+          <span>🔍 7. Audit Logs & 57 Hạt nhân</span>
+          <span class="nav-badge">An ninh</span>
+        </button>
+        <div class="sidebar-section-label" style="margin-top:10px;">🏢 GIÁM SÁT WORKSPACE ĐƠN VỊ</div>
+        <button class="nav-btn" data-panel="panel-role-workspace" onclick="activateAdminPanel('panel-role-workspace', 'overview')">
+          <span>🏢 8. Giám sát Workspace 4 Khối</span>
+          <span class="nav-badge">4 Vai trò</span>
+        </button>
+      `;
+    } else {
+      const roleMenus = {
+        ceo_sme: {
+          sectionTitle: "🏢 QUẢN TRỊ DOANH NGHIỆP (SME)",
+          items: [
+            { label: "🏢 1. Bảng điều khiển Doanh nghiệp", subtab: "overview", badge: "ERP+Web" },
+            { label: "👨‍💼 2. Tuyển dụng Liên thông & Sàn CV", subtab: "recruitment", badge: `${STATE.talents.length} CV` },
+            { label: "🎁 3. Chiến dịch E-Voucher & B2B", subtab: "b2b", badge: "Give-to-Get" }
+          ]
+        },
+        center_director: {
+          sectionTitle: "🏫 QUẢN TRỊ TRUNG TÂM ĐÀO TẠO",
+          items: [
+            { label: "🏫 1. Bảng điều khiển Trung tâm", subtab: "overview", badge: "CRM+LMS" },
+            { label: "🏆 2. Đấu trường Thi Online & Lead", subtab: "contests", badge: "385 Lead" },
+            { label: "🤝 3. Hợp đồng Đào tạo DN (RFQ)", subtab: "b2b", badge: "04 HĐ" }
+          ]
+        },
+        school_principal: {
+          sectionTitle: "🎓 QUẢN TRỊ NHÀ TRƯỜNG (BGH)",
+          items: [
+            { label: "🎓 1. Bảng điều khiển Học vụ & QR", subtab: "overview", badge: "96.4% QR" },
+            { label: "🎁 2. Duyệt Học bổng & Phúc lợi PH", subtab: "scholarships", badge: "500 Suất" },
+            { label: "🍱 3. Nhà cung ứng Học đường B2B", subtab: "b2b", badge: "06 ĐV" }
+          ]
+        },
+        student_parent: {
+          sectionTitle: "👨‍🎓 CỔNG CÔNG DÂN SỐ TECHCORP ID",
+          items: [
+            { label: "🏅 1. Hồ sơ Năng lực Số (Passport)", subtab: "overview", badge: "Verified" },
+            { label: "🚀 2. Ứng tuyển Thực tập 1-Click", subtab: "jobs", badge: "30 DN" },
+            { label: "🎁 3. Ví Học bổng & E-Voucher", subtab: "vouchers", badge: "05 Ưu đãi" }
+          ]
+        }
+      };
+
+      const cfg = roleMenus[roleCode] || roleMenus.ceo_sme;
+      const roleMenuButtons = cfg.items
+        .map(
+          (item) => `
+          <button class="nav-btn" data-panel="panel-role-workspace" data-subtab="${item.subtab}" onclick="activateAdminPanel('panel-role-workspace', '${item.subtab}')">
+            <span>${item.label}</span>
+            <span class="nav-badge">${item.badge}</span>
+          </button>
+        `
+        )
+        .join("");
+
+      const postNewsBtn = perms.postMemberNews
+        ? `
+          <button class="nav-btn" onclick="openBulletinModal('member')">
+            <span>📢 4. Đăng Tin Quảng bá lên Public</span>
+            <span class="nav-badge">✔ Mở</span>
+          </button>
+        `
+        : "";
+
+      // Check if Master Admin granted additional system permissions to this role in RBAC
+      let extraRbacMenus = "";
+      if (perms.publishMasterBulletin) {
+        extraRbacMenus += `
+          <button class="nav-btn" data-panel="panel-master-bulletins" onclick="activateAdminPanel('panel-master-bulletins')">
+            <span>📢 Quản trị Bản tin Public</span>
+            <span class="nav-badge">RBAC</span>
+          </button>
+        `;
+      }
+      if (perms.manageAppsUsersRbac) {
+        extraRbacMenus += `
+          <button class="nav-btn" data-panel="panel-master-apps" onclick="activateAdminPanel('panel-master-apps')">
+            <span>🚀 Quản trị Sản phẩm & App</span>
+            <span class="nav-badge">RBAC</span>
+          </button>
+          <button class="nav-btn" data-panel="panel-master-users" onclick="activateAdminPanel('panel-master-users')">
+            <span>👥 Quản lý Thành viên & SSO</span>
+            <span class="nav-badge">RBAC</span>
+          </button>
+        `;
+      }
+      if (perms.moderateForumAudit) {
+        extraRbacMenus += `
+          <button class="nav-btn" data-panel="panel-master-forum" onclick="activateAdminPanel('panel-master-forum')">
+            <span>🛡️ Kiểm duyệt Diễn đàn</span>
+            <span class="nav-badge">RBAC</span>
+          </button>
+          <button class="nav-btn" data-panel="panel-master-audit" onclick="activateAdminPanel('panel-master-audit')">
+            <span>🔍 Nhật ký Audit Logs</span>
+            <span class="nav-badge">RBAC</span>
+          </button>
+        `;
+      }
+
+      sidebarNavEl.innerHTML = `
+        <div class="sidebar-section-label">${cfg.sectionTitle}</div>
+        ${roleMenuButtons}
+        ${postNewsBtn}
+        <div class="sidebar-section-label" style="margin-top:10px;">🔐 CẤU HÌNH PHÂN QUYỀN & LIÊN THÔNG</div>
+        ${extraRbacMenus}
+        <button class="nav-btn" data-panel="panel-master-rbac" onclick="activateAdminPanel('panel-master-rbac')">
+          <span>🔐 Ma trận Phân quyền RBAC</span>
+          <span class="nav-badge">Cấu hình</span>
+        </button>
+        <a href="index.html" class="nav-btn" style="text-decoration:none;">
+          <span>🌍 Xem Trang Public Hệ sinh thái</span>
+          <span class="nav-badge">↗</span>
+        </a>
+      `;
+    }
+
+    // Highlight currently active button
+    document.querySelectorAll("#dynamicRoleSidebarNav .nav-btn").forEach((btn) => {
+      const matchPanel = btn.getAttribute("data-panel") === window.activeAdminPanelId;
+      const btnSub = btn.getAttribute("data-subtab") || "";
+      const matchSub = !btnSub || btnSub === window.activeMemberSubTab;
+      btn.classList.toggle("active", matchPanel && matchSub);
+    });
+  }
+
+  // 3. Dynamically Render Role-Specific Top 4 KPI Cards (#dynamicRoleKpiGrid in admin.html)
+  const kpiGridEl = document.getElementById("dynamicRoleKpiGrid");
+  if (kpiGridEl) {
+    const totalSigned = STATE.lighthouseTargets.reduce((acc, x) => acc + x.currentSigned, 0);
+    const totalTarget = STATE.lighthouseTargets.reduce((acc, x) => acc + x.targetCount, 0);
+    const totalBulletinsAndPosts = (STATE.announcements || []).length + STATE.forumPosts.length;
+
+    const kpiByRole = {
+      super_admin: [
+        {
+          label: "SẢN PHẨM TRONG HỆ SINH THÁI",
+          badge: "TechCorp Cloud",
+          badgeClass: "badge-blue",
+          value: `${STATE.apps.length} Ứng dụng`,
+          sub: "● 100% Kết nối SSO & Webhook"
+        },
+        {
+          label: "BẢN TIN & CHỦ ĐỀ PUBLIC",
+          badge: "Cổng Public",
+          badgeClass: "badge-green",
+          value: `${totalBulletinsAndPosts} Bản tin`,
+          sub: "● Tin điều hành & Giao thương thành viên"
+        },
+        {
+          label: "ĐỊNH DANH SSO TECHCORP ID",
+          badge: "Multi-Tenant",
+          badgeClass: "badge-purple",
+          value: `${STATE.users.length} Tài khoản`,
+          sub: "● Phân quyền 5 nhóm vai trò RBAC"
+        },
+        {
+          label: "MỤC TIÊU HẠT NHÂN NHA TRANG",
+          badge: "Phase 1",
+          badgeClass: "badge-amber",
+          value: `${totalSigned} / ${totalTarget}`,
+          sub: "● 2 ĐH/CĐ + 10 TT + 15 Trường + 30 DN"
+        }
+      ],
+      ceo_sme: [
+        {
+          label: "GÓI SẢN PHẨM ĐANG SỬ DỤNG",
+          badge: "SME Active",
+          badgeClass: "badge-green",
+          value: "ERP + Web + LMS",
+          sub: "● 35/50 Tài khoản nhân sự SSO"
+        },
+        {
+          label: "HỒ SƠ ỨNG VIÊN ĐÃ XÁC THỰC",
+          badge: "Từ ĐH & TT",
+          badgeClass: "badge-blue",
+          value: "14 Ứng viên",
+          sub: "● Đồng bộ 1-Click từ LMS về HRM"
+        },
+        {
+          label: "CHIẾN DỊCH E-VOUCHER B2B",
+          badge: "Give-to-Get",
+          badgeClass: "badge-amber",
+          value: "420 Lượt nhận",
+          sub: "● Từ Phụ huynh 15 Trường liên kết"
+        },
+        {
+          label: "ĐỐI TÁC ĐÀO TẠO NỘI BỘ",
+          badge: "MOU Liên kết",
+          badgeClass: "badge-purple",
+          value: "03 Đơn vị",
+          sub: "● Ocean English, ĐH Nha Trang, CĐ Du lịch"
+        }
+      ],
+      center_director: [
+        {
+          label: "THÍ SINH DỰ THI TRÊN LMS",
+          badge: "IELTS/TOEIC/MOS",
+          badgeClass: "badge-blue",
+          value: "1.420 Thí sinh",
+          sub: "● Từ 15 Trường học liên kết tại Nha Trang"
+        },
+        {
+          label: "LEAD HỌC VIÊN MỚI VỀ CRM",
+          badge: "Tự động phân bổ",
+          badgeClass: "badge-green",
+          value: "385 Học viên",
+          sub: "● Tỷ lệ chuyển đổi nhập học đạt 28.5%"
+        },
+        {
+          label: "HỌC VIÊN ĐƯỢC DN TUYỂN DỤNG",
+          badge: "Đầu ra đảm bảo",
+          badgeClass: "badge-purple",
+          value: "42 Học viên",
+          sub: "● Được các Resort & SME Nha Trang nhận"
+        },
+        {
+          label: "HỢP ĐỒNG ĐÀO TẠO B2B",
+          badge: "Doanh nghiệp đặt",
+          badgeClass: "badge-amber",
+          value: "04 Hợp đồng",
+          sub: "● Đào tạo ngoại ngữ cho nhân sự Resort"
+        }
+      ],
+      school_principal: [
+        {
+          label: "QUY MÔ HỌC SINH / SINH VIÊN",
+          badge: "Sổ liên lạc Số",
+          badgeClass: "badge-green",
+          value: "1.250 Học sinh",
+          sub: "● 100% Phụ huynh cài App Sổ liên lạc"
+        },
+        {
+          label: "THU HỌC PHÍ QR KHÔNG TIỀN MẶT",
+          badge: "Gạch nợ 3 giây",
+          badgeClass: "badge-blue",
+          value: "96.4% Hoàn tất",
+          sub: "● Giảm 80% thời gian đối soát kế toán"
+        },
+        {
+          label: "HỌC BỔNG NHẬN TỪ HỆ SINH THÁI",
+          badge: "Từ 10 Trung tâm",
+          badgeClass: "badge-amber",
+          value: "500 Suất",
+          sub: "● Kiểm tra Tiếng Anh & Kỹ năng miễn phí"
+        },
+        {
+          label: "NHÀ CUNG ỨNG HỌC ĐƯỜNG B2B",
+          badge: "Ưu đãi Nội bộ",
+          badgeClass: "badge-purple",
+          value: "06 Doanh nghiệp",
+          sub: "● Suất ăn VietGAP, Nha khoa, Dã ngoại"
+        }
+      ],
+      student_parent: [
+        {
+          label: "CHỨNG CHỈ NĂNG LỰC XÁC THỰC",
+          badge: "Talent Passport",
+          badgeClass: "badge-blue",
+          value: "03 Chứng chỉ",
+          sub: "● TOEIC 750, ERP Admin, GPA 3.5/4.0"
+        },
+        {
+          label: "DOANH NGHIỆP ĐANG XEM HỒ SƠ",
+          badge: "Sàn Nhân lực",
+          badgeClass: "badge-green",
+          value: "30 Doanh nghiệp",
+          sub: "● Resort, Khách sạn & SME Nha Trang"
+        },
+        {
+          label: "HỌC BỔNG & E-VOUCHER TRONG VÍ",
+          badge: "Đặc quyền ID",
+          badgeClass: "badge-amber",
+          value: "05 Ưu đãi",
+          sub: "● Giảm 40% IELTS & 30% Nha khoa"
+        },
+        {
+          label: "TRẠNG THÁI ỨNG TUYỂN 1-CLICK",
+          badge: "ERP HRM Sync",
+          badgeClass: "badge-purple",
+          value: "Sẵn sàng",
+          sub: "● Liên thông trực tiếp phân hệ Tuyển dụng"
+        }
+      ]
     };
-    navWorkspaceBadge.textContent = shortLabels[roleCode] || "Workspace";
+
+    const cards = kpiByRole[roleCode] || kpiByRole.super_admin;
+    kpiGridEl.innerHTML = cards
+      .map(
+        (c) => `
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span>${escapeHtml(c.label)}</span>
+            <span class="badge ${c.badgeClass}">${escapeHtml(c.badge)}</span>
+          </div>
+          <div class="kpi-value">${escapeHtml(c.value)}</div>
+          <div class="kpi-sub">${escapeHtml(c.sub)}</div>
+        </div>
+      `
+      )
+      .join("");
   }
 
-  const navMasterBadge = document.getElementById("navBadgeMasterLock");
-  if (navMasterBadge) {
-    const canMaster = hasRbacPermission("manageAppsUsersRbac") || hasRbacPermission("moderateForumAudit");
-    navMasterBadge.textContent = canMaster ? "✔ Mở quyền" : "🔒 Chỉ Chủ HST";
-  }
-
-  // Update Sidebar Role Summary Box
+  // 4. Update Sidebar Role Summary Box
   const sidebarBox = document.getElementById("sidebarRoleSummaryBox");
   if (sidebarBox && roleConfig) {
-    const perms = roleConfig.permissions || {};
     sidebarBox.innerHTML = `
       <h5>🎭 Phiên Phân quyền Hiện tại</h5>
       <div style="font-weight:800;color:#0f172a;font-size:13px;">${escapeHtml(persona.name)}</div>
       <div style="color:#475569;font-size:11.5px;margin-top:2px;">🏢 ${escapeHtml(persona.org)}</div>
       <div class="sidebar-perm-list">
         <div class="sidebar-perm-item">${perms.manageOwnOrg ? "✅" : "🔒"} Quản trị Workspace Đơn vị</div>
-        <div class="sidebar-perm-item">${perms.postMemberNews ? "✅" : "🔒"} Đăng tin lên Cổng Chung</div>
+        <div class="sidebar-perm-item">${perms.postMemberNews ? "✅" : "🔒"} Đăng tin lên Trang Public</div>
         <div class="sidebar-perm-item">${perms.postForumB2B ? "✅" : "🔒"} Đăng Diễn đàn & B2B</div>
         <div class="sidebar-perm-item">${perms.accessTalentPool ? "✅" : "🔒"} Tuyển dụng Sàn Nhân lực</div>
         <div class="sidebar-perm-item">${perms.manageAppsUsersRbac ? "✅" : "🔒"} Quản trị Tối cao & RBAC</div>
@@ -2460,36 +2949,42 @@ function renderRoleContextAndSidebar() {
     `;
   }
 
-  // Update Main Role Context Banner
+  // 5. Update Main Role Context Banner
   const bannerEl = document.getElementById("roleContextBanner");
   if (bannerEl && roleConfig) {
     const assignedApps = (userObj && userObj.assignedApps) || [];
+    const primaryActionBtn =
+      roleCode === "super_admin"
+        ? `<button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-master-overview')">👑 Bảng Điều hành Toàn Hệ sinh thái</button>`
+        : `<button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'overview')">🏢 Workspace Quản trị Đơn vị</button>`;
+
     bannerEl.innerHTML = `
       <div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
           <span class="badge badge-blue">${escapeHtml(roleConfig.roleName)}</span>
           <span class="badge badge-green">🔑 TechCorp ID: ${escapeHtml((userObj && userObj.id) || "USR-ADMIN-00")}</span>
-          <span class="badge badge-purple">Ứng dụng cấp phép: ${assignedApps.length} / ${STATE.apps.length} App</span>
+          <span class="badge badge-purple">Ứng dụng được cấp phép: ${assignedApps.length} / ${STATE.apps.length} App</span>
         </div>
         <div style="font-size:15px;font-weight:800;color:#0b2559;">
-          Đang làm việc với tư cách: <span style="color:#0052d4;">${escapeHtml(persona.name)}</span> — ${escapeHtml(persona.org)}
+          Đang quản trị với vai trò: <span style="color:#0052d4;">${escapeHtml(persona.name)}</span> — ${escapeHtml(persona.org)}
         </div>
         <div style="font-size:12.5px;color:#334155;margin-top:2px;">
-          📌 <strong>Phạm vi quyền hạn RBAC:</strong> ${escapeHtml(roleConfig.desc)}
+          📌 <strong>Cấu trúc hiển thị & Quyền hạn RBAC:</strong> ${escapeHtml(roleConfig.desc)}
         </div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-primary btn-sm" onclick="switchToTab('view-workspace')">
-          🏢 Mở Không gian Quản trị Riêng →
+        ${primaryActionBtn}
+        <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-master-rbac')">
+          🔐 Cấu hình Phân quyền RBAC
         </button>
-        <button class="btn btn-outline btn-sm" onclick="openAdminSubtab('admin-rbac')">
-          🔐 Xem / Sửa Phân quyền RBAC
-        </button>
+        <a href="index.html" class="btn btn-emerald btn-sm" style="text-decoration:none;">
+          🌍 Mở Trang Public
+        </a>
       </div>
     `;
   }
 
-  // Enforce RBAC on Forum Composer
+  // 6. Enforce RBAC on Forum Composer
   const forumFormWrap = document.getElementById("forumComposerFormWrap");
   if (forumFormWrap) {
     if (!hasRbacPermission("postForumB2B")) {
@@ -2498,29 +2993,6 @@ function renderRoleContextAndSidebar() {
     } else {
       forumFormWrap.style.opacity = "1";
       forumFormWrap.style.pointerEvents = "auto";
-    }
-  }
-
-  // Enforce RBAC notice on Master Admin panel
-  const masterNotice = document.getElementById("masterAdminRbacNotice");
-  if (masterNotice) {
-    if (!hasRbacPermission("manageAppsUsersRbac") && !hasRbacPermission("moderateForumAudit")) {
-      masterNotice.innerHTML = `
-        <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:14px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-          <div>
-            <div style="font-weight:800;color:#b45309;font-size:14.5px;">🔒 Chế độ Xem Giới hạn theo Phân quyền RBAC (${escapeHtml(roleConfig.roleName)})</div>
-            <div style="font-size:12.5px;color:#78350f;margin-top:3px;">
-              Vai trò hiện tại của bạn chuyên trách quản trị tại mục <strong>"🏢 2. Quản trị Đơn vị Riêng"</strong>. Để toàn quyền chỉnh sửa cấu hình Hệ sinh thái, hãy chuyển sang vai trò <strong>"👑 1. Chủ Hệ sinh thái"</strong> hoặc bật quyền trong bảng RBAC bên dưới.
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-outline btn-sm" onclick="switchToTab('view-workspace')">🏢 Về Workspace Đơn vị của Tôi</button>
-            <button class="btn btn-primary btn-sm" onclick="selectPersonaRole('super-admin')">👑 Chuyển sang Chủ Hệ sinh thái</button>
-          </div>
-        </div>
-      `;
-    } else {
-      masterNotice.innerHTML = "";
     }
   }
 }
@@ -3204,6 +3676,14 @@ window.selectPersonaRole = async function (val) {
     select.value = val;
   }
 
+  // Dynamically switch the active Admin Portal Workspace to match the selected Role
+  if (val === "super-admin") {
+    window.activeAdminPanelId = "panel-master-overview";
+  } else {
+    window.activeAdminPanelId = "panel-role-workspace";
+    window.activeMemberSubTab = "overview";
+  }
+
   const infoEl = document.getElementById("currentPersonaDesc");
   const tokenBox = document.getElementById("currentSsoTokenBox");
   const forumIdEl = document.getElementById("forumComposerIdentity");
@@ -3232,10 +3712,11 @@ window.selectPersonaRole = async function (val) {
     if (ssoBadge) {
       ssoBadge.textContent = `SSO: ${p.name} (${p.roleBadge})`;
     }
-    showToast(`🎭 Đã chuyển sang vai trò: <b>${escapeHtml(p.name)}</b> (${escapeHtml(p.roleBadge)})`);
+    showToast(`🎭 Đã chuyển Cấu trúc Quản trị theo vai trò: <b>${escapeHtml(p.name)}</b>`);
   }
 
   renderAllViews();
+  window.activateAdminPanel(window.activeAdminPanelId, window.activeMemberSubTab);
 };
 
 function setupPersonaSwitcher() {
@@ -3289,9 +3770,27 @@ async function bootstrapFromServer() {
   }
 
   renderAllViews();
+  window.activateAdminPanel(window.activeAdminPanelId, window.activeMemberSubTab);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Check if URL has ?role= query parameter (e.g. admin.html?role=ceo-sme)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const roleParam = params.get("role");
+    if (roleParam && PERSONA_TO_ROLE[roleParam]) {
+      STATE.currentPersona = roleParam;
+      if (roleParam === "super-admin") {
+        window.activeAdminPanelId = "panel-master-overview";
+      } else {
+        window.activeAdminPanelId = "panel-role-workspace";
+        window.activeMemberSubTab = "overview";
+      }
+      const select = document.getElementById("personaSelect");
+      if (select) select.value = roleParam;
+    }
+  } catch (_) {}
+
   setupTabs();
   setupPersonaSwitcher();
   setupForumCategoryFilter();

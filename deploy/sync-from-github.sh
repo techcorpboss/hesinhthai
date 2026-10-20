@@ -32,8 +32,8 @@ TMP_CLONE="/tmp/hesinhthai_sync_$$"
 rm -rf "${TMP_CLONE}"
 git clone --depth 1 "${REPO_URL}" "${TMP_CLONE}"
 
-# Xóa file index.html mặc định ("Site is created successfully!") của aaPanel
-rm -f "${TARGET_DIR}/index.html" "${TARGET_DIR}/404.html"
+# Xóa file index.html / admin.html cũ trước khi đồng bộ bản mới
+rm -f "${TARGET_DIR}/index.html" "${TARGET_DIR}/admin.html" "${TARGET_DIR}/404.html"
 
 # Sao chép toàn bộ mã nguồn vào thư mục Website
 cp -rf "${TMP_CLONE}/." "${TARGET_DIR}/"
@@ -90,7 +90,8 @@ if id "www" >/dev/null 2>&1; then
 fi
 
 echo "=============================================================================="
-echo "🎉 ĐỒNG BỘ HOÀN TẤT LÊN: https://${DOMAIN}/ (PHIÊN BẢN ENTERPRISE v4.0)"
-echo "🌐 Giao diện Web & Widget : ${TARGET_DIR}/index.html"
-echo "🚀 Backend API & SSO Hub  : http://127.0.0.1:${PORT}/api/v1/health"
+echo "🎉 ĐỒNG BỘ HOÀN TẤT LÊN: https://${DOMAIN}/ (PHIÊN BẢN ENTERPRISE v5.0)"
+echo "🌍 1. Cổng Public Quảng bá & Giao thương : https://${DOMAIN}/index.html"
+echo "🛡️ 2. Cổng Quản trị Theo Vai trò (RBAC)  : https://${DOMAIN}/admin.html"
+echo "🚀 3. Backend API & SSO Hub              : http://127.0.0.1:${PORT}/api/v1/health"
 echo "=============================================================================="

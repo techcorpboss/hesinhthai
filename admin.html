@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cổng Quản trị Hệ sinh thái Theo Vai trò (RBAC Admin Portal) — hesinhthai.techcorp.info.vn</title>
+  <link rel="icon" type="image/png" href="logo.png?v=5.0" />
+  <link rel="stylesheet" href="styles.css?v=5.0" />
+  <script
+    src="widget/techcorp-ecosystem-bar.js?v=5.0"
+    data-app-id="biz-erp"
+    data-org-name="TechCorp Role-Based Admin"
+    data-user-role="SSO Workspace"
+    defer
+  ></script>
+</head>
+<body>
+  <!-- HEADER CỔNG QUẢN TRỊ ĐA VAI TRÒ -->
+  <header class="hub-header">
+    <div class="hub-header-inner">
+      <div class="brand-box">
+        <div class="brand-logo">
+          <img src="logo.png?v=5.0" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+        </div>
+        <div class="brand-title">
+          <h1>
+            TechCorp Role-Based Management Portal
+            <span class="brand-domain-pill">🛡️ Cổng Quản trị Phân tầng Theo Đúng Vai trò (RBAC v5.0)</span>
+          </h1>
+          <p id="currentPersonaDesc">TechCorp Headquarters (Nha Trang - Khánh Hòa) • [👑 Chủ Hệ sinh thái TechCorp]</p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <a
+          href="index.html"
+          class="btn"
+          style="background:rgba(255,255,255,0.18);color:#ffffff;border:1px solid rgba(255,255,255,0.45);padding:8px 14px;"
+        >
+          🌍 Xem Trang Public Quảng bá Hệ sinh thái
+        </a>
+
+        <div class="sso-control">
+          <label for="personaSelect">🔑 Chuyển Vai trò SSO:</label>
+          <select id="personaSelect" class="sso-select">
+            <option value="super-admin">1. 👑 Chủ Hệ sinh thái TechCorp (Master Owner)</option>
+            <option value="ceo-sme">2. 🏢 Chủ Doanh nghiệp SME (Nha Trang Bay Resort)</option>
+            <option value="center-dir">3. 🏫 Giám đốc Trung tâm NN-TH (Ocean English & IT)</option>
+            <option value="school-principal">4. 🎓 Hiệu trưởng Trường học (Hệ thống Sao Biển)</option>
+            <option value="student-user">5. 👨‍🎓 Sinh viên / Học viên / Phụ huynh (ĐH Nha Trang)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- THANH CHỌN 5 VAI TRÒ: KHI CHỌN VAI TRÒ NÀO, TOÀN BỘ MENU SIDEBAR, CHỈ SỐ KPI & MÀN HÌNH QUẢN TRỊ TỰ ĐỘNG CẤU TRÚC LẠI THEO ĐÚNG VAI TRÒ ĐÓ -->
+  <section class="role-switcher-strip">
+    <div class="role-switcher-box">
+      <div class="role-switcher-top">
+        <div class="role-switcher-title">
+          <span>🎭 CHỌN VAI TRÒ ĐỂ HỆ THỐNG TỰ ĐỘNG CẤU TRÚC LẠI MENU QUẢN TRỊ, CHỈ SỐ KPI & QUYỀN HẠN (RBAC) THEO ĐÚNG ĐỐI TƯỢNG:</span>
+        </div>
+        <span class="badge badge-green" id="apiStatusBadge">● API & SQLite Online</span>
+      </div>
+
+      <div class="role-cards-grid" id="roleCardsContainer">
+        <button class="role-pill-card active" data-persona="super-admin" onclick="selectPersonaRole('super-admin')">
+          <div class="role-pill-top">
+            <span>👑 1. Chủ Hệ sinh thái</span>
+            <span class="badge badge-amber">7 Menu Master</span>
+          </div>
+          <div class="role-pill-org">TechCorp Headquarters</div>
+          <div class="role-pill-scope">✔ Quản trị App, RBAC, User, Forum & Audit</div>
+        </button>
+
+        <button class="role-pill-card" data-persona="ceo-sme" onclick="selectPersonaRole('ceo-sme')">
+          <div class="role-pill-top">
+            <span>🏢 2. Chủ Doanh nghiệp</span>
+            <span class="badge badge-blue">Workspace DN</span>
+          </div>
+          <div class="role-pill-org">Nha Trang Bay Resort & Travel</div>
+          <div class="role-pill-scope">✔ Quản trị ERP/Web, Tuyển HRM & Voucher B2B</div>
+        </button>
+
+        <button class="role-pill-card" data-persona="center-dir" onclick="selectPersonaRole('center-dir')">
+          <div class="role-pill-top">
+            <span>🏫 3. Giám đốc Trung tâm</span>
+            <span class="badge badge-blue">Workspace TT</span>
+          </div>
+          <div class="role-pill-org">Ocean English & IT Center</div>
+          <div class="role-pill-scope">✔ Quản trị Thi Online, Lead CRM & Học bổng</div>
+        </button>
+
+        <button class="role-pill-card" data-persona="school-principal" onclick="selectPersonaRole('school-principal')">
+          <div class="role-pill-top">
+            <span>🎓 4. Hiệu trưởng Trường</span>
+            <span class="badge badge-blue">Workspace Trường</span>
+          </div>
+          <div class="role-pill-org">Hệ thống Giáo dục Sao Biển</div>
+          <div class="role-pill-scope">✔ Quản trị Học vụ, Học phí QR & Duyệt Tài trợ</div>
+        </button>
+
+        <button class="role-pill-card" data-persona="student-user" onclick="selectPersonaRole('student-user')">
+          <div class="role-pill-top">
+            <span>👨‍🎓 5. Học viên / Phụ huynh</span>
+            <span class="badge badge-green">Cổng Cá nhân</span>
+          </div>
+          <div class="role-pill-org">Nguyễn Minh Khôi (ĐH Nha Trang)</div>
+          <div class="role-pill-scope">✔ Hồ sơ Năng lực QR, Ứng tuyển & Ví Ưu đãi</div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BỐ CỤC CỔNG QUẢN TRỊ: SIDEBAR ĐỘNG THEO VAI TRÒ + KHU VỰC LÀM VIỆC CHÍNH -->
+  <div class="portal-shell">
+    <!-- SIDEBAR TỰ ĐỘNG RENDER MENU THEO ĐÚNG VAI TRÒ ĐANG ĐĂNG NHẬP -->
+    <aside class="portal-sidebar">
+      <div class="sidebar-section-label" id="sidebarRoleHeaderTitle">MENU QUẢN TRỊ THEO VAI TRÒ</div>
+      <nav class="sidebar-nav" id="dynamicRoleSidebarNav"></nav>
+
+      <!-- Hộp Tóm tắt Quyền hạn RBAC của Vai trò hiện tại -->
+      <div class="sidebar-role-card" id="sidebarRoleSummaryBox"></div>
+    </aside>
+
+    <!-- KHU VỰC LÀM VIỆC CHÍNH -->
+    <main class="portal-main">
+      <!-- Banner Trạng thái Vai trò & Quyền hạn hiện hành -->
+      <div class="role-context-banner" id="roleContextBanner"></div>
+
+      <!-- Dải 4 Chỉ số KPI Động (Hiển thị đúng KPI của Vai trò đang chọn!) -->
+      <section class="kpi-grid" id="dynamicRoleKpiGrid"></section>
+
+      <!-- =====================================================================
+           PANEL A: DÀNH CHO CÁC ĐƠN VỊ THÀNH VIÊN (DOANH NGHIỆP / TRUNG TÂM / TRƯỜNG / HỌC VIÊN)
+           Hoặc khi Chủ Hệ sinh thái bấm Giám sát Workspace Thành viên
+           ===================================================================== -->
+      <section id="panel-role-workspace" class="tab-panel">
+        <div id="memberWorkspaceDynamicContainer"></div>
+      </section>
+
+      <!-- =====================================================================
+           PANEL B: TỔNG QUAN ĐIỀU HÀNH HẠ TẦNG & EVENT BUS (CHỦ HỆ SINH THÁI)
+           ===================================================================== -->
+      <section id="panel-master-overview" class="tab-panel active">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">🚀 Trạng thái Ứng dụng Liên thông & Phân quyền SSO</h3>
+                <p class="card-subtitle">
+                  Danh sách các ứng dụng đang kết nối vào CSDL Tập trung và trạng thái cấp quyền cho vai trò hiện tại.
+                </p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-master-apps')">
+                ➕ Thêm / Sửa Ứng dụng
+              </button>
+            </div>
+            <div class="product-list" id="connectedAppsList"></div>
+
+            <div style="margin-top:16px;padding-top:14px;border-top:2px solid #edf4ff;">
+              <h4 style="font-size:13.5px;margin-bottom:8px;color:#0043b8;font-weight:800;">
+                ⚡ Kích hoạt Luồng Đồng bộ API Liên thông (Ghi vào SQLite/JSON & Audit Log):
+              </h4>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" onclick="simulateCrossSync('erp-job')">
+                  1. Đẩy Tuyển dụng ERP → Trường & Trung tâm
+                </button>
+                <button class="btn btn-emerald btn-sm" onclick="simulateCrossSync('exam-cert')">
+                  2. Cấp Chứng chỉ Thi Online → Chia Lead CRM
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="simulateCrossSync('parent-voucher')">
+                  3. Bắn E-Voucher DN → App Phụ huynh
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">📡 Nhật ký Sự kiện Liên thông Thời gian thực (Live Event Bus)</h3>
+                <p class="card-subtitle">Luồng dữ liệu bắn tự động giữa các ứng dụng qua <code>POST /api/v1/events/publish</code></p>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-master-audit')">
+                🔍 Xem Audit Logs
+              </button>
+            </div>
+            <div class="feed-list" id="liveFeedList"></div>
+
+            <div style="margin-top:14px;padding-top:12px;border-top:2px solid #edf4ff;">
+              <div style="font-size:12px;font-weight:800;color:#0b2559;">🔐 Chuỗi JWT SSO Token của Phiên làm việc hiện tại:</div>
+              <div class="code-box" id="currentSsoTokenBox" style="word-break:break-all;max-height:70px;overflow-y:auto;">
+                Đang khởi tạo JWT Token...
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PANEL C: QUẢN TRỊ SẢN PHẨM & ỨNG DỤNG HỆ SINH THÁI (APP REGISTRY CRUD)
+           ===================================================================== -->
+      <section id="panel-master-apps" class="tab-panel">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">🚀 Danh mục Sản phẩm & Ứng dụng trong Hệ sinh thái TechCorp</h3>
+                <p class="card-subtitle">
+                  Mọi ứng dụng thêm mới hoặc cập nhật tại đây sẽ tự động hiển thị trên <strong>Trang Public Quảng bá Sản phẩm</strong> và <strong>Thanh Topbar SSO</strong>.
+                </p>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="resetAppForm()">+ Nhập mới</button>
+            </div>
+
+            <div class="table-wrap">
+              <table class="tc-table">
+                <thead>
+                  <tr>
+                    <th>Ứng dụng & Mã ID</th>
+                    <th>Địa chỉ Web & API Key</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác Quản trị</th>
+                  </tr>
+                </thead>
+                <tbody id="adminAppsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" style="align-self:start;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title" id="appFormTitle">➕ Bổ sung / Cập nhật Ứng dụng vào Hệ sinh thái</h3>
+                <p class="card-subtitle">Tự động cấp khóa API Key và mã nhúng liên thông SSO.</p>
+              </div>
+            </div>
+
+            <input type="hidden" id="editAppMode" value="create" />
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Mã định danh Ứng dụng (App ID):</label>
+                  <input type="text" id="newAppId" class="input-control" style="width:100%;" value="biz-hotel-pms" />
+                </div>
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Nhãn phân loại (Badge):</label>
+                  <input type="text" id="newAppBadge" class="input-control" style="width:100%;" value="Hospitality" />
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Tên hiển thị Sản phẩm:</label>
+                  <input type="text" id="newAppName" class="input-control" style="width:100%;" value="QL Khách sạn & Resort (PMS)" />
+                </div>
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Trạng thái hoạt động:</label>
+                  <select id="newAppStatus" class="select-control" style="width:100%;">
+                    <option value="active">🟢 Đang hoạt động (Active)</option>
+                    <option value="maintenance">🟡 Đang bảo trì (Maintenance)</option>
+                    <option value="locked">🔴 Tạm khóa / Ẩn (Locked)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Địa chỉ Web (App URL):</label>
+                  <input type="text" id="newAppUrl" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn" />
+                </div>
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Webhook nhận sự kiện:</label>
+                  <input type="text" id="newAppWebhook" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn/api/webhooks/techcorp-hub" />
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Mô tả chức năng & Luồng dữ liệu liên thông:</label>
+                <input
+                  type="text"
+                  id="newAppDesc"
+                  class="input-control"
+                  style="width:100%;"
+                  value="Quản lý buồng phòng, đặt phòng & kết nối tuyển thực tập sinh Du lịch Nha Trang"
+                />
+              </div>
+
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-primary" onclick="saveEcosystemApp()" style="flex:1;padding:11px;">
+                  💾 Lưu Sản phẩm & Đồng bộ ra Trang Public
+                </button>
+                <button class="btn btn-outline" onclick="resetAppForm()">Làm mới</button>
+              </div>
+            </div>
+
+            <div id="integrationGuideOutput" style="margin-top:16px;padding-top:14px;border-top:2px solid #edf4ff;">
+              <p style="font-size:12px;color:#334155;margin-bottom:6px;">
+                <strong>Mã nhúng Thanh Liên thông chuẩn cho ứng dụng vệ tinh:</strong>
+              </p>
+              <div class="code-box">&lt;script src="https://hesinhthai.techcorp.info.vn/widget/techcorp-ecosystem-bar.js?v=5.0" data-hub-url="https://hesinhthai.techcorp.info.vn" data-app-id="biz-erp" defer&gt;&lt;/script&gt;</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PANEL D: QUẢN TRỊ BẢN TIN CHUNG & NỘI DUNG QUẢNG BÁ TRANG PUBLIC
+           ===================================================================== -->
+      <section id="panel-master-bulletins" class="tab-panel">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">📢 Danh sách Bản tin Điều hành & Quảng bá Đang Hiển thị Ngoài Trang Public</h3>
+                <p class="card-subtitle">
+                  Quản lý các thông báo chính thức từ Chủ Hệ sinh thái và các chương trình học bổng, sự kiện, ưu đãi từ Đơn vị Thành viên.
+                </p>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="tc-table">
+                <thead>
+                  <tr>
+                    <th>Phân loại & Nhãn</th>
+                    <th>Tiêu đề & Nội dung Tóm tắt</th>
+                    <th>Đơn vị Đăng tải</th>
+                    <th>Thời gian</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="adminBulletinsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" style="align-self:start;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">✍️ Phát hành Bản tin Điều hành / Quảng bá Mới ra Trang Public</h3>
+                <p class="card-subtitle">Nội dung sau khi đăng sẽ xuất hiện ngay trên Trang chủ Public của Hệ sinh thái.</p>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Loại Bản tin:</label>
+                <select id="newBulletinSourceType" class="select-control" style="width:100%;">
+                  <option value="master">👑 Thông báo Điều hành Chính thức từ Chủ Hệ sinh thái</option>
+                  <option value="member">🌟 Tin tức / Sự kiện / Ưu đãi từ Đơn vị Thành viên</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nhãn hiển thị (Badge):</label>
+                <input type="text" id="newBulletinBadge" class="input-control" style="width:100%;" value="👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP" />
+              </div>
+              <div>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Tiêu đề Bản tin:</label>
+                <input type="text" id="newBulletinTitle" class="input-control" style="width:100%;" placeholder="Nhập tiêu đề thông báo..." />
+              </div>
+              <div>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung tóm tắt:</label>
+                <textarea id="newBulletinSummary" class="input-control" style="width:100%;min-height:80px;" placeholder="Nhập nội dung chi tiết..."></textarea>
+              </div>
+              <button class="btn btn-primary" onclick="submitNewAnnouncement()" style="padding:11px;">
+                🚀 Phát hành lên Trang Public Hệ sinh thái
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PANEL E: KIỂM DUYỆT DIỄN ĐÀN & GIAO THƯƠNG B2B (APPROVE / CLOCK / LOCK / DELETE)
+           ===================================================================== -->
+      <section id="panel-master-forum" class="tab-panel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">🛡️ Kiểm duyệt & Quản trị Diễn đàn Giao thương (Thẩm định, Tạo mới, Xem, Sửa, Xoá, Clock/Lock)</h3>
+              <p class="card-subtitle">
+                Duyệt bài viết chờ thẩm định để cho phép hiển thị ra Trang Public, khóa bình luận (Clock/Lock), ghim VIP hoặc xoá bài vi phạm.
+              </p>
+            </div>
+            <a href="index.html#sec-exchange" class="btn btn-outline btn-sm">🌍 Xem Diễn đàn ngoài Trang Public</a>
+          </div>
+
+          <div class="filter-bar">
+            <select id="adminForumStatusFilter" class="select-control" onchange="renderAdminForumTable()">
+              <option value="all">Tất cả trạng thái thẩm định</option>
+              <option value="pending">⏳ Chờ thẩm định (Pending)</option>
+              <option value="approved">✅ Đã thẩm định & Hiển thị Public (Approved)</option>
+              <option value="rejected">🚫 Đã từ chối / Ẩn (Rejected)</option>
+              <option value="locked">🔒 Đã khóa bình luận (Clocked / Locked)</option>
+            </select>
+            <input
+              type="text"
+              id="adminForumSearchInput"
+              class="input-control"
+              style="min-width:260px;"
+              placeholder="Tìm theo tiêu đề, người đăng, đơn vị..."
+              oninput="renderAdminForumTable()"
+            />
+          </div>
+
+          <div
+            id="adminForumEditModal"
+            style="display:none;background:#f0f7ff;border:2px solid #0061ff;border-radius:14px;padding:18px;margin-bottom:18px;"
+          >
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <h4 style="color:#0043b8;font-weight:800;" id="adminForumModalHeader">👁️ Xem & Chỉnh sửa / Thẩm định Bài viết</h4>
+              <button class="btn btn-outline btn-sm" onclick="closeAdminForumModal()">Đóng ✕</button>
+            </div>
+            <input type="hidden" id="adminEditPostId" />
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;">
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Tiêu đề bài viết:</label>
+                <input type="text" id="adminEditPostTitle" class="input-control" style="width:100%;" />
+              </div>
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Đặc quyền cam kết (Give-to-Get):</label>
+                <input type="text" id="adminEditPostDeal" class="input-control" style="width:100%;" />
+              </div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Nội dung chi tiết:</label>
+              <textarea id="adminEditPostContent" class="input-control" style="width:100%;min-height:80px;font-family:inherit;"></textarea>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+              <button class="btn btn-primary btn-sm" onclick="saveAdminForumEdit()">💾 Lưu nội dung & Duyệt hiển thị Public</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="tc-table">
+              <thead>
+                <tr>
+                  <th>Mã & Chủ đề Thảo luận</th>
+                  <th>Người đăng & Đặc quyền</th>
+                  <th>Trạng thái Thẩm định</th>
+                  <th>Trạng thái Khóa (Clock)</th>
+                  <th>Thao tác Quản trị</th>
+                </tr>
+              </thead>
+              <tbody id="adminForumTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PANEL F: QUẢN LÝ ĐƠN VỊ THÀNH VIÊN & TÀI KHOẢN SSO (USERS CRUD)
+           ===================================================================== -->
+      <section id="panel-master-users" class="tab-panel">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">👥 Danh sách Đơn vị Thành viên & Tài khoản SSO (TechCorp ID)</h3>
+                <p class="card-subtitle">
+                  Quản lý tập trung tài khoản lãnh đạo doanh nghiệp, hiệu trưởng, giám đốc trung tâm và học viên cùng gói ứng dụng được cấp phép.
+                </p>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="resetUserForm()">+ Tạo tài khoản mới</button>
+            </div>
+
+            <div class="filter-bar">
+              <input
+                type="text"
+                id="adminUserSearchInput"
+                class="input-control"
+                style="min-width:220px;"
+                placeholder="Tìm theo tên, email, đơn vị, mã ID..."
+                oninput="renderAdminUsersTable()"
+              />
+              <select id="adminUserRoleFilter" class="select-control" onchange="renderAdminUsersTable()">
+                <option value="all">Tất cả nhóm vai trò</option>
+                <option value="super_admin">👑 Chủ Hệ sinh thái TechCorp</option>
+                <option value="ceo_sme">🏢 Chủ Doanh nghiệp SME</option>
+                <option value="center_director">🏫 Giám đốc Trung tâm NN-TH</option>
+                <option value="school_principal">🎓 Hiệu trưởng Cơ sở Giáo dục</option>
+                <option value="student_parent">👨‍🎓 Cộng đồng Học viên / SV</option>
+              </select>
+            </div>
+
+            <div class="table-wrap">
+              <table class="tc-table">
+                <thead>
+                  <tr>
+                    <th>Tài khoản & Liên hệ</th>
+                    <th>Đơn vị & Vai trò</th>
+                    <th>Quyền Ứng dụng & IP</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="adminUsersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" style="align-self:start;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title" id="userFormTitle">➕ Tạo mới / Cập nhật Tài khoản Thành viên</h3>
+                <p class="card-subtitle">Cấp định danh SSO <code>TechCorp ID</code> và gán vai trò RBAC.</p>
+              </div>
+            </div>
+
+            <input type="hidden" id="editUserId" value="" />
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Họ và tên người dùng:</label>
+                  <input type="text" id="userFullName" class="input-control" style="width:100%;" placeholder="VD: Phạm Hoàng Nam (Giám đốc)" />
+                </div>
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Số điện thoại:</label>
+                  <input type="text" id="userPhone" class="input-control" style="width:100%;" placeholder="VD: 0905.888.999" />
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Địa chỉ Email (Định danh SSO):</label>
+                  <input type="email" id="userEmail" class="input-control" style="width:100%;" placeholder="VD: nam.ph@camranhresort.vn" />
+                </div>
+                <div>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Trạng thái Tài khoản:</label>
+                  <select id="userStatus" class="select-control" style="width:100%;">
+                    <option value="active">🟢 Đang hoạt động (Active)</option>
+                    <option value="locked">🔴 Khóa tài khoản (Locked)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Đơn vị / Doanh nghiệp / Trường học Thành viên:</label>
+                <input type="text" id="userOrg" class="input-control" style="width:100%;" placeholder="VD: Cam Ranh Riviera Resort & Spa" />
+              </div>
+
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Nhóm Vai trò RBAC trong Hệ sinh thái:</label>
+                <select id="userRole" class="select-control" style="width:100%;">
+                  <option value="ceo_sme">🏢 Chủ Doanh nghiệp SME (ERP & Website)</option>
+                  <option value="center_director">🏫 Giám đốc Trung tâm Ngoại ngữ - Tin học</option>
+                  <option value="school_principal">🎓 Hiệu trưởng Trường học (Mầm non - Đại học)</option>
+                  <option value="student_parent">👨‍🎓 Học viên / Sinh viên / Phụ huynh</option>
+                  <option value="super_admin">👑 Chủ Hệ sinh thái (Super Admin)</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">Phân quyền Truy cập Ứng dụng qua SSO:</label>
+                <div id="userAppPermissionsBox" style="display:flex;flex-wrap:wrap;gap:10px;background:#f0f7ff;padding:12px;border-radius:10px;border:1px solid #bfdbfe;">
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="edu-school" /> QL Trường học
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="edu-center" /> QL Trung tâm NN-TH
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="lms-exam" checked /> Học & Thi Online
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="biz-web" checked /> Website DN
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="biz-erp" checked /> Quản trị ERP
+                  </label>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:10px;margin-top:4px;">
+                <button class="btn btn-primary" onclick="saveEcosystemUser()" style="flex:1;padding:11px;">
+                  💾 Lưu Tài khoản & Cấp Quyền SSO
+                </button>
+                <button class="btn btn-outline" onclick="resetUserForm()">Hủy / Nhập mới</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PANEL G: CẤU HÌNH MA TRẬN PHÂN QUYỀN VAI TRÒ (RBAC MATRIX 9x5)
+           ===================================================================== -->
+      <section id="panel-master-rbac" class="tab-panel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">🔐 Cấu hình Ma trận Phân quyền Chi tiết theo Vai trò (Role-Based Access Control - RBAC)</h3>
+              <p class="card-subtitle">
+                Chủ Hệ sinh thái định nghĩa chính xác từng nhóm đối tượng được phép xem hoặc thực thi chức năng nào. Khi bật/tắt ô chọn bên dưới, Menu Quản trị của vai trò đó sẽ tự động mở rộng hoặc thu hẹp tức thì!
+              </p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="tc-table rbac-table">
+              <thead>
+                <tr>
+                  <th style="min-width:260px;">Chức năng / Phân hệ Quản trị</th>
+                  <th>👑 Chủ Hệ sinh thái<br/><span style="font-size:10px;font-weight:500;">(super_admin)</span></th>
+                  <th>🏢 Chủ Doanh nghiệp<br/><span style="font-size:10px;font-weight:500;">(ceo_sme)</span></th>
+                  <th>🏫 GĐ Trung tâm<br/><span style="font-size:10px;font-weight:500;">(center_director)</span></th>
+                  <th>🎓 Hiệu trưởng Trường<br/><span style="font-size:10px;font-weight:500;">(school_principal)</span></th>
+                  <th>👨‍🎓 Học viên / PH<br/><span style="font-size:10px;font-weight:500;">(student_parent)</span></th>
+                </tr>
+              </thead>
+              <tbody id="rbacMatrixTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PANEL H: TRUY VẾT AN NINH AUDIT LOGS & CHIẾN DỊCH 57 HẠT NHÂN NHA TRANG
+           ===================================================================== -->
+      <section id="panel-master-audit" class="tab-panel">
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">🔍 Truy vết Người dùng & Nhật ký Kiểm toán Tập trung (Security Audit Trail)</h3>
+              <p class="card-subtitle">
+                Ghi nhận tự động mọi thao tác phân quyền RBAC, quản trị ứng dụng, thẩm định diễn đàn, quản lý tài khoản và đồng bộ dữ liệu kèm địa chỉ IP.
+              </p>
+            </div>
+            <button class="btn btn-emerald btn-sm" onclick="exportAuditLogsCsv()">
+              📥 Xuất Báo cáo Truy vết (CSV)
+            </button>
+          </div>
+
+          <div class="filter-bar">
+            <input
+              type="text"
+              id="auditSearchInput"
+              class="input-control"
+              style="min-width:260px;"
+              placeholder="Tìm theo người thực hiện, IP, mã hành động, đối tượng..."
+              oninput="renderAuditLogsTable()"
+            />
+            <select id="auditSeverityFilter" class="select-control" onchange="renderAuditLogsTable()">
+              <option value="all">Tất cả mức độ cảnh báo</option>
+              <option value="INFO">🟢 INFO (Thao tác tiêu chuẩn)</option>
+              <option value="WARNING">🟡 WARNING (Phân quyền RBAC / Khóa)</option>
+              <option value="CRITICAL">🔴 CRITICAL (Xoá dữ liệu / Hệ thống)</option>
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table class="tc-table">
+              <thead>
+                <tr>
+                  <th>Mã Log & Thời gian</th>
+                  <th>Người thực hiện & Đơn vị</th>
+                  <th>Địa chỉ IP</th>
+                  <th>Hành động & Mức độ</th>
+                  <th>Đối tượng tác động</th>
+                  <th>Chi tiết Truy vết</th>
+                </tr>
+              </thead>
+              <tbody id="auditLogsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">📊 Bảng Theo dõi 57 Khách hàng Hạt nhân Nha Trang (Giai đoạn 1)</h3>
+              <p class="card-subtitle">Theo dõi mục tiêu phát triển thành viên nòng cốt của Chủ Hệ sinh thái</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="tc-table">
+              <thead>
+                <tr>
+                  <th>Phân khúc & Khu vực</th>
+                  <th>Gói Combo Mũi nhọn</th>
+                  <th>Tiến độ Chốt</th>
+                  <th>Ghi chú</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="lighthouseTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="app.js?v=5.0"></script>
+</body>
+</html>
