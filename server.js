@@ -132,6 +132,8 @@ async function handleApi(req, res, parsedUrl) {
       apps: db.getPublicApps(),
       users: db.state.users || [],
       personas: db.state.personas,
+      announcements: db.state.announcements || [],
+      rbacMatrix: db.state.rbacMatrix || {},
       talents: db.state.talents,
       contests: db.state.contests,
       b2bOffers: db.state.b2bOffers,
@@ -635,6 +637,59 @@ async function handleApi(req, res, parsedUrl) {
     });
   }
 
+  // 15. RBAC Permission Matrix Update
+  if (pathname === "/api/v1/rbac" && method === "PUT") {
+    try {
+      const body = await parseBody(req);
+      const updatedMatrix = db.updateRbacPermission(
+        body.roleCode,
+        body.permKey,
+        body.value,
+        body.actorKey || "super-admin",
+        clientIp
+      );
+      return sendJson(res, 200, {
+        ok: true,
+        rbacMatrix: updatedMatrix,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  // 16. Ecosystem Central Announcements (Master & Member Bulletins)
+  if (pathname === "/api/v1/announcements" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const created = db.createAnnouncement(body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 201, {
+        ok: true,
+        announcement: created,
+        announcements: db.state.announcements,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  const annDeleteMatch = pathname.match(/^\/api\/v1\/announcements\/([^/]+)$/);
+  if (annDeleteMatch && method === "DELETE") {
+    try {
+      const annId = decodeURIComponent(annDeleteMatch[1]);
+      const removed = db.deleteAnnouncement(annId, "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        removed,
+        announcements: db.state.announcements,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
   return sendJson(res, 404, { ok: false, error: `API endpoint không tồn tại: ${method} ${pathname}` });
 }
 
@@ -661,6 +716,9 @@ const server = http.createServer(async (req, res) => {
       const ext = path.extname(filePath).toLowerCase();
       const contentType = MIME_TYPES[ext] || "application/octet-stream";
       setCorsHeaders(res);
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
       res.writeHead(200, { "Content-Type": contentType });
       fs.createReadStream(filePath).pipe(res);
     } else {
@@ -674,13 +732,13 @@ const server = http.createServer(async (req, res) => {
 
 if (process.argv.includes("--seed")) {
   db.save();
-  console.log("✅ Đã khởi tạo dữ liệu mẫu v2.0 (Admin CMS, Users, Forum Moderation & Audit Logs) thành công!");
+  console.log("✅ Đã khởi tạo dữ liệu mẫu v4.0 (Multi-Tenant RBAC, Announcements, Admin CMS & Audit Logs) thành công!");
   process.exit(0);
 }
 
 server.listen(PORT, HOST, () => {
   console.log("==================================================================");
-  console.log(`🚀 TECHCORP ECOSYSTEM HUB v2.0 (ADMIN CMS & AUDIT LOGS) ĐANG CHẠY!`);
+  console.log(`🚀 TECHCORP ECOSYSTEM HUB v4.0 (MULTI-TENANT RBAC & ENTERPRISE PORTAL) ĐANG CHẠY!`);
   console.log(`🌐 Local URL   : http://localhost:${PORT}`);
   console.log(`🌍 Domain đích : ${PUBLIC_DOMAIN}`);
   console.log(`🗄️  SQLite DB   : ${SQLITE_DB_PATH}`);

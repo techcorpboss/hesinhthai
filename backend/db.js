@@ -519,6 +519,142 @@ const INITIAL_SEED = {
   ],
   forumPosts: INITIAL_FORUM_POSTS,
   auditLogs: INITIAL_AUDIT_LOGS,
+  announcements: [
+    {
+      id: "ANN-MASTER-01",
+      sourceType: "master",
+      badge: "👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP",
+      title: "Chính thức vận hành Trục Liên thông SSO TechCorp ID v4.0 & Cơ chế Phân quyền Đa Tầng (Multi-Tenant RBAC)",
+      summary: "Toàn bộ 05 nền tảng (QL Trường học, QL Trung tâm NN-TH, Học & Thi Online LMS, Website DN và Quản trị ERP) đã được kết nối tập trung. Các Chủ Doanh nghiệp, Giám đốc Trung tâm và Hiệu trưởng có Không gian Quản trị Đơn vị riêng biệt.",
+      authorName: "Ban Điều hành Hệ sinh thái TechCorp",
+      authorOrg: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      createdAt: "Hôm nay, 08:00",
+      pinned: true,
+      actionLabel: "Xem Sơ đồ Vận hành",
+      actionView: "view-plaza"
+    },
+    {
+      id: "ANN-MASTER-02",
+      sourceType: "master",
+      badge: "📢 CHÍNH SÁCH LIÊN KẾT HẠT NHÂN KHÁNH HÒA",
+      title: "Tài trợ 100% Phí Khởi tạo & Tặng Website Chuẩn SEO cho 57 Đơn vị Hạt nhân Giai đoạn 1 tại Nha Trang",
+      summary: "Áp dụng cho 02 Trường ĐH/CĐ, 10 Trung tâm Ngoại ngữ - Tin học, 15 Trường Mầm non/Phổ thông và 30 Doanh nghiệp SME đầu tiên kích hoạt liên thông dữ liệu trên TechCorp Hub.",
+      authorName: "Chủ Hệ sinh thái TechCorp",
+      authorOrg: "TechCorp Headquarters",
+      createdAt: "Hôm nay, 09:30",
+      pinned: true,
+      actionLabel: "Mở Không gian Quản trị",
+      actionView: "view-workspace"
+    },
+    {
+      id: "ANN-MEM-01",
+      sourceType: "member",
+      badge: "🏨 TIN TỪ DOANH NGHIỆP THÀNH VIÊN (SME)",
+      title: "Nha Trang Bay Resort & Travel mở đợt tuyển 25 Thực tập sinh & Nhân sự Lễ tân Tiếng Anh/Hàn học kỳ Hè - Thu",
+      summary: "Ưu tiên xét tuyển thẳng (không qua vòng sơ loại CV) đối với Sinh viên ĐH Nha Trang, ĐH Khánh Hòa, CĐ Du lịch có chứng chỉ xác thực trên Nền tảng Thi Online TechCorp.",
+      authorName: "Nguyễn Hải Đăng (CEO)",
+      authorOrg: "Nha Trang Bay Resort & Travel",
+      createdAt: "1 giờ trước",
+      pinned: false,
+      actionLabel: "Xem Sàn Nhân lực",
+      actionView: "view-talent-lms"
+    },
+    {
+      id: "ANN-MEM-02",
+      sourceType: "member",
+      badge: "🏫 TIN TỪ TRUNG TÂM ĐÀO TẠO THÀNH VIÊN",
+      title: "Ocean English & IT Center tài trợ 500 suất Thi thử IELTS/TOEIC & Học bổng 40% cho con em Doanh nghiệp & Trường học",
+      summary: "Kết quả thi thử được đồng bộ tự động về Sổ liên lạc điện tử của Phụ huynh và Hồ sơ Năng lực Số của Sinh viên trên toàn hệ sinh thái.",
+      authorName: "Trần Thanh Tâm (Giám đốc)",
+      authorOrg: "Ocean English & IT Center Nha Trang",
+      createdAt: "2 giờ trước",
+      pinned: false,
+      actionLabel: "Xem Đấu trường LMS",
+      actionView: "view-talent-lms"
+    }
+  ],
+  rbacMatrix: {
+    super_admin: {
+      roleName: "👑 Chủ Hệ sinh thái (TechCorp Master Admin)",
+      roleCode: "super_admin",
+      desc: "Toàn quyền điều hành hạ tầng, cấu hình phân quyền RBAC, phê duyệt ứng dụng, kiểm duyệt diễn đàn và truy vết an ninh.",
+      permissions: {
+        viewPlaza: true,
+        postMemberNews: true,
+        manageOwnOrg: true,
+        postForumB2B: true,
+        accessTalentPool: true,
+        manageLmsContests: true,
+        publishMasterBulletin: true,
+        manageAppsUsersRbac: true,
+        moderateForumAudit: true
+      }
+    },
+    ceo_sme: {
+      roleName: "🏢 Chủ Doanh nghiệp Thành viên (CEO SME)",
+      roleCode: "ceo_sme",
+      desc: "Quản trị Workspace Doanh nghiệp (ERP/Web), đăng tuyển dụng liên thông, nhập CV ứng viên vào HRM và phát hành E-Voucher B2B.",
+      permissions: {
+        viewPlaza: true,
+        postMemberNews: true,
+        manageOwnOrg: true,
+        postForumB2B: true,
+        accessTalentPool: true,
+        manageLmsContests: false,
+        publishMasterBulletin: false,
+        manageAppsUsersRbac: false,
+        moderateForumAudit: false
+      }
+    },
+    center_director: {
+      roleName: "🏫 Giám đốc Trung tâm Ngoại ngữ - Tin học",
+      roleCode: "center_director",
+      desc: "Quản trị Workspace Trung tâm, tổ chức Đấu trường Thi Online, nhận Lead học viên về CRM và cấp chứng chỉ năng lực số.",
+      permissions: {
+        viewPlaza: true,
+        postMemberNews: true,
+        manageOwnOrg: true,
+        postForumB2B: true,
+        accessTalentPool: true,
+        manageLmsContests: true,
+        publishMasterBulletin: false,
+        manageAppsUsersRbac: false,
+        moderateForumAudit: false
+      }
+    },
+    school_principal: {
+      roleName: "🎓 Hiệu trưởng Trường học (Mầm non - ĐH)",
+      roleCode: "school_principal",
+      desc: "Quản trị Workspace Nhà trường, theo dõi học vụ & thu học phí QR, kết nối thực tập sinh viên và nhận học bổng/tài trợ cho phụ huynh.",
+      permissions: {
+        viewPlaza: true,
+        postMemberNews: true,
+        manageOwnOrg: true,
+        postForumB2B: true,
+        accessTalentPool: true,
+        manageLmsContests: true,
+        publishMasterBulletin: false,
+        manageAppsUsersRbac: false,
+        moderateForumAudit: false
+      }
+    },
+    student_parent: {
+      roleName: "👨‍🎓 Học viên / Sinh viên / Phụ huynh",
+      roleCode: "student_parent",
+      desc: "Sử dụng Cổng Công dân Số TechCorp ID: Xem Hồ sơ Năng lực Số, thi trực tuyến, ứng tuyển việc làm 1-Click và nhận Voucher ưu đãi.",
+      permissions: {
+        viewPlaza: true,
+        postMemberNews: false,
+        manageOwnOrg: true,
+        postForumB2B: false,
+        accessTalentPool: false,
+        manageLmsContests: false,
+        publishMasterBulletin: false,
+        manageAppsUsersRbac: false,
+        moderateForumAudit: false
+      }
+    }
+  },
   lighthouseTargets: [
     {
       segment: "1. Trường Đại học / Cao đẳng (Nha Trang)",
@@ -665,6 +801,14 @@ class HubDatabase {
         }
         if (!Array.isArray(this.state.auditLogs) || this.state.auditLogs.length === 0) {
           this.state.auditLogs = JSON.parse(JSON.stringify(INITIAL_AUDIT_LOGS));
+          needsSave = true;
+        }
+        if (!Array.isArray(this.state.announcements) || this.state.announcements.length === 0) {
+          this.state.announcements = JSON.parse(JSON.stringify(INITIAL_SEED.announcements));
+          needsSave = true;
+        }
+        if (!this.state.rbacMatrix || !this.state.rbacMatrix.super_admin) {
+          this.state.rbacMatrix = JSON.parse(JSON.stringify(INITIAL_SEED.rbacMatrix));
           needsSave = true;
         }
         if (!this.state.personas["super-admin"]) {
@@ -1205,6 +1349,85 @@ class HubDatabase {
       details: `Đã xoá vĩnh viễn tài khoản TechCorp ID của "${removed.fullName}" (${removed.org}).`
     });
 
+    this.save();
+    return removed;
+  }
+
+  // ==================== RBAC & ANNOUNCEMENTS ====================
+  updateRbacPermission(roleCode, permKey, value, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!this.state.rbacMatrix || !this.state.rbacMatrix[roleCode]) {
+      throw new Error(`Vai trò '${roleCode}' không tồn tại trong Ma trận Phân quyền.`);
+    }
+    this.state.rbacMatrix[roleCode].permissions[permKey] = Boolean(value);
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "RBAC_PERMISSION_UPDATE",
+      target: `Vai trò [${this.state.rbacMatrix[roleCode].roleName}] -> Quyền [${permKey}]`,
+      severity: "WARNING",
+      details: `Cập nhật cấu hình phân quyền RBAC: ${permKey} = ${Boolean(value) ? "CHO PHÉP (ALLOW)" : "TỪ CHỐI (DENY)"}.`
+    });
+    this.save();
+    return this.state.rbacMatrix;
+  }
+
+  createAnnouncement(payload, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    const title = (payload.title || "").trim();
+    const summary = (payload.summary || "").trim();
+    if (!title || !summary) {
+      throw new Error("Vui lòng nhập đầy đủ Tiêu đề và Nội dung thông báo.");
+    }
+    const persona =
+      (this.state.personas && this.state.personas[actorKey]) ||
+      this.state.personas["super-admin"] || {
+        name: "Ban Điều hành Hệ sinh thái",
+        org: "TechCorp Headquarters"
+      };
+    const isMaster = payload.sourceType === "master" || actorKey === "super-admin";
+    const newAnn = {
+      id: "ANN-" + Date.now(),
+      sourceType: isMaster ? "master" : "member",
+      badge:
+        payload.badge ||
+        (isMaster
+          ? "👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP"
+          : "🌟 THÔNG TIN TỪ ĐƠN VỊ THÀNH VIÊN"),
+      title,
+      summary,
+      authorName: payload.authorName || persona.name,
+      authorOrg: payload.authorOrg || persona.org,
+      createdAt: "Vừa xong",
+      pinned: Boolean(payload.pinned),
+      actionLabel: payload.actionLabel || "Xem chi tiết",
+      actionView: payload.actionView || "view-workspace"
+    };
+    this.state.announcements.unshift(newAnn);
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: isMaster ? "MASTER_BULLETIN_PUBLISH" : "MEMBER_NEWS_PUBLISH",
+      target: `${newAnn.id}: ${newAnn.title}`,
+      severity: "INFO",
+      details: `Đăng tải thông báo lên Trang chính Hệ sinh thái (${newAnn.badge}).`
+    });
+    this.save();
+    return newAnn;
+  }
+
+  deleteAnnouncement(annId, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    const idx = (this.state.announcements || []).findIndex((a) => a.id === annId);
+    if (idx === -1) {
+      throw new Error("Không tìm thấy thông báo để xoá.");
+    }
+    const removed = this.state.announcements.splice(idx, 1)[0];
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "ANNOUNCEMENT_DELETE",
+      target: `${removed.id}: ${removed.title}`,
+      severity: "WARNING",
+      details: `Xoá thông báo khỏi Bảng tin Chung Hệ sinh thái.`
+    });
     this.save();
     return removed;
   }

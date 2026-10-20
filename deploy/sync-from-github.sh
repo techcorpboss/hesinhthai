@@ -67,7 +67,7 @@ else
   nohup node server.js > "${TARGET_DIR}/hub-server.log" 2>&1 &
 fi
 
-# Tự động cấu hình Reverse Proxy cho /api/ trên aaPanel Nginx nếu có
+# Tự động cấu hình Reverse Proxy cho /api/ và tắt Cache tĩnh cũ trên aaPanel Nginx nếu có
 AAPANEL_NGINX_CONF="/www/server/panel/vhost/nginx/${DOMAIN}.conf"
 if [ -f "${AAPANEL_NGINX_CONF}" ]; then
   if ! grep -q "proxy_pass http://127.0.0.1:3000" "${AAPANEL_NGINX_CONF}"; then
@@ -75,12 +75,12 @@ if [ -f "${AAPANEL_NGINX_CONF}" ]; then
     cp "${AAPANEL_NGINX_CONF}" "${AAPANEL_NGINX_CONF}.bak"
     PROXY_SNIPPET="\n    location ^~ /api/ {\n        proxy_pass http://127.0.0.1:3000/api/;\n        proxy_http_version 1.1;\n        proxy_set_header Host \$host;\n        proxy_set_header X-Real-IP \$remote_addr;\n        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto \$scheme;\n    }\n"
     sed -i "s|#ERROR-PAGE-START|${PROXY_SNIPPET}\n    #ERROR-PAGE-START|g" "${AAPANEL_NGINX_CONF}"
-    if /etc/init.d/nginx configtest >/dev/null 2>&1 || nginx -t >/dev/null 2>&1; then
-      /etc/init.d/nginx reload >/dev/null 2>&1 || systemctl reload nginx >/dev/null 2>&1 || true
-      echo "✅ Đã kích hoạt Reverse Proxy /api/ trên Nginx thành công!"
-    else
-      mv "${AAPANEL_NGINX_CONF}.bak" "${AAPANEL_NGINX_CONF}"
-    fi
+  fi
+  # Đảm bảo Nginx không lưu cache cũ đối với .js và .css
+  sed -i 's/expires .*12h;/expires -1;/g' "${AAPANEL_NGINX_CONF}" || true
+  if /etc/init.d/nginx configtest >/dev/null 2>&1 || nginx -t >/dev/null 2>&1; then
+    /etc/init.d/nginx reload >/dev/null 2>&1 || systemctl reload nginx >/dev/null 2>&1 || true
+    echo "✅ Đã làm mới Nginx & tắt Cache tĩnh cũ thành công!"
   fi
 fi
 
@@ -90,7 +90,7 @@ if id "www" >/dev/null 2>&1; then
 fi
 
 echo "=============================================================================="
-echo "🎉 ĐỒNG BỘ HOÀN TẤT LÊN: https://${DOMAIN}/"
+echo "🎉 ĐỒNG BỘ HOÀN TẤT LÊN: https://${DOMAIN}/ (PHIÊN BẢN ENTERPRISE v4.0)"
 echo "🌐 Giao diện Web & Widget : ${TARGET_DIR}/index.html"
 echo "🚀 Backend API & SSO Hub  : http://127.0.0.1:${PORT}/api/v1/health"
 echo "=============================================================================="
