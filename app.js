@@ -754,59 +754,111 @@ const STATE = {
     {
       id: "ANN-MASTER-01",
       sourceType: "master",
-      badge: "👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP",
-      title: "Chính thức Liên thông 15 Nền tảng Phần mềm Thực tế trên *.techcorp.info.vn qua Trục SSO TechCorp ID v5.1",
-      summary: "Toàn bộ 15 hệ thống đang chạy thực tế gồm: Giáo dục K12 (mamnon, tieuhoc, thcs, thpt, gdtx), Đại học & Khảo thí (qldt TC COMPASS, ttnn, lms, learn), Quản trị Doanh nghiệp (erp, kpi, techcorp) và Chuyên ngành (qldh PMS Khách sạn, bds AI, noithat) đã được kết nối tập trung.",
+      badge: "👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP",
+      title: "Chính thức Liên thông 16 Nền tảng Phần mềm Thực tế trên *.techcorp.info.vn qua Trục SSO TechCorp ID v6.5",
+      summary: "Toàn bộ 16 hệ thống đang chạy thực tế thuộc 6 nhóm sản phẩm gồm: Giáo dục Mầm non – K12 (mamnon, tieuhoc, thcs, thpt), Đại học & GDTX (qldt TC COMPASS, gdtx), Trung tâm NN-TH & LMS (ttnn, lms, learn), Sàn Việc làm AI (jobai, techcorp), Quản trị Doanh nghiệp (erp, kpi) và Chuyên ngành (qldh PMS Khách sạn, bds AI, noithat) đã kết nối tập trung.",
       authorName: "Ban Điều hành Hệ sinh thái TechCorp",
       authorOrg: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
       createdAt: "Hôm nay, 08:00",
       pinned: true,
-      actionLabel: "Mở Không gian Quản trị",
-      actionView: "view-workspace"
+      actionLabel: "Khám phá 6 Nhóm Sản phẩm",
+      actionView: "products"
     },
     {
       id: "ANN-MASTER-02",
       sourceType: "master",
-      badge: "📢 CHÍNH SÁCH LIÊN KẾT HẠT NHÂN KHÁNH HÒA",
-      title: "Tài trợ 100% Phí Khởi tạo & Tặng Website Chuẩn SEO cho 57 Đơn vị Hạt nhân Giai đoạn 1 tại Nha Trang",
-      summary: "Áp dụng cho 02 Trường ĐH/CĐ, 10 Trung tâm Ngoại ngữ - Tin học, 15 Trường Mầm non/Phổ thông và 30 Doanh nghiệp SME đầu tiên kích hoạt liên thông dữ liệu trên TechCorp Hub.",
-      authorName: "Chủ Hệ sinh thái TechCorp",
-      authorOrg: "TechCorp Headquarters",
+      badge: "📢 CHÍNH SÁCH LIÊN KẾT HẠT NHÂN HỆ SINH THÁI TECHCORP",
+      title: "Tài trợ 100% Phí Khởi tạo & Tặng Website Chuẩn SEO cho 57 Đơn vị Hạt nhân Giai đoạn 1 tại Khánh Hòa",
+      summary: "Áp dụng cho 02 Trường ĐH/CĐ, 10 Trung tâm Ngoại ngữ - Tin học, 15 Trường Mầm non/Phổ thông và 30 Doanh nghiệp SME đầu tiên kích hoạt liên thông dữ liệu trên Hệ sinh thái TechCorp.",
+      authorName: "Hệ sinh thái TechCorp",
+      authorOrg: "CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP",
       createdAt: "Hôm nay, 09:30",
       pinned: true,
-      actionLabel: "Cấu hình Phân quyền RBAC",
-      actionView: "view-master-admin"
+      actionLabel: "Xem Báo giá & Ưu đãi Combo",
+      actionView: "pricing"
+    },
+    {
+      id: "ANN-MASTER-03",
+      sourceType: "master",
+      badge: "🤖 NÂNG CẤP CÔNG NGHỆ • HỆ SINH THÁI TECHCORP",
+      title: "Ra mắt Sàn Tuyển dụng & Tìm việc Thông minh TechCorp HireMind AI (jobai.techcorp.info.vn)",
+      summary: "Tích hợp công nghệ AI ATS đa ngôn ngữ tự động phân tích độ khớp CV – JD, xác thực điểm thi trực tuyến từ TechCorp LMS và đẩy hồ sơ ứng viên 1-Click về phân hệ HRM trên TechCorp ERP.",
+      authorName: "Hệ sinh thái TechCorp",
+      authorOrg: "Trung tâm R&D AI & Cloud TechCorp",
+      createdAt: "Hôm qua, 15:20",
+      pinned: false,
+      actionLabel: "Xem Sàn Nhân lực & LMS",
+      actionView: "forum"
+    },
+    {
+      id: "ANN-MASTER-04",
+      sourceType: "master",
+      badge: "🛡️ TIÊU CHUẨN CHẤT LƯỢNG • ISO 9001:2015",
+      title: "Chuẩn hóa Quy trình Bảo mật Dữ liệu Đa tầng & Ký số Học bạ Điện tử toàn Hệ sinh thái TechCorp",
+      summary: "100% cơ sở giáo dục và doanh nghiệp thành viên được trang bị không gian quản trị riêng biệt theo phân quyền RBAC 9x5, sao lưu tự động MySQL/SQLite thời gian thực và hỗ trợ kỹ thuật 24/7.",
+      authorName: "Ban Điều hành Hệ sinh thái TechCorp",
+      authorOrg: "TechCorp Headquarters",
+      createdAt: "2 ngày trước",
+      pinned: false,
+      actionLabel: "Liên hệ Tư vấn & Demo",
+      actionView: "contact"
     },
     {
       id: "ANN-MEM-01",
       sourceType: "member",
       badge: "🏨 TIN TỪ DOANH NGHIỆP THÀNH VIÊN (SME)",
       title: "Nha Trang Bay Resort & Travel mở đợt tuyển 25 Thực tập sinh & Nhân sự Lễ tân Tiếng Anh/Hàn học kỳ Hè - Thu",
-      summary: "Ưu tiên xét tuyển thẳng (không qua vòng sơ loại CV) đối với Sinh viên ĐH Nha Trang, ĐH Khánh Hòa, CĐ Du lịch có chứng chỉ xác thực trên Nền tảng Thi Online TechCorp.",
+      summary: "Ưu tiên xét tuyển thẳng (không qua vòng sơ loại CV) đối với Sinh viên ĐH Nha Trang, ĐH Khánh Hòa, CĐ Du lịch có chứng chỉ xác thực trên Nền tảng Thi Online của Hệ sinh thái TechCorp.",
       authorName: "Nguyễn Hải Đăng (CEO)",
       authorOrg: "Nha Trang Bay Resort & Travel",
       createdAt: "1 giờ trước",
       pinned: false,
       actionLabel: "Xem Sàn Nhân lực",
-      actionView: "view-talent-lms"
+      actionView: "forum"
     },
     {
       id: "ANN-MEM-02",
       sourceType: "member",
       badge: "🏫 TIN TỪ TRUNG TÂM ĐÀO TẠO THÀNH VIÊN",
       title: "Ocean English & IT Center tài trợ 500 suất Thi thử IELTS/TOEIC & Học bổng 40% cho con em Doanh nghiệp & Trường học",
-      summary: "Kết quả thi thử được đồng bộ tự động về Sổ liên lạc điện tử của Phụ huynh và Hồ sơ Năng lực Số của Sinh viên trên toàn hệ sinh thái.",
+      summary: "Kết quả thi thử được đồng bộ tự động về Sổ liên lạc điện tử của Phụ huynh và Hồ sơ Năng lực Số của Sinh viên trên toàn Hệ sinh thái TechCorp.",
       authorName: "Trần Thanh Tâm (Giám đốc)",
       authorOrg: "Ocean English & IT Center Nha Trang",
       createdAt: "2 giờ trước",
       pinned: false,
       actionLabel: "Xem Đấu trường LMS",
-      actionView: "view-talent-lms"
+      actionView: "forum"
+    },
+    {
+      id: "ANN-MEM-03",
+      sourceType: "member",
+      badge: "🎓 TIN TỪ KHỐI TRƯỜNG HỌC THÀNH VIÊN (K-12)",
+      title: "Hệ thống Giáo dục Liên cấp Sao Biển kích hoạt Cổng Thu học phí VietQR 3 giây & Điểm danh AI đầu giờ",
+      summary: "Hơn 1.200 phụ huynh tại KĐT Mỹ Gia đã nhận thông báo điểm danh khuôn mặt AI và thực đơn dinh dưỡng hàng ngày qua Sổ liên lạc điện tử EduManager Pro.",
+      authorName: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
+      authorOrg: "Hệ thống Giáo dục Liên cấp Sao Biển Nha Trang",
+      createdAt: "4 giờ trước",
+      pinned: false,
+      actionLabel: "Xem Phần mềm Trường học",
+      actionView: "products"
+    },
+    {
+      id: "ANN-MEM-04",
+      sourceType: "member",
+      badge: "🏙️ TIN TỪ KHỐI BẤT ĐỘNG SẢN & NỘI THẤT THÀNH VIÊN",
+      title: "Hưng Phát Land & TechCorp Interior ra mắt Gói Ưu đãi Chéo B2B giảm 20% Thiết kế Thi công Văn phòng & Trung tâm",
+      summary: "Đặc quyền dành riêng cho các Trường tư thục, Trung tâm Ngoại ngữ - Tin học và Doanh nghiệp SME thuộc Hệ sinh thái TechCorp khi mở rộng cơ sở mới tại Khánh Hòa.",
+      authorName: "Ban Giám đốc Hưng Phát Land",
+      authorOrg: "Sàn Giao dịch BĐS Hưng Phát Land & TechCorp Interior",
+      createdAt: "1 ngày trước",
+      pinned: false,
+      actionLabel: "Xem Chợ Giao thương B2B",
+      actionView: "forum"
     }
   ],
   rbacMatrix: {
     super_admin: {
-      roleName: "👑 Chủ Hệ sinh thái (TechCorp Master Admin)",
+      roleName: "👑 Hệ sinh thái TechCorp (Master Admin)",
       roleCode: "super_admin",
       desc: "Toàn quyền điều hành hạ tầng, cấu hình phân quyền RBAC, phê duyệt ứng dụng, kiểm duyệt diễn đàn và truy vết an ninh.",
       permissions: {
@@ -1104,8 +1156,76 @@ window.activateAdminPanel = function (panelId, memberSubTab) {
   }
 };
 
+window.currentPublicPage = "home";
+
+window.switchPublicPage = function (pageKey, updateHistory = true) {
+  const validPages = ["home", "products", "forum", "pricing", "contact"];
+  const aliasMap = {
+    "sec-bulletins": "home",
+    "view-plaza": "home",
+    "sec-products": "products",
+    "view-workspace": "products",
+    "sec-exchange": "forum",
+    "view-forum-b2b": "forum",
+    "sec-talent-lms": "forum",
+    "view-talent-lms": "forum",
+    "sec-pricing": "pricing",
+    "sec-contact": "contact",
+    "view-master-admin": "contact"
+  };
+
+  let normalized = String(pageKey || "home").replace(/^#/, "").trim().toLowerCase();
+  if (aliasMap[normalized]) {
+    normalized = aliasMap[normalized];
+  }
+  if (!validPages.includes(normalized)) {
+    normalized = "home";
+  }
+
+  window.currentPublicPage = normalized;
+
+  const views = document.querySelectorAll(".pub-page-view");
+  if (views.length > 0) {
+    views.forEach((v) => {
+      v.classList.toggle("active", v.id === `pub-page-${normalized}`);
+    });
+  }
+
+  const navLinks = document.querySelectorAll("#publicMainNav .pub-nav-link[data-pub-page]");
+  if (navLinks.length > 0) {
+    navLinks.forEach((link) => {
+      link.classList.toggle("active", link.getAttribute("data-pub-page") === normalized);
+    });
+  }
+
+  if (updateHistory && window.history && window.history.pushState && document.getElementById("pub-page-home")) {
+    const newUrl = normalized === "home" ? "index.html" : `index.html?page=${normalized}`;
+    try {
+      window.history.pushState({ publicPage: normalized }, "", newUrl);
+    } catch (_) {}
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+function initPublicPageFromUrl() {
+  if (!document.getElementById("pub-page-home")) return;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const qPage = params.get("page");
+    const hash = (window.location.hash || "").replace(/^#/, "");
+    if (qPage) {
+      window.switchPublicPage(qPage, false);
+    } else if (hash) {
+      window.switchPublicPage(hash, false);
+    } else {
+      window.switchPublicPage("home", false);
+    }
+  } catch (_) {}
+}
+
 window.switchToTab = function (tabId) {
-  // Support both legacy tab IDs and v5.0 panel IDs / Public anchors
+  // Support both legacy tab IDs and v5.0 panel IDs / Public pages
   const panelMap = {
     "view-plaza": "panel-master-overview",
     "view-workspace": "panel-role-workspace",
@@ -1118,17 +1238,9 @@ window.switchToTab = function (tabId) {
     window.activateAdminPanel(mappedPanel);
     return;
   }
-  // If on Public Page (index.html), scroll to relevant section
-  const publicSectionMap = {
-    "view-plaza": "sec-bulletins",
-    "view-workspace": "sec-products",
-    "view-forum-b2b": "sec-exchange",
-    "view-talent-lms": "sec-talent-lms"
-  };
-  const secId = publicSectionMap[tabId] || tabId;
-  const secEl = document.getElementById(secId);
-  if (secEl) {
-    secEl.scrollIntoView({ behavior: "smooth" });
+  // If on Public Page (index.html), switch to relevant Public Page
+  if (document.getElementById("pub-page-home")) {
+    window.switchPublicPage(tabId);
   }
 };
 
@@ -1281,7 +1393,11 @@ function renderPublicHeroSlider() {
     "6. PMS, BĐS & Nội thất"
   ];
 
-  const isExternalPrimary = (slide.primaryCtaLink || "").indexOf("http") === 0;
+  const primaryLink = slide.primaryCtaLink || "#sec-products";
+  const isExternalPrimary = primaryLink.indexOf("http") === 0;
+  const primaryClickAttr = isExternalPrimary
+    ? 'target="_blank" rel="noopener"'
+    : `onclick="switchPublicPage('${escapeHtml(primaryLink)}'); return false;"`;
 
   container.innerHTML = `
     <div class="hero-slide-card" style="background:${bgStyle};">
@@ -1297,12 +1413,12 @@ function renderPublicHeroSlider() {
 
           <div style="display:flex;flex-wrap:wrap;gap:12px;">
             <a
-              href="${escapeHtml(slide.primaryCtaLink || "#sec-products")}"
-              ${isExternalPrimary ? 'target="_blank" rel="noopener"' : ""}
+              href="${escapeHtml(primaryLink)}"
+              ${primaryClickAttr}
               class="btn"
               style="background:#ffffff;color:#0043b8;padding:12px 20px;font-size:14px;text-decoration:none;"
             >
-              ${escapeHtml(slide.primaryCtaText || "🚀 Khám phá Ngay")}
+              ${escapeHtml(slide.primaryCtaText || "🚀 Khám phá 6 Nhóm Sản phẩm")}
             </a>
             <a
               href="https://jobai.techcorp.info.vn"
@@ -1314,7 +1430,8 @@ function renderPublicHeroSlider() {
               🤖 Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
             </a>
             <a
-              href="#sec-pricing"
+              href="index.html?page=pricing"
+              onclick="switchPublicPage('pricing'); return false;"
               class="btn"
               style="background:rgba(255,255,255,0.18);color:#ffffff;border:1px solid rgba(255,255,255,0.45);padding:12px 18px;font-size:13.5px;text-decoration:none;"
             >
@@ -1581,7 +1698,64 @@ window.resetDefaultHeroSliders = async function () {
   window.location.reload();
 };
 
-// ==================== 0B. PUBLIC PRODUCTS SHOWCASE GRID (INDEX.HTML - 16 REAL LIVE SYSTEMS) ====================
+// ==================== 0B. PUBLIC PRODUCTS SHOWCASE (6 NHÓM SẢN PHẨM - 16 HỆ THỐNG LIVE) ====================
+const PRODUCT_GROUPS_6 = [
+  {
+    groupId: "GROUP-1",
+    groupNumber: "NHÓM SẢN PHẨM 01 / 06",
+    title: "🎓 Khối Giáo dục Mầm non & Phổ thông K-12 (EduManager Pro)",
+    subtitle: "Hệ thống quản trị nhà trường thông minh chuyên biệt cho Mầm non, Tiểu học, THCS và THPT tích hợp AI, Học bạ số & Thu học phí VietQR",
+    badgeClass: "badge-blue",
+    accentColor: "#2563eb",
+    appIds: ["mamnon", "tieuhoc", "thcs", "thpt"]
+  },
+  {
+    groupId: "GROUP-2",
+    groupNumber: "NHÓM SẢN PHẨM 02 / 06",
+    title: "🧭 Khối Đại học, Cao đẳng & Giáo dục Thường xuyên (TC COMPASS & GDTX)",
+    subtitle: "Quản trị đào tạo tín chỉ Đại học/Cao đẳng, đánh giá hiệu suất KPI giảng viên, quản lý học viên GDTX và liên kết doanh nghiệp",
+    badgeClass: "badge-purple",
+    accentColor: "#7c3aed",
+    appIds: ["qldt", "gdtx"]
+  },
+  {
+    groupId: "GROUP-3",
+    groupNumber: "NHÓM SẢN PHẨM 03 / 06",
+    title: "🏫 Khối Trung tâm Ngoại ngữ - Tin học & Đào tạo Khảo thí Số (LMS & E-Testing)",
+    subtitle: "CRM tuyển sinh đa kênh, quản lý trung tâm NN-TH, phòng thi trực tuyến chống gian lận AI và cổng khóa học số TechCorpLearn",
+    badgeClass: "badge-amber",
+    accentColor: "#d97706",
+    appIds: ["ttnn", "lms", "learn"]
+  },
+  {
+    groupId: "GROUP-4",
+    groupNumber: "NHÓM SẢN PHẨM 04 / 06",
+    title: "🤖 Khối Sàn Tuyển dụng & Tìm việc AI (HireMind AI) & Cổng Giải pháp Số",
+    subtitle: "Sàn việc làm thông minh tích hợp AI ATS chấm điểm CV đa ngôn ngữ và Cổng điều phối giải pháp chuyển đổi số TechCorp Academy",
+    badgeClass: "badge-green",
+    accentColor: "#059669",
+    appIds: ["jobai", "techcorp"]
+  },
+  {
+    groupId: "GROUP-5",
+    groupNumber: "NHÓM SẢN PHẨM 05 / 06",
+    title: "🏢 Khối Quản trị Doanh nghiệp Tổng thể (TechCorp ERP & BSC-KPI)",
+    subtitle: "Điều hành doanh nghiệp hợp nhất (HRM, CRM, Tài chính - Kế toán, Kho vận) và Quản trị chiến lược Thẻ điểm cân bằng BSC-KPI/OKR",
+    badgeClass: "badge-blue",
+    accentColor: "#0284c7",
+    appIds: ["erp", "kpi"]
+  },
+  {
+    groupId: "GROUP-6",
+    groupNumber: "NHÓM SẢN PHẨM 06 / 06",
+    title: "🏨 Khối Phần mềm Chuyên ngành: Khách sạn & Resort (PMS), BĐS AI & Nội thất",
+    subtitle: "Bộ giải pháp chuyên sâu vận hành Khách sạn 3-5 Sao & Resort (PMS), Sàn giao dịch Bất động sản AI và Thiết kế - Thi công Nội thất",
+    badgeClass: "badge-green",
+    accentColor: "#0d9488",
+    appIds: ["qldh", "bds", "noithat"]
+  }
+];
+
 const PRODUCT_SHOWCASE_META = {
   jobai: {
     icon: "🤖",
@@ -1756,6 +1930,76 @@ window.filterPublicProducts = function (categoryBadge) {
   renderPublicProductsShowcase();
 };
 
+function renderSinglePublicProductCard(app, groupTitle) {
+  const meta = PRODUCT_SHOWCASE_META[app.id] || {
+    icon: "🚀",
+    targetAudience: "Đơn vị Thành viên Hệ sinh thái TechCorp",
+    highlights: [
+      app.desc || "Nền tảng thành viên kết nối trực tiếp vào Trục dữ liệu SSO TechCorp ID",
+      "Tích hợp sẵn thanh điều hướng Ecosystem Topbar và xác thực tập trung JWT",
+      "Chia sẻ dữ liệu liên thông hai chiều qua REST API & Webhook thời gian thực"
+    ],
+    ecoFlow: "🔄 Liên thông: Kết nối SSO TechCorp ID & Đồng bộ dữ liệu tự động qua Event Bus"
+  };
+
+  const bulletsHtml = meta.highlights
+    .map((h) => `<div style="font-size:12.5px;color:#334155;margin-top:4px;">✔ ${escapeHtml(h)}</div>`)
+    .join("");
+
+  const detailUrl = `product.html?id=${encodeURIComponent(app.id)}`;
+  const demoUrl = `product.html?id=${encodeURIComponent(app.id)}#demo-form`;
+
+  return `
+    <div class="pub-product-card">
+      <div>
+        <div class="pub-prod-top">
+          <div class="pub-prod-icon">${meta.icon}</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <span class="badge badge-green">● HTTP 200 Live</span>
+            <span class="badge badge-blue">${escapeHtml(groupTitle || app.badge || "TechCorp Cloud")}</span>
+          </div>
+        </div>
+        <h3>
+          <a href="${detailUrl}" style="color:inherit;text-decoration:none;">
+            ${escapeHtml(app.name)}
+          </a>
+        </h3>
+        <div style="font-size:12px;font-weight:700;color:#0052d4;margin-bottom:6px;">
+          🎯 Đối tượng: ${escapeHtml(meta.targetAudience)}
+        </div>
+        <p>${escapeHtml(app.desc)}</p>
+        <div style="margin:8px 0;padding:10px 12px;background:#f8fbff;border-radius:10px;border:1px solid #dbeafe;">
+          ${bulletsHtml}
+        </div>
+        <div class="pub-prod-flow">
+          ${escapeHtml(meta.ecoFlow)}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid #e2e8f0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
+          <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" style="font-size:11.5px;color:#0052d4;font-weight:800;text-decoration:none;">
+            🌐 ${escapeHtml(app.appUrl.replace("https://", ""))} ↗
+          </a>
+          <a href="${detailUrl}" style="font-size:11.5px;color:#059669;font-weight:800;text-decoration:none;">
+            📖 Xem 6 Phân hệ Chức năng →
+          </a>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <a href="${detailUrl}" class="btn btn-outline btn-sm" style="text-decoration:none;flex:1;justify-content:center;">
+            📖 Chi tiết Sản phẩm
+          </a>
+          <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;flex:1.15;justify-content:center;">
+            🚀 Xem &amp; Dùng thử ↗
+          </a>
+          <a href="${demoUrl}" class="btn btn-emerald btn-sm" style="text-decoration:none;flex:1;justify-content:center;">
+            📝 Đăng ký Demo
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderPublicProductsShowcase() {
   const gridEl = document.getElementById("publicProductsShowcaseGrid");
   const statEl = document.getElementById("pubStatApps");
@@ -1766,77 +2010,44 @@ function renderPublicProductsShowcase() {
   if (!gridEl) return;
 
   const selectedCat = STATE.selectedProductCategory || "all";
-  const filteredApps =
+  const allGroupedIds = new Set();
+  PRODUCT_GROUPS_6.forEach((g) => g.appIds.forEach((id) => allGroupedIds.add(id)));
+  const extraApps = activeApps.filter((a) => !allGroupedIds.has(a.id));
+
+  const groupsToRender =
     selectedCat === "all"
-      ? activeApps
-      : activeApps.filter((a) => (a.badge || "").toLowerCase() === selectedCat.toLowerCase());
+      ? PRODUCT_GROUPS_6
+      : PRODUCT_GROUPS_6.filter((g) => g.groupId === selectedCat || g.title.toLowerCase().includes(selectedCat.toLowerCase()));
 
-  gridEl.innerHTML = filteredApps
-    .map((app) => {
-      const meta = PRODUCT_SHOWCASE_META[app.id] || {
-        icon: "🚀",
-        targetAudience: "Đơn vị Thành viên Hệ sinh thái TechCorp",
-        highlights: [
-          app.desc || "Nền tảng thành viên kết nối trực tiếp vào Trục dữ liệu SSO TechCorp ID",
-          "Tích hợp sẵn thanh điều hướng Ecosystem Topbar và xác thực tập trung JWT",
-          "Chia sẻ dữ liệu liên thông hai chiều qua REST API & Webhook thời gian thực"
-        ],
-        ecoFlow: "🔄 Liên thông: Kết nối SSO TechCorp ID & Đồng bộ dữ liệu tự động qua Event Bus"
-      };
-
-      const bulletsHtml = meta.highlights
-        .map((h) => `<div style="font-size:12.5px;color:#334155;margin-top:4px;">✔ ${escapeHtml(h)}</div>`)
-        .join("");
-
-      const detailUrl = `product.html?id=${encodeURIComponent(app.id)}`;
-      const demoUrl = `product.html?id=${encodeURIComponent(app.id)}#demo-form`;
+  gridEl.innerHTML = groupsToRender
+    .map((group, idx) => {
+      const groupApps = group.appIds
+        .map((id) => activeApps.find((a) => a.id === id))
+        .filter(Boolean);
+      if (idx === groupsToRender.length - 1 && selectedCat === "all" && extraApps.length > 0) {
+        groupApps.push(...extraApps);
+      }
+      if (groupApps.length === 0) return "";
 
       return `
-        <div class="pub-product-card">
-          <div>
-            <div class="pub-prod-top">
-              <div class="pub-prod-icon">${meta.icon}</div>
-              <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-                <span class="badge badge-green">● HTTP 200 Live</span>
-                <span class="badge badge-blue">${escapeHtml(app.badge || "TechCorp Cloud")}</span>
-              </div>
+        <div class="prod-group-section" style="border-top: 4px solid ${group.accentColor};">
+          <div class="prod-group-header">
+            <div class="prod-group-title-box">
+              <span class="badge ${group.badgeClass}">${escapeHtml(group.groupNumber)} • ${groupApps.length} SẢN PHẨM LIVE</span>
+              <h4>${escapeHtml(group.title)}</h4>
+              <p>${escapeHtml(group.subtitle)}</p>
             </div>
-            <h3>
-              <a href="${detailUrl}" style="color:inherit;text-decoration:none;">
-                ${escapeHtml(app.name)}
-              </a>
-            </h3>
-            <div style="font-size:12px;font-weight:700;color:#0052d4;margin-bottom:6px;">
-              🎯 Đối tượng: ${escapeHtml(meta.targetAudience)}
-            </div>
-            <p>${escapeHtml(app.desc)}</p>
-            <div style="margin:8px 0;padding:10px 12px;background:#f8fbff;border-radius:10px;border:1px solid #dbeafe;">
-              ${bulletsHtml}
-            </div>
-            <div class="pub-prod-flow">
-              ${escapeHtml(meta.ecoFlow)}
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="switchPublicPage('pricing')">
+                💳 Báo giá Combo Nhóm này
+              </button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="switchPublicPage('contact')">
+                📞 Đăng ký Tư vấn
+              </button>
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid #e2e8f0;">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
-              <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" style="font-size:11.5px;color:#0052d4;font-weight:800;text-decoration:none;">
-                🌐 ${escapeHtml(app.appUrl.replace("https://", ""))} ↗
-              </a>
-              <a href="${detailUrl}" style="font-size:11.5px;color:#059669;font-weight:800;text-decoration:none;">
-                📖 Xem 6 Phân hệ Chức năng →
-              </a>
-            </div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <a href="${detailUrl}" class="btn btn-outline btn-sm" style="text-decoration:none;flex:1;justify-content:center;">
-                📖 Chi tiết Sản phẩm
-              </a>
-              <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;flex:1.15;justify-content:center;">
-                🚀 Xem &amp; Dùng thử ↗
-              </a>
-              <a href="${demoUrl}" class="btn btn-emerald btn-sm" style="text-decoration:none;flex:1;justify-content:center;">
-                📝 Đăng ký Demo
-              </a>
-            </div>
+          <div class="pub-product-grid">
+            ${groupApps.map((app) => renderSinglePublicProductCard(app, group.groupNumber)).join("")}
           </div>
         </div>
       `;
@@ -3470,7 +3681,7 @@ const RBAC_PERMISSION_LABELS = [
   { key: "postForumB2B", label: "4. Đăng bài Diễn đàn & Chợ Giao thương B2B", desc: "Tạo chủ đề RFQ tìm đối tác, đăng ưu đãi Give-to-Get và phản hồi báo giá" },
   { key: "accessTalentPool", label: "5. Truy cập Sàn Nhân lực & Đẩy CV vào ERP HRM", desc: "Xem hồ sơ năng lực số của sinh viên và đồng bộ 1-Click về phần mềm nhân sự" },
   { key: "manageLmsContests", label: "6. Tổ chức Đấu trường Thi Online & Nhận Lead CRM", desc: "Tạo kỳ thi thử IELTS/TOEIC/Tin học và nhận danh sách học viên tiềm năng" },
-  { key: "publishMasterBulletin", label: "7. Phát Thông báo Điều hành Toàn Hệ sinh thái", desc: "Quyền của Chủ Hệ sinh thái ghim thông báo chính sách lên đầu Cổng Chung" },
+  { key: "publishMasterBulletin", label: "7. Phát Thông báo Điều hành Toàn Hệ sinh thái", desc: "Quyền của Hệ sinh thái TechCorp ghim thông báo chính sách lên đầu Cổng Chung" },
   { key: "manageAppsUsersRbac", label: "8. Quản trị Ứng dụng, Thành viên & Cấu hình RBAC", desc: "Thêm/xoá ứng dụng vệ tinh, cấp API Key, tạo/khóa tài khoản & sửa phân quyền" },
   { key: "moderateForumAudit", label: "9. Thẩm định/Khóa Diễn đàn & Xem Truy vết Audit Logs", desc: "Duyệt/từ chối bài viết, khóa bình luận (Clock) và xuất báo cáo kiểm toán IP" }
 ];
@@ -3909,60 +4120,148 @@ function renderRoleContextAndSidebar() {
   }
 }
 
-// ==================== CENTRAL ECOSYSTEM BULLETINS (MASTER & MEMBER NEWS) ====================
+// ==================== CENTRAL ECOSYSTEM BULLETINS (MASTER & MEMBER NEWS - MAIN PUBLIC VIEW) ====================
+window.selectedBulletinFilter = "all";
+
+window.filterPublicBulletins = function (filterKey) {
+  window.selectedBulletinFilter = filterKey || "all";
+  const bar = document.getElementById("publicBulletinFilterBar");
+  if (bar) {
+    bar.querySelectorAll(".forum-cat-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-bfilter") === window.selectedBulletinFilter);
+    });
+  }
+  renderCentralBulletins();
+};
+
+function normalizeTermText(str) {
+  return String(str || "")
+    .replace(/CHỦ HỆ SINH THÁI TECHCORP/g, "HỆ SINH THÁI TECHCORP")
+    .replace(/Chủ Hệ sinh thái TechCorp/gi, "Hệ sinh thái TechCorp")
+    .replace(/CHỦ HỆ SINH THÁI/g, "HỆ SINH THÁI TECHCORP")
+    .replace(/(?<!Trang\s)Chủ Hệ sinh thái/g, "Hệ sinh thái TechCorp")
+    .replace(/(?<!Trang\s)Chủ hệ sinh thái/g, "Hệ sinh thái TechCorp");
+}
+
 function renderCentralBulletins() {
   const masterEl = document.getElementById("masterBulletinsList");
   const memberEl = document.getElementById("memberBulletinsList");
+  const masterColCard = document.getElementById("masterBulletinsColCard");
+  const memberColCard = document.getElementById("memberBulletinsColCard");
+  const twoColGrid = document.getElementById("publicBulletinsTwoColGrid");
   const navBadge = document.getElementById("navBadgeBulletins");
   const kpiTotal = document.getElementById("kpiTotalBulletinsAndPosts");
+  const statMasterEl = document.getElementById("pubStatMasterBulletins");
+  const statMemberEl = document.getElementById("pubStatMemberBulletins");
+  const searchKeyword = (document.getElementById("publicBulletinSearchInput")?.value || "").trim().toLowerCase();
+  const activeFilter = window.selectedBulletinFilter || "all";
 
-  const list = STATE.announcements || [];
+  const list = (STATE.announcements || []).map((a) => ({
+    ...a,
+    badge: normalizeTermText(a.badge),
+    title: normalizeTermText(a.title),
+    summary: normalizeTermText(a.summary),
+    authorName: normalizeTermText(a.authorName),
+    authorOrg: normalizeTermText(a.authorOrg)
+  }));
+
   if (navBadge) navBadge.textContent = `${list.length} Tin`;
   if (kpiTotal) kpiTotal.textContent = `${list.length + STATE.forumPosts.length} Bản tin`;
 
-  const masterList = list.filter((a) => a.sourceType === "master");
-  const memberList = list.filter((a) => a.sourceType !== "master");
+  const allMasters = list.filter((a) => a.sourceType === "master");
+  const allMembers = list.filter((a) => a.sourceType !== "master");
+  if (statMasterEl) statMasterEl.textContent = `${String(allMasters.length).padStart(2, "0")} Bản tin`;
+  if (statMemberEl) statMemberEl.textContent = `${String(allMembers.length).padStart(2, "0")} Tin mới`;
+
+  const matchSearch = (item) => {
+    if (!searchKeyword) return true;
+    const blob = `${item.badge || ""} ${item.title || ""} ${item.summary || ""} ${item.authorName || ""} ${item.authorOrg || ""}`.toLowerCase();
+    return blob.includes(searchKeyword);
+  };
+
+  const masterList = allMasters.filter(matchSearch);
+  const memberList = allMembers.filter(matchSearch);
+
+  if (masterColCard && memberColCard && twoColGrid) {
+    if (activeFilter === "master") {
+      masterColCard.style.display = "";
+      memberColCard.style.display = "none";
+      twoColGrid.style.gridTemplateColumns = "1fr";
+    } else if (activeFilter === "member") {
+      masterColCard.style.display = "none";
+      memberColCard.style.display = "";
+      twoColGrid.style.gridTemplateColumns = "1fr";
+    } else {
+      masterColCard.style.display = "";
+      memberColCard.style.display = "";
+      twoColGrid.style.gridTemplateColumns = "";
+    }
+  }
 
   if (masterEl) {
-    masterEl.innerHTML = masterList
-      .map(
-        (item) => `
-        <div class="bulletin-card master-bulletin">
-          <div class="bulletin-top">
-            <span class="badge badge-amber">${escapeHtml(item.badge)}</span>
-            <span style="font-size:11.5px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
-          </div>
-          <div class="bulletin-title">${escapeHtml(item.title)}</div>
-          <div class="bulletin-summary">${escapeHtml(item.summary)}</div>
-          <div class="bulletin-footer">
-            <span>👤 Ban hành bởi: <strong>${escapeHtml(item.authorName)}</strong> (${escapeHtml(item.authorOrg)})</span>
-            <button class="btn btn-outline btn-sm" onclick="switchToTab('${escapeHtml(item.actionView || "view-workspace")}')">
-              ${escapeHtml(item.actionLabel || "Xem chi tiết")} →
-            </button>
-          </div>
-        </div>
-      `
-      )
-      .join("");
+    masterEl.innerHTML =
+      masterList.length === 0
+        ? `<div style="padding:18px;text-align:center;color:#64748b;font-size:13px;">Không tìm thấy bản tin phù hợp với từ khóa tìm kiếm.</div>`
+        : masterList
+            .map(
+              (item) => `
+              <div class="bulletin-card master-bulletin">
+                <div class="bulletin-top">
+                  <span class="badge badge-amber">${escapeHtml(item.badge)}</span>
+                  <span style="font-size:11.5px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
+                </div>
+                <div class="bulletin-title">${escapeHtml(item.title)}</div>
+                <div class="bulletin-summary">${escapeHtml(item.summary)}</div>
+                <div class="bulletin-footer">
+                  <span>👤 Ban hành bởi: <strong>${escapeHtml(item.authorName)}</strong> (${escapeHtml(item.authorOrg)})</span>
+                  <button class="btn btn-outline btn-sm" onclick="switchToTab('${escapeHtml(item.actionView || "products")}')">
+                    ${escapeHtml(item.actionLabel || "Xem chi tiết")} →
+                  </button>
+                </div>
+              </div>
+            `
+            )
+            .join("");
   }
 
   if (memberEl) {
-    memberEl.innerHTML = memberList
+    memberEl.innerHTML =
+      memberList.length === 0
+        ? `<div style="padding:18px;text-align:center;color:#64748b;font-size:13px;">Không tìm thấy tin tức đơn vị thành viên phù hợp.</div>`
+        : memberList
+            .map(
+              (item) => `
+              <div class="bulletin-card">
+                <div class="bulletin-top">
+                  <span class="badge badge-blue">${escapeHtml(item.badge)}</span>
+                  <span style="font-size:11.5px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
+                </div>
+                <div class="bulletin-title">${escapeHtml(item.title)}</div>
+                <div class="bulletin-summary">${escapeHtml(item.summary)}</div>
+                <div class="bulletin-footer">
+                  <span>🏢 Đơn vị đăng: <strong>${escapeHtml(item.authorOrg)}</strong> (${escapeHtml(item.authorName)})</span>
+                  <button class="btn btn-outline btn-sm" onclick="switchToTab('${escapeHtml(item.actionView || "forum")}')">
+                    ${escapeHtml(item.actionLabel || "Kết nối ngay")} →
+                  </button>
+                </div>
+              </div>
+            `
+            )
+            .join("");
+  }
+
+  const homeStreamEl = document.getElementById("publicHomeActivityStream");
+  if (homeStreamEl) {
+    const events = (STATE.activityLogs || []).slice(0, 4);
+    homeStreamEl.innerHTML = events
       .map(
-        (item) => `
-        <div class="bulletin-card">
-          <div class="bulletin-top">
-            <span class="badge badge-blue">${escapeHtml(item.badge)}</span>
-            <span style="font-size:11.5px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
+        (ev) => `
+        <div style="padding:10px 12px;background:#f8fbff;border-radius:10px;border-left:3.5px solid #2563eb;font-size:12.5px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+            <span class="badge badge-blue" style="font-size:10px;">${escapeHtml(ev.eventType || "SSO_SYNC")}</span>
+            <span style="font-size:11px;color:#64748b;">🕒 ${escapeHtml(ev.time || "Vừa xong")}</span>
           </div>
-          <div class="bulletin-title">${escapeHtml(item.title)}</div>
-          <div class="bulletin-summary">${escapeHtml(item.summary)}</div>
-          <div class="bulletin-footer">
-            <span>🏢 Đơn vị đăng: <strong>${escapeHtml(item.authorOrg)}</strong> (${escapeHtml(item.authorName)})</span>
-            <button class="btn btn-outline btn-sm" onclick="switchToTab('${escapeHtml(item.actionView || "view-talent-lms")}')">
-              ${escapeHtml(item.actionLabel || "Kết nối ngay")} →
-            </button>
-          </div>
+          <div style="color:#1e293b;line-height:1.45;">${escapeHtml(ev.text)}</div>
         </div>
       `
       )
@@ -3973,7 +4272,7 @@ function renderCentralBulletins() {
 window.openBulletinModal = function (sourceType) {
   if (sourceType === "master") {
     if (!hasRbacPermission("publishMasterBulletin")) {
-      showToast(`<span style="color:#d97706">🔒 Theo phân quyền RBAC, chỉ Chủ Hệ sinh thái mới được phát Thông báo Điều hành!</span>`);
+      showToast(`<span style="color:#d97706">🔒 Theo phân quyền RBAC, chỉ Hệ sinh thái TechCorp mới được phát Thông báo Điều hành!</span>`);
       return;
     }
     window.activateAdminPanel("panel-master-bulletins");
@@ -5043,7 +5342,7 @@ function renderRbacMatrixTable() {
               type="checkbox"
               class="rbac-cb"
               ${checked ? "checked" : ""}
-              ${isSuperLock ? "disabled title='Chủ Hệ sinh thái luôn giữ quyền quản trị RBAC tối cao'" : ""}
+              ${isSuperLock ? "disabled title='Hệ sinh thái TechCorp luôn giữ quyền quản trị RBAC tối cao'" : ""}
               onchange="toggleRbacPermission('${rCode}', '${row.key}', this.checked)"
             />
           </td>
@@ -5542,6 +5841,198 @@ window.exportDemoLeadsCsv = function () {
   showToast("📥 Đã xuất danh sách Khách hàng Đăng ký Demo (CSV) thành công!");
 };
 
+window.selectPricingPreset = function (customerType, scaleVal) {
+  const typeSelect = document.getElementById("calcCustomerType");
+  const scaleInput = document.getElementById("calcScaleInput");
+  if (typeSelect) typeSelect.value = customerType || "sme";
+  if (scaleInput) scaleInput.value = String(scaleVal || 30);
+  if (typeof window.calculateComboPrice === "function") {
+    window.calculateComboPrice();
+  }
+  const resultBox = document.getElementById("calcResultBox");
+  if (resultBox) {
+    resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  showToast("💳 Đã áp dụng cấu hình gói mẫu vào Công cụ Tính Giá Combo!");
+};
+
+window.submitPublicContactForm = async function (event) {
+  if (event) event.preventDefault();
+
+  const fullName = document.getElementById("contactFullName")?.value.trim() || "";
+  const phone = document.getElementById("contactPhone")?.value.trim() || "";
+  const email = document.getElementById("contactEmail")?.value.trim() || "";
+  const orgScale = document.getElementById("contactOrgScale")?.value || "50 - 200 nhân sự / học sinh";
+  const orgName = document.getElementById("contactOrgName")?.value.trim() || "";
+  const productId = document.getElementById("contactProductId")?.value || "erp";
+  const preferredTime = document.getElementById("contactPreferredTime")?.value.trim() || "Trong giờ hành chính";
+  const notes = document.getElementById("contactNotes")?.value.trim() || "Liên hệ tư vấn giải pháp & nhận tài khoản Demo từ Trang Liên hệ.";
+
+  if (!fullName || !phone || !orgName) {
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Họ tên, Số điện thoại và Tên đơn vị!</span>`);
+    return;
+  }
+
+  const matchedApp = (STATE.apps || []).find((a) => a.id === productId);
+  const productName = matchedApp ? matchedApp.name : "Tư vấn Giải pháp Combo Hệ sinh thái TechCorp";
+  const appUrl = matchedApp ? matchedApp.appUrl : "https://hesinhthai.techcorp.info.vn";
+
+  const btn = document.getElementById("contactSubmitBtn");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "⏳ Đang gửi thông tin liên hệ...";
+  }
+
+  let createdLead = null;
+  try {
+    const res = await fetch("/api/v1/demo-requests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName,
+        phone,
+        email,
+        orgName,
+        orgScale,
+        productId,
+        productName,
+        appUrl,
+        preferredTime,
+        notes
+      })
+    });
+    const data = await res.json();
+    if (data && data.ok && data.lead) {
+      createdLead = data.lead;
+      if (Array.isArray(data.demoRequests)) {
+        STATE.demoRequests = data.demoRequests;
+        syncDemoRequestsToLocal();
+      }
+    }
+  } catch (_) {}
+
+  if (!createdLead) {
+    createdLead = {
+      id: "DEMO-" + String(Date.now()).slice(-6),
+      fullName,
+      phone,
+      email,
+      orgName,
+      orgScale,
+      productId,
+      productName,
+      appUrl,
+      preferredTime,
+      notes,
+      status: "new",
+      adminNote: "",
+      ipAddress: "103.170.122.138",
+      createdAt: new Date().toISOString().replace("T", " ").slice(0, 19)
+    };
+    STATE.demoRequests.unshift(createdLead);
+    syncDemoRequestsToLocal();
+  }
+
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = "📨 Gửi Thông tin Liên hệ & Đăng ký Tư vấn Ngay";
+  }
+
+  const successBox = document.getElementById("publicContactSuccessBox");
+  const codeEl = document.getElementById("publicContactSuccessCode");
+  if (codeEl && createdLead.id) {
+    codeEl.textContent = `Mã phiếu: ${createdLead.id}`;
+  }
+  if (successBox) {
+    successBox.style.display = "block";
+  }
+
+  const formEl = document.getElementById("publicContactDemoForm");
+  if (formEl) formEl.reset();
+
+  renderAllViews();
+  showToast(`✅ Đã gửi thông tin liên hệ của <b>${escapeHtml(fullName)}</b> về Hệ sinh thái TechCorp!`);
+};
+
+function sanitizeStateTerminology() {
+  if (Array.isArray(STATE.announcements)) {
+    const defaultSupplementalIds = ["ANN-MASTER-03", "ANN-MASTER-04", "ANN-MEM-03", "ANN-MEM-04"];
+    const defaultExtras = [
+      {
+        id: "ANN-MASTER-03",
+        sourceType: "master",
+        badge: "🤖 NÂNG CẤP CÔNG NGHỆ • HỆ SINH THÁI TECHCORP",
+        title: "Ra mắt Sàn Tuyển dụng & Tìm việc Thông minh TechCorp HireMind AI (jobai.techcorp.info.vn)",
+        summary: "Tích hợp công nghệ AI ATS đa ngôn ngữ tự động phân tích độ khớp CV – JD, xác thực điểm thi trực tuyến từ TechCorp LMS và đẩy hồ sơ ứng viên 1-Click về phân hệ HRM trên TechCorp ERP.",
+        authorName: "Hệ sinh thái TechCorp",
+        authorOrg: "Trung tâm R&D AI & Cloud TechCorp",
+        createdAt: "Hôm qua, 15:20",
+        pinned: false,
+        actionLabel: "Xem Sàn Nhân lực & LMS",
+        actionView: "forum"
+      },
+      {
+        id: "ANN-MASTER-04",
+        sourceType: "master",
+        badge: "🛡️ TIÊU CHUẨN CHẤT LƯỢNG • ISO 9001:2015",
+        title: "Chuẩn hóa Quy trình Bảo mật Dữ liệu Đa tầng & Ký số Học bạ Điện tử toàn Hệ sinh thái TechCorp",
+        summary: "100% cơ sở giáo dục và doanh nghiệp thành viên được trang bị không gian quản trị riêng biệt theo phân quyền RBAC 9x5, sao lưu tự động MySQL/SQLite thời gian thực và hỗ trợ kỹ thuật 24/7.",
+        authorName: "Ban Điều hành Hệ sinh thái TechCorp",
+        authorOrg: "TechCorp Headquarters",
+        createdAt: "2 ngày trước",
+        pinned: false,
+        actionLabel: "Liên hệ Tư vấn & Demo",
+        actionView: "contact"
+      },
+      {
+        id: "ANN-MEM-03",
+        sourceType: "member",
+        badge: "🎓 TIN TỪ KHỐI TRƯỜNG HỌC THÀNH VIÊN (K-12)",
+        title: "Hệ thống Giáo dục Liên cấp Sao Biển kích hoạt Cổng Thu học phí VietQR 3 giây & Điểm danh AI đầu giờ",
+        summary: "Hơn 1.200 phụ huynh tại KĐT Mỹ Gia đã nhận thông báo điểm danh khuôn mặt AI và thực đơn dinh dưỡng hàng ngày qua Sổ liên lạc điện tử EduManager Pro.",
+        authorName: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
+        authorOrg: "Hệ thống Giáo dục Liên cấp Sao Biển Nha Trang",
+        createdAt: "4 giờ trước",
+        pinned: false,
+        actionLabel: "Xem Phần mềm Trường học",
+        actionView: "products"
+      },
+      {
+        id: "ANN-MEM-04",
+        sourceType: "member",
+        badge: "🏙️ TIN TỪ KHỐI BẤT ĐỘNG SẢN & NỘI THẤT THÀNH VIÊN",
+        title: "Hưng Phát Land & TechCorp Interior ra mắt Gói Ưu đãi Chéo B2B giảm 20% Thiết kế Thi công Văn phòng & Trung tâm",
+        summary: "Đặc quyền dành riêng cho các Trường tư thục, Trung tâm Ngoại ngữ - Tin học và Doanh nghiệp SME thuộc Hệ sinh thái TechCorp khi mở rộng cơ sở mới tại Khánh Hòa.",
+        authorName: "Ban Giám đốc Hưng Phát Land",
+        authorOrg: "Sàn Giao dịch BĐS Hưng Phát Land & TechCorp Interior",
+        createdAt: "1 ngày trước",
+        pinned: false,
+        actionLabel: "Xem Chợ Giao thương B2B",
+        actionView: "forum"
+      }
+    ];
+
+    defaultExtras.forEach((extra) => {
+      if (!STATE.announcements.some((a) => a.id === extra.id)) {
+        STATE.announcements.push(extra);
+      }
+    });
+
+    STATE.announcements = STATE.announcements.map((a) => ({
+      ...a,
+      badge: normalizeTermText(a.badge),
+      title: normalizeTermText(a.title),
+      summary: normalizeTermText(a.summary),
+      authorName: normalizeTermText(a.authorName),
+      authorOrg: normalizeTermText(a.authorOrg)
+    }));
+  }
+
+  if (STATE.rbacMatrix && STATE.rbacMatrix.super_admin) {
+    STATE.rbacMatrix.super_admin.roleName = normalizeTermText(STATE.rbacMatrix.super_admin.roleName);
+  }
+}
+
 async function bootstrapFromServer() {
   const badgeEl = document.getElementById("apiStatusBadge");
   const tokenBox = document.getElementById("currentSsoTokenBox");
@@ -5593,6 +6084,7 @@ async function bootstrapFromServer() {
     }
   }
 
+  sanitizeStateTerminology();
   renderAllViews();
   window.activateAdminPanel(window.activeAdminPanelId, window.activeMemberSubTab);
 }
@@ -5600,6 +6092,10 @@ async function bootstrapFromServer() {
 document.addEventListener("DOMContentLoaded", () => {
   loadCachedHeroSliders();
   startHeroSliderAutoPlay();
+  initPublicPageFromUrl();
+  window.addEventListener("popstate", () => {
+    initPublicPageFromUrl();
+  });
 
   const isAdminPage = Boolean(document.getElementById("dynamicRoleSidebarNav"));
   let resolvedRole = null;

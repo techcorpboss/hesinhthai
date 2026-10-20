@@ -502,7 +502,7 @@ const INITIAL_DEMO_REQUESTS = [
 const INITIAL_SEED = {
   meta: {
     domain: "hesinhthai.techcorp.info.vn",
-    version: "6.4.0",
+    version: "6.5.0",
     region: "Nha Trang - Khánh Hòa",
     updatedAt: new Date().toISOString()
   },
@@ -896,15 +896,15 @@ const INITIAL_SEED = {
     {
       id: "ANN-MASTER-01",
       sourceType: "master",
-      badge: "👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP",
-      title: "Chính thức Liên thông 15 Nền tảng Phần mềm Thực tế trên *.techcorp.info.vn qua Trục SSO TechCorp ID v5.1",
-      summary: "Toàn bộ 15 hệ thống đang chạy thực tế gồm: Giáo dục K12 (mamnon, tieuhoc, thcs, thpt, gdtx), Đại học & Khảo thí (qldt TC COMPASS, ttnn, lms, learn), Quản trị Doanh nghiệp (erp, kpi, techcorp) và Chuyên ngành (qldh PMS Khách sạn, bds AI, noithat) đã được kết nối tập trung.",
+      badge: "👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP",
+      title: "Chính thức Liên thông 16 Nền tảng Phần mềm Thực tế trên *.techcorp.info.vn qua Trục SSO TechCorp ID v5.1",
+      summary: "Toàn bộ 16 hệ thống đang chạy thực tế gồm: Giáo dục K12 (mamnon, tieuhoc, thcs, thpt, gdtx), Đại học & Khảo thí (qldt TC COMPASS, ttnn, lms, learn), Tuyển dụng AI (jobai), Quản trị Doanh nghiệp (erp, kpi, techcorp) và Chuyên ngành (qldh PMS Khách sạn, bds AI, noithat) đã được kết nối tập trung.",
       authorName: "Ban Điều hành Hệ sinh thái TechCorp",
       authorOrg: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
       createdAt: "Hôm nay, 08:00",
       pinned: true,
-      actionLabel: "Xem Sơ đồ Vận hành",
-      actionView: "view-plaza"
+      actionLabel: "Xem 6 Nhóm Sản phẩm",
+      actionView: "pub-page-products"
     },
     {
       id: "ANN-MASTER-02",
@@ -912,12 +912,38 @@ const INITIAL_SEED = {
       badge: "📢 CHÍNH SÁCH LIÊN KẾT HẠT NHÂN KHÁNH HÒA",
       title: "Tài trợ 100% Phí Khởi tạo & Tặng Website Chuẩn SEO cho 57 Đơn vị Hạt nhân Giai đoạn 1 tại Nha Trang",
       summary: "Áp dụng cho 02 Trường ĐH/CĐ, 10 Trung tâm Ngoại ngữ - Tin học, 15 Trường Mầm non/Phổ thông và 30 Doanh nghiệp SME đầu tiên kích hoạt liên thông dữ liệu trên TechCorp Hub.",
-      authorName: "Chủ Hệ sinh thái TechCorp",
+      authorName: "Hệ sinh thái TechCorp",
       authorOrg: "TechCorp Headquarters",
       createdAt: "Hôm nay, 09:30",
       pinned: true,
-      actionLabel: "Mở Không gian Quản trị",
-      actionView: "view-workspace"
+      actionLabel: "Xem Báo giá Combo",
+      actionView: "pub-page-pricing"
+    },
+    {
+      id: "ANN-MASTER-03",
+      sourceType: "master",
+      badge: "🤖 NÂNG CẤP TRỤC AI TUYỂN DỤNG & ĐÀO TẠO",
+      title: "Ra mắt cổng đồng bộ 1-Click từ Sàn Tuyển dụng HireMind AI (jobai.techcorp.info.vn) sang Phân hệ HRM trên TechCorp ERP",
+      summary: "Các Doanh nghiệp thành viên có thể lọc ứng viên theo Điểm Thi Online thực tế từ LMS và đẩy thẳng hồ sơ trúng tuyển vào Hợp đồng lao động điện tử chỉ với 1 cú nhấp chuột.",
+      authorName: "Hệ sinh thái TechCorp",
+      authorOrg: "Khối Công nghệ & AI TechCorp",
+      createdAt: "Hôm qua, 15:20",
+      pinned: false,
+      actionLabel: "Xem Diễn đàn & Nhân lực",
+      actionView: "pub-page-forum"
+    },
+    {
+      id: "ANN-MASTER-04",
+      sourceType: "master",
+      badge: "💳 LIÊN THÔNG THANH TOÁN QR ĐỘNG KHÔNG TIỀN MẶT",
+      title: "Tích hợp cổng gạch nợ Học phí & Hóa đơn tự động 3 giây cho toàn bộ Khối Trường học K-12 và Trung tâm Ngoại ngữ",
+      summary: "Miễn phí 100% phí thiết lập cổng thanh toán VietQR động cho các trường Mầm non, Tiểu học, THCS, THPT, GDTX và Trung tâm đào tạo thuộc Hệ sinh thái TechCorp.",
+      authorName: "Hệ sinh thái TechCorp",
+      authorOrg: "Ban Tài chính & Đối tác Ngân hàng",
+      createdAt: "2 ngày trước",
+      pinned: false,
+      actionLabel: "Đăng ký Tư vấn",
+      actionView: "pub-page-contact"
     },
     {
       id: "ANN-MEM-01",
@@ -930,7 +956,7 @@ const INITIAL_SEED = {
       createdAt: "1 giờ trước",
       pinned: false,
       actionLabel: "Xem Sàn Nhân lực",
-      actionView: "view-talent-lms"
+      actionView: "pub-page-forum"
     },
     {
       id: "ANN-MEM-02",
@@ -943,12 +969,38 @@ const INITIAL_SEED = {
       createdAt: "2 giờ trước",
       pinned: false,
       actionLabel: "Xem Đấu trường LMS",
-      actionView: "view-talent-lms"
+      actionView: "pub-page-forum"
+    },
+    {
+      id: "ANN-MEM-03",
+      sourceType: "member",
+      badge: "🎓 TIN TỪ KHỐI CƠ SỞ GIÁO DỤC THÀNH VIÊN",
+      title: "Hệ thống Giáo dục Sao Biển Nha Trang tổ chức Ngày hội Trải nghiệm Công nghệ & Kỹ năng Số cho 800 Phụ huynh Học sinh",
+      summary: "Mời các Doanh nghiệp Du lịch, F&B, Y tế và Trung tâm Ngoại ngữ trong Hệ sinh thái TechCorp đăng ký gian hàng trải nghiệm và phát hành E-Voucher trên Sổ liên lạc điện tử.",
+      authorName: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
+      authorOrg: "Hệ thống Giáo dục Sao Biển Nha Trang",
+      createdAt: "4 giờ trước",
+      pinned: false,
+      actionLabel: "Kết nối Hợp tác B2B",
+      actionView: "pub-page-forum"
+    },
+    {
+      id: "ANN-MEM-04",
+      sourceType: "member",
+      badge: "🏢 TIN TỪ KHỐI BẤT ĐỘNG SẢN & NỘI THẤT",
+      title: "Hưng Phát Land & Showroom Nội thất 3D ưu đãi giảm 20% gói Thiết kế - Thi công Văn phòng & Phòng Học Thông minh",
+      summary: "Chương trình đặc quyền Give-to-Get dành riêng cho các Trường học, Trung tâm đào tạo và Doanh nghiệp SME mở rộng cơ sở mới tại Nha Trang - Cam Ranh.",
+      authorName: "Ban Giám đốc Hưng Phát Land",
+      authorOrg: "Sàn BĐS Hưng Phát Land & Nội thất 3D",
+      createdAt: "1 ngày trước",
+      pinned: false,
+      actionLabel: "Xem Ưu đãi B2B",
+      actionView: "pub-page-forum"
     }
   ],
   rbacMatrix: {
     super_admin: {
-      roleName: "👑 Chủ Hệ sinh thái (TechCorp Master Admin)",
+      roleName: "👑 Hệ sinh thái TechCorp (TechCorp Master Admin)",
       roleCode: "super_admin",
       desc: "Toàn quyền điều hành hạ tầng, cấu hình phân quyền RBAC, phê duyệt ứng dụng, kiểm duyệt diễn đàn và truy vết an ninh.",
       permissions: {
@@ -1196,7 +1248,7 @@ class HubDatabase {
           this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
           needsSave = true;
         }
-        if (!this.state.meta || this.state.meta.version !== "6.4.0") {
+        if (!this.state.meta || this.state.meta.version !== "6.5.0") {
           this.state.meta = JSON.parse(JSON.stringify(INITIAL_SEED.meta));
           this.state.apps = JSON.parse(JSON.stringify(INITIAL_SEED.apps));
           this.state.users = JSON.parse(JSON.stringify(INITIAL_USERS));
@@ -1207,8 +1259,13 @@ class HubDatabase {
           if (!Array.isArray(this.state.demoRequests) || this.state.demoRequests.length === 0) {
             this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
           }
-          if (Array.isArray(this.state.announcements) && this.state.announcements.length > 0) {
-            this.state.announcements[0] = JSON.parse(JSON.stringify(INITIAL_SEED.announcements[0]));
+          const seedAnns = JSON.parse(JSON.stringify(INITIAL_SEED.announcements));
+          const existingCustom = (this.state.announcements || []).filter(
+            (a) => !seedAnns.some((s) => s.id === a.id)
+          );
+          this.state.announcements = [...existingCustom, ...seedAnns];
+          if (this.state.rbacMatrix && this.state.rbacMatrix.super_admin) {
+            this.state.rbacMatrix.super_admin.roleName = INITIAL_SEED.rbacMatrix.super_admin.roleName;
           }
           needsSave = true;
         }
@@ -1789,7 +1846,7 @@ class HubDatabase {
       badge:
         payload.badge ||
         (isMaster
-          ? "👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP"
+          ? "👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP"
           : "🌟 THÔNG TIN TỪ ĐƠN VỊ THÀNH VIÊN"),
       title,
       summary,

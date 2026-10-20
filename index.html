@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hệ sinh thái Số TechCorp — hesinhthai.techcorp.info.vn (Cổng Quảng bá Sản phẩm, Kết nối Giao thương & Liên thông Thành viên)</title>
-  <link rel="icon" type="image/png" href="logo.png?v=15" />
-  <link rel="stylesheet" href="styles.css?v=15" />
+  <title>Hệ sinh thái TechCorp — hesinhthai.techcorp.info.vn (Bản tin Hệ sinh thái, 6 Nhóm Sản phẩm, Diễn đàn B2B & Báo giá Combo)</title>
+  <link rel="icon" type="image/png" href="logo.png?v=16" />
+  <link rel="stylesheet" href="styles.css?v=16" />
   <!-- Thanh Liên thông Hệ sinh thái (Topbar SSO dùng chung) -->
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=13"
+    src="widget/techcorp-ecosystem-bar.js?v=16"
     data-app-id="erp"
     data-org-name="TechCorp Ecosystem Hub"
     data-user-role="SSO Connected"
@@ -16,12 +16,12 @@
   ></script>
 </head>
 <body>
-  <!-- HEADER HỆ SINH THÁI TECHCORP (CÂN ĐỐI MENU & NÚT ĐĂNG NHẬP GỌN GÀNG) -->
+  <!-- HEADER HỆ SINH THÁI TECHCORP (5 TRANG PUBLIC RÕ RÀNG & NÚT ĐĂNG NHẬP GỌN GÀNG) -->
   <header class="hub-header">
     <div class="hub-header-inner">
-      <a href="index.html" class="brand-box">
+      <a href="index.html" onclick="switchPublicPage('home'); return false;" class="brand-box">
         <div class="brand-logo">
-          <img src="logo.png?v=6.3" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+          <img src="logo.png?v=16" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
         </div>
         <div class="brand-title">
           <h1>
@@ -32,15 +32,27 @@
         </div>
       </a>
 
-      <!-- Cụm Menu Điều hướng + Nút Đăng nhập Cân đối (Dịch chuyển sang trái, không bị khuất góc phải) -->
-      <div style="display:flex;align-items:center;gap:14px;margin-right:auto;margin-left:28px;">
-        <nav class="pub-nav-links">
-          <a href="#sec-products" class="pub-nav-link">🚀 Sản phẩm (16)</a>
-          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="pub-nav-link" style="color:#0052d4;">🤖 Sàn Việc làm JobAI ↗</a>
-          <a href="#sec-bulletins" class="pub-nav-link">📢 Bản tin Chung</a>
-          <a href="#sec-exchange" class="pub-nav-link">💬 Diễn đàn B2B</a>
-          <a href="#sec-talent-lms" class="pub-nav-link">🎓 Nhân lực & LMS</a>
-          <a href="#sec-pricing" class="pub-nav-link">💳 Báo giá Combo</a>
+      <!-- Cụm Menu Điều hướng 5 Trang Public + Nút Đăng nhập Cân đối -->
+      <div style="display:flex;align-items:center;gap:14px;margin-right:auto;margin-left:24px;flex-wrap:wrap;">
+        <nav class="pub-nav-links" id="publicMainNav">
+          <a href="index.html?page=home" data-pub-page="home" onclick="switchPublicPage('home'); return false;" class="pub-nav-link active">
+            📢 Bản tin Hệ sinh thái
+          </a>
+          <a href="index.html?page=products" data-pub-page="products" onclick="switchPublicPage('products'); return false;" class="pub-nav-link">
+            🚀 Sản phẩm (6 Nhóm)
+          </a>
+          <a href="index.html?page=forum" data-pub-page="forum" onclick="switchPublicPage('forum'); return false;" class="pub-nav-link">
+            💬 Diễn đàn
+          </a>
+          <a href="index.html?page=pricing" data-pub-page="pricing" onclick="switchPublicPage('pricing'); return false;" class="pub-nav-link">
+            💳 Báo giá Combo
+          </a>
+          <a href="index.html?page=contact" data-pub-page="contact" onclick="switchPublicPage('contact'); return false;" class="pub-nav-link">
+            📞 Liên hệ
+          </a>
+          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="pub-nav-link" style="color:#0052d4;">
+            🤖 Sàn Việc làm JobAI ↗
+          </a>
         </nav>
 
         <div class="header-actions" id="publicHeaderAuthActions" style="margin-right:0;display:flex;align-items:center;gap:8px;">
@@ -53,294 +65,700 @@
   </header>
 
   <main class="pub-container">
-    <!-- 1. HERO SLIDER 6 SLIDE CHẠY LIÊN TỤC (ĐỔI HÌNH ẢNH & NỘI DUNG TRỰC TIẾP TỪ TRANG ADMIN) -->
-    <section
-      class="hero-slider-shell"
-      id="publicHeroSliderContainer"
-      onmouseenter="pauseHeroSliderAutoPlay(true)"
-      onmouseleave="pauseHeroSliderAutoPlay(false)"
-    >
-      <!-- Nội dung 6 Slide được render & chạy tự động liên tục bởi renderPublicHeroSlider() trong app.js -->
-      <div class="hero-slide-card" style="background:linear-gradient(135deg, #002b7f 0%, #0055e8 55%, #0088ff 100%);">
-        <div class="hero-slide-grid">
-          <div>
-            <span class="hero-slide-badge">⚡ HỆ SINH THÁI SỐ ĐA CHIỀU • 16 NỀN TẢNG LIVE</span>
-            <h2 class="hero-slide-title">Kết nối Trường học – Trung tâm Đào tạo – Sàn Việc làm AI & Doanh nghiệp trên Một Trục SSO</h2>
-            <p class="hero-slide-subtitle">
-              Hệ sinh thái TechCorp liên thông trực tiếp 16 nền tảng phần mềm đang vận hành thực tế trên *.techcorp.info.vn: từ Giáo dục K12, Đại học, Trung tâm Ngoại ngữ - Tin học, Sàn Tuyển dụng AI (JobAI) đến Quản trị Doanh nghiệp ERP, KPI, Khách sạn PMS & BĐS.
-            </p>
-            <div class="hero-slide-highlights">
-              <span class="hero-highlight-pill">✔ 16 Hệ thống Live (HTTP 200)</span>
-              <span class="hero-highlight-pill">✔ Định danh tập trung TechCorp ID</span>
-              <span class="hero-highlight-pill">✔ Quà tặng chéo Give-to-Get</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;">
-              <a href="#sec-products" class="btn" style="background:#ffffff;color:#0043b8;padding:12px 20px;font-size:14px;text-decoration:none;">
-                🚀 Khám phá 16 Sản phẩm Thực tế
-              </a>
-              <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn" style="background:#ff6b00;color:#ffffff;padding:12px 20px;font-size:14px;text-decoration:none;">
-                🤖 Mở Sàn Tuyển dụng JobAI ↗
-              </a>
-            </div>
-          </div>
-          <div class="hero-slide-visual">
-            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="TechCorp Ecosystem" />
-            <div class="hero-slide-visual-caption">
-              <span>📸 Slide 1/6: Trục Liên thông 16 Hệ thống Phần mềm Thực tế • hesinhthai.techcorp.info.vn</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. TRƯNG BÀY & QUẢNG BÁ HỆ THỐNG 16 SẢN PHẨM PHẦN MỀM ĐANG CHẠY THỰC TẾ CỦA TECHCORP -->
-    <section id="sec-products" class="pub-section">
-      <div class="pub-section-header">
-        <div>
-          <div class="pub-section-tag">🚀 DANH MỤC 16 NỀN TẢNG PHẦN MỀM ĐANG VẬN HÀNH THỰC TẾ TRÊN SERVER (*.TECHCORP.INFO.VN)</div>
-          <h3 class="pub-section-title">Hệ thống Sản phẩm Công nghệ, Sàn Tuyển dụng AI & Giải pháp Chuyển đổi Số của TechCorp</h3>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-emerald btn-sm">
-            🤖 Mở Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
-          </a>
-          <a href="#sec-pricing" class="btn btn-primary btn-sm">
-            💳 Tính Giá Gói Combo →
-          </a>
-        </div>
-      </div>
-
-      <!-- Thanh Lọc Danh mục Sản phẩm theo Khối ngành -->
-      <div class="forum-cat-bar" id="productCategoryFilterBar" style="margin-bottom:20px;">
-        <button class="forum-cat-btn active" data-prod-cat="all" onclick="filterPublicProducts('all')">
-          🌐 Tất cả Sản phẩm (16 Hệ thống Live)
-        </button>
-        <button class="forum-cat-btn" data-prod-cat="EdTech K-12" onclick="filterPublicProducts('EdTech K-12')">
-          🎓 Giáo dục Mầm non – K12 & GDTX (05)
-        </button>
-        <button class="forum-cat-btn" data-prod-cat="EdTech & LMS" onclick="filterPublicProducts('EdTech & LMS')">
-          🏫 Đại học, Trung tâm NN-TH & LMS (04)
-        </button>
-        <button class="forum-cat-btn" data-prod-cat="Enterprise & KPI" onclick="filterPublicProducts('Enterprise & KPI')">
-          🏢 Quản trị Doanh nghiệp ERP, KPI & Sàn Việc làm AI (04)
-        </button>
-        <button class="forum-cat-btn" data-prod-cat="Chuyên ngành" onclick="filterPublicProducts('Chuyên ngành')">
-          🏨 Khách sạn PMS, Bất động sản AI & Nội thất (03)
-        </button>
-      </div>
-
-      <div class="pub-product-grid" id="publicProductsShowcaseGrid"></div>
-    </section>
-
-    <!-- 3. BẢNG TIN CHUNG HỆ SINH THÁI: CHỈ HIỂN THỊ NỘI DUNG ĐƯỢC ĐĂNG & CUNG CẤP TỪ TRANG QUẢN TRỊ -->
-    <section id="sec-bulletins" class="pub-section">
-      <div class="pub-section-header">
-        <div>
-          <div class="pub-section-tag">📢 TRUNG TÂM THÔNG TIN & SỰ KIỆN TOÀN HỆ SINH THÁI</div>
-          <h3 class="pub-section-title">Thông báo Chính thức từ Chủ Hệ sinh thái & Tin tức từ Đơn vị Thành viên</h3>
-        </div>
-        <div>
-          <span class="badge badge-blue">✔ Nội dung được kiểm duyệt & phát hành từ Cổng Quản trị</span>
-        </div>
-      </div>
-
-      <div class="grid-2-equal">
-        <div class="card">
-          <div class="card-header">
+    <!-- =========================================================================
+         TRANG 1 (GIAO DIỆN CHÍNH PUBLIC): BẢN TIN CHUNG HỆ SINH THÁI & TIN ĐƠN VỊ THÀNH VIÊN
+         ========================================================================= -->
+    <div id="pub-page-home" class="pub-page-view active">
+      <!-- 1. HERO SLIDER 6 SLIDE CHẠY LIÊN TỤC (ĐỔI HÌNH ẢNH & NỘI DUNG TRỰC TIẾP TỪ TRANG ADMIN) -->
+      <section
+        class="hero-slider-shell"
+        id="publicHeroSliderContainer"
+        onmouseenter="pauseHeroSliderAutoPlay(true)"
+        onmouseleave="pauseHeroSliderAutoPlay(false)"
+      >
+        <div class="hero-slide-card" style="background:linear-gradient(135deg, #002b7f 0%, #0055e8 55%, #0088ff 100%);">
+          <div class="hero-slide-grid">
             <div>
-              <h3 class="card-title">👑 Thông báo & Chính sách từ Chủ Hệ sinh thái TechCorp</h3>
-              <p class="card-subtitle">Định hướng phát triển, chính sách tài trợ và cập nhật công nghệ từ TechCorp</p>
-            </div>
-          </div>
-          <div class="bulletin-list" id="masterBulletinsList"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">🌟 Tin tức, Tuyển dụng & Sự kiện từ Các Đơn vị Thành viên</h3>
-              <p class="card-subtitle">Hoạt động tiêu biểu từ các Trường học, Trung tâm và Doanh nghiệp trong hệ sinh thái</p>
-            </div>
-          </div>
-          <div class="bulletin-list" id="memberBulletinsList"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. DIỄN ĐÀN GIAO THƯƠNG & ƯU ĐÃI CHÉO B2B (CHỈ HIỂN THỊ NỘI DUNG ĐÃ ĐƯỢC DUYỆT TỪ TRANG QUẢN TRỊ) -->
-    <section id="sec-exchange" class="pub-section">
-      <div class="pub-section-header">
-        <div>
-          <div class="pub-section-tag">💬 KẾT NỐI CỘNG ĐỒNG & QUẢNG BÁ CHÉO CÓ KIỂM CHỨNG</div>
-          <h3 class="pub-section-title">Diễn đàn Trao đổi Thành viên & Chợ Giao thương Nội bộ (Give-to-Get)</h3>
-        </div>
-        <div>
-          <span class="badge badge-green">✔ Chỉ hiển thị Tin Giao thương đã được Thẩm định & Phê duyệt</span>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <!-- Cột Trái: Danh sách Bài viết Giao thương đã duyệt -->
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">💬 Bảng Tin Hợp tác, Tìm Đối tác (RFQ) & Quảng bá Chéo Đã Phê Duyệt</h3>
-              <p class="card-subtitle">
-                Tổng hợp các nhu cầu mua sắm nội bộ, hợp tác đào tạo và ưu đãi chéo chính thức từ các đơn vị thành viên TechCorp.
+              <span class="hero-slide-badge">⚡ HỆ SINH THÁI SỐ ĐA CHIỀU • 16 NỀN TẢNG LIVE</span>
+              <h2 class="hero-slide-title">Kết nối Trường học – Trung tâm Đào tạo – Sàn Việc làm AI & Doanh nghiệp trên Một Trục SSO</h2>
+              <p class="hero-slide-subtitle">
+                Hệ sinh thái TechCorp liên thông trực tiếp 16 nền tảng phần mềm đang vận hành thực tế trên *.techcorp.info.vn: từ Giáo dục K12, Đại học, Trung tâm Ngoại ngữ - Tin học, Sàn Tuyển dụng AI (JobAI) đến Quản trị Doanh nghiệp ERP, KPI, Khách sạn PMS & BĐS.
               </p>
+              <div class="hero-slide-highlights">
+                <span class="hero-highlight-pill">✔ 16 Hệ thống Live (HTTP 200)</span>
+                <span class="hero-highlight-pill">✔ Định danh tập trung TechCorp ID</span>
+                <span class="hero-highlight-pill">✔ Quà tặng chéo Give-to-Get</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;">
+                <a href="index.html?page=products" onclick="switchPublicPage('products'); return false;" class="btn" style="background:#ffffff;color:#0043b8;padding:12px 20px;font-size:14px;text-decoration:none;">
+                  🚀 Khám phá 6 Nhóm Sản phẩm (16 Hệ thống)
+                </a>
+                <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn" style="background:#ff6b00;color:#ffffff;padding:12px 20px;font-size:14px;text-decoration:none;">
+                  🤖 Mở Sàn Tuyển dụng JobAI ↗
+                </a>
+              </div>
+            </div>
+            <div class="hero-slide-visual">
+              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="TechCorp Ecosystem" />
+              <div class="hero-slide-visual-caption">
+                <span>📸 Slide 1/6: Trục Liên thông 16 Hệ thống Phần mềm Thực tế • hesinhthai.techcorp.info.vn</span>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div class="forum-cat-pills" id="forumCategoryBar">
-            <button class="forum-cat-btn active" data-cat="all">Tất cả chủ đề</button>
-            <button class="forum-cat-btn" data-cat="rfq">📢 Cần Mua / Tìm Đối tác (RFQ)</button>
-            <button class="forum-cat-btn" data-cat="spotlight">🎁 Quảng bá & Ưu đãi (Give-to-Get)</button>
-            <button class="forum-cat-btn" data-cat="comarketing">🤝 Hợp tác Sự kiện & Tuyển sinh</button>
-            <button class="forum-cat-btn" data-cat="knowledge">💡 Kinh nghiệm Quản trị & Chuyển đổi số</button>
+      <!-- 2. GIAO DIỆN CHÍNH: BẢN TIN CHUNG CỦA HỆ SINH THÁI TECHCORP & TIN CỦA CÁC ĐƠN VỊ THÀNH VIÊN -->
+      <section id="sec-bulletins" class="pub-section">
+        <div class="pub-section-header">
+          <div>
+            <div class="pub-section-tag">📢 CỔNG THÔNG TIN CHÍNH THỨC & TIN TỨC HOẠT ĐỘNG TOÀN HỆ SINH THÁI</div>
+            <h3 class="pub-section-title">Bản tin Chung của Hệ sinh thái TechCorp & Tin tức từ Các Đơn vị Thành viên</h3>
           </div>
-
-          <div id="forumPostsContainer"></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <span class="badge badge-blue">✔ Nội dung kiểm duyệt & phát hành từ Cổng Quản trị</span>
+            <button type="button" class="btn btn-primary btn-sm" onclick="switchPublicPage('products')">
+              🚀 Xem 6 Nhóm Sản phẩm (16 App) →
+            </button>
+          </div>
         </div>
 
-        <!-- Cột Phải: Danh sách Ưu đãi B2B Nội bộ Đang Mở -->
-        <div style="display:flex;flex-direction:column;gap:20px;">
+        <!-- Dải Chỉ số Hoạt động Bản tin & Liên thông Hệ sinh thái -->
+        <div class="pub-bulletin-stats-grid" style="margin-bottom:20px;">
+          <div class="pub-bstat-card">
+            <div class="pub-bstat-icon" style="background:#eff6ff;color:#1d4ed8;">👑</div>
+            <div>
+              <div class="pub-bstat-val" id="pubStatMasterBulletins">04 Bản tin</div>
+              <div class="pub-bstat-label">Bản tin Chung Hệ sinh thái TechCorp</div>
+            </div>
+          </div>
+          <div class="pub-bstat-card">
+            <div class="pub-bstat-icon" style="background:#ecfdf5;color:#047857;">🌟</div>
+            <div>
+              <div class="pub-bstat-val" id="pubStatMemberBulletins">04 Tin mới</div>
+              <div class="pub-bstat-label">Tin tức từ Các Đơn vị Thành viên</div>
+            </div>
+          </div>
+          <div class="pub-bstat-card">
+            <div class="pub-bstat-icon" style="background:#fffbeb;color:#b45309;">🚀</div>
+            <div>
+              <div class="pub-bstat-val">06 Nhóm (16 App)</div>
+              <div class="pub-bstat-label">Nền tảng Phần mềm Vận hành Thực tế</div>
+            </div>
+          </div>
+          <div class="pub-bstat-card">
+            <div class="pub-bstat-icon" style="background:#f5f3ff;color:#6d28d9;">🤝</div>
+            <div>
+              <div class="pub-bstat-val">57 Đơn vị</div>
+              <div class="pub-bstat-label">Thành viên Hạt nhân Liên kết SSO</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thanh Bộ lọc & Tìm kiếm Bản tin Hệ sinh thái -->
+        <div class="card" style="margin-bottom:20px;padding:14px 18px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div class="forum-cat-pills" id="publicBulletinFilterBar" style="margin-bottom:0;">
+              <button type="button" class="forum-cat-btn active" data-bfilter="all" onclick="filterPublicBulletins('all')">
+                🌐 Tất cả Bản tin Hệ sinh thái
+              </button>
+              <button type="button" class="forum-cat-btn" data-bfilter="master" onclick="filterPublicBulletins('master')">
+                👑 Bản tin Chung Hệ sinh thái TechCorp
+              </button>
+              <button type="button" class="forum-cat-btn" data-bfilter="member" onclick="filterPublicBulletins('member')">
+                🌟 Tin từ Đơn vị Thành viên (Trường / Trung tâm / DN)
+              </button>
+            </div>
+            <div style="flex:1;min-width:240px;max-width:360px;">
+              <input
+                type="text"
+                id="publicBulletinSearchInput"
+                class="input-control"
+                style="width:100%;"
+                placeholder="🔍 Tìm bản tin, chính sách, học bổng, tuyển dụng..."
+                oninput="renderCentralBulletins()"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Bố cục 2 Cột Chính: Bản tin Chung Hệ sinh thái TechCorp & Tin của các Đơn vị Thành viên -->
+        <div class="grid-2-equal" id="publicBulletinsTwoColGrid">
+          <div class="card" id="masterBulletinsColCard">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">👑 Bản tin Chung & Chính sách từ Hệ sinh thái TechCorp</h3>
+                <p class="card-subtitle">Định hướng phát triển, chính sách tài trợ hạt nhân và cập nhật công nghệ từ Hệ sinh thái TechCorp</p>
+              </div>
+              <span class="badge badge-amber">Bản tin Điều hành</span>
+            </div>
+            <div class="bulletin-list" id="masterBulletinsList"></div>
+          </div>
+
+          <div class="card" id="memberBulletinsColCard">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">🌟 Tin tức, Tuyển dụng & Sự kiện từ Các Đơn vị Thành viên</h3>
+                <p class="card-subtitle">Hoạt động tiêu biểu, học bổng, tuyển sinh & tuyển dụng từ Trường học, Trung tâm và Doanh nghiệp thành viên</p>
+              </div>
+              <span class="badge badge-blue">Tin Thành viên</span>
+            </div>
+            <div class="bulletin-list" id="memberBulletinsList"></div>
+          </div>
+        </div>
+
+        <!-- Khối Luồng Hoạt động Liên thông Thời gian thực & Lối tắt Chuyên trang -->
+        <div class="grid-2" style="margin-top:22px;">
           <div class="card">
             <div class="card-header">
               <div>
-                <h3 class="card-title">🎁 Đặc quyền & Ưu đãi Chéo B2B Đang Mở</h3>
-                <p class="card-subtitle">Các gói tài trợ & chiết khấu độc quyền được cung cấp từ Không gian Quản trị của Đơn vị Thành viên</p>
+                <h3 class="card-title">⚡ Nhật ký Liên thông Thời gian thực giữa Các Đơn vị Thành viên</h3>
+                <p class="card-subtitle">Dữ liệu đồng bộ tự động qua Trục SSO TechCorp ID giữa Trường học – Trung tâm – Doanh nghiệp</p>
+              </div>
+              <span class="badge badge-green">● Live Event Stream</span>
+            </div>
+            <div id="publicHomeActivityStream" style="display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">🧭 Khám phá Nhanh Các Chuyên trang Hệ sinh thái TechCorp</h3>
+                <p class="card-subtitle">Truy cập trực tiếp tới danh mục 6 nhóm sản phẩm, diễn đàn B2B, công cụ báo giá combo và liên hệ</p>
               </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:12px;" id="b2bGrid"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. SÀN TUYỂN DỤNG & TÌM VIỆC AI (JOBAI.TECHCORP.INFO.VN) & ĐẤU TRƯỜNG THI ONLINE KHÁNH HÒA -->
-    <section id="sec-talent-lms" class="pub-section">
-      <div class="pub-section-header">
-        <div>
-          <div class="pub-section-tag">🤖 SÀN TUYỂN DỤNG AI (JOBAI.TECHCORP.INFO.VN) & LIÊN THÔNG KHẢO THÍ TRỰC TUYẾN</div>
-          <h3 class="pub-section-title">Sàn Tuyển dụng & Tìm việc AI (TechCorp HireMind AI) & Đấu trường Thi Online</h3>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
-            🤖 Mở Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
-          </a>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">🏅 Hồ sơ Ứng viên & Thực tập sinh Đã Xác thực Điểm Thi Online</h3>
-              <p class="card-subtitle">Sẵn sàng kết nối thực tập & làm việc tại các Doanh nghiệp thành viên TechCorp</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="eco-flow-step" style="cursor:pointer;" onclick="switchPublicPage('products')">
+                <span class="eco-flow-num">CHUYÊN TRANG 1</span>
+                <h4>🚀 Sản phẩm (6 Nhóm • 16 App)</h4>
+                <p>Khám phá 6 nhóm giải pháp phần mềm từ Mầm non – K12, Đại học, Trung tâm NN-TH, JobAI đến ERP, KPI & PMS.</p>
+              </div>
+              <div class="eco-flow-step" style="cursor:pointer;" onclick="switchPublicPage('forum')">
+                <span class="eco-flow-num">CHUYÊN TRANG 2</span>
+                <h4>💬 Diễn đàn & Nhân lực LMS</h4>
+                <p>Chợ giao thương nội bộ Give-to-Get, ưu đãi chéo B2B, hồ sơ ứng viên xác thực và đấu trường thi online.</p>
+              </div>
+              <div class="eco-flow-step" style="cursor:pointer;" onclick="switchPublicPage('pricing')">
+                <span class="eco-flow-num">CHUYÊN TRANG 3</span>
+                <h4>💳 Báo giá Gói Combo</h4>
+                <p>Công cụ tự tính chi phí ưu đãi khi đăng ký gói Combo Doanh nghiệp SME, Trung tâm Đào tạo và Trường học.</p>
+              </div>
+              <div class="eco-flow-step" style="cursor:pointer;" onclick="switchPublicPage('contact')">
+                <span class="eco-flow-num">CHUYÊN TRANG 4</span>
+                <h4>📞 Liên hệ & Đăng ký Demo</h4>
+                <p>Kết nối trực tiếp trụ sở & văn phòng TechCorp tại Nha Trang hoặc gửi yêu cầu tư vấn, nhận tài khoản Demo.</p>
+              </div>
             </div>
           </div>
-          <div class="filter-bar">
-            <input
-              type="text"
-              id="talentSearchInput"
-              class="input-control"
-              style="flex:1;"
-              placeholder="Tìm theo tên, trường, chứng chỉ (IELTS, TOEIC, ERP)..."
-            />
-            <select id="talentDomainFilter" class="select-control">
-              <option value="all">Tất cả lĩnh vực</option>
-              <option value="tourism">Du lịch - Khách sạn - Ngoại ngữ</option>
-              <option value="it">CNTT - Quản trị ERP</option>
-              <option value="finance">Kế toán - Tài chính</option>
-            </select>
+        </div>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         TRANG 2: TRANG SẢN PHẨM (GỒM CÓ 6 NHÓM SẢN PHẨM — 16 HỆ THỐNG LIVE)
+         ========================================================================= -->
+    <div id="pub-page-products" class="pub-page-view">
+      <section id="sec-products" class="pub-section" style="margin-top:16px;">
+        <div class="pub-section-header">
+          <div>
+            <div class="pub-section-tag">🚀 TRANG SẢN PHẨM HỆ SINH THÁI TECHCORP • 06 NHÓM SẢN PHẨM CHUYÊN SÂU (16 NỀN TẢNG LIVE)</div>
+            <h3 class="pub-section-title">Hệ thống 6 Nhóm Sản phẩm Công nghệ, Sàn Tuyển dụng AI & Giải pháp Chuyển đổi Số</h3>
           </div>
-          <div style="display:flex;flex-direction:column;gap:12px;" id="talentGrid"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-emerald btn-sm" style="text-decoration:none;">
+              🤖 Mở Sàn Việc làm AI (jobai.techcorp.info.vn) ↗
+            </a>
+            <button type="button" class="btn btn-primary btn-sm" onclick="switchPublicPage('pricing')">
+              💳 Xem Báo giá Combo →
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="switchPublicPage('contact')">
+              📞 Đăng ký Tư vấn / Demo
+            </button>
+          </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">🏆 Đấu trường Học & Thi Online Khánh Hòa (LMS Funnel)</h3>
-              <p class="card-subtitle">Các kỳ thi năng lực trực tuyến do các Trung tâm & Trường học thành viên đồng tổ chức</p>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:12px;" id="contestList"></div>
+        <!-- Thanh Lọc 6 Nhóm Sản phẩm Rõ ràng -->
+        <div class="forum-cat-bar" id="productCategoryFilterBar" style="margin-bottom:22px;">
+          <button class="forum-cat-btn active" data-prod-cat="all" onclick="filterPublicProducts('all')">
+            🌐 Tất cả 6 Nhóm Sản phẩm (16 Hệ thống)
+          </button>
+          <button class="forum-cat-btn" data-prod-cat="GROUP-1" onclick="filterPublicProducts('GROUP-1')">
+            1️⃣ Giáo dục Mầm non & Phổ thông K-12 (04)
+          </button>
+          <button class="forum-cat-btn" data-prod-cat="GROUP-2" onclick="filterPublicProducts('GROUP-2')">
+            2️⃣ Đại học, Cao đẳng & GDTX (02)
+          </button>
+          <button class="forum-cat-btn" data-prod-cat="GROUP-3" onclick="filterPublicProducts('GROUP-3')">
+            3️⃣ Trung tâm NN-TH & Khảo thí LMS (03)
+          </button>
+          <button class="forum-cat-btn" data-prod-cat="GROUP-4" onclick="filterPublicProducts('GROUP-4')">
+            4️⃣ Sàn Việc làm AI & Cổng Giải pháp Số (02)
+          </button>
+          <button class="forum-cat-btn" data-prod-cat="GROUP-5" onclick="filterPublicProducts('GROUP-5')">
+            5️⃣ Quản trị Doanh nghiệp ERP & BSC-KPI (02)
+          </button>
+          <button class="forum-cat-btn" data-prod-cat="GROUP-6" onclick="filterPublicProducts('GROUP-6')">
+            6️⃣ Khách sạn PMS, BĐS AI & Nội thất (03)
+          </button>
         </div>
-      </div>
-    </section>
 
-    <!-- 6. CÔNG CỤ BÁO GIÁ GÓI COMBO GIA NHẬP HỆ SINH THÁI & QUYỀN LỢI -->
-    <section id="sec-pricing" class="pub-section">
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">💳 Công cụ Tự Tính Giá Gói Combo Gia nhập Hệ sinh thái TechCorp</h3>
-              <p class="card-subtitle">Chọn loại hình đơn vị và quy mô để xem ngay chi phí ưu đãi cùng gói quà tặng hệ sinh thái</p>
+        <!-- Khu vực Hiển thị Chi tiết 6 Nhóm Sản phẩm -->
+        <div id="publicProductsShowcaseGrid"></div>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         TRANG 3: TRANG DIỄN ĐÀN GIAO THƯƠNG B2B, ƯU ĐÃI CHÉO & SÀN NHÂN LỰC - LMS
+         ========================================================================= -->
+    <div id="pub-page-forum" class="pub-page-view">
+      <!-- Phần 1: Diễn đàn Trao đổi Thành viên & Chợ Giao thương Nội bộ -->
+      <section id="sec-exchange" class="pub-section" style="margin-top:16px;">
+        <div class="pub-section-header">
+          <div>
+            <div class="pub-section-tag">💬 TRANG DIỄN ĐÀN HỆ SINH THÁI TECHCORP • KẾT NỐI CỘNG ĐỒNG & QUẢNG BÁ CHÉO B2B</div>
+            <h3 class="pub-section-title">Diễn đàn Trao đổi Thành viên & Chợ Giao thương Nội bộ (Give-to-Get)</h3>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <span class="badge badge-green">✔ Chỉ hiển thị Tin Giao thương đã được Thẩm định & Phê duyệt</span>
+            <button type="button" class="btn btn-primary btn-sm" onclick="switchPublicPage('contact')">
+              🤝 Liên hệ Đăng ký Thành viên
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Cột Trái: Danh sách Bài viết Giao thương đã duyệt -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">💬 Bảng Tin Hợp tác, Tìm Đối tác (RFQ) & Quảng bá Chéo Đã Phê Duyệt</h3>
+                <p class="card-subtitle">
+                  Tổng hợp các nhu cầu mua sắm nội bộ, hợp tác đào tạo và ưu đãi chéo chính thức từ các đơn vị thành viên Hệ sinh thái TechCorp.
+                </p>
+              </div>
             </div>
+
+            <div class="forum-cat-pills" id="forumCategoryBar">
+              <button class="forum-cat-btn active" data-cat="all">Tất cả chủ đề</button>
+              <button class="forum-cat-btn" data-cat="rfq">📢 Cần Mua / Tìm Đối tác (RFQ)</button>
+              <button class="forum-cat-btn" data-cat="spotlight">🎁 Quảng bá & Ưu đãi (Give-to-Get)</button>
+              <button class="forum-cat-btn" data-cat="comarketing">🤝 Hợp tác Sự kiện & Tuyển sinh</button>
+              <button class="forum-cat-btn" data-cat="knowledge">💡 Kinh nghiệm Quản trị & Chuyển đổi số</button>
+            </div>
+
+            <div id="forumPostsContainer"></div>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:14px;">
-            <div>
-              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">1. Chọn loại hình đơn vị của bạn:</label>
-              <select id="calcCustomerType" class="select-control" style="width:100%;">
-                <option value="sme">🏢 Doanh nghiệp SME (Combo Website + Micro-ERP + Tuyển dụng)</option>
-                <option value="center">🏫 Trung tâm Ngoại ngữ - Tin học (Combo QL Trung tâm + Thi Online + Web)</option>
-                <option value="kindergarten">🎓 Trường Mầm non / Phổ thông (QL Trường + Sổ liên lạc + QR Học phí)</option>
+          <!-- Cột Phải: Danh sách Ưu đãi B2B Nội bộ Đang Mở -->
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">🎁 Đặc quyền & Ưu đãi Chéo B2B Đang Mở</h3>
+                  <p class="card-subtitle">Các gói tài trợ & chiết khấu độc quyền được cung cấp từ Không gian Quản trị của Đơn vị Thành viên</p>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px;" id="b2bGrid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Phần 2: Sàn Nhân lực Đã xác thực & Đấu trường Học & Thi Online Khánh Hòa -->
+      <section id="sec-talent-lms" class="pub-section">
+        <div class="pub-section-header">
+          <div>
+            <div class="pub-section-tag">🤖 SÀN TUYỂN DỤNG AI (JOBAI.TECHCORP.INFO.VN) & LIÊN THÔNG KHẢO THÍ TRỰC TUYẾN</div>
+            <h3 class="pub-section-title">Hồ sơ Nhân lực Xác thực (TechCorp HireMind AI) & Đấu trường Thi Online</h3>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="https://jobai.techcorp.info.vn" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+              🤖 Mở Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">🏅 Hồ sơ Ứng viên & Thực tập sinh Đã Xác thực Điểm Thi Online</h3>
+                <p class="card-subtitle">Sẵn sàng kết nối thực tập & làm việc tại các Doanh nghiệp thành viên Hệ sinh thái TechCorp</p>
+              </div>
+            </div>
+            <div class="filter-bar">
+              <input
+                type="text"
+                id="talentSearchInput"
+                class="input-control"
+                style="flex:1;"
+                placeholder="Tìm theo tên, trường, chứng chỉ (IELTS, TOEIC, ERP)..."
+              />
+              <select id="talentDomainFilter" class="select-control">
+                <option value="all">Tất cả lĩnh vực</option>
+                <option value="tourism">Du lịch - Khách sạn - Ngoại ngữ</option>
+                <option value="it">CNTT - Quản trị ERP</option>
+                <option value="finance">Kế toán - Tài chính</option>
               </select>
             </div>
+            <div style="display:flex;flex-direction:column;gap:12px;" id="talentGrid"></div>
+          </div>
 
-            <div>
-              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">
-                2. Quy mô đơn vị (Số nhân sự DN / Số học viên Trung tâm / Số học sinh Trường):
-              </label>
-              <input type="number" id="calcScaleInput" class="input-control" style="width:100%;" value="25" min="5" max="5000" />
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">🏆 Đấu trường Học & Thi Online Khánh Hòa (LMS Funnel)</h3>
+                <p class="card-subtitle">Các kỳ thi năng lực trực tuyến do các Trung tâm & Trường học thành viên đồng tổ chức</p>
+              </div>
             </div>
+            <div style="display:flex;flex-direction:column;gap:12px;" id="contestList"></div>
+          </div>
+        </div>
+      </section>
+    </div>
 
-            <div>
-              <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">3. Chu kỳ đăng ký:</label>
-              <select id="calcPeriod" class="select-control" style="width:100%;">
-                <option value="12">Thanh toán 12 tháng (Nhận trọn bộ quà tặng Website & Đặc quyền Hạt nhân)</option>
-                <option value="6">Thanh toán 6 tháng</option>
-              </select>
-            </div>
-
-            <div id="calcResultBox" style="background:#f0f7ff;border:2px solid #93c5fd;border-radius:14px;padding:18px;"></div>
+    <!-- =========================================================================
+         TRANG 4: TRANG BÁO GIÁ COMBO GIA NHẬP HỆ SINH THÁI TECHCORP
+         ========================================================================= -->
+    <div id="pub-page-pricing" class="pub-page-view">
+      <section id="sec-pricing" class="pub-section" style="margin-top:16px;">
+        <div class="pub-section-header">
+          <div>
+            <div class="pub-section-tag">💳 TRANG BÁO GIÁ COMBO • CHÍNH SÁCH ƯU ĐÃI LIÊN KẾT THÀNH VIÊN HỆ SINH THÁI TECHCORP</div>
+            <h3 class="pub-section-title">Bảng Báo giá Gói Combo Phần mềm & Công cụ Tự Tính Chi phí Triển khai</h3>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-emerald btn-sm" onclick="switchPublicPage('contact')">
+              📞 Nhận Báo giá Chính thức & Hợp đồng Mẫu →
+            </button>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">🔄 4 Giá trị Độc quyền Khi Trở thành Thành viên Hệ sinh thái TechCorp</h3>
-              <p class="card-subtitle">Vì sao hơn 57 đơn vị hạt nhân tại Nha Trang - Khánh Hòa lựa chọn liên kết cùng TechCorp?</p>
+        <!-- 4 Gói Combo Tiêu chuẩn theo Khối Đơn vị -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(265px, 1fr));gap:16px;margin-bottom:22px;">
+          <div class="card" style="border-top:4px solid #2563eb;">
+            <span class="badge badge-blue" style="margin-bottom:8px;">GÓI COMBO 01 • DOANH NGHIỆP SME</span>
+            <h4 style="font-size:16px;color:#0b2559;margin-bottom:6px;">🏢 Combo Bệ phóng Doanh nghiệp Số</h4>
+            <div style="font-size:20px;font-weight:900;color:#0052d4;margin-bottom:8px;">Từ 1.250.000đ <span style="font-size:12px;font-weight:600;color:#64748b;">/ tháng</span></div>
+            <p style="font-size:12.5px;color:#475569;margin-bottom:12px;">Tích hợp đồng bộ <strong>TechCorp ERP + BSC-KPI + Sàn Tuyển dụng JobAI</strong> dành cho doanh nghiệp từ 15 – 500 nhân sự.</p>
+            <div style="font-size:12px;color:#334155;display:flex;flex-direction:column;gap:5px;margin-bottom:14px;">
+              <div>✔ Tặng Website Doanh nghiệp chuẩn SEO</div>
+              <div>✔ Tuyển thẳng ứng viên xác thực từ JobAI</div>
+              <div>✔ Phát hành E-Voucher B2B toàn hệ sinh thái</div>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="selectPricingPreset('sme', 30)">
+              ⚡ Chọn tính thử Gói Doanh nghiệp
+            </button>
+          </div>
+
+          <div class="card" style="border-top:4px solid #f59e0b;">
+            <span class="badge badge-amber" style="margin-bottom:8px;">GÓI COMBO 02 • TRUNG TÂM ĐÀO TẠO</span>
+            <h4 style="font-size:16px;color:#0b2559;margin-bottom:6px;">🏫 Combo Tăng tốc Trung tâm NN-TH</h4>
+            <div style="font-size:20px;font-weight:900;color:#d97706;margin-bottom:8px;">Từ 1.500.000đ <span style="font-size:12px;font-weight:600;color:#64748b;">/ tháng</span></div>
+            <p style="font-size:12.5px;color:#475569;margin-bottom:12px;">Tích hợp <strong>QL Trung tâm NN-TH + Khảo thí LMS E-Testing + TechCorpLearn</strong> thu hút học viên tự động.</p>
+            <div style="font-size:12px;color:#334155;display:flex;flex-direction:column;gap:5px;margin-bottom:14px;">
+              <div>✔ Đồng tổ chức Đấu trường Thi thử IELTS/TOEIC</div>
+              <div>✔ Tự động đổ Lead thí sinh về CRM Tuyển sinh</div>
+              <div>✔ Cấp Chứng chỉ Năng lực Số QR chống giả</div>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="selectPricingPreset('center', 150)">
+              ⚡ Chọn tính thử Gói Trung tâm
+            </button>
+          </div>
+
+          <div class="card" style="border-top:4px solid #10b981;">
+            <span class="badge badge-green" style="margin-bottom:8px;">GÓI COMBO 03 • TRƯỜNG HỌC K-12</span>
+            <h4 style="font-size:16px;color:#0b2559;margin-bottom:6px;">🎓 Combo Trường học Thông minh</h4>
+            <div style="font-size:20px;font-weight:900;color:#059669;margin-bottom:8px;">Chỉ 15.000đ <span style="font-size:12px;font-weight:600;color:#64748b;">/ học sinh / tháng</span></div>
+            <p style="font-size:12.5px;color:#475569;margin-bottom:12px;">Trọn bộ <strong>EduManager Pro (Mầm non, Tiểu học, THCS, THPT) + Học bạ số + Sổ liên lạc & VietQR</strong>.</p>
+            <div style="font-size:12px;color:#334155;display:flex;flex-direction:column;gap:5px;margin-bottom:14px;">
+              <div>✔ Điểm danh AI & thực đơn dinh dưỡng bán trú</div>
+              <div>✔ Gạch nợ học phí QR tự động trong 3 giây</div>
+              <div>✔ Nhận tài trợ học bổng ngoại ngữ cho học sinh</div>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="selectPricingPreset('kindergarten', 200)">
+              ⚡ Chọn tính thử Gói Trường học
+            </button>
+          </div>
+
+          <div class="card" style="border-top:4px solid #7c3aed;">
+            <span class="badge badge-purple" style="margin-bottom:8px;">GÓI COMBO 04 • KHÁCH SẠN, BĐS & ĐH</span>
+            <h4 style="font-size:16px;color:#0b2559;margin-bottom:6px;">🏨 Combo Chuyên ngành & Đại học</h4>
+            <div style="font-size:20px;font-weight:900;color:#6d28d9;margin-bottom:8px;">Báo giá Linh hoạt <span style="font-size:12px;font-weight:600;color:#64748b;">theo quy mô</span></div>
+            <p style="font-size:12.5px;color:#475569;margin-bottom:12px;">Giải pháp chuyên sâu <strong>TC COMPASS Đại học, TechCorp PMS Resort, Sàn BĐS AI & Nội thất</strong>.</p>
+            <div style="font-size:12px;color:#334155;display:flex;flex-direction:column;gap:5px;margin-bottom:14px;">
+              <div>✔ Tùy biến phân hệ theo quy trình đặc thù</div>
+              <div>✔ Liên thông SSO & Cổng việc làm Sinh viên</div>
+              <div>✔ Hỗ trợ kỹ thuật chuyên trách 24/7 tại chỗ</div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;" onclick="switchPublicPage('contact')">
+              📞 Liên hệ Tư vấn Giải pháp Riêng
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">💳 Công cụ Tự Tính Giá Gói Combo Gia nhập Hệ sinh thái TechCorp</h3>
+                <p class="card-subtitle">Chọn loại hình đơn vị và quy mô để xem ngay chi phí ưu đãi cùng gói quà tặng hệ sinh thái</p>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div>
+                <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">1. Chọn loại hình đơn vị của bạn:</label>
+                <select id="calcCustomerType" class="select-control" style="width:100%;">
+                  <option value="sme">🏢 Doanh nghiệp SME (Combo Website + Micro-ERP + Tuyển dụng)</option>
+                  <option value="center">🏫 Trung tâm Ngoại ngữ - Tin học (Combo QL Trung tâm + Thi Online + Web)</option>
+                  <option value="kindergarten">🎓 Trường Mầm non / Phổ thông (QL Trường + Sổ liên lạc + QR Học phí)</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">
+                  2. Quy mô đơn vị (Số nhân sự DN / Số học viên Trung tâm / Số học sinh Trường):
+                </label>
+                <input type="number" id="calcScaleInput" class="input-control" style="width:100%;" value="25" min="5" max="5000" />
+              </div>
+
+              <div>
+                <label style="font-size:12.5px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">3. Chu kỳ đăng ký:</label>
+                <select id="calcPeriod" class="select-control" style="width:100%;">
+                  <option value="12">Thanh toán 12 tháng (Nhận trọn bộ quà tặng Website & Đặc quyền Hạt nhân)</option>
+                  <option value="6">Thanh toán 6 tháng</option>
+                </select>
+              </div>
+
+              <div id="calcResultBox" style="background:#f0f7ff;border:2px solid #93c5fd;border-radius:14px;padding:18px;"></div>
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div class="eco-flow-step">
-              <span class="eco-flow-num">LỢI ÍCH 1</span>
-              <h4>🔗 Một Tài khoản SSO Duy nhất</h4>
-              <p>Chuyển đổi tức thì giữa ERP, Website, Quản lý Trường, Quản lý Trung tâm và Phòng Thi Online không cần đăng nhập lại.</p>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">🔄 4 Giá trị Độc quyền Khi Trở thành Thành viên Hệ sinh thái TechCorp</h3>
+                <p class="card-subtitle">Vì sao hơn 57 đơn vị hạt nhân tại Nha Trang - Khánh Hòa lựa chọn liên kết cùng Hệ sinh thái TechCorp?</p>
+              </div>
             </div>
-            <div class="eco-flow-step">
-              <span class="eco-flow-num">LỢI ÍCH 2</span>
-              <h4>🎓 Nguồn Nhân lực Đã Xác thực</h4>
-              <p>Doanh nghiệp tuyển thẳng sinh viên có điểm thi Ngoại ngữ & Tin học thực tế từ các Trường ĐH/CĐ & Trung tâm uy tín.</p>
-            </div>
-            <div class="eco-flow-step">
-              <span class="eco-flow-num">LỢI ÍCH 3</span>
-              <h4>📢 Kênh Quảng bá Chéo 0 Đồng</h4>
-              <p>Tiếp cận trực tiếp hàng chục ngàn Phụ huynh, Sinh viên và Chủ doanh nghiệp trong cùng hệ sinh thái qua chương trình Give-to-Get.</p>
-            </div>
-            <div class="eco-flow-step">
-              <span class="eco-flow-num">LỢI ÍCH 4</span>
-              <h4>🛡️ Không gian Quản trị Riêng</h4>
-              <p>Mỗi Chủ Doanh nghiệp, Giám đốc Trung tâm, Hiệu trưởng có Cổng Quản trị riêng biệt được bảo vệ bằng phân quyền RBAC.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="eco-flow-step">
+                <span class="eco-flow-num">LỢI ÍCH 1</span>
+                <h4>🔗 Một Tài khoản SSO Duy nhất</h4>
+                <p>Chuyển đổi tức thì giữa ERP, Website, Quản lý Trường, Quản lý Trung tâm và Phòng Thi Online không cần đăng nhập lại.</p>
+              </div>
+              <div class="eco-flow-step">
+                <span class="eco-flow-num">LỢI ÍCH 2</span>
+                <h4>🎓 Nguồn Nhân lực Đã Xác thực</h4>
+                <p>Doanh nghiệp tuyển thẳng sinh viên có điểm thi Ngoại ngữ & Tin học thực tế từ các Trường ĐH/CĐ & Trung tâm uy tín.</p>
+              </div>
+              <div class="eco-flow-step">
+                <span class="eco-flow-num">LỢI ÍCH 3</span>
+                <h4>📢 Kênh Quảng bá Chéo 0 Đồng</h4>
+                <p>Tiếp cận trực tiếp hàng chục ngàn Phụ huynh, Sinh viên và Chủ doanh nghiệp trong cùng hệ sinh thái qua chương trình Give-to-Get.</p>
+              </div>
+              <div class="eco-flow-step">
+                <span class="eco-flow-num">LỢI ÍCH 4</span>
+                <h4>🛡️ Không gian Quản trị Riêng</h4>
+                <p>Mỗi Chủ Doanh nghiệp, Giám đốc Trung tâm, Hiệu trưởng có Cổng Quản trị riêng biệt được bảo vệ bằng phân quyền RBAC.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         TRANG 5: TRANG LIÊN HỆ & ĐĂNG KÝ TƯ VẤN / DEMO HỆ SINH THÁI TECHCORP
+         ========================================================================= -->
+    <div id="pub-page-contact" class="pub-page-view">
+      <section id="sec-contact" class="pub-section" style="margin-top:16px;">
+        <div class="pub-section-header">
+          <div>
+            <div class="pub-section-tag">📞 TRANG LIÊN HỆ CHÍNH THỨC • CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP</div>
+            <h3 class="pub-section-title">Liên hệ Hệ sinh thái TechCorp & Đăng ký Tư vấn Giải pháp / Dùng thử Demo</h3>
+          </div>
+          <div>
+            <span class="badge badge-green">● Hỗ trợ Trực tuyến & Trực tiếp 24/7 tại Khánh Hòa & Toàn quốc</span>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Cột Trái: Thông tin Pháp nhân, Trụ sở, Văn phòng giao dịch & Kênh hỗ trợ -->
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div class="card" style="background:linear-gradient(135deg, #07142e 0%, #0d285a 100%);color:#ffffff;border-color:#2563eb;">
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+                <div style="width:54px;height:54px;border-radius:12px;background:#ffffff;padding:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <img src="logo.png?v=16" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+                </div>
+                <div>
+                  <div style="font-size:11.5px;font-weight:800;color:#fbbf24;letter-spacing:0.5px;">ĐƠN VỊ CHỦ QUẢN VẬN HÀNH HỆ SINH THÁI</div>
+                  <h3 style="font-size:18px;font-weight:900;color:#ffffff;margin-top:2px;">CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP</h3>
+                </div>
+              </div>
+
+              <p style="font-size:13px;color:#cbd5e1;line-height:1.65;margin-bottom:18px;">
+                Đồng hành phát triển sự nghiệp công nghệ và cung cấp giải pháp phần mềm chuyển đổi số toàn diện cho Trường học (Mầm non – K12 – Đại học), Trung tâm Đào tạo và Cộng đồng Doanh nghiệp.
+              </p>
+
+              <div style="display:flex;flex-direction:column;gap:12px;font-size:13.5px;">
+                <div style="padding:12px 14px;background:rgba(255,255,255,0.08);border-radius:12px;border:1px solid rgba(147,197,253,0.25);">
+                  <div style="font-weight:800;color:#93c5fd;margin-bottom:3px;">📍 Trụ sở chính:</div>
+                  <div style="color:#f8fafc;">187 Mai Xuân Thưởng, P. Bắc Nha Trang, tỉnh Khánh Hòa</div>
+                </div>
+
+                <div style="padding:12px 14px;background:rgba(255,255,255,0.08);border-radius:12px;border:1px solid rgba(147,197,253,0.25);">
+                  <div style="font-weight:800;color:#93c5fd;margin-bottom:3px;">🏢 Văn phòng giao dịch:</div>
+                  <div style="color:#f8fafc;">Số 10 Đặng Dung, P. Nam Nha Trang, tỉnh Khánh Hòa</div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                  <div style="padding:12px 14px;background:rgba(255,255,255,0.08);border-radius:12px;border:1px solid rgba(147,197,253,0.25);">
+                    <div style="font-weight:800;color:#fbbf24;margin-bottom:3px;">📞 Hotline Tư vấn 24/7:</div>
+                    <div style="font-size:16px;font-weight:900;color:#ffffff;">0392.091.068</div>
+                  </div>
+                  <div style="padding:12px 14px;background:rgba(255,255,255,0.08);border-radius:12px;border:1px solid rgba(147,197,253,0.25);">
+                    <div style="font-weight:800;color:#60a5fa;margin-bottom:3px;">☎️ Điện thoại Văn phòng:</div>
+                    <div style="font-size:16px;font-weight:900;color:#ffffff;">0814.39.6688</div>
+                  </div>
+                </div>
+
+                <div style="padding:12px 14px;background:rgba(255,255,255,0.08);border-radius:12px;border:1px solid rgba(147,197,253,0.25);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                  <div>
+                    <span style="font-weight:800;color:#34d399;">✉️ Email chính thức:</span>
+                    <a href="mailto:techcorpnt@gmail.com" style="color:#ffffff;font-weight:700;margin-left:6px;text-decoration:none;">techcorpnt@gmail.com</a>
+                  </div>
+                  <span class="badge badge-green">Phản hồi trong 15 phút</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">🤝 Quy trình Hỗ trợ Triển khai & Bàn giao Phần mềm TechCorp</h3>
+                  <p class="card-subtitle">Cam kết đồng hành tận nơi cùng các đơn vị thành viên trong Hệ sinh thái TechCorp</p>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="eco-flow-step">
+                  <span class="eco-flow-num">BƯỚC 1</span>
+                  <h4>📋 Tiếp nhận & Phân tích Nhu cầu</h4>
+                  <p>Chuyên viên TechCorp liên hệ trong 15 phút để tư vấn gói sản phẩm hoặc Combo phù hợp nhất với quy mô đơn vị.</p>
+                </div>
+                <div class="eco-flow-step">
+                  <span class="eco-flow-num">BƯỚC 2</span>
+                  <h4>🚀 Cấp Tài khoản Demo Trực tiếp</h4>
+                  <p>Trải nghiệm trực tiếp trên hệ thống Live (*.techcorp.info.vn) với dữ liệu mẫu sát thực tế của ngành.</p>
+                </div>
+                <div class="eco-flow-step">
+                  <span class="eco-flow-num">BƯỚC 3</span>
+                  <h4>🛠️ Khởi tạo & Đào tạo Vận hành</h4>
+                  <p>Cấu hình tên miền riêng, nhập liệu danh mục ban đầu và tập huấn trực tiếp cho đội ngũ cán bộ, nhân sự.</p>
+                </div>
+                <div class="eco-flow-step">
+                  <span class="eco-flow-num">BƯỚC 4</span>
+                  <h4>🔗 Liên thông Hệ sinh thái SSO</h4>
+                  <p>Kích hoạt định danh TechCorp ID để kết nối tuyển dụng JobAI, khảo thí LMS và nhận ưu đãi chéo B2B.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cột Phải: Biểu mẫu Gửi Liên hệ & Đăng ký Nhận Tài khoản Demo (Lưu thẳng vào Admin CRM) -->
+          <div class="card" style="align-self:start;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">📝 Gửi Yêu cầu Liên hệ Tư vấn & Đăng ký Nhận Tài khoản Demo</h3>
+                <p class="card-subtitle">
+                  Thông tin của Quý khách được lưu trực tiếp vào Hệ thống Quản trị CRM của Hệ sinh thái TechCorp để chuyên viên liên hệ hỗ trợ ngay.
+                </p>
+              </div>
+            </div>
+
+            <form id="publicContactDemoForm" onsubmit="submitPublicContactForm(event)" style="display:flex;flex-direction:column;gap:13px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:5px;">Họ và tên người liên hệ (*):</label>
+                  <input type="text" id="contactFullName" class="input-control" style="width:100%;" placeholder="VD: Nguyễn Văn An" required />
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:5px;">Số điện thoại / Zalo (*):</label>
+                  <input type="tel" id="contactPhone" class="input-control" style="width:100%;" placeholder="VD: 0905.xxx.xxx" required />
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:5px;">Địa chỉ Email công việc:</label>
+                  <input type="email" id="contactEmail" class="input-control" style="width:100%;" placeholder="VD: lienhe@donvi.vn" />
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:5px;">Quy mô đơn vị:</label>
+                  <select id="contactOrgScale" class="select-control" style="width:100%;">
+                    <option value="Dưới 50 nhân sự / học sinh">Dưới 50 nhân sự / học sinh</option>
+                    <option value="50 - 200 nhân sự / học sinh" selected>50 - 200 nhân sự / học sinh</option>
+                    <option value="200 - 500 nhân sự / học sinh">200 - 500 nhân sự / học sinh</option>
+                    <option value="Trên 500 nhân sự / học sinh / sinh viên">Trên 500 nhân sự / học sinh / sinh viên</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:5px;">Tên Đơn vị / Trường học / Trung tâm / Doanh nghiệp (*):</label>
+                <input type="text" id="contactOrgName" class="input-control" style="width:100%;" placeholder="VD: Trường Mầm non Sao Biển / Công ty CP Du lịch Biển Xanh..." required />
+              </div>
+
+              <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:5px;">Sản phẩm / Gói giải pháp quan tâm (*):</label>
+                  <select id="contactProductId" class="select-control" style="width:100%;">
+                    <option value="erp">🏢 TechCorp ERP — Quản trị Doanh nghiệp Tổng thể</option>
+                    <option value="kpi">📊 TechCorp BSC-KPI — Quản trị Mục tiêu & Hiệu suất</option>
+                    <option value="jobai">🤖 TechCorp HireMind AI — Sàn Tuyển dụng & Tìm việc AI</option>
+                    <option value="mamnon">🧸 EduManager Pro — Quản lý Trường Mầm non & AI</option>
+                    <option value="tieuhoc">🎒 EduManager Pro — Quản lý Trường Tiểu học & AI</option>
+                    <option value="thcs">📘 EduManager Pro — Quản lý Trường THCS & AI</option>
+                    <option value="thpt">🎓 EduManager Pro — Quản lý Trường THPT & Hướng nghiệp</option>
+                    <option value="gdtx">🏛️ EduManager Pro — Trung tâm GDNN - GDTX</option>
+                    <option value="qldt">🧭 TC COMPASS — Quản trị Đại học & Tín chỉ</option>
+                    <option value="ttnn">🌐 Quản lý Trung tâm Ngoại ngữ & Tin học</option>
+                    <option value="lms">📝 TechCorp LMS & E-Testing — Đào tạo & Khảo thí</option>
+                    <option value="learn">💻 TechCorpLearn — Cổng Học Trực tuyến</option>
+                    <option value="qldh">🏨 TechCorp PMS — Quản lý Khách sạn & Resort</option>
+                    <option value="bds">🏙️ Hưng Phát Land — Sàn Giao dịch BĐS & AI</option>
+                    <option value="noithat">🛋️ TechCorp Interior — Thiết kế & Thi công Nội thất</option>
+                    <option value="techcorp">🚀 Tư vấn Gói Combo Toàn diện Hệ sinh thái TechCorp</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:5px;">Thời gian mong muốn tư vấn:</label>
+                  <input type="text" id="contactPreferredTime" class="input-control" style="width:100%;" placeholder="VD: Sáng mai 09:00 (Qua Zalo/Meet)" />
+                </div>
+              </div>
+
+              <div>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:5px;">Nội dung yêu cầu tư vấn / Nhu cầu triển khai chi tiết:</label>
+                <textarea id="contactNotes" class="input-control" style="width:100%;min-height:92px;" placeholder="Nhập nhu cầu cụ thể của đơn vị (VD: Cần nhận báo giá gói Combo, cấp tài khoản dùng thử Demo, tư vấn tích hợp SSO...)"></textarea>
+              </div>
+
+              <button type="submit" id="contactSubmitBtn" class="btn btn-primary" style="padding:13px 20px;font-size:14px;justify-content:center;">
+                📨 Gửi Thông tin Liên hệ & Đăng ký Tư vấn Ngay
+              </button>
+            </form>
+
+            <div id="publicContactSuccessBox" style="display:none;margin-top:14px;padding:16px;border-radius:12px;background:#ecfdf5;border:1.5px solid #10b981;color:#065f46;">
+              <div style="font-weight:800;font-size:14px;margin-bottom:6px;">✅ Đã gửi yêu cầu liên hệ thành công tới Hệ sinh thái TechCorp!</div>
+              <p style="font-size:12.5px;line-height:1.55;margin-bottom:8px;" id="publicContactSuccessMsg">
+                Thông tin của Quý khách đã được ghi nhận vào hệ thống CRM Quản trị. Chuyên viên TechCorp sẽ liên hệ hỗ trợ Quý khách trong thời gian sớm nhất.
+              </p>
+              <span class="badge badge-green" id="publicContactSuccessCode">Mã phiếu: DEMO-000000</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <!-- FOOTER DOANH NGHIỆP CHUẨN QUỐC TẾ: CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP (LIÊN KẾT TRỰC TIẾP 16 SẢN PHẨM LIVE) -->
@@ -380,7 +798,7 @@
       <div>
         <div class="tc-footer-brand-top">
           <div class="tc-footer-logo">
-            <img src="logo.png?v=6.2" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+            <img src="logo.png?v=16" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
           </div>
           <div>
             <div class="tc-footer-brand-name">
@@ -530,12 +948,18 @@
     <div class="tc-footer-bottom-wrap">
       <div class="tc-footer-bottom">
         <div>
-          © 2026 <strong>CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP</strong>. Bản quyền thuộc về TechCorp.
+          © 2026 <strong>CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP</strong>. Bản quyền thuộc về Hệ sinh thái TechCorp.
         </div>
         <div class="tc-footer-bottom-links">
-          <a href="#sec-products">Tất cả 16 Giải pháp Công nghệ</a>
+          <a href="index.html?page=home" onclick="switchPublicPage('home'); return false;">Bản tin Hệ sinh thái</a>
           <span>•</span>
-          <a href="#sec-exchange">Diễn đàn Giao thương B2B</a>
+          <a href="index.html?page=products" onclick="switchPublicPage('products'); return false;">6 Nhóm Sản phẩm (16 App)</a>
+          <span>•</span>
+          <a href="index.html?page=forum" onclick="switchPublicPage('forum'); return false;">Diễn đàn Giao thương B2B</a>
+          <span>•</span>
+          <a href="index.html?page=pricing" onclick="switchPublicPage('pricing'); return false;">Báo giá Combo</a>
+          <span>•</span>
+          <a href="index.html?page=contact" onclick="switchPublicPage('contact'); return false;">Liên hệ</a>
           <span>•</span>
           <a href="login.html">Cổng Quản trị CMS (Đăng nhập)</a>
         </div>
@@ -544,6 +968,6 @@
   </footer>
 
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=13"></script>
+  <script src="app.js?v=16"></script>
 </body>
 </html>

@@ -83,14 +83,14 @@
 
       <!-- =====================================================================
            PANEL A: DÀNH CHO CÁC ĐƠN VỊ THÀNH VIÊN (DOANH NGHIỆP / TRUNG TÂM / TRƯỜNG / HỌC VIÊN)
-           Hoặc khi Chủ Hệ sinh thái bấm Giám sát Workspace Thành viên
+           Hoặc khi Hệ sinh thái TechCorp bấm Giám sát Workspace Thành viên
            ===================================================================== -->
       <section id="panel-role-workspace" class="tab-panel">
         <div id="memberWorkspaceDynamicContainer"></div>
       </section>
 
       <!-- =====================================================================
-           PANEL B: TỔNG QUAN ĐIỀU HÀNH HẠ TẦNG & EVENT BUS (CHỦ HỆ SINH THÁI)
+           PANEL B: TỔNG QUAN ĐIỀU HÀNH HẠ TẦNG & EVENT BUS (HỆ SINH THÁI TECHCORP)
            ===================================================================== -->
       <section id="panel-master-overview" class="tab-panel active">
         <div class="grid-2">
@@ -388,7 +388,7 @@
               <div>
                 <h3 class="card-title">📢 Danh sách Bản tin Điều hành & Quảng bá Đang Hiển thị Ngoài Trang Public</h3>
                 <p class="card-subtitle">
-                  Quản lý các thông báo chính thức từ Chủ Hệ sinh thái và các chương trình học bổng, sự kiện, ưu đãi từ Đơn vị Thành viên.
+                  Quản lý các thông báo chính thức từ Hệ sinh thái TechCorp và các chương trình học bổng, sự kiện, ưu đãi từ Đơn vị Thành viên.
                 </p>
               </div>
             </div>
@@ -421,13 +421,13 @@
               <div>
                 <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Loại Bản tin:</label>
                 <select id="newBulletinSourceType" class="select-control" style="width:100%;">
-                  <option value="master">👑 Thông báo Điều hành Chính thức từ Chủ Hệ sinh thái</option>
+                  <option value="master">👑 Thông báo Điều hành Chính thức từ Hệ sinh thái TechCorp</option>
                   <option value="member">🌟 Tin tức / Sự kiện / Ưu đãi từ Đơn vị Thành viên</option>
                 </select>
               </div>
               <div>
                 <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nhãn hiển thị (Badge):</label>
-                <input type="text" id="newBulletinBadge" class="input-control" style="width:100%;" value="👑 THÔNG BÁO ĐIỀU HÀNH TỪ CHỦ HỆ SINH THÁI TECHCORP" />
+                <input type="text" id="newBulletinBadge" class="input-control" style="width:100%;" value="👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP" />
               </div>
               <div>
                 <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Tiêu đề Bản tin:</label>
@@ -550,7 +550,7 @@
               />
               <select id="adminUserRoleFilter" class="select-control" onchange="renderAdminUsersTable()">
                 <option value="all">Tất cả nhóm vai trò</option>
-                <option value="super_admin">👑 Chủ Hệ sinh thái TechCorp</option>
+                <option value="super_admin">👑 Hệ sinh thái TechCorp</option>
                 <option value="ceo_sme">🏢 Chủ Doanh nghiệp SME</option>
                 <option value="center_director">🏫 Giám đốc Trung tâm NN-TH</option>
                 <option value="school_principal">🎓 Hiệu trưởng Cơ sở Giáo dục</option>
@@ -621,7 +621,7 @@
                   <option value="center_director">🏫 Giám đốc Trung tâm Ngoại ngữ - Tin học</option>
                   <option value="school_principal">🎓 Hiệu trưởng Trường học (Mầm non - Đại học)</option>
                   <option value="student_parent">👨‍🎓 Học viên / Sinh viên / Phụ huynh</option>
-                  <option value="super_admin">👑 Chủ Hệ sinh thái (Super Admin)</option>
+                  <option value="super_admin">👑 Hệ sinh thái TechCorp (Super Admin)</option>
                 </select>
               </div>
 
@@ -681,7 +681,7 @@
             <div>
               <h3 class="card-title">🔐 Cấu hình Ma trận Phân quyền Chi tiết theo Vai trò (Role-Based Access Control - RBAC)</h3>
               <p class="card-subtitle">
-                Chủ Hệ sinh thái định nghĩa chính xác từng nhóm đối tượng được phép xem hoặc thực thi chức năng nào. Khi bật/tắt ô chọn bên dưới, Menu Quản trị của vai trò đó sẽ tự động mở rộng hoặc thu hẹp tức thì!
+                Hệ sinh thái TechCorp định nghĩa chính xác từng nhóm đối tượng được phép xem hoặc thực thi chức năng nào. Khi bật/tắt ô chọn bên dưới, Menu Quản trị của vai trò đó sẽ tự động mở rộng hoặc thu hẹp tức thì!
               </p>
             </div>
           </div>
@@ -691,7 +691,7 @@
               <thead>
                 <tr>
                   <th style="min-width:260px;">Chức năng / Phân hệ Quản trị</th>
-                  <th>👑 Chủ Hệ sinh thái<br/><span style="font-size:10px;font-weight:500;">(super_admin)</span></th>
+                  <th>👑 Hệ sinh thái TechCorp<br/><span style="font-size:10px;font-weight:500;">(super_admin)</span></th>
                   <th>🏢 Chủ Doanh nghiệp<br/><span style="font-size:10px;font-weight:500;">(ceo_sme)</span></th>
                   <th>🏫 GĐ Trung tâm<br/><span style="font-size:10px;font-weight:500;">(center_director)</span></th>
                   <th>🎓 Hiệu trưởng Trường<br/><span style="font-size:10px;font-weight:500;">(school_principal)</span></th>
@@ -759,7 +759,7 @@
           <div class="card-header">
             <div>
               <h3 class="card-title">📊 Bảng Theo dõi 57 Khách hàng Hạt nhân Nha Trang (Giai đoạn 1)</h3>
-              <p class="card-subtitle">Theo dõi mục tiêu phát triển thành viên nòng cốt của Chủ Hệ sinh thái</p>
+              <p class="card-subtitle">Theo dõi mục tiêu phát triển thành viên nòng cốt của Hệ sinh thái TechCorp</p>
             </div>
           </div>
           <div class="table-wrap">
