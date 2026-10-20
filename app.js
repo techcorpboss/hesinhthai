@@ -1526,7 +1526,7 @@ function renderPublicHeroSlider() {
             onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'"
           />
           <div class="hero-slide-visual-caption">
-            <span>📸 Slide ${activeIdx + 1}/${slides.length}: ${escapeHtml(slide.imageCaption || slide.title)}</span>
+            <span>📸 ${escapeHtml((slide.imageCaption || slide.title || "").replace(/^Slide\s*\d+\/\d+\s*:\s*/i, ""))}</span>
           </div>
         </div>
       </div>
