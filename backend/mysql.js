@@ -748,16 +748,21 @@ function getMysqlDriver() {
   }
 }
 
-function tryConnectWithPassword(driverLib, host, port, user, password, cb) {
-  const conn = driverLib.createConnection({
-    host: host,
-    port: port,
+function tryConnectTarget(driverLib, targetCfg, user, password, cb) {
+  const connOpts = {
     user: user,
     password: password,
     charset: "utf8mb4",
     multipleStatements: true,
     connectTimeout: 5000
-  });
+  };
+  if (targetCfg.socketPath) {
+    connOpts.socketPath = targetCfg.socketPath;
+  } else {
+    connOpts.host = targetCfg.host;
+    connOpts.port = targetCfg.port;
+  }
+  const conn = driverLib.createConnection(connOpts);
   conn.connect(function (err) {
     if (err) {
       try {
@@ -786,13 +791,32 @@ function connectMysqlSmart(callback) {
   if (process.env.DB_PASSWORD_FALLBACK) candidatePasswords.push(process.env.DB_PASSWORD_FALLBACK);
   const aaPass = detectAaPanelMysqlPassword();
   if (aaPass && candidatePasswords.indexOf(aaPass) === -1) candidatePasswords.push(aaPass);
-  ["root123@", "Thong7690@", "root", ""].forEach(function (pw) {
+  ["Thong1976", "root123@", "Thong7690@", "Thong1976@", "root", ""].forEach(function (pw) {
     if (candidatePasswords.indexOf(pw) === -1) candidatePasswords.push(pw);
   });
 
+  const candidateTargets = [{ host: host, port: port }];
+  if (host !== "localhost") {
+    candidateTargets.push({ host: "localhost", port: port });
+  }
+  if (fs.existsSync("/tmp/mysql.sock")) {
+    candidateTargets.push({ socketPath: "/tmp/mysql.sock" });
+  }
+  if (fs.existsSync("/var/run/mysqld/mysqld.sock")) {
+    candidateTargets.push({ socketPath: "/var/run/mysqld/mysqld.sock" });
+  }
+
+  const attempts = [];
+  candidateTargets.forEach(function (t) {
+    candidatePasswords.forEach(function (pw) {
+      attempts.push({ target: t, password: pw });
+    });
+  });
+
   let idx = 0;
+  let lastErrorMsg = "";
   function attemptNext() {
-    if (idx >= candidatePasswords.length) {
+    if (idx >= attempts.length) {
       const err = new Error(
         "Không thể kết nối MySQL tại " +
           host +
@@ -800,16 +824,20 @@ function connectMysqlSmart(callback) {
           port +
           " với user '" +
           user +
-          "'. Hãy kiểm tra DB_PASSWORD trong file .env"
+          "'. Chi tiết: " +
+          (lastErrorMsg || "Sai mật khẩu hoặc dịch vụ MySQL chưa chạy")
       );
       mysqlStatus.connected = false;
       mysqlStatus.error = err.message;
       return callback(err);
     }
-    const pw = candidatePasswords[idx++];
-    tryConnectWithPassword(drv.lib, host, port, user, pw, function (err, conn) {
+    const item = attempts[idx++];
+    tryConnectTarget(drv.lib, item.target, user, item.password, function (err, conn) {
       if (!err && conn) {
-        return callback(null, conn, pw, drv.lib);
+        return callback(null, conn, item.password, drv.lib, item.target);
+      }
+      if (err && err.message) {
+        lastErrorMsg = err.message;
       }
       attemptNext();
     });
@@ -827,7 +855,7 @@ function initAndSyncMysql(state, doneCallback) {
     exportSqlDumpFile(state);
   } catch (_) {}
 
-  connectMysqlSmart(function (err, bootstrapConn, workingPassword, driverLib) {
+  connectMysqlSmart(function (err, bootstrapConn, workingPassword, driverLib, workingTarget) {
     if (err || !bootstrapConn) {
       return cb(err);
     }
@@ -851,16 +879,24 @@ function initAndSyncMysql(state, doneCallback) {
 
       // Tạo Pool kết nối chuẩn tới hesinhthai_db
       if (!activePool) {
-        activePool = driverLib.createPool({
+        const poolOpts = {
           connectionLimit: 10,
-          host: process.env.DB_HOST || "127.0.0.1",
-          port: parseInt(process.env.DB_PORT || "3306", 10),
           user: process.env.DB_USER || "root",
           password: workingPassword,
           database: dbName,
           charset: "utf8mb4",
           multipleStatements: true
-        });
+        };
+        if (workingTarget && workingTarget.socketPath) {
+          poolOpts.socketPath = workingTarget.socketPath;
+          mysqlStatus.host = workingTarget.socketPath;
+        } else {
+          poolOpts.host = (workingTarget && workingTarget.host) || process.env.DB_HOST || "127.0.0.1";
+          poolOpts.port = (workingTarget && workingTarget.port) || parseInt(process.env.DB_PORT || "3306", 10);
+          mysqlStatus.host = poolOpts.host;
+          mysqlStatus.port = poolOpts.port;
+        }
+        activePool = driverLib.createPool(poolOpts);
       }
 
       const catalog = extractProductCatalogFromHtml();
