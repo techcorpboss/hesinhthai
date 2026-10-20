@@ -1142,18 +1142,18 @@ body {
 .pub-nav-links {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
-  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .pub-nav-link {
   color: #334155;
   text-decoration: none;
-  font-size: 12.5px;
+  font-size: 13.5px;
   font-weight: 700;
-  padding: 7px 11px;
-  border-radius: 9px;
+  padding: 8px 14px;
+  border-radius: 10px;
   background: transparent;
   transition: all 0.18s ease;
   white-space: nowrap;
@@ -1164,9 +1164,22 @@ body {
   color: #0052d4;
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 900px) {
+  .hub-header {
+    padding: 10px 16px;
+  }
+  .hub-header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-right: 0;
+  }
   .pub-nav-links {
-    display: none;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
   }
 }
 
