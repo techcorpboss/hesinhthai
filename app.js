@@ -1838,6 +1838,8 @@ const PRODUCT_GROUPS_6 = [
 const PRODUCT_SHOWCASE_META = {
   jobai: {
     icon: "🤖",
+    imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Sàn Việc làm AI ATS Đa ngôn ngữ",
     targetAudience: "Doanh nghiệp Tuyển dụng, HR Manager, Sinh viên Đại học & Ứng viên Tìm việc",
     highlights: [
       "Sàn Tuyển dụng & Tìm việc thông minh tích hợp AI ATS Đa ngôn ngữ (TechCorp HireMind AI)",
@@ -1848,6 +1850,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   mamnon: {
     icon: "🧸",
+    imageUrl: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Điểm danh AI & Thực đơn Dinh dưỡng",
     targetAudience: "Trường Mầm non Tư thục, Quốc tế & Nhóm trẻ Chất lượng cao",
     highlights: [
       "Điểm danh AI nhận diện khuôn mặt, quản lý hồ sơ sức khỏe & cân đo định kỳ",
@@ -1858,6 +1862,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   tieuhoc: {
     icon: "🎒",
+    imageUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Học bạ Số & Đánh giá Thông tư 27",
     targetAudience: "Trường Tiểu học Công lập, Tư thục & Liên cấp Quốc tế",
     highlights: [
       "Quản lý học vụ Tiểu học, đánh giá phẩm chất & năng lực theo Thông tư Bộ GD&ĐT",
@@ -1868,6 +1874,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   thcs: {
     icon: "📘",
+    imageUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Sổ điểm Điện tử TT22 & Trợ lý AI",
     targetAudience: "Trường Trung học Cơ sở (THCS) & Trường Phổ thông Liên cấp",
     highlights: [
       "EduManager Pro K12: Phân công chuyên môn, thời khóa biểu & sổ điểm điện tử",
@@ -1878,6 +1886,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   thpt: {
     icon: "🎓",
+    imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Tổ hợp GDPT 2018 & Hướng nghiệp AI",
     targetAudience: "Trường Trung học Phổ thông (THPT) & Trường Chuyên",
     highlights: [
       "Quản lý đăng ký tổ hợp môn tự chọn theo Chương trình GDPT 2018 & xếp lớp thông minh",
@@ -1888,6 +1898,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   gdtx: {
     icon: "🏛️",
+    imageUrl: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Song bằng Văn hóa GDTX & Đào tạo Nghề",
     targetAudience: "Trung tâm Giáo dục Nghề nghiệp - Giáo dục Thường xuyên (GDNN - GDTX)",
     highlights: [
       "Quản lý học viên hệ GDTX cấp THPT kết hợp đào tạo trung cấp nghề song song",
@@ -1898,6 +1910,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   qldt: {
     icon: "🧭",
+    imageUrl: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Quản trị Đại học Tín chỉ & KPI Giảng viên",
     targetAudience: "Trường Đại học, Học viện & Trường Cao đẳng (TC COMPASS v1.0)",
     highlights: [
       "Quản trị đào tạo tín chỉ toàn diện: Chương trình khung, đăng ký học phần, xét tốt nghiệp",
@@ -1908,6 +1922,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   ttnn: {
     icon: "🌐",
+    imageUrl: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80",
+    imageTag: "CRM Ngoại ngữ - Tin học & Phòng thi",
     targetAudience: "Trung tâm Ngoại ngữ (IELTS/TOEIC/Giao tiếp), Tin học & Kỹ năng",
     highlights: [
       "CRM Tuyển sinh đa kênh, quản lý kiểm tra đầu vào (Placement Test) & xếp lớp tự động",
@@ -1918,6 +1934,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   lms: {
     icon: "📝",
+    imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Khảo thí Trực tuyến Anti-Cheat & QR",
     targetAudience: "Trường học K12, Đại học, Trung tâm Đào tạo & Doanh nghiệp Sát hạch Nội bộ",
     highlights: [
       "Hệ thống Đào tạo & Khảo thí Trực tuyến (E-Testing) chịu tải cao, chống gian lận AI",
@@ -1928,6 +1946,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   learn: {
     icon: "💻",
+    imageUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Cổng Khóa học Video HD & AI Mentor",
     targetAudience: "Sinh viên, Học viên, Người đi làm & Doanh nghiệp Đào tạo Nội bộ (L&D)",
     highlights: [
       "Nền tảng TechCorpLearn ('Học để dẫn đầu'): Kho khóa học Video HD, SCORM & Live Class",
@@ -1938,6 +1958,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   kpi: {
     icon: "📊",
+    imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Thẻ điểm Cân bằng BSC & Quản trị OKR",
     targetAudience: "Ban Giám đốc, CEO, Giám đốc Nhân sự (CHRO) & Trưởng bộ phận Doanh nghiệp",
     highlights: [
       "Hệ thống quản trị chiến lược theo Thẻ điểm cân bằng (BSC) & phân rã mục tiêu KPI/OKR",
@@ -1948,6 +1970,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   erp: {
     icon: "🏢",
+    imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Quản trị Doanh nghiệp Hợp nhất All-in-One",
     targetAudience: "Doanh nghiệp SME, Tập đoàn Dịch vụ, Thương mại, Sản xuất & Phân phối",
     highlights: [
       "Quản trị Doanh nghiệp hợp nhất: Nhân sự (HRM), Khách hàng (CRM), Tài chính - Kế toán, Kho vận",
@@ -1958,6 +1982,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   techcorp: {
     icon: "🚀",
+    imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Cổng Giải pháp Số & Đào tạo Thực chiến",
     targetAudience: "Doanh nghiệp, Tổ chức Giáo dục & Học viên Thực chiến tại Khánh Hòa & Toàn quốc",
     highlights: [
       "Cổng chính thức TechCorp Academy: Cung cấp giải pháp PMS, ERP, LMS & Tư vấn Chuyển đổi số",
@@ -1968,6 +1994,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   qldh: {
     icon: "🏨",
+    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Quản lý Khách sạn 3-5 Sao & Resort PMS",
     targetAudience: "Khách sạn 3-5 Sao, Resort Nghỉ dưỡng, Villa & Chuỗi Lưu trú Du lịch",
     highlights: [
       "Hệ thống Quản lý Khách sạn (TechCorp PMS): Đặt phòng (Booking), Lễ tân (Front Desk), Buồng phòng",
@@ -1978,6 +2006,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   bds: {
     icon: "🏙️",
+    imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Sàn Giao dịch BĐS & Trợ lý AI 24/7",
     targetAudience: "Sàn Giao dịch Bất động sản, Chủ đầu tư Dự án & Chuyên viên Môi giới",
     highlights: [
       "Sàn Giao dịch BĐS Cao cấp tích hợp Trợ lý AI tư vấn dự án, phong thủy & dòng tiền 24/7",
@@ -1988,6 +2018,8 @@ const PRODUCT_SHOWCASE_META = {
   },
   noithat: {
     icon: "🛋️",
+    imageUrl: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Showroom Nội thất 3D & Dự toán BOQ",
     targetAudience: "Công ty Thiết kế - Thi công Nội thất, Kiến trúc & Showroom Nội thất Cao cấp",
     highlights: [
       "Nền tảng 'Kiến tạo Không gian Hoàn mỹ': Trưng bày Portfolio dự án & Danh mục sản phẩm 3D",
@@ -2012,6 +2044,8 @@ window.filterPublicProducts = function (categoryBadge) {
 function renderSinglePublicProductCard(app, groupTitle) {
   const meta = PRODUCT_SHOWCASE_META[app.id] || {
     icon: "🚀",
+    imageUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80",
+    imageTag: "Nền tảng Thành viên Hệ sinh thái",
     targetAudience: "Đơn vị Thành viên Hệ sinh thái TechCorp",
     highlights: [
       app.desc || "Nền tảng thành viên kết nối trực tiếp vào Trục dữ liệu SSO TechCorp ID",
@@ -2020,6 +2054,8 @@ function renderSinglePublicProductCard(app, groupTitle) {
     ],
     ecoFlow: "🔄 Liên thông: Kết nối SSO TechCorp ID & Đồng bộ dữ liệu tự động qua Event Bus"
   };
+
+  const coverImg = app.imageUrl || meta.imageUrl || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80";
 
   const bulletsHtml = meta.highlights
     .map((h) => `<div style="font-size:12.5px;color:#334155;margin-top:4px;">✔ ${escapeHtml(h)}</div>`)
@@ -2031,13 +2067,23 @@ function renderSinglePublicProductCard(app, groupTitle) {
   return `
     <div class="pub-product-card">
       <div>
-        <div class="pub-prod-top">
-          <div class="pub-prod-icon">${meta.icon}</div>
-          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+        <a href="${detailUrl}" class="pub-prod-media" title="Xem chi tiết ${escapeHtml(app.name)}">
+          <img
+            src="${escapeHtml(coverImg)}"
+            alt="${escapeHtml(app.name)}"
+            class="pub-prod-thumb-img"
+            loading="lazy"
+            onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80'"
+          />
+          <div class="pub-prod-media-top">
             <span class="badge badge-green">● HTTP 200 Live</span>
             <span class="badge badge-blue">${escapeHtml(groupTitle || app.badge || "TechCorp Cloud")}</span>
           </div>
-        </div>
+          <div class="pub-prod-media-bottom">
+            <span class="pub-prod-icon">${meta.icon}</span>
+            <span class="pub-prod-media-tag">${escapeHtml(meta.imageTag || app.badge || "TechCorp Cloud")}</span>
+          </div>
+        </a>
         <h3>
           <a href="${detailUrl}" style="color:inherit;text-decoration:none;">
             ${escapeHtml(app.name)}
@@ -2055,22 +2101,22 @@ function renderSinglePublicProductCard(app, groupTitle) {
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid #e2e8f0;">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
-          <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" style="font-size:11.5px;color:#0052d4;font-weight:800;text-decoration:none;">
+        <div class="pub-prod-links-row">
+          <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" style="font-size:11.5px;color:#0052d4;font-weight:800;text-decoration:none;white-space:nowrap;">
             🌐 ${escapeHtml(app.appUrl.replace("https://", ""))} ↗
           </a>
-          <a href="${detailUrl}" style="font-size:11.5px;color:#059669;font-weight:800;text-decoration:none;">
+          <a href="${detailUrl}" style="font-size:11.5px;color:#059669;font-weight:800;text-decoration:none;white-space:nowrap;">
             📖 Xem 6 Phân hệ Chức năng →
           </a>
         </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <a href="${detailUrl}" class="btn btn-outline btn-sm" style="text-decoration:none;flex:1;justify-content:center;">
+        <div class="pub-prod-actions-row">
+          <a href="${detailUrl}" class="btn btn-outline btn-sm pub-prod-action-btn">
             📖 Chi tiết Sản phẩm
           </a>
-          <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;flex:1.15;justify-content:center;">
+          <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm pub-prod-action-btn">
             🚀 Xem &amp; Dùng thử ↗
           </a>
-          <a href="${demoUrl}" class="btn btn-emerald btn-sm" style="text-decoration:none;flex:1;justify-content:center;">
+          <a href="${demoUrl}" class="btn btn-emerald btn-sm pub-prod-action-btn">
             📝 Đăng ký Demo
           </a>
         </div>
