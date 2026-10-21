@@ -1,9 +1,9 @@
 {
   "meta": {
     "domain": "hesinhthai.techcorp.info.vn",
-    "version": "6.6.0",
+    "version": "6.7.0",
     "region": "Nha Trang - Khánh Hòa",
-    "updatedAt": "2026-10-21T02:57:41.400Z"
+    "updatedAt": "2026-10-21T03:29:15.046Z"
   },
   "apps": [
     {
@@ -1163,105 +1163,241 @@
       "id": "ANN-MASTER-01",
       "sourceType": "master",
       "badge": "👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP",
-      "title": "Chính thức Liên thông 16 Nền tảng Phần mềm Thực tế trên *.techcorp.info.vn qua Trục SSO TechCorp ID v5.1",
-      "summary": "Toàn bộ 16 hệ thống đang chạy thực tế gồm: Giáo dục K12 (mamnon, tieuhoc, thcs, thpt, gdtx), Đại học & Khảo thí (qldt TC COMPASS, ttnn, lms, learn), Tuyển dụng AI (jobai), Quản trị Doanh nghiệp (erp, kpi, techcorp) và Chuyên ngành (qldh PMS Khách sạn, bds AI, noithat) đã được kết nối tập trung.",
+      "categoryTag": "Kiến trúc SSO & Liên thông",
+      "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80",
+      "views": 1480,
+      "readTime": "3 phút đọc",
+      "title": "Chính thức Liên thông 16 Nền tảng Phần mềm Thực tế trên *.techcorp.info.vn qua Trục SSO TechCorp ID v6.5",
+      "summary": "Toàn bộ 16 hệ thống đang chạy thực tế thuộc 6 nhóm sản phẩm gồm: Giáo dục Mầm non – K12 (mamnon, tieuhoc, thcs, thpt), Đại học & GDTX (qldt TC COMPASS, gdtx), Trung tâm NN-TH & LMS (ttnn, lms, learn), Sàn Việc làm AI (jobai, techcorp), Quản trị Doanh nghiệp (erp, kpi) và Chuyên ngành (qldh PMS Khách sạn, bds AI, noithat) đã kết nối tập trung.",
+      "content": "Ban Điều hành Hệ sinh thái TechCorp trân trọng thông báo: Trục xác thực tập trung TechCorp ID (Single Sign-On JWT v6.5) và Hệ thống Điều phối Sự kiện Liên thông (Central Event Bus) đã hoàn tất kết nối đồng bộ 100% với 16 nền tảng phần mềm chuyên sâu đang vận hành thực tế trên các tên miền *.techcorp.info.vn.\n\nVới kiến trúc hợp nhất này, mỗi đơn vị thành viên (Trường học, Trung tâm Ngoại ngữ - Tin học, Doanh nghiệp SME, Resort - Khách sạn, Sàn BĐS & Nội thất) sở hữu một Không gian Quản trị (Multi-Tenant Workspace) độc lập, bảo mật theo ma trận phân quyền RBAC 9x5, đồng thời có thể chia sẻ dữ liệu hai chiều theo thời gian thực.\n\nCụ thể, kết quả khảo thí và chứng chỉ năng lực số từ TechCorp LMS tự động gắn mã QR xác thực vào Hồ sơ Năng lực Số (Talent Passport) của sinh viên trên Sàn Việc làm HireMind AI (jobai.techcorp.info.vn), giúp các doanh nghiệp thành viên tuyển dụng và đồng bộ nhân sự mới vào phân hệ HRM trên TechCorp ERP chỉ với 1 cú nhấp chuột.",
+      "highlights": [
+        "Đăng nhập 1 lần (SSO TechCorp ID) chuyển đổi mượt mà giữa 16 nền tảng phần mềm thuộc 6 nhóm chuyên ngành",
+        "Đồng bộ tự động Chứng chỉ Thi Online QR từ LMS sang Sàn Tuyển dụng HireMind AI và phân hệ Nhân sự ERP",
+        "Liên thông Sổ liên lạc điện tử Phụ huynh K-12 với Ví Học bổng & E-Voucher từ các Doanh nghiệp thành viên",
+        "Đạt chuẩn an toàn thông tin đa tầng, giám sát truy vết IP theo thời gian thực (Security Audit Logs 24/7)"
+      ],
       "authorName": "Ban Điều hành Hệ sinh thái TechCorp",
       "authorOrg": "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
       "createdAt": "Hôm nay, 08:00",
       "pinned": true,
-      "actionLabel": "Xem 6 Nhóm Sản phẩm",
-      "actionView": "pub-page-products"
+      "actionLabel": "Khám phá 6 Nhóm Sản phẩm",
+      "actionView": "products"
     },
     {
       "id": "ANN-MASTER-02",
       "sourceType": "master",
-      "badge": "📢 CHÍNH SÁCH LIÊN KẾT HẠT NHÂN KHÁNH HÒA",
-      "title": "Tài trợ 100% Phí Khởi tạo & Tặng Website Chuẩn SEO cho 57 Đơn vị Hạt nhân Giai đoạn 1 tại Nha Trang",
-      "summary": "Áp dụng cho 02 Trường ĐH/CĐ, 10 Trung tâm Ngoại ngữ - Tin học, 15 Trường Mầm non/Phổ thông và 30 Doanh nghiệp SME đầu tiên kích hoạt liên thông dữ liệu trên TechCorp Hub.",
+      "badge": "📢 CHÍNH SÁCH LIÊN KẾT HẠT NHÂN HỆ SINH THÁI TECHCORP",
+      "categoryTag": "Chính sách Tài trợ Hạt nhân",
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=80",
+      "views": 1265,
+      "readTime": "4 phút đọc",
+      "title": "Tài trợ 100% Phí Khởi tạo & Tặng Website Chuẩn SEO cho 57 Đơn vị Hạt nhân Giai đoạn 1 tại Khánh Hòa",
+      "summary": "Áp dụng cho 02 Trường ĐH/CĐ, 10 Trung tâm Ngoại ngữ - Tin học, 15 Trường Mầm non/Phổ thông và 30 Doanh nghiệp SME đầu tiên kích hoạt liên thông dữ liệu trên Hệ sinh thái TechCorp.",
+      "content": "Nhằm thúc đẩy chuyển đổi số toàn diện và xây dựng mạng lưới liên kết Giáo dục – Đào tạo – Tuyển dụng – Quản trị Doanh nghiệp bền vững tại Nha Trang - Khánh Hòa, Hệ sinh thái TechCorp chính thức công bố Gói Tài trợ Hạt nhân Giai đoạn 1 dành cho 57 đơn vị tiên phong.\n\nCác đơn vị tham gia chương trình Hạt nhân không chỉ được miễn 100% chi phí khởi tạo hạ tầng đám mây ban đầu và tặng kèm Website thương hiệu/tuyển sinh chuẩn SEO đa ngôn ngữ, mà còn được kích hoạt đặc quyền giao thương chéo (Give-to-Get) tiếp cận trực tiếp cộng đồng hơn 15.000 phụ huynh, học sinh, sinh viên và nhân sự văn phòng trong hệ sinh thái.\n\nĐội ngũ kỹ sư triển khai của TechCorp tại Nha Trang hỗ trợ trực tiếp tận nơi từ khâu chuẩn hóa dữ liệu, tập huấn cán bộ quản lý/giáo viên/nhân sự đến vận hành thực tế 24/7.",
+      "highlights": [
+        "Miễn 100% phí khởi tạo hệ thống Cloud & Cài đặt cấu hình tên miền riêng cho 57 đơn vị hạt nhân đầu tiên",
+        "Tặng miễn phí Website Tuyển sinh / Website Doanh nghiệp đa ngôn ngữ chuẩn SEO (trị giá 8 - 10 triệu VNĐ)",
+        "Cấp quyền truy cập Kho 2.920+ Hồ sơ Năng lực Số ứng viên đã xác thực điểm thi ngoại ngữ & tin học",
+        "Đặc quyền phát hành E-Voucher & Học bổng chéo tới toàn bộ cộng đồng Phụ huynh và Sinh viên trong hệ sinh thái"
+      ],
       "authorName": "Hệ sinh thái TechCorp",
-      "authorOrg": "TechCorp Headquarters",
+      "authorOrg": "CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP",
       "createdAt": "Hôm nay, 09:30",
       "pinned": true,
-      "actionLabel": "Xem Báo giá Combo",
-      "actionView": "pub-page-pricing"
+      "actionLabel": "Xem Báo giá & Ưu đãi Combo",
+      "actionView": "pricing"
     },
     {
       "id": "ANN-MASTER-03",
       "sourceType": "master",
-      "badge": "🤖 NÂNG CẤP TRỤC AI TUYỂN DỤNG & ĐÀO TẠO",
-      "title": "Ra mắt cổng đồng bộ 1-Click từ Sàn Tuyển dụng HireMind AI (jobai.techcorp.info.vn) sang Phân hệ HRM trên TechCorp ERP",
+      "badge": "🤖 NÂNG CẤP CÔNG NGHỆ • HỆ SINH THÁI TECHCORP",
+      "categoryTag": "AI Tuyển dụng & Nhân sự",
+      "imageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=80",
+      "views": 985,
+      "readTime": "3 phút đọc",
+      "title": "Ra mắt Cổng đồng bộ 1-Click từ Sàn Tuyển dụng HireMind AI (jobai.techcorp.info.vn) sang Phân hệ HRM trên TechCorp ERP",
       "summary": "Các Doanh nghiệp thành viên có thể lọc ứng viên theo Điểm Thi Online thực tế từ LMS và đẩy thẳng hồ sơ trúng tuyển vào Hợp đồng lao động điện tử chỉ với 1 cú nhấp chuột.",
+      "content": "Trung tâm R&D AI & Cloud thuộc Hệ sinh thái TechCorp vừa phát hành bản nâng cấp lớn cho Sàn Tuyển dụng & Tìm việc Thông minh TechCorp HireMind AI (jobai.techcorp.info.vn), tích hợp trực tiếp công nghệ AI ATS đa ngôn ngữ (Việt – Anh – Hàn – Nhật – Trung).\n\nHệ thống tự động đọc hiểu CV của ứng viên, đối chiếu với yêu cầu công việc (JD) của doanh nghiệp và kết hợp dữ liệu điểm thi thực tế từ nền tảng khảo thí TechCorp LMS để đưa ra Chỉ số Tương thích AI (AI Matching Score) chính xác tới 96%.\n\nĐặc biệt, ngay khi Phòng Nhân sự (HR) hoặc CEO doanh nghiệp bấm 'Chốt tiếp nhận' trên Sàn Nhân lực, toàn bộ hồ sơ cá nhân, bằng cấp xác thực QR và thông tin lương sẽ được đẩy tự động 1-Click sang phân hệ Quản trị Nhân sự (HRM) trên TechCorp ERP mà không cần nhập liệu thủ công.",
+      "highlights": [
+        "Sàng lọc & chấm điểm độ phù hợp CV – JD tự động bằng AI ATS hỗ trợ 7 ngôn ngữ quốc tế",
+        "Xác thực 100% chứng chỉ IELTS/TOEIC/MOS và điểm GPA từ các Trường ĐH & Trung tâm thành viên",
+        "Đồng bộ 1-Click hồ sơ ứng viên trúng tuyển vào Hợp đồng lao động & Bảng lương trên TechCorp ERP",
+        "Tiết kiệm 75% thời gian và chi phí tuyển dụng nhân sự chất lượng cao cho các Resort, Khách sạn & SME"
+      ],
       "authorName": "Hệ sinh thái TechCorp",
-      "authorOrg": "Khối Công nghệ & AI TechCorp",
+      "authorOrg": "Trung tâm R&D AI & Cloud TechCorp",
       "createdAt": "Hôm qua, 15:20",
       "pinned": false,
-      "actionLabel": "Xem Diễn đàn & Nhân lực",
-      "actionView": "pub-page-forum"
+      "actionLabel": "Xem Sàn Nhân lực & LMS",
+      "actionView": "forum"
     },
     {
       "id": "ANN-MASTER-04",
       "sourceType": "master",
       "badge": "💳 LIÊN THÔNG THANH TOÁN QR ĐỘNG KHÔNG TIỀN MẶT",
-      "title": "Tích hợp cổng gạch nợ Học phí & Hóa đơn tự động 3 giây cho toàn bộ Khối Trường học K-12 và Trung tâm Ngoại ngữ",
+      "categoryTag": "Tài chính Số & VietQR",
+      "imageUrl": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=80",
+      "views": 870,
+      "readTime": "3 phút đọc",
+      "title": "Tích hợp Cổng gạch nợ Học phí & Hóa đơn tự động 3 giây cho toàn bộ Khối Trường học K-12 và Trung tâm Ngoại ngữ",
       "summary": "Miễn phí 100% phí thiết lập cổng thanh toán VietQR động cho các trường Mầm non, Tiểu học, THCS, THPT, GDTX và Trung tâm đào tạo thuộc Hệ sinh thái TechCorp.",
-      "authorName": "Hệ sinh thái TechCorp",
-      "authorOrg": "Ban Tài chính & Đối tác Ngân hàng",
+      "content": "Nhằm giải quyết triệt để bài toán đối soát học phí thủ công vào mỗi đầu tháng cho bộ phận kế toán nhà trường và trung tâm đào tạo, Hệ sinh thái TechCorp đã hợp tác cùng các Ngân hàng đối tác tích hợp chuẩn thanh toán VietQR động thế hệ mới trực tiếp vào bộ giải pháp EduManager Pro K-12 và Quản lý Trung tâm NN-TH.\n\nMỗi phiếu báo thu học phí gửi qua Sổ liên lạc điện tử tới Phụ huynh hoặc Học viên sẽ đi kèm một mã QR định danh duy nhất chứa sẵn số tiền và mã học sinh. Ngay khi phụ huynh quét mã thanh toán trên ứng dụng ngân hàng bất kỳ, hệ thống tự động gạch nợ trong 3 giây, phát hành biên lai điện tử tức thì và hạch toán thẳng vào sổ quỹ Tài chính – Kế toán.\n\nNhờ đó, các trường học và trung tâm giảm được hơn 85% thời gian đối soát sao kê ngân hàng và loại bỏ hoàn toàn sai sót nhầm lẫn nội dung chuyển khoản.",
+      "highlights": [
+        "Tự động sinh mã VietQR động định danh theo từng học sinh/học viên trên Sổ liên lạc điện tử",
+        "Gạch nợ học phí tự động trong 3 giây và xuất biên lai điện tử ngay sau khi quét mã",
+        "Đồng bộ trực tiếp doanh thu học phí về phân hệ Kế toán – Tài chính mà không cần nhập lại",
+        "Miễn 100% phí thiết lập cổng kết nối API Ngân hàng cho các cơ sở giáo dục thành viên TechCorp"
+      ],
+      "authorName": "Ban Điều hành Hệ sinh thái TechCorp",
+      "authorOrg": "Ban Tài chính & Đối tác Ngân hàng TechCorp",
       "createdAt": "2 ngày trước",
       "pinned": false,
-      "actionLabel": "Đăng ký Tư vấn",
-      "actionView": "pub-page-contact"
+      "actionLabel": "Liên hệ Tư vấn & Demo",
+      "actionView": "contact"
+    },
+    {
+      "id": "ANN-MASTER-05",
+      "sourceType": "master",
+      "badge": "🛡️ TIÊU CHUẨN CHẤT LƯỢNG • ISO 9001:2015 & ISO 27001",
+      "categoryTag": "Bảo mật & Ký số Điện tử",
+      "imageUrl": "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1000&q=80",
+      "views": 810,
+      "readTime": "4 phút đọc",
+      "title": "Chuẩn hóa Quy trình Bảo mật Dữ liệu Đa tầng & Ký số Học bạ Điện tử toàn Hệ sinh thái TechCorp",
+      "summary": "100% cơ sở giáo dục và doanh nghiệp thành viên được trang bị không gian quản trị riêng biệt theo phân quyền RBAC 9x5, sao lưu tự động MySQL/SQLite thời gian thực và hỗ trợ kỹ thuật 24/7.",
+      "content": "Đặt an toàn thông tin và tính pháp lý của dữ liệu số lên hàng đầu, Hệ sinh thái TechCorp đã hoàn tất nâng cấp hạ tầng bảo mật đa tầng theo tiêu chuẩn ISO/IEC 27001 kết hợp hệ thống quản lý chất lượng ISO 9001:2015 cho toàn bộ 16 nền tảng phần mềm.\n\nĐối với khối Giáo dục Mầm non – Phổ thông K12 và Đại học, phân hệ Học bạ Số & Bảng điểm Điện tử đã tích hợp đầy đủ chuẩn ký số CA của Ban Cơ yếu Chính phủ và các nhà cung cấp chữ ký số công cộng (Viettel-CA, VNPT-CA, FPT-CA), đáp ứng 100% quy định theo các Thông tư mới nhất của Bộ GD&ĐT.\n\nĐối với khối Doanh nghiệp SME, dữ liệu Nhân sự, Tài chính và Khách hàng được cô lập hoàn toàn theo từng Tenant riêng biệt, mã hóa đầu cuối và sao lưu tự động hàng ngày.",
+      "highlights": [
+        "Cô lập dữ liệu hoàn toàn giữa các đơn vị thành viên theo kiến trúc Multi-Tenant & Ma trận RBAC 9x5",
+        "Tích hợp ký số Học bạ Điện tử (XML/PDF) theo đúng chuẩn quy định của Bộ Giáo dục & Đào tạo",
+        "Hệ thống Audit Logs ghi vết đầy đủ địa chỉ IP, thời gian và tác nhân của mọi thao tác quan trọng",
+        "Cơ chế sao lưu dữ liệu tự động (Auto-Backup) đa vùng và cam kết SLA vận hành ổn định 99.9%"
+      ],
+      "authorName": "Ban Điều hành Hệ sinh thái TechCorp",
+      "authorOrg": "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      "createdAt": "3 ngày trước",
+      "pinned": false,
+      "actionLabel": "Đăng ký Tư vấn Bảo mật",
+      "actionView": "contact"
     },
     {
       "id": "ANN-MEM-01",
       "sourceType": "member",
       "badge": "🏨 TIN TỪ DOANH NGHIỆP THÀNH VIÊN (SME)",
-      "title": "Nha Trang Bay Resort & Travel mở đợt tuyển 25 Thực tập sinh & Nhân sự Lễ tân Tiếng Anh/Hàn học kỳ Hè - Thu",
+      "categoryTag": "Tuyển dụng & Thực tập",
+      "imageUrl": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80",
+      "views": 1150,
+      "readTime": "3 phút đọc",
+      "title": "Nha Trang Bay Resort & Travel mở đợt tuyển 25 Thực tập sinh & Nhân sự Lễ tân Tiếng Anh/Hàn học kỳ Hè – Thu",
       "summary": "Ưu tiên xét tuyển thẳng (không qua vòng sơ loại CV) đối với Sinh viên ĐH Nha Trang, ĐH Khánh Hòa, CĐ Du lịch có chứng chỉ xác thực trên Nền tảng Thi Online TechCorp.",
+      "content": "Chuẩn bị đón các đoàn khách du lịch quốc tế và hội nghị MICE quy mô lớn trong mùa cao điểm Hè – Thu, Nha Trang Bay Resort & Travel chính thức mở đợt tuyển dụng 25 Thực tập sinh có hưởng phụ cấp và Nhân viên chính thức tại các bộ phận: Lễ tân Quốc tế (Front Office), Chăm sóc Khách hàng (Guest Relations), Nhà hàng & Sự kiện (F&B) và Điều hành Tour.\n\nNhờ liên thông trực tiếp với Trục dữ liệu Hệ sinh thái TechCorp, Phòng Nhân sự của Resort áp dụng cơ chế 'Tuyển thẳng không qua sơ loại CV giấy' đối với các bạn sinh viên/học viên đã có Hồ sơ Năng lực Số (Talent Passport) kèm kết quả thi Tiếng Anh (IELTS/TOEIC) hoặc Tiếng Hàn (TOPIK) xác thực trên nền tảng TechCorp LMS.\n\nỨng viên trúng tuyển được đào tạo nghiệp vụ trên hệ thống Quản lý Khách sạn TechCorp PMS, hỗ trợ bữa ăn theo ca, phụ cấp thực tập từ 4.500.000 – 7.000.000 VNĐ/tháng và ký hợp đồng chính thức ngay sau kỳ thực tập.",
+      "highlights": [
+        "Tuyển thẳng ứng viên có Chứng chỉ Ngoại ngữ / Tin học xác thực QR trên nền tảng TechCorp LMS",
+        "Mức thu nhập & phụ cấp hấp dẫn: Thực tập sinh 4.5 - 7 triệu/tháng; Nhân viên chính thức 10 - 16 triệu/tháng",
+        "Được đào tạo thực chiến trên phần mềm Quản lý Khách sạn 5 Sao TechCorp PMS (qldh.techcorp.info.vn)",
+        "Ứng tuyển 1-Click trực tiếp từ Sàn Nhân lực hoặc gửi Hồ sơ số về phân hệ HRM của Resort"
+      ],
       "authorName": "Nguyễn Hải Đăng (CEO)",
       "authorOrg": "Nha Trang Bay Resort & Travel",
       "createdAt": "1 giờ trước",
-      "pinned": false,
+      "pinned": true,
       "actionLabel": "Xem Sàn Nhân lực",
-      "actionView": "pub-page-forum"
+      "actionView": "forum"
     },
     {
       "id": "ANN-MEM-02",
       "sourceType": "member",
       "badge": "🏫 TIN TỪ TRUNG TÂM ĐÀO TẠO THÀNH VIÊN",
+      "categoryTag": "Học bổng & Khảo thí LMS",
+      "imageUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80",
+      "views": 1020,
+      "readTime": "3 phút đọc",
       "title": "Ocean English & IT Center tài trợ 500 suất Thi thử IELTS/TOEIC & Học bổng 40% cho con em Doanh nghiệp & Trường học",
-      "summary": "Kết quả thi thử được đồng bộ tự động về Sổ liên lạc điện tử của Phụ huynh và Hồ sơ Năng lực Số của Sinh viên trên toàn hệ sinh thái.",
+      "summary": "Kết quả thi thử được đồng bộ tự động về Sổ liên lạc điện tử của Phụ huynh và Hồ sơ Năng lực Số của Sinh viên trên toàn Hệ sinh thái TechCorp.",
+      "content": "Đồng hành cùng phong trào nâng cao năng lực Ngoại ngữ & Tin học chuẩn quốc tế tại Khánh Hòa, Ocean English & IT Center Nha Trang phối hợp cùng nền tảng khảo thí trực tuyến TechCorp LMS chính thức phát động chương trình tài trợ 500 suất Thi thử IELTS, TOEIC (4 kỹ năng) và Tin học văn phòng MOS hoàn toàn miễn phí.\n\nChương trình dành riêng cho học sinh các trường Phổ thông liên kết, sinh viên Đại học/Cao đẳng và con em cán bộ nhân viên đang làm việc tại các Doanh nghiệp thành viên thuộc Hệ sinh thái TechCorp. Bài thi được chấm tự động bằng AI kết hợp đội ngũ giám khảo chuyên môn của Ocean English.\n\nNgay sau khi hoàn thành bài thi, hệ thống cấp Chứng chỉ Đánh giá Năng lực Số kèm mã QR xác thực, đồng thời tặng ngay Học bổng ưu đãi 40% học phí các khóa luyện thi IELTS/TOEIC cam kết đầu ra vào Ví điện tử TechCorp ID của học viên.",
+      "highlights": [
+        "Tài trợ 100% lệ phí thi thử IELTS / TOEIC 4 kỹ năng & Tin học MOS trên nền tảng TechCorp LMS",
+        "Tặng Học bổng 40% học phí (trị giá tới 6.000.000 VNĐ/khóa) cho thành viên Hệ sinh thái TechCorp",
+        "Tự động đồng bộ bảng điểm phân tích kỹ năng về Sổ liên lạc Phụ huynh và Talent Passport của Sinh viên",
+        "Cam kết giới thiệu thực tập & việc làm tại 30 Resort và Doanh nghiệp SME đối tác sau khi đạt chuẩn đầu ra"
+      ],
       "authorName": "Trần Thanh Tâm (Giám đốc)",
       "authorOrg": "Ocean English & IT Center Nha Trang",
       "createdAt": "2 giờ trước",
-      "pinned": false,
+      "pinned": true,
       "actionLabel": "Xem Đấu trường LMS",
-      "actionView": "pub-page-forum"
+      "actionView": "forum"
     },
     {
       "id": "ANN-MEM-03",
       "sourceType": "member",
       "badge": "🎓 TIN TỪ KHỐI CƠ SỞ GIÁO DỤC THÀNH VIÊN",
-      "title": "Hệ thống Giáo dục Sao Biển Nha Trang tổ chức Ngày hội Trải nghiệm Công nghệ & Kỹ năng Số cho 800 Phụ huynh Học sinh",
+      "categoryTag": "Sự kiện Trường học Số",
+      "imageUrl": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1000&q=80",
+      "views": 890,
+      "readTime": "3 phút đọc",
+      "title": "Hệ thống Giáo dục Sao Biển Nha Trang tổ chức Ngày hội Trải nghiệm Công nghệ AI & Kỹ năng Số cho 800 Phụ huynh Học sinh",
       "summary": "Mời các Doanh nghiệp Du lịch, F&B, Y tế và Trung tâm Ngoại ngữ trong Hệ sinh thái TechCorp đăng ký gian hàng trải nghiệm và phát hành E-Voucher trên Sổ liên lạc điện tử.",
+      "content": "Nhằm mang đến sân chơi khoa học công nghệ bổ ích cho học sinh và giúp phụ huynh trải nghiệm thực tế mô hình Trường học Thông minh (Smart School), Hệ thống Giáo dục Liên cấp Sao Biển Nha Trang tổ chức 'Ngày hội Trải nghiệm Công nghệ AI, Robotics & Kỹ năng Số 2026' với sự tham gia của hơn 800 phụ huynh và học sinh.\n\nTại sự kiện, phụ huynh được trực tiếp trải nghiệm hệ thống Điểm danh nhận diện khuôn mặt AI đầu giờ, tra cứu thực đơn dinh dưỡng hàng ngày và thanh toán học phí VietQR 3 giây trên ứng dụng EduManager Pro của TechCorp.\n\nBan Giám hiệu nhà trường trân trọng mời các Trung tâm Ngoại ngữ - Tin học, Phòng khám Nha khoa, Doanh nghiệp Du lịch & Thực phẩm sạch trong Hệ sinh thái TechCorp đăng ký gian hàng đồng hành và phát hành E-Voucher ưu đãi trực tiếp vào Sổ liên lạc điện tử của 1.250 phụ huynh toàn trường.",
+      "highlights": [
+        "Quy mô hơn 800 Phụ huynh & Học sinh tham gia trải nghiệm trực tiếp tại khuôn viên KĐT Mỹ Gia - Nha Trang",
+        "Trình diễn thực tế hệ thống Điểm danh AI, Học bạ Số & Sổ liên lạc điện tử EduManager Pro K-12",
+        "Miễn phí gian hàng trưng bày cho các Trung tâm Đào tạo & Doanh nghiệp thành viên Hệ sinh thái TechCorp",
+        "Hỗ trợ bắn thông báo E-Voucher ưu đãi của đơn vị tài trợ tới 100% tài khoản Phụ huynh nhà trường"
+      ],
       "authorName": "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
-      "authorOrg": "Hệ thống Giáo dục Sao Biển Nha Trang",
+      "authorOrg": "Hệ thống Giáo dục Liên cấp Sao Biển Nha Trang",
       "createdAt": "4 giờ trước",
       "pinned": false,
       "actionLabel": "Kết nối Hợp tác B2B",
-      "actionView": "pub-page-forum"
+      "actionView": "forum"
     },
     {
       "id": "ANN-MEM-04",
       "sourceType": "member",
-      "badge": "🏢 TIN TỪ KHỐI BẤT ĐỘNG SẢN & NỘI THẤT",
-      "title": "Hưng Phát Land & Showroom Nội thất 3D ưu đãi giảm 20% gói Thiết kế - Thi công Văn phòng & Phòng Học Thông minh",
-      "summary": "Chương trình đặc quyền Give-to-Get dành riêng cho các Trường học, Trung tâm đào tạo và Doanh nghiệp SME mở rộng cơ sở mới tại Nha Trang - Cam Ranh.",
+      "badge": "🏙️ TIN TỪ KHỐI BẤT ĐỘNG SẢN & NỘI THẤT THÀNH VIÊN",
+      "categoryTag": "Ưu đãi B2B Nội bộ",
+      "imageUrl": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80",
+      "views": 760,
+      "readTime": "3 phút đọc",
+      "title": "Hưng Phát Land & TechCorp Interior ra mắt Gói Ưu đãi Chéo B2B giảm 20% Thiết kế Thi công Văn phòng & Trung tâm",
+      "summary": "Đặc quyền dành riêng cho các Trường tư thục, Trung tâm Ngoại ngữ - Tin học và Doanh nghiệp SME thuộc Hệ sinh thái TechCorp khi mở rộng cơ sở mới tại Khánh Hòa.",
+      "content": "Nhằm hỗ trợ các cơ sở giáo dục, trung tâm đào tạo và doanh nghiệp SME trong Hệ sinh thái TechCorp tối ưu chi phí khi mở rộng chi nhánh mới tại Nha Trang – Cam Ranh – Ninh Hòa, Liên minh Sàn Giao dịch BĐS Hưng Phát Land (bds.techcorp.info.vn) và Showroom Nội thất TechCorp Interior (noithat.techcorp.info.vn) chính thức triển khai gói đặc quyền B2B nội bộ.\n\nCụ thể, Hưng Phát Land hỗ trợ tìm kiếm mặt bằng thương mại, tòa nhà văn phòng và cơ sở trường học tại các khu đô thị trọng điểm (Mỹ Gia, Hà Quang II, Vĩnh Điềm Trung, An Bình Tân) với chính sách miễn 100% phí môi giới cho thành viên TechCorp.\n\nSong song đó, TechCorp Interior tài trợ 100% chi phí khảo sát & dựng bản vẽ phối cảnh 3D phòng học thông minh / văn phòng hiện đại, đồng thời giảm ngay 20% tổng giá trị hợp đồng sản xuất – thi công nội thất trọn gói tại xưởng.",
+      "highlights": [
+        "Miễn 100% phí tư vấn & tìm kiếm mặt bằng mở Trường học, Trung tâm, Văn phòng tại Nha Trang - Khánh Hòa",
+        "Tặng 100% gói Thiết kế phối cảnh 3D & Dự toán BOQ tự động trên nền tảng noithat.techcorp.info.vn",
+        "Chiết khấu trực tiếp 20% chi phí sản xuất & thi công nội thất phòng học, bàn ghế, quầy lễ tân tại xưởng",
+        "Bảo hành công trình điện tử 36 tháng và hỗ trợ trả chậm linh hoạt cho đơn vị thành viên TechCorp"
+      ],
       "authorName": "Ban Giám đốc Hưng Phát Land",
-      "authorOrg": "Sàn BĐS Hưng Phát Land & Nội thất 3D",
+      "authorOrg": "Sàn Giao dịch BĐS Hưng Phát Land & TechCorp Interior",
       "createdAt": "1 ngày trước",
       "pinned": false,
       "actionLabel": "Xem Ưu đãi B2B",
-      "actionView": "pub-page-forum"
+      "actionView": "forum"
+    },
+    {
+      "id": "ANN-MEM-05",
+      "sourceType": "member",
+      "badge": "🎓 TIN TỪ KHỐI ĐẠI HỌC & CAO ĐẲNG THÀNH VIÊN",
+      "categoryTag": "Liên kết Đại học – Doanh nghiệp",
+      "imageUrl": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1000&q=80",
+      "views": 940,
+      "readTime": "4 phút đọc",
+      "title": "Trường Đại học Nha Trang & Khối Doanh nghiệp SME ký kết Liên thông 450 Hồ sơ Năng lực Số Sinh viên Năm cuối lên Sàn JobAI",
+      "summary": "Sinh viên các ngành CNTT, Quản trị Khách sạn, Kế toán – Tài chính và Ngôn ngữ được kết nối phỏng vấn trực tiếp với 30 Doanh nghiệp & Resort ngay trên hệ thống TC COMPASS.",
+      "content": "Thông qua sự kết nối giữa Hệ thống Quản trị Đào tạo Đại học TC COMPASS (qldt.techcorp.info.vn) và Sàn Tuyển dụng Thông minh HireMind AI (jobai.techcorp.info.vn), Trung tâm Hợp tác Doanh nghiệp & Việc làm Sinh viên đã hoàn tất chuẩn hóa và xuất bản 450 Hồ sơ Năng lực Số (Verified Talent Passport) của sinh viên năm cuối đạt GPA từ 3.2/4.0 trở lên.\n\nMỗi hồ sơ số đều được xác thực tự động điểm trung bình tích lũy (GPA), kỹ năng chuyên môn, dự án tốt nghiệp cùng các chứng chỉ Ngoại ngữ (IELTS/TOEIC/TOPIK) và Tin học (MOS/ERP) từ các trung tâm khảo thí trong hệ sinh thái.\n\nCác doanh nghiệp thành viên có thể truy cập trực tiếp danh sách ứng viên theo từng chuyên ngành, đặt lịch phỏng vấn trực tuyến và tiếp nhận sinh viên thực tập/làm việc chính thức chỉ với 1 thao tác trên Cổng Quản trị.",
+      "highlights": [
+        "Công bố 450 Hồ sơ Năng lực Số sinh viên năm cuối đã xác thực GPA & Chứng chỉ kỹ năng nghề nghiệp",
+        "Đầy đủ các nhóm ngành trọng điểm: Công nghệ thông tin, Du lịch - Khách sạn, Kế toán ERP, Ngoại ngữ",
+        "Doanh nghiệp thành viên được miễn phí 100% quyền truy cập CV và đặt bàn phỏng vấn tại Ngày hội Việc làm",
+        "Liên thông trực tiếp từ nền tảng Đại học TC COMPASS sang Sàn Việc làm HireMind AI & TechCorp ERP"
+      ],
+      "authorName": "Ban Hợp tác Doanh nghiệp & Việc làm SV",
+      "authorOrg": "Trường Đại học Nha Trang (NTU) × TC COMPASS",
+      "createdAt": "2 ngày trước",
+      "pinned": false,
+      "actionLabel": "Mở Sàn Nhân lực Xác thực",
+      "actionView": "forum"
     }
   ],
   "rbacMatrix": {

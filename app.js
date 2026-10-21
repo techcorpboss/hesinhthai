@@ -997,8 +997,19 @@ const STATE = {
       id: "ANN-MASTER-01",
       sourceType: "master",
       badge: "👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP",
+      categoryTag: "Kiến trúc SSO & Liên thông",
+      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80",
+      views: 1480,
+      readTime: "3 phút đọc",
       title: "Chính thức Liên thông 16 Nền tảng Phần mềm Thực tế trên *.techcorp.info.vn qua Trục SSO TechCorp ID v6.5",
       summary: "Toàn bộ 16 hệ thống đang chạy thực tế thuộc 6 nhóm sản phẩm gồm: Giáo dục Mầm non – K12 (mamnon, tieuhoc, thcs, thpt), Đại học & GDTX (qldt TC COMPASS, gdtx), Trung tâm NN-TH & LMS (ttnn, lms, learn), Sàn Việc làm AI (jobai, techcorp), Quản trị Doanh nghiệp (erp, kpi) và Chuyên ngành (qldh PMS Khách sạn, bds AI, noithat) đã kết nối tập trung.",
+      content: "Ban Điều hành Hệ sinh thái TechCorp trân trọng thông báo: Trục xác thực tập trung TechCorp ID (Single Sign-On JWT v6.5) và Hệ thống Điều phối Sự kiện Liên thông (Central Event Bus) đã hoàn tất kết nối đồng bộ 100% với 16 nền tảng phần mềm chuyên sâu đang vận hành thực tế trên các tên miền *.techcorp.info.vn.\n\nVới kiến trúc hợp nhất này, mỗi đơn vị thành viên (Trường học, Trung tâm Ngoại ngữ - Tin học, Doanh nghiệp SME, Resort - Khách sạn, Sàn BĐS & Nội thất) sở hữu một Không gian Quản trị (Multi-Tenant Workspace) độc lập, bảo mật theo ma trận phân quyền RBAC 9x5, đồng thời có thể chia sẻ dữ liệu hai chiều theo thời gian thực.\n\nCụ thể, kết quả khảo thí và chứng chỉ năng lực số từ TechCorp LMS tự động gắn mã QR xác thực vào Hồ sơ Năng lực Số (Talent Passport) của sinh viên trên Sàn Việc làm HireMind AI (jobai.techcorp.info.vn), giúp các doanh nghiệp thành viên tuyển dụng và đồng bộ nhân sự mới vào phân hệ HRM trên TechCorp ERP chỉ với 1 cú nhấp chuột.",
+      highlights: [
+        "Đăng nhập 1 lần (SSO TechCorp ID) chuyển đổi mượt mà giữa 16 nền tảng phần mềm thuộc 6 nhóm chuyên ngành",
+        "Đồng bộ tự động Chứng chỉ Thi Online QR từ LMS sang Sàn Tuyển dụng HireMind AI và phân hệ Nhân sự ERP",
+        "Liên thông Sổ liên lạc điện tử Phụ huynh K-12 với Ví Học bổng & E-Voucher từ các Doanh nghiệp thành viên",
+        "Đạt chuẩn an toàn thông tin đa tầng, giám sát truy vết IP theo thời gian thực (Security Audit Logs 24/7)"
+      ],
       authorName: "Ban Điều hành Hệ sinh thái TechCorp",
       authorOrg: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
       createdAt: "Hôm nay, 08:00",
@@ -1010,8 +1021,19 @@ const STATE = {
       id: "ANN-MASTER-02",
       sourceType: "master",
       badge: "📢 CHÍNH SÁCH LIÊN KẾT HẠT NHÂN HỆ SINH THÁI TECHCORP",
+      categoryTag: "Chính sách Tài trợ Hạt nhân",
+      imageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=80",
+      views: 1265,
+      readTime: "4 phút đọc",
       title: "Tài trợ 100% Phí Khởi tạo & Tặng Website Chuẩn SEO cho 57 Đơn vị Hạt nhân Giai đoạn 1 tại Khánh Hòa",
       summary: "Áp dụng cho 02 Trường ĐH/CĐ, 10 Trung tâm Ngoại ngữ - Tin học, 15 Trường Mầm non/Phổ thông và 30 Doanh nghiệp SME đầu tiên kích hoạt liên thông dữ liệu trên Hệ sinh thái TechCorp.",
+      content: "Nhằm thúc đẩy chuyển đổi số toàn diện và xây dựng mạng lưới liên kết Giáo dục – Đào tạo – Tuyển dụng – Quản trị Doanh nghiệp bền vững tại Nha Trang - Khánh Hòa, Hệ sinh thái TechCorp chính thức công bố Gói Tài trợ Hạt nhân Giai đoạn 1 dành cho 57 đơn vị tiên phong.\n\nCác đơn vị tham gia chương trình Hạt nhân không chỉ được miễn 100% chi phí khởi tạo hạ tầng đám mây ban đầu và tặng kèm Website thương hiệu/tuyển sinh chuẩn SEO đa ngôn ngữ, mà còn được kích hoạt đặc quyền giao thương chéo (Give-to-Get) tiếp cận trực tiếp cộng đồng hơn 15.000 phụ huynh, học sinh, sinh viên và nhân sự văn phòng trong hệ sinh thái.\n\nĐội ngũ kỹ sư triển khai của TechCorp tại Nha Trang hỗ trợ trực tiếp tận nơi từ khâu chuẩn hóa dữ liệu, tập huấn cán bộ quản lý/giáo viên/nhân sự đến vận hành thực tế 24/7.",
+      highlights: [
+        "Miễn 100% phí khởi tạo hệ thống Cloud & Cài đặt cấu hình tên miền riêng cho 57 đơn vị hạt nhân đầu tiên",
+        "Tặng miễn phí Website Tuyển sinh / Website Doanh nghiệp đa ngôn ngữ chuẩn SEO (trị giá 8 - 10 triệu VNĐ)",
+        "Cấp quyền truy cập Kho 2.920+ Hồ sơ Năng lực Số ứng viên đã xác thực điểm thi ngoại ngữ & tin học",
+        "Đặc quyền phát hành E-Voucher & Học bổng chéo tới toàn bộ cộng đồng Phụ huynh và Sinh viên trong hệ sinh thái"
+      ],
       authorName: "Hệ sinh thái TechCorp",
       authorOrg: "CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP",
       createdAt: "Hôm nay, 09:30",
@@ -1023,8 +1045,19 @@ const STATE = {
       id: "ANN-MASTER-03",
       sourceType: "master",
       badge: "🤖 NÂNG CẤP CÔNG NGHỆ • HỆ SINH THÁI TECHCORP",
-      title: "Ra mắt Sàn Tuyển dụng & Tìm việc Thông minh TechCorp HireMind AI (jobai.techcorp.info.vn)",
-      summary: "Tích hợp công nghệ AI ATS đa ngôn ngữ tự động phân tích độ khớp CV – JD, xác thực điểm thi trực tuyến từ TechCorp LMS và đẩy hồ sơ ứng viên 1-Click về phân hệ HRM trên TechCorp ERP.",
+      categoryTag: "AI Tuyển dụng & Nhân sự",
+      imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=80",
+      views: 985,
+      readTime: "3 phút đọc",
+      title: "Ra mắt Cổng đồng bộ 1-Click từ Sàn Tuyển dụng HireMind AI (jobai.techcorp.info.vn) sang Phân hệ HRM trên TechCorp ERP",
+      summary: "Các Doanh nghiệp thành viên có thể lọc ứng viên theo Điểm Thi Online thực tế từ LMS và đẩy thẳng hồ sơ trúng tuyển vào Hợp đồng lao động điện tử chỉ với 1 cú nhấp chuột.",
+      content: "Trung tâm R&D AI & Cloud thuộc Hệ sinh thái TechCorp vừa phát hành bản nâng cấp lớn cho Sàn Tuyển dụng & Tìm việc Thông minh TechCorp HireMind AI (jobai.techcorp.info.vn), tích hợp trực tiếp công nghệ AI ATS đa ngôn ngữ (Việt – Anh – Hàn – Nhật – Trung).\n\nHệ thống tự động đọc hiểu CV của ứng viên, đối chiếu với yêu cầu công việc (JD) của doanh nghiệp và kết hợp dữ liệu điểm thi thực tế từ nền tảng khảo thí TechCorp LMS để đưa ra Chỉ số Tương thích AI (AI Matching Score) chính xác tới 96%.\n\nĐặc biệt, ngay khi Phòng Nhân sự (HR) hoặc CEO doanh nghiệp bấm 'Chốt tiếp nhận' trên Sàn Nhân lực, toàn bộ hồ sơ cá nhân, bằng cấp xác thực QR và thông tin lương sẽ được đẩy tự động 1-Click sang phân hệ Quản trị Nhân sự (HRM) trên TechCorp ERP mà không cần nhập liệu thủ công.",
+      highlights: [
+        "Sàng lọc & chấm điểm độ phù hợp CV – JD tự động bằng AI ATS hỗ trợ 7 ngôn ngữ quốc tế",
+        "Xác thực 100% chứng chỉ IELTS/TOEIC/MOS và điểm GPA từ các Trường ĐH & Trung tâm thành viên",
+        "Đồng bộ 1-Click hồ sơ ứng viên trúng tuyển vào Hợp đồng lao động & Bảng lương trên TechCorp ERP",
+        "Tiết kiệm 75% thời gian và chi phí tuyển dụng nhân sự chất lượng cao cho các Resort, Khách sạn & SME"
+      ],
       authorName: "Hệ sinh thái TechCorp",
       authorOrg: "Trung tâm R&D AI & Cloud TechCorp",
       createdAt: "Hôm qua, 15:20",
@@ -1035,26 +1068,72 @@ const STATE = {
     {
       id: "ANN-MASTER-04",
       sourceType: "master",
-      badge: "🛡️ TIÊU CHUẨN CHẤT LƯỢNG • ISO 9001:2015",
-      title: "Chuẩn hóa Quy trình Bảo mật Dữ liệu Đa tầng & Ký số Học bạ Điện tử toàn Hệ sinh thái TechCorp",
-      summary: "100% cơ sở giáo dục và doanh nghiệp thành viên được trang bị không gian quản trị riêng biệt theo phân quyền RBAC 9x5, sao lưu tự động MySQL/SQLite thời gian thực và hỗ trợ kỹ thuật 24/7.",
+      badge: "💳 LIÊN THÔNG THANH TOÁN QR ĐỘNG KHÔNG TIỀN MẶT",
+      categoryTag: "Tài chính Số & VietQR",
+      imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=80",
+      views: 870,
+      readTime: "3 phút đọc",
+      title: "Tích hợp Cổng gạch nợ Học phí & Hóa đơn tự động 3 giây cho toàn bộ Khối Trường học K-12 và Trung tâm Ngoại ngữ",
+      summary: "Miễn phí 100% phí thiết lập cổng thanh toán VietQR động cho các trường Mầm non, Tiểu học, THCS, THPT, GDTX và Trung tâm đào tạo thuộc Hệ sinh thái TechCorp.",
+      content: "Nhằm giải quyết triệt để bài toán đối soát học phí thủ công vào mỗi đầu tháng cho bộ phận kế toán nhà trường và trung tâm đào tạo, Hệ sinh thái TechCorp đã hợp tác cùng các Ngân hàng đối tác tích hợp chuẩn thanh toán VietQR động thế hệ mới trực tiếp vào bộ giải pháp EduManager Pro K-12 và Quản lý Trung tâm NN-TH.\n\nMỗi phiếu báo thu học phí gửi qua Sổ liên lạc điện tử tới Phụ huynh hoặc Học viên sẽ đi kèm một mã QR định danh duy nhất chứa sẵn số tiền và mã học sinh. Ngay khi phụ huynh quét mã thanh toán trên ứng dụng ngân hàng bất kỳ, hệ thống tự động gạch nợ trong 3 giây, phát hành biên lai điện tử tức thì và hạch toán thẳng vào sổ quỹ Tài chính – Kế toán.\n\nNhờ đó, các trường học và trung tâm giảm được hơn 85% thời gian đối soát sao kê ngân hàng và loại bỏ hoàn toàn sai sót nhầm lẫn nội dung chuyển khoản.",
+      highlights: [
+        "Tự động sinh mã VietQR động định danh theo từng học sinh/học viên trên Sổ liên lạc điện tử",
+        "Gạch nợ học phí tự động trong 3 giây và xuất biên lai điện tử ngay sau khi quét mã",
+        "Đồng bộ trực tiếp doanh thu học phí về phân hệ Kế toán – Tài chính mà không cần nhập lại",
+        "Miễn 100% phí thiết lập cổng kết nối API Ngân hàng cho các cơ sở giáo dục thành viên TechCorp"
+      ],
       authorName: "Ban Điều hành Hệ sinh thái TechCorp",
-      authorOrg: "TechCorp Headquarters",
+      authorOrg: "Ban Tài chính & Đối tác Ngân hàng TechCorp",
       createdAt: "2 ngày trước",
       pinned: false,
       actionLabel: "Liên hệ Tư vấn & Demo",
       actionView: "contact"
     },
     {
+      id: "ANN-MASTER-05",
+      sourceType: "master",
+      badge: "🛡️ TIÊU CHUẨN CHẤT LƯỢNG • ISO 9001:2015 & ISO 27001",
+      categoryTag: "Bảo mật & Ký số Điện tử",
+      imageUrl: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1000&q=80",
+      views: 810,
+      readTime: "4 phút đọc",
+      title: "Chuẩn hóa Quy trình Bảo mật Dữ liệu Đa tầng & Ký số Học bạ Điện tử toàn Hệ sinh thái TechCorp",
+      summary: "100% cơ sở giáo dục và doanh nghiệp thành viên được trang bị không gian quản trị riêng biệt theo phân quyền RBAC 9x5, sao lưu tự động MySQL/SQLite thời gian thực và hỗ trợ kỹ thuật 24/7.",
+      content: "Đặt an toàn thông tin và tính pháp lý của dữ liệu số lên hàng đầu, Hệ sinh thái TechCorp đã hoàn tất nâng cấp hạ tầng bảo mật đa tầng theo tiêu chuẩn ISO/IEC 27001 kết hợp hệ thống quản lý chất lượng ISO 9001:2015 cho toàn bộ 16 nền tảng phần mềm.\n\nĐối với khối Giáo dục Mầm non – Phổ thông K12 và Đại học, phân hệ Học bạ Số & Bảng điểm Điện tử đã tích hợp đầy đủ chuẩn ký số CA của Ban Cơ yếu Chính phủ và các nhà cung cấp chữ ký số công cộng (Viettel-CA, VNPT-CA, FPT-CA), đáp ứng 100% quy định theo các Thông tư mới nhất của Bộ GD&ĐT.\n\nĐối với khối Doanh nghiệp SME, dữ liệu Nhân sự, Tài chính và Khách hàng được cô lập hoàn toàn theo từng Tenant riêng biệt, mã hóa đầu cuối và sao lưu tự động hàng ngày.",
+      highlights: [
+        "Cô lập dữ liệu hoàn toàn giữa các đơn vị thành viên theo kiến trúc Multi-Tenant & Ma trận RBAC 9x5",
+        "Tích hợp ký số Học bạ Điện tử (XML/PDF) theo đúng chuẩn quy định của Bộ Giáo dục & Đào tạo",
+        "Hệ thống Audit Logs ghi vết đầy đủ địa chỉ IP, thời gian và tác nhân của mọi thao tác quan trọng",
+        "Cơ chế sao lưu dữ liệu tự động (Auto-Backup) đa vùng và cam kết SLA vận hành ổn định 99.9%"
+      ],
+      authorName: "Ban Điều hành Hệ sinh thái TechCorp",
+      authorOrg: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+      createdAt: "3 ngày trước",
+      pinned: false,
+      actionLabel: "Đăng ký Tư vấn Bảo mật",
+      actionView: "contact"
+    },
+    {
       id: "ANN-MEM-01",
       sourceType: "member",
       badge: "🏨 TIN TỪ DOANH NGHIỆP THÀNH VIÊN (SME)",
-      title: "Nha Trang Bay Resort & Travel mở đợt tuyển 25 Thực tập sinh & Nhân sự Lễ tân Tiếng Anh/Hàn học kỳ Hè - Thu",
+      categoryTag: "Tuyển dụng & Thực tập",
+      imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80",
+      views: 1150,
+      readTime: "3 phút đọc",
+      title: "Nha Trang Bay Resort & Travel mở đợt tuyển 25 Thực tập sinh & Nhân sự Lễ tân Tiếng Anh/Hàn học kỳ Hè – Thu",
       summary: "Ưu tiên xét tuyển thẳng (không qua vòng sơ loại CV) đối với Sinh viên ĐH Nha Trang, ĐH Khánh Hòa, CĐ Du lịch có chứng chỉ xác thực trên Nền tảng Thi Online của Hệ sinh thái TechCorp.",
+      content: "Chuẩn bị đón các đoàn khách du lịch quốc tế và hội nghị MICE quy mô lớn trong mùa cao điểm Hè – Thu, Nha Trang Bay Resort & Travel chính thức mở đợt tuyển dụng 25 Thực tập sinh có hưởng phụ cấp và Nhân viên chính thức tại các bộ phận: Lễ tân Quốc tế (Front Office), Chăm sóc Khách hàng (Guest Relations), Nhà hàng & Sự kiện (F&B) và Điều hành Tour.\n\nNhờ liên thông trực tiếp với Trục dữ liệu Hệ sinh thái TechCorp, Phòng Nhân sự của Resort áp dụng cơ chế 'Tuyển thẳng không qua sơ loại CV giấy' đối với các bạn sinh viên/học viên đã có Hồ sơ Năng lực Số (Talent Passport) kèm kết quả thi Tiếng Anh (IELTS/TOEIC) hoặc Tiếng Hàn (TOPIK) xác thực trên nền tảng TechCorp LMS.\n\nỨng viên trúng tuyển được đào tạo nghiệp vụ trên hệ thống Quản lý Khách sạn TechCorp PMS, hỗ trợ bữa ăn theo ca, phụ cấp thực tập từ 4.500.000 – 7.000.000 VNĐ/tháng và ký hợp đồng chính thức ngay sau kỳ thực tập.",
+      highlights: [
+        "Tuyển thẳng ứng viên có Chứng chỉ Ngoại ngữ / Tin học xác thực QR trên nền tảng TechCorp LMS",
+        "Mức thu nhập & phụ cấp hấp dẫn: Thực tập sinh 4.5 - 7 triệu/tháng; Nhân viên chính thức 10 - 16 triệu/tháng",
+        "Được đào tạo thực chiến trên phần mềm Quản lý Khách sạn 5 Sao TechCorp PMS (qldh.techcorp.info.vn)",
+        "Ứng tuyển 1-Click trực tiếp từ Sàn Nhân lực hoặc gửi Hồ sơ số về phân hệ HRM của Resort"
+      ],
       authorName: "Nguyễn Hải Đăng (CEO)",
       authorOrg: "Nha Trang Bay Resort & Travel",
       createdAt: "1 giờ trước",
-      pinned: false,
+      pinned: true,
       actionLabel: "Xem Sàn Nhân lực",
       actionView: "forum"
     },
@@ -1062,12 +1141,23 @@ const STATE = {
       id: "ANN-MEM-02",
       sourceType: "member",
       badge: "🏫 TIN TỪ TRUNG TÂM ĐÀO TẠO THÀNH VIÊN",
+      categoryTag: "Học bổng & Khảo thí LMS",
+      imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80",
+      views: 1020,
+      readTime: "3 phút đọc",
       title: "Ocean English & IT Center tài trợ 500 suất Thi thử IELTS/TOEIC & Học bổng 40% cho con em Doanh nghiệp & Trường học",
       summary: "Kết quả thi thử được đồng bộ tự động về Sổ liên lạc điện tử của Phụ huynh và Hồ sơ Năng lực Số của Sinh viên trên toàn Hệ sinh thái TechCorp.",
+      content: "Đồng hành cùng phong trào nâng cao năng lực Ngoại ngữ & Tin học chuẩn quốc tế tại Khánh Hòa, Ocean English & IT Center Nha Trang phối hợp cùng nền tảng khảo thí trực tuyến TechCorp LMS chính thức phát động chương trình tài trợ 500 suất Thi thử IELTS, TOEIC (4 kỹ năng) và Tin học văn phòng MOS hoàn toàn miễn phí.\n\nChương trình dành riêng cho học sinh các trường Phổ thông liên kết, sinh viên Đại học/Cao đẳng và con em cán bộ nhân viên đang làm việc tại các Doanh nghiệp thành viên thuộc Hệ sinh thái TechCorp. Bài thi được chấm tự động bằng AI kết hợp đội ngũ giám khảo chuyên môn của Ocean English.\n\nNgay sau khi hoàn thành bài thi, hệ thống cấp Chứng chỉ Đánh giá Năng lực Số kèm mã QR xác thực, đồng thời tặng ngay Học bổng ưu đãi 40% học phí các khóa luyện thi IELTS/TOEIC cam kết đầu ra vào Ví điện tử TechCorp ID của học viên.",
+      highlights: [
+        "Tài trợ 100% lệ phí thi thử IELTS / TOEIC 4 kỹ năng & Tin học MOS trên nền tảng TechCorp LMS",
+        "Tặng Học bổng 40% học phí (trị giá tới 6.000.000 VNĐ/khóa) cho thành viên Hệ sinh thái TechCorp",
+        "Tự động đồng bộ bảng điểm phân tích kỹ năng về Sổ liên lạc Phụ huynh và Talent Passport của Sinh viên",
+        "Cam kết giới thiệu thực tập & việc làm tại 30 Resort và Doanh nghiệp SME đối tác sau khi đạt chuẩn đầu ra"
+      ],
       authorName: "Trần Thanh Tâm (Giám đốc)",
       authorOrg: "Ocean English & IT Center Nha Trang",
       createdAt: "2 giờ trước",
-      pinned: false,
+      pinned: true,
       actionLabel: "Xem Đấu trường LMS",
       actionView: "forum"
     },
@@ -1075,8 +1165,19 @@ const STATE = {
       id: "ANN-MEM-03",
       sourceType: "member",
       badge: "🎓 TIN TỪ KHỐI TRƯỜNG HỌC THÀNH VIÊN (K-12)",
-      title: "Hệ thống Giáo dục Liên cấp Sao Biển kích hoạt Cổng Thu học phí VietQR 3 giây & Điểm danh AI đầu giờ",
-      summary: "Hơn 1.200 phụ huynh tại KĐT Mỹ Gia đã nhận thông báo điểm danh khuôn mặt AI và thực đơn dinh dưỡng hàng ngày qua Sổ liên lạc điện tử EduManager Pro.",
+      categoryTag: "Sự kiện Trường học Số",
+      imageUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1000&q=80",
+      views: 890,
+      readTime: "3 phút đọc",
+      title: "Hệ thống Giáo dục Sao Biển Nha Trang tổ chức Ngày hội Trải nghiệm Công nghệ AI & Kỹ năng Số cho 800 Phụ huynh Học sinh",
+      summary: "Mời các Doanh nghiệp Du lịch, F&B, Y tế và Trung tâm Ngoại ngữ trong Hệ sinh thái TechCorp đăng ký gian hàng trải nghiệm và phát hành E-Voucher trên Sổ liên lạc điện tử.",
+      content: "Nhằm mang đến sân chơi khoa học công nghệ bổ ích cho học sinh và giúp phụ huynh trải nghiệm thực tế mô hình Trường học Thông minh (Smart School), Hệ thống Giáo dục Liên cấp Sao Biển Nha Trang tổ chức 'Ngày hội Trải nghiệm Công nghệ AI, Robotics & Kỹ năng Số 2026' với sự tham gia của hơn 800 phụ huynh và học sinh.\n\nTại sự kiện, phụ huynh được trực tiếp trải nghiệm hệ thống Điểm danh nhận diện khuôn mặt AI đầu giờ, tra cứu thực đơn dinh dưỡng hàng ngày và thanh toán học phí VietQR 3 giây trên ứng dụng EduManager Pro của TechCorp.\n\nBan Giám hiệu nhà trường trân trọng mời các Trung tâm Ngoại ngữ - Tin học, Phòng khám Nha khoa, Doanh nghiệp Du lịch & Thực phẩm sạch trong Hệ sinh thái TechCorp đăng ký gian hàng đồng hành và phát hành E-Voucher ưu đãi trực tiếp vào Sổ liên lạc điện tử của 1.250 phụ huynh toàn trường.",
+      highlights: [
+        "Quy mô hơn 800 Phụ huynh & Học sinh tham gia trải nghiệm trực tiếp tại khuôn viên KĐT Mỹ Gia - Nha Trang",
+        "Trình diễn thực tế hệ thống Điểm danh AI, Học bạ Số & Sổ liên lạc điện tử EduManager Pro K-12",
+        "Miễn phí gian hàng trưng bày cho các Trung tâm Đào tạo & Doanh nghiệp thành viên Hệ sinh thái TechCorp",
+        "Hỗ trợ bắn thông báo E-Voucher ưu đãi của đơn vị tài trợ tới 100% tài khoản Phụ huynh nhà trường"
+      ],
       authorName: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
       authorOrg: "Hệ thống Giáo dục Liên cấp Sao Biển Nha Trang",
       createdAt: "4 giờ trước",
@@ -1088,13 +1189,48 @@ const STATE = {
       id: "ANN-MEM-04",
       sourceType: "member",
       badge: "🏙️ TIN TỪ KHỐI BẤT ĐỘNG SẢN & NỘI THẤT THÀNH VIÊN",
+      categoryTag: "Ưu đãi B2B Nội bộ",
+      imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80",
+      views: 760,
+      readTime: "3 phút đọc",
       title: "Hưng Phát Land & TechCorp Interior ra mắt Gói Ưu đãi Chéo B2B giảm 20% Thiết kế Thi công Văn phòng & Trung tâm",
       summary: "Đặc quyền dành riêng cho các Trường tư thục, Trung tâm Ngoại ngữ - Tin học và Doanh nghiệp SME thuộc Hệ sinh thái TechCorp khi mở rộng cơ sở mới tại Khánh Hòa.",
+      content: "Nhằm hỗ trợ các cơ sở giáo dục, trung tâm đào tạo và doanh nghiệp SME trong Hệ sinh thái TechCorp tối ưu chi phí khi mở rộng chi nhánh mới tại Nha Trang – Cam Ranh – Ninh Hòa, Liên minh Sàn Giao dịch BĐS Hưng Phát Land (bds.techcorp.info.vn) và Showroom Nội thất TechCorp Interior (noithat.techcorp.info.vn) chính thức triển khai gói đặc quyền B2B nội bộ.\n\nCụ thể, Hưng Phát Land hỗ trợ tìm kiếm mặt bằng thương mại, tòa nhà văn phòng và cơ sở trường học tại các khu đô thị trọng điểm (Mỹ Gia, Hà Quang II, Vĩnh Điềm Trung, An Bình Tân) với chính sách miễn 100% phí môi giới cho thành viên TechCorp.\n\nSong song đó, TechCorp Interior tài trợ 100% chi phí khảo sát & dựng bản vẽ phối cảnh 3D phòng học thông minh / văn phòng hiện đại, đồng thời giảm ngay 20% tổng giá trị hợp đồng sản xuất – thi công nội thất trọn gói tại xưởng.",
+      highlights: [
+        "Miễn 100% phí tư vấn & tìm kiếm mặt bằng mở Trường học, Trung tâm, Văn phòng tại Nha Trang - Khánh Hòa",
+        "Tặng 100% gói Thiết kế phối cảnh 3D & Dự toán BOQ tự động trên nền tảng noithat.techcorp.info.vn",
+        "Chiết khấu trực tiếp 20% chi phí sản xuất & thi công nội thất phòng học, bàn ghế, quầy lễ tân tại xưởng",
+        "Bảo hành công trình điện tử 36 tháng và hỗ trợ trả chậm linh hoạt cho đơn vị thành viên TechCorp"
+      ],
       authorName: "Ban Giám đốc Hưng Phát Land",
       authorOrg: "Sàn Giao dịch BĐS Hưng Phát Land & TechCorp Interior",
       createdAt: "1 ngày trước",
       pinned: false,
       actionLabel: "Xem Chợ Giao thương B2B",
+      actionView: "forum"
+    },
+    {
+      id: "ANN-MEM-05",
+      sourceType: "member",
+      badge: "🎓 TIN TỪ KHỐI ĐẠI HỌC & CAO ĐẲNG THÀNH VIÊN",
+      categoryTag: "Liên kết Đại học – Doanh nghiệp",
+      imageUrl: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1000&q=80",
+      views: 940,
+      readTime: "4 phút đọc",
+      title: "Trường Đại học Nha Trang & Khối Doanh nghiệp SME ký kết Liên thông 450 Hồ sơ Năng lực Số Sinh viên Năm cuối lên Sàn JobAI",
+      summary: "Sinh viên các ngành CNTT, Quản trị Khách sạn, Kế toán – Tài chính và Ngôn ngữ được kết nối phỏng vấn trực tiếp với 30 Doanh nghiệp & Resort ngay trên hệ thống TC COMPASS.",
+      content: "Thông qua sự kết nối giữa Hệ thống Quản trị Đào tạo Đại học TC COMPASS (qldt.techcorp.info.vn) và Sàn Tuyển dụng Thông minh HireMind AI (jobai.techcorp.info.vn), Trung tâm Hợp tác Doanh nghiệp & Việc làm Sinh viên đã hoàn tất chuẩn hóa và xuất bản 450 Hồ sơ Năng lực Số (Verified Talent Passport) của sinh viên năm cuối đạt GPA từ 3.2/4.0 trở lên.\n\nMỗi hồ sơ số đều được xác thực tự động điểm trung bình tích lũy (GPA), kỹ năng chuyên môn, dự án tốt nghiệp cùng các chứng chỉ Ngoại ngữ (IELTS/TOEIC/TOPIK) và Tin học (MOS/ERP) từ các trung tâm khảo thí trong hệ sinh thái.\n\nCác doanh nghiệp thành viên có thể truy cập trực tiếp danh sách ứng viên theo từng chuyên ngành, đặt lịch phỏng vấn trực tuyến và tiếp nhận sinh viên thực tập/làm việc chính thức chỉ với 1 thao tác trên Cổng Quản trị.",
+      highlights: [
+        "Công bố 450 Hồ sơ Năng lực Số sinh viên năm cuối đã xác thực GPA & Chứng chỉ kỹ năng nghề nghiệp",
+        "Đầy đủ các nhóm ngành trọng điểm: Công nghệ thông tin, Du lịch - Khách sạn, Kế toán ERP, Ngoại ngữ",
+        "Doanh nghiệp thành viên được miễn phí 100% quyền truy cập CV và đặt bàn phỏng vấn tại Ngày hội Việc làm",
+        "Liên thông trực tiếp từ nền tảng Đại học TC COMPASS sang Sàn Việc làm HireMind AI & TechCorp ERP"
+      ],
+      authorName: "Ban Hợp tác Doanh nghiệp & Việc làm SV",
+      authorOrg: "Trường Đại học Nha Trang (NTU) × TC COMPASS",
+      createdAt: "2 ngày trước",
+      pinned: false,
+      actionLabel: "Mở Sàn Nhân lực Xác thực",
       actionView: "forum"
     }
   ],
@@ -1531,6 +1667,7 @@ function initPublicPageFromUrl() {
   try {
     const params = new URLSearchParams(window.location.search);
     const qPage = params.get("page");
+    const qBulletin = params.get("bulletin");
     const hash = (window.location.hash || "").replace(/^#/, "");
     if (qPage) {
       window.switchPublicPage(qPage, false);
@@ -1538,6 +1675,9 @@ function initPublicPageFromUrl() {
       window.switchPublicPage(hash, false);
     } else {
       window.switchPublicPage("home", false);
+    }
+    if (qBulletin && typeof window.openBulletinDetailModal === "function") {
+      setTimeout(() => window.openBulletinDetailModal(qBulletin), 120);
     }
   } catch (_) {}
 }
@@ -4937,6 +5077,184 @@ function renderRoleContextAndSidebar() {
 
 // ==================== CENTRAL ECOSYSTEM BULLETINS (MASTER & MEMBER NEWS - MAIN PUBLIC VIEW) ====================
 window.selectedBulletinFilter = "all";
+window.bulletinLayoutMode = "columns"; // 'columns' | 'magazine'
+window.currentReadingBulletinId = null;
+
+const BULLETIN_RICH_LOOKUP = {
+  "ANN-MASTER-01": {
+    categoryTag: "Kiến trúc SSO & Liên thông",
+    imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80",
+    views: 1480,
+    readTime: "3 phút đọc",
+    content:
+      "Ban Điều hành Hệ sinh thái TechCorp trân trọng thông báo: Trục xác thực tập trung TechCorp ID (Single Sign-On JWT v6.5) và Hệ thống Điều phối Sự kiện Liên thông (Central Event Bus) đã hoàn tất kết nối đồng bộ 100% với 16 nền tảng phần mềm chuyên sâu đang vận hành thực tế trên các tên miền *.techcorp.info.vn.\n\nVới kiến trúc hợp nhất này, mỗi đơn vị thành viên (Trường học, Trung tâm Ngoại ngữ - Tin học, Doanh nghiệp SME, Resort - Khách sạn, Sàn BĐS & Nội thất) sở hữu một Không gian Quản trị (Multi-Tenant Workspace) độc lập, bảo mật theo ma trận phân quyền RBAC 9x5, đồng thời có thể chia sẻ dữ liệu hai chiều theo thời gian thực.\n\nCụ thể, kết quả khảo thí và chứng chỉ năng lực số từ TechCorp LMS tự động gắn mã QR xác thực vào Hồ sơ Năng lực Số (Talent Passport) của sinh viên trên Sàn Việc làm HireMind AI (jobai.techcorp.info.vn), giúp các doanh nghiệp thành viên tuyển dụng và đồng bộ nhân sự mới vào phân hệ HRM trên TechCorp ERP chỉ với 1 cú nhấp chuột.",
+    highlights: [
+      "Đăng nhập 1 lần (SSO TechCorp ID) chuyển đổi mượt mà giữa 16 nền tảng phần mềm thuộc 6 nhóm chuyên ngành",
+      "Đồng bộ tự động Chứng chỉ Thi Online QR từ LMS sang Sàn Tuyển dụng HireMind AI và phân hệ Nhân sự ERP",
+      "Liên thông Sổ liên lạc điện tử Phụ huynh K-12 với Ví Học bổng & E-Voucher từ các Doanh nghiệp thành viên",
+      "Đạt chuẩn an toàn thông tin đa tầng, giám sát truy vết IP theo thời gian thực (Security Audit Logs 24/7)"
+    ]
+  },
+  "ANN-MASTER-02": {
+    categoryTag: "Chính sách Tài trợ Hạt nhân",
+    imageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=80",
+    views: 1265,
+    readTime: "4 phút đọc",
+    content:
+      "Nhằm thúc đẩy chuyển đổi số toàn diện và xây dựng mạng lưới liên kết Giáo dục – Đào tạo – Tuyển dụng – Quản trị Doanh nghiệp bền vững tại Nha Trang - Khánh Hòa, Hệ sinh thái TechCorp chính thức công bố Gói Tài trợ Hạt nhân Giai đoạn 1 dành cho 57 đơn vị tiên phong.\n\nCác đơn vị tham gia chương trình Hạt nhân không chỉ được miễn 100% chi phí khởi tạo hạ tầng đám mây ban đầu và tặng kèm Website thương hiệu/tuyển sinh chuẩn SEO đa ngôn ngữ, mà còn được kích hoạt đặc quyền giao thương chéo (Give-to-Get) tiếp cận trực tiếp cộng đồng hơn 15.000 phụ huynh, học sinh, sinh viên và nhân sự văn phòng trong hệ sinh thái.\n\nĐội ngũ kỹ sư triển khai của TechCorp tại Nha Trang hỗ trợ trực tiếp tận nơi từ khâu chuẩn hóa dữ liệu, tập huấn cán bộ quản lý/giáo viên/nhân sự đến vận hành thực tế 24/7.",
+    highlights: [
+      "Miễn 100% phí khởi tạo hệ thống Cloud & Cài đặt cấu hình tên miền riêng cho 57 đơn vị hạt nhân đầu tiên",
+      "Tặng miễn phí Website Tuyển sinh / Website Doanh nghiệp đa ngôn ngữ chuẩn SEO (trị giá 8 - 10 triệu VNĐ)",
+      "Cấp quyền truy cập Kho 2.920+ Hồ sơ Năng lực Số ứng viên đã xác thực điểm thi ngoại ngữ & tin học",
+      "Đặc quyền phát hành E-Voucher & Học bổng chéo tới toàn bộ cộng đồng Phụ huynh và Sinh viên trong hệ sinh thái"
+    ]
+  },
+  "ANN-MASTER-03": {
+    categoryTag: "AI Tuyển dụng & Nhân sự",
+    imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=80",
+    views: 985,
+    readTime: "3 phút đọc",
+    content:
+      "Trung tâm R&D AI & Cloud thuộc Hệ sinh thái TechCorp vừa phát hành bản nâng cấp lớn cho Sàn Tuyển dụng & Tìm việc Thông minh TechCorp HireMind AI (jobai.techcorp.info.vn), tích hợp trực tiếp công nghệ AI ATS đa ngôn ngữ (Việt – Anh – Hàn – Nhật – Trung).\n\nHệ thống tự động đọc hiểu CV của ứng viên, đối chiếu với yêu cầu công việc (JD) của doanh nghiệp và kết hợp dữ liệu điểm thi thực tế từ nền tảng khảo thí TechCorp LMS để đưa ra Chỉ số Tương thích AI (AI Matching Score) chính xác tới 96%.\n\nĐặc biệt, ngay khi Phòng Nhân sự (HR) hoặc CEO doanh nghiệp bấm 'Chốt tiếp nhận' trên Sàn Nhân lực, toàn bộ hồ sơ cá nhân, bằng cấp xác thực QR và thông tin lương sẽ được đẩy tự động 1-Click sang phân hệ Quản trị Nhân sự (HRM) trên TechCorp ERP mà không cần nhập liệu thủ công.",
+    highlights: [
+      "Sàng lọc & chấm điểm độ phù hợp CV – JD tự động bằng AI ATS hỗ trợ 7 ngôn ngữ quốc tế",
+      "Xác thực 100% chứng chỉ IELTS/TOEIC/MOS và điểm GPA từ các Trường ĐH & Trung tâm thành viên",
+      "Đồng bộ 1-Click hồ sơ ứng viên trúng tuyển vào Hợp đồng lao động & Bảng lương trên TechCorp ERP",
+      "Tiết kiệm 75% thời gian và chi phí tuyển dụng nhân sự chất lượng cao cho các Resort, Khách sạn & SME"
+    ]
+  },
+  "ANN-MASTER-04": {
+    categoryTag: "Tài chính Số & VietQR",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=80",
+    views: 870,
+    readTime: "3 phút đọc",
+    content:
+      "Nhằm giải quyết triệt để bài toán đối soát học phí thủ công vào mỗi đầu tháng cho bộ phận kế toán nhà trường và trung tâm đào tạo, Hệ sinh thái TechCorp đã hợp tác cùng các Ngân hàng đối tác tích hợp chuẩn thanh toán VietQR động thế hệ mới trực tiếp vào bộ giải pháp EduManager Pro K-12 và Quản lý Trung tâm NN-TH.\n\nMỗi phiếu báo thu học phí gửi qua Sổ liên lạc điện tử tới Phụ huynh hoặc Học viên sẽ đi kèm một mã QR định danh duy nhất chứa sẵn số tiền và mã học sinh. Ngay khi phụ huynh quét mã thanh toán trên ứng dụng ngân hàng bất kỳ, hệ thống tự động gạch nợ trong 3 giây, phát hành biên lai điện tử tức thì và hạch toán thẳng vào sổ quỹ Tài chính – Kế toán.\n\nNhờ đó, các trường học và trung tâm giảm được hơn 85% thời gian đối soát sao kê ngân hàng và loại bỏ hoàn toàn sai sót nhầm lẫn nội dung chuyển khoản.",
+    highlights: [
+      "Tự động sinh mã VietQR động định danh theo từng học sinh/học viên trên Sổ liên lạc điện tử",
+      "Gạch nợ học phí tự động trong 3 giây và xuất biên lai điện tử ngay sau khi quét mã",
+      "Đồng bộ trực tiếp doanh thu học phí về phân hệ Kế toán – Tài chính mà không cần nhập lại",
+      "Miễn 100% phí thiết lập cổng kết nối API Ngân hàng cho các cơ sở giáo dục thành viên TechCorp"
+    ]
+  },
+  "ANN-MASTER-05": {
+    categoryTag: "Bảo mật & Ký số Điện tử",
+    imageUrl: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1000&q=80",
+    views: 810,
+    readTime: "4 phút đọc",
+    content:
+      "Đặt an toàn thông tin và tính pháp lý của dữ liệu số lên hàng đầu, Hệ sinh thái TechCorp đã hoàn tất nâng cấp hạ tầng bảo mật đa tầng theo tiêu chuẩn ISO/IEC 27001 kết hợp hệ thống quản lý chất lượng ISO 9001:2015 cho toàn bộ 16 nền tảng phần mềm.\n\nĐối với khối Giáo dục Mầm non – Phổ thông K12 và Đại học, phân hệ Học bạ Số & Bảng điểm Điện tử đã tích hợp đầy đủ chuẩn ký số CA của Ban Cơ yếu Chính phủ và các nhà cung cấp chữ ký số công cộng (Viettel-CA, VNPT-CA, FPT-CA), đáp ứng 100% quy định theo các Thông tư mới nhất của Bộ GD&ĐT.\n\nĐối với khối Doanh nghiệp SME, dữ liệu Nhân sự, Tài chính và Khách hàng được cô lập hoàn toàn theo từng Tenant riêng biệt, mã hóa đầu cuối và sao lưu tự động hàng ngày.",
+    highlights: [
+      "Cô lập dữ liệu hoàn toàn giữa các đơn vị thành viên theo kiến trúc Multi-Tenant & Ma trận RBAC 9x5",
+      "Tích hợp ký số Học bạ Điện tử (XML/PDF) theo đúng chuẩn quy định của Bộ Giáo dục & Đào tạo",
+      "Hệ thống Audit Logs ghi vết đầy đủ địa chỉ IP, thời gian và tác nhân của mọi thao tác quan trọng",
+      "Cơ chế sao lưu dữ liệu tự động (Auto-Backup) đa vùng và cam kết SLA vận hành ổn định 99.9%"
+    ]
+  },
+  "ANN-MEM-01": {
+    categoryTag: "Tuyển dụng & Thực tập",
+    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80",
+    views: 1150,
+    readTime: "3 phút đọc",
+    content:
+      "Chuẩn bị đón các đoàn khách du lịch quốc tế và hội nghị MICE quy mô lớn trong mùa cao điểm Hè – Thu, Nha Trang Bay Resort & Travel chính thức mở đợt tuyển dụng 25 Thực tập sinh có hưởng phụ cấp và Nhân viên chính thức tại các bộ phận: Lễ tân Quốc tế (Front Office), Chăm sóc Khách hàng (Guest Relations), Nhà hàng & Sự kiện (F&B) và Điều hành Tour.\n\nNhờ liên thông trực tiếp với Trục dữ liệu Hệ sinh thái TechCorp, Phòng Nhân sự của Resort áp dụng cơ chế 'Tuyển thẳng không qua sơ loại CV giấy' đối với các bạn sinh viên/học viên đã có Hồ sơ Năng lực Số (Talent Passport) kèm kết quả thi Tiếng Anh (IELTS/TOEIC) hoặc Tiếng Hàn (TOPIK) xác thực trên nền tảng TechCorp LMS.\n\nỨng viên trúng tuyển được đào tạo nghiệp vụ trên hệ thống Quản lý Khách sạn TechCorp PMS, hỗ trợ bữa ăn theo ca, phụ cấp thực tập từ 4.500.000 – 7.000.000 VNĐ/tháng và ký hợp đồng chính thức ngay sau kỳ thực tập.",
+    highlights: [
+      "Tuyển thẳng ứng viên có Chứng chỉ Ngoại ngữ / Tin học xác thực QR trên nền tảng TechCorp LMS",
+      "Mức thu nhập & phụ cấp hấp dẫn: Thực tập sinh 4.5 - 7 triệu/tháng; Nhân viên chính thức 10 - 16 triệu/tháng",
+      "Được đào tạo thực chiến trên phần mềm Quản lý Khách sạn 5 Sao TechCorp PMS (qldh.techcorp.info.vn)",
+      "Ứng tuyển 1-Click trực tiếp từ Sàn Nhân lực hoặc gửi Hồ sơ số về phân hệ HRM của Resort"
+    ]
+  },
+  "ANN-MEM-02": {
+    categoryTag: "Học bổng & Khảo thí LMS",
+    imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80",
+    views: 1020,
+    readTime: "3 phút đọc",
+    content:
+      "Đồng hành cùng phong trào nâng cao năng lực Ngoại ngữ & Tin học chuẩn quốc tế tại Khánh Hòa, Ocean English & IT Center Nha Trang phối hợp cùng nền tảng khảo thí trực tuyến TechCorp LMS chính thức phát động chương trình tài trợ 500 suất Thi thử IELTS, TOEIC (4 kỹ năng) và Tin học văn phòng MOS hoàn toàn miễn phí.\n\nChương trình dành riêng cho học sinh các trường Phổ thông liên kết, sinh viên Đại học/Cao đẳng và con em cán bộ nhân viên đang làm việc tại các Doanh nghiệp thành viên thuộc Hệ sinh thái TechCorp. Bài thi được chấm tự động bằng AI kết hợp đội ngũ giám khảo chuyên môn của Ocean English.\n\nNgay sau khi hoàn thành bài thi, hệ thống cấp Chứng chỉ Đánh giá Năng lực Số kèm mã QR xác thực, đồng thời tặng ngay Học bổng ưu đãi 40% học phí các khóa luyện thi IELTS/TOEIC cam kết đầu ra vào Ví điện tử TechCorp ID của học viên.",
+    highlights: [
+      "Tài trợ 100% lệ phí thi thử IELTS / TOEIC 4 kỹ năng & Tin học MOS trên nền tảng TechCorp LMS",
+      "Tặng Học bổng 40% học phí (trị giá tới 6.000.000 VNĐ/khóa) cho thành viên Hệ sinh thái TechCorp",
+      "Tự động đồng bộ bảng điểm phân tích kỹ năng về Sổ liên lạc Phụ huynh và Talent Passport của Sinh viên",
+      "Cam kết giới thiệu thực tập & việc làm tại 30 Resort và Doanh nghiệp SME đối tác sau khi đạt chuẩn đầu ra"
+    ]
+  },
+  "ANN-MEM-03": {
+    categoryTag: "Sự kiện Trường học Số",
+    imageUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1000&q=80",
+    views: 890,
+    readTime: "3 phút đọc",
+    content:
+      "Nhằm mang đến sân chơi khoa học công nghệ bổ ích cho học sinh và giúp phụ huynh trải nghiệm thực tế mô hình Trường học Thông minh (Smart School), Hệ thống Giáo dục Liên cấp Sao Biển Nha Trang tổ chức 'Ngày hội Trải nghiệm Công nghệ AI, Robotics & Kỹ năng Số 2026' với sự tham gia của hơn 800 phụ huynh và học sinh.\n\nTại sự kiện, phụ huynh được trực tiếp trải nghiệm hệ thống Điểm danh nhận diện khuôn mặt AI đầu giờ, tra cứu thực đơn dinh dưỡng hàng ngày và thanh toán học phí VietQR 3 giây trên ứng dụng EduManager Pro của TechCorp.\n\nBan Giám hiệu nhà trường trân trọng mời các Trung tâm Ngoại ngữ - Tin học, Phòng khám Nha khoa, Doanh nghiệp Du lịch & Thực phẩm sạch trong Hệ sinh thái TechCorp đăng ký gian hàng đồng hành và phát hành E-Voucher ưu đãi trực tiếp vào Sổ liên lạc điện tử của 1.250 phụ huynh toàn trường.",
+    highlights: [
+      "Quy mô hơn 800 Phụ huynh & Học sinh tham gia trải nghiệm trực tiếp tại khuôn viên KĐT Mỹ Gia - Nha Trang",
+      "Trình diễn thực tế hệ thống Điểm danh AI, Học bạ Số & Sổ liên lạc điện tử EduManager Pro K-12",
+      "Miễn phí gian hàng trưng bày cho các Trung tâm Đào tạo & Doanh nghiệp thành viên Hệ sinh thái TechCorp",
+      "Hỗ trợ bắn thông báo E-Voucher ưu đãi của đơn vị tài trợ tới 100% tài khoản Phụ huynh nhà trường"
+    ]
+  },
+  "ANN-MEM-04": {
+    categoryTag: "Ưu đãi B2B Nội bộ",
+    imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80",
+    views: 760,
+    readTime: "3 phút đọc",
+    content:
+      "Nhằm hỗ trợ các cơ sở giáo dục, trung tâm đào tạo và doanh nghiệp SME trong Hệ sinh thái TechCorp tối ưu chi phí khi mở rộng chi nhánh mới tại Nha Trang – Cam Ranh – Ninh Hòa, Liên minh Sàn Giao dịch BĐS Hưng Phát Land (bds.techcorp.info.vn) và Showroom Nội thất TechCorp Interior (noithat.techcorp.info.vn) chính thức triển khai gói đặc quyền B2B nội bộ.\n\nCụ thể, Hưng Phát Land hỗ trợ tìm kiếm mặt bằng thương mại, tòa nhà văn phòng và cơ sở trường học tại các khu đô thị trọng điểm (Mỹ Gia, Hà Quang II, Vĩnh Điềm Trung, An Bình Tân) với chính sách miễn 100% phí môi giới cho thành viên TechCorp.\n\nSong song đó, TechCorp Interior tài trợ 100% chi phí khảo sát & dựng bản vẽ phối cảnh 3D phòng học thông minh / văn phòng hiện đại, đồng thời giảm ngay 20% tổng giá trị hợp đồng sản xuất – thi công nội thất trọn gói tại xưởng.",
+    highlights: [
+      "Miễn 100% phí tư vấn & tìm kiếm mặt bằng mở Trường học, Trung tâm, Văn phòng tại Nha Trang - Khánh Hòa",
+      "Tặng 100% gói Thiết kế phối cảnh 3D & Dự toán BOQ tự động trên nền tảng noithat.techcorp.info.vn",
+      "Chiết khấu trực tiếp 20% chi phí sản xuất & thi công nội thất phòng học, bàn ghế, quầy lễ tân tại xưởng",
+      "Bảo hành công trình điện tử 36 tháng và hỗ trợ trả chậm linh hoạt cho đơn vị thành viên TechCorp"
+    ]
+  },
+  "ANN-MEM-05": {
+    categoryTag: "Liên kết Đại học – Doanh nghiệp",
+    imageUrl: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1000&q=80",
+    views: 940,
+    readTime: "4 phút đọc",
+    content:
+      "Thông qua sự kết nối giữa Hệ thống Quản trị Đào tạo Đại học TC COMPASS (qldt.techcorp.info.vn) và Sàn Tuyển dụng Thông minh HireMind AI (jobai.techcorp.info.vn), Trung tâm Hợp tác Doanh nghiệp & Việc làm Sinh viên đã hoàn tất chuẩn hóa và xuất bản 450 Hồ sơ Năng lực Số (Verified Talent Passport) của sinh viên năm cuối đạt GPA từ 3.2/4.0 trở lên.\n\nMỗi hồ sơ số đều được xác thực tự động điểm trung bình tích lũy (GPA), kỹ năng chuyên môn, dự án tốt nghiệp cùng các chứng chỉ Ngoại ngữ (IELTS/TOEIC/TOPIK) và Tin học (MOS/ERP) từ các trung tâm khảo thí trong hệ sinh thái.\n\nCác doanh nghiệp thành viên có thể truy cập trực tiếp danh sách ứng viên theo từng chuyên ngành, đặt lịch phỏng vấn trực tuyến và tiếp nhận sinh viên thực tập/làm việc chính thức chỉ với 1 thao tác trên Cổng Quản trị.",
+    highlights: [
+      "Công bố 450 Hồ sơ Năng lực Số sinh viên năm cuối đã xác thực GPA & Chứng chỉ kỹ năng nghề nghiệp",
+      "Đầy đủ các nhóm ngành trọng điểm: Công nghệ thông tin, Du lịch - Khách sạn, Kế toán ERP, Ngoại ngữ",
+      "Doanh nghiệp thành viên được miễn phí 100% quyền truy cập CV và đặt bàn phỏng vấn tại Ngày hội Việc làm",
+      "Liên thông trực tiếp từ nền tảng Đại học TC COMPASS sang Sàn Việc làm HireMind AI & TechCorp ERP"
+    ]
+  }
+};
+
+function enrichSingleAnnouncementItem(raw) {
+  const meta = BULLETIN_RICH_LOOKUP[raw.id] || {};
+  const isMaster = raw.sourceType === "master";
+  const defaultImg = isMaster
+    ? "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80"
+    : "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80";
+
+  return {
+    ...raw,
+    badge: normalizeTermText(raw.badge),
+    title: normalizeTermText(raw.title),
+    summary: normalizeTermText(raw.summary),
+    authorName: normalizeTermText(raw.authorName),
+    authorOrg: normalizeTermText(raw.authorOrg),
+    categoryTag: raw.categoryTag || meta.categoryTag || (isMaster ? "Bản tin Điều hành" : "Tin Đơn vị Thành viên"),
+    imageUrl: raw.imageUrl || meta.imageUrl || defaultImg,
+    views: Number(raw.views || meta.views || (isMaster ? 680 : 420)),
+    readTime: raw.readTime || meta.readTime || "3 phút đọc",
+    content:
+      raw.content ||
+      meta.content ||
+      `${raw.summary || ""}\n\nBản tin được kiểm duyệt và phát hành chính thức qua Trục Liên thông Dữ liệu Hệ sinh thái TechCorp (hesinhthai.techcorp.info.vn). Các đơn vị thành viên gồm Trường học, Trung tâm Ngoại ngữ - Tin học, Doanh nghiệp SME và Cộng đồng Sinh viên/Phụ huynh có thể kết nối trực tiếp để nhận ưu đãi hoặc đăng ký tham gia chương trình.\n\nMọi thông tin hỗ trợ kỹ thuật, kích hoạt đặc quyền hoặc đăng ký tư vấn triển khai vui lòng liên hệ Ban Điều phối Hệ sinh thái TechCorp qua Hotline/Zalo: 0392.091.068.`,
+    highlights:
+      Array.isArray(raw.highlights) && raw.highlights.length > 0
+        ? raw.highlights
+        : meta.highlights || [
+            "Thông tin chính thức đã được xác thực định danh SSO trên Hệ sinh thái TechCorp",
+            "Áp dụng trực tiếp cho các Trường học, Trung tâm Đào tạo, Doanh nghiệp SME & Học viên thành viên",
+            "Hỗ trợ kết nối nhanh 24/7 qua Hotline / Zalo Ban Điều phối: 0392.091.068"
+          ]
+  };
+}
 
 window.filterPublicBulletins = function (filterKey) {
   window.selectedBulletinFilter = filterKey || "all";
@@ -4945,6 +5263,18 @@ window.filterPublicBulletins = function (filterKey) {
     bar.querySelectorAll(".forum-cat-btn").forEach((btn) => {
       btn.classList.toggle("active", btn.getAttribute("data-bfilter") === window.selectedBulletinFilter);
     });
+  }
+  renderCentralBulletins();
+};
+
+window.toggleBulletinLayoutMode = function () {
+  window.bulletinLayoutMode = window.bulletinLayoutMode === "columns" ? "magazine" : "columns";
+  const btn = document.getElementById("btnToggleBulletinLayout");
+  if (btn) {
+    btn.innerHTML =
+      window.bulletinLayoutMode === "columns"
+        ? "📰 Chế độ: 2 Cột Chuyên mục"
+        : "🗂️ Chế độ: Lưới Báo Điện tử";
   }
   renderCentralBulletins();
 };
@@ -4958,12 +5288,71 @@ function normalizeTermText(str) {
     .replace(/(?<!Trang\s)Chủ hệ sinh thái/g, "Hệ sinh thái TechCorp");
 }
 
+function renderSingleBulletinMediaCardHtml(item, isMaster) {
+  const defaultActionView = isMaster ? "products" : "forum";
+  const defaultActionLabel = isMaster ? "Xem Sản phẩm" : "Kết nối ngay";
+  return `
+    <article class="bulletin-media-card ${isMaster ? "master-bulletin" : ""}">
+      <div class="bulletin-media-thumb" onclick="openBulletinDetailModal('${escapeHtml(item.id)}')" title="Nhấn để xem chi tiết: ${escapeHtml(item.title)}">
+        <img
+          src="${escapeHtml(item.imageUrl)}"
+          alt="${escapeHtml(item.title)}"
+          loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80'"
+        />
+        <span class="bulletin-thumb-tag">${escapeHtml(item.categoryTag)}</span>
+        <div class="bulletin-thumb-views">
+          <span>👁️ ${Number(item.views || 350).toLocaleString("vi-VN")}</span>
+          <span>📖 ${escapeHtml(item.readTime || "3 phút")}</span>
+        </div>
+      </div>
+      <div class="bulletin-media-content">
+        <div>
+          <div class="bulletin-top">
+            <span class="badge ${isMaster ? "badge-amber" : "badge-blue"}">${escapeHtml(item.badge)}</span>
+            <span style="font-size:11px;color:#64748b;font-weight:600;">🕒 ${escapeHtml(item.createdAt)}</span>
+          </div>
+          <h4 class="bulletin-media-title" onclick="openBulletinDetailModal('${escapeHtml(item.id)}')">
+            ${escapeHtml(item.title)}
+          </h4>
+          <p class="bulletin-media-summary">${escapeHtml(item.summary)}</p>
+        </div>
+        <div class="bulletin-media-footer">
+          <span style="max-width:58%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(item.authorOrg)} (${escapeHtml(item.authorName)})">
+            ${isMaster ? "👤 Ban hành:" : "🏢 Đơn vị:"} <strong>${escapeHtml(isMaster ? item.authorName : item.authorOrg)}</strong>
+          </span>
+          <div class="bulletin-action-btns">
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              onclick="openBulletinDetailModal('${escapeHtml(item.id)}')"
+            >
+              📖 Xem chi tiết
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline btn-sm"
+              onclick="handleBulletinAction('${escapeHtml(item.id)}', '${escapeHtml(item.actionView || defaultActionView)}', '${escapeHtml(item.actionLabel || defaultActionLabel)}')"
+            >
+              ${escapeHtml(item.actionLabel || defaultActionLabel)} →
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
 function renderCentralBulletins() {
   const masterEl = document.getElementById("masterBulletinsList");
   const memberEl = document.getElementById("memberBulletinsList");
   const masterColCard = document.getElementById("masterBulletinsColCard");
   const memberColCard = document.getElementById("memberBulletinsColCard");
   const twoColGrid = document.getElementById("publicBulletinsTwoColGrid");
+  const featuredWrap = document.getElementById("publicFeaturedBulletinsWrap");
+  const featuredGrid = document.getElementById("publicFeaturedBulletinsGrid");
+  const masterBadgeEl = document.getElementById("masterColCountBadge");
+  const memberBadgeEl = document.getElementById("memberColCountBadge");
   const navBadge = document.getElementById("navBadgeBulletins");
   const kpiTotal = document.getElementById("kpiTotalBulletinsAndPosts");
   const statMasterEl = document.getElementById("pubStatMasterBulletins");
@@ -4971,14 +5360,7 @@ function renderCentralBulletins() {
   const searchKeyword = (document.getElementById("publicBulletinSearchInput")?.value || "").trim().toLowerCase();
   const activeFilter = window.selectedBulletinFilter || "all";
 
-  const list = (STATE.announcements || []).map((a) => ({
-    ...a,
-    badge: normalizeTermText(a.badge),
-    title: normalizeTermText(a.title),
-    summary: normalizeTermText(a.summary),
-    authorName: normalizeTermText(a.authorName),
-    authorOrg: normalizeTermText(a.authorOrg)
-  }));
+  const list = (STATE.announcements || []).map(enrichSingleAnnouncementItem);
 
   if (navBadge) navBadge.textContent = `${list.length} Tin`;
   if (kpiTotal) kpiTotal.textContent = `${list.length + STATE.forumPosts.length} Bản tin`;
@@ -4987,15 +5369,102 @@ function renderCentralBulletins() {
   const allMembers = list.filter((a) => a.sourceType !== "master");
   if (statMasterEl) statMasterEl.textContent = `${String(allMasters.length).padStart(2, "0")} Bản tin`;
   if (statMemberEl) statMemberEl.textContent = `${String(allMembers.length).padStart(2, "0")} Tin mới`;
+  if (masterBadgeEl) masterBadgeEl.textContent = `${allMasters.length} Bản tin Điều hành`;
+  if (memberBadgeEl) memberBadgeEl.textContent = `${allMembers.length} Tin Thành viên`;
 
   const matchSearch = (item) => {
     if (!searchKeyword) return true;
-    const blob = `${item.badge || ""} ${item.title || ""} ${item.summary || ""} ${item.authorName || ""} ${item.authorOrg || ""}`.toLowerCase();
+    const blob = `${item.badge || ""} ${item.categoryTag || ""} ${item.title || ""} ${item.summary || ""} ${item.content || ""} ${item.authorName || ""} ${item.authorOrg || ""}`.toLowerCase();
     return blob.includes(searchKeyword);
   };
 
   const masterList = allMasters.filter(matchSearch);
   const memberList = allMembers.filter(matchSearch);
+
+  // Render Featured Spotlight (Top Master + Top Member) when no search keyword is active
+  if (featuredWrap && featuredGrid) {
+    let featuredItems = [];
+    if (activeFilter === "master") {
+      featuredItems = masterList.slice(0, 2);
+    } else if (activeFilter === "member") {
+      featuredItems = memberList.slice(0, 2);
+    } else {
+      if (masterList[0]) featuredItems.push(masterList[0]);
+      if (memberList[0]) featuredItems.push(memberList[0]);
+    }
+
+    if (searchKeyword || featuredItems.length === 0) {
+      featuredWrap.style.display = "none";
+    } else {
+      featuredWrap.style.display = "block";
+      featuredGrid.innerHTML = featuredItems
+        .map((fItem) => {
+          const isMaster = fItem.sourceType === "master";
+          const defaultView = isMaster ? "products" : "forum";
+          const defaultLabel = isMaster ? "Khám phá Sản phẩm" : "Kết nối ngay";
+          return `
+            <article class="bulletin-featured-card ${isMaster ? "master-featured" : "member-featured"}">
+              <div>
+                <div class="bulletin-featured-media" onclick="openBulletinDetailModal('${escapeHtml(fItem.id)}')">
+                  <img
+                    src="${escapeHtml(fItem.imageUrl)}"
+                    alt="${escapeHtml(fItem.title)}"
+                    loading="lazy"
+                    onerror="this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80'"
+                  />
+                  <div class="bulletin-featured-overlay-top">
+                    <span class="badge ${isMaster ? "badge-amber" : "badge-blue"}">
+                      ${isMaster ? "👑 TIÊU ĐIỂM HỆ SINH THÁI" : "🌟 TIÊU ĐIỂM ĐƠN VỊ THÀNH VIÊN"}
+                    </span>
+                    <span class="badge badge-green">📌 Tin Ghim Nổi bật</span>
+                  </div>
+                  <div class="bulletin-featured-overlay-bottom">
+                    <span>🏷️ ${escapeHtml(fItem.categoryTag)}</span>
+                    <span>🕒 ${escapeHtml(fItem.createdAt)} • 👁️ ${Number(fItem.views).toLocaleString("vi-VN")} lượt xem</span>
+                  </div>
+                </div>
+                <div class="bulletin-featured-body">
+                  <div>
+                    <h3 class="bulletin-featured-title" onclick="openBulletinDetailModal('${escapeHtml(fItem.id)}')">
+                      ${escapeHtml(fItem.title)}
+                    </h3>
+                    <p class="bulletin-featured-summary" style="margin-top:6px;">
+                      ${escapeHtml(fItem.summary)}
+                    </p>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding-top:10px;border-top:1px solid #e2e8f0;margin-top:6px;">
+                    <div style="font-size:12px;color:#334155;">
+                      ${isMaster ? "👤 Ban hành:" : "🏢 Đơn vị:"} <strong style="color:#0b2559;">${escapeHtml(fItem.authorOrg)}</strong>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        onclick="openBulletinDetailModal('${escapeHtml(fItem.id)}')"
+                      >
+                        📖 Xem tin chi tiết
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-outline btn-sm"
+                        onclick="handleBulletinAction('${escapeHtml(fItem.id)}', '${escapeHtml(fItem.actionView || defaultView)}', '${escapeHtml(fItem.actionLabel || defaultLabel)}')"
+                      >
+                        ${escapeHtml(fItem.actionLabel || defaultLabel)} →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+    }
+  }
+
+  const isMagazine = window.bulletinLayoutMode === "magazine" || activeFilter !== "all";
+  if (masterEl) masterEl.classList.toggle("magazine-grid-mode", isMagazine);
+  if (memberEl) memberEl.classList.toggle("magazine-grid-mode", isMagazine);
 
   if (masterColCard && memberColCard && twoColGrid) {
     if (activeFilter === "master") {
@@ -5004,6 +5473,10 @@ function renderCentralBulletins() {
       twoColGrid.style.gridTemplateColumns = "1fr";
     } else if (activeFilter === "member") {
       masterColCard.style.display = "none";
+      memberColCard.style.display = "";
+      twoColGrid.style.gridTemplateColumns = "1fr";
+    } else if (window.bulletinLayoutMode === "magazine") {
+      masterColCard.style.display = "";
       memberColCard.style.display = "";
       twoColGrid.style.gridTemplateColumns = "1fr";
     } else {
@@ -5017,52 +5490,14 @@ function renderCentralBulletins() {
     masterEl.innerHTML =
       masterList.length === 0
         ? `<div style="padding:18px;text-align:center;color:#64748b;font-size:13px;">Không tìm thấy bản tin phù hợp với từ khóa tìm kiếm.</div>`
-        : masterList
-            .map(
-              (item) => `
-              <div class="bulletin-card master-bulletin">
-                <div class="bulletin-top">
-                  <span class="badge badge-amber">${escapeHtml(item.badge)}</span>
-                  <span style="font-size:11.5px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
-                </div>
-                <div class="bulletin-title">${escapeHtml(item.title)}</div>
-                <div class="bulletin-summary">${escapeHtml(item.summary)}</div>
-                <div class="bulletin-footer">
-                  <span>👤 Ban hành bởi: <strong>${escapeHtml(item.authorName)}</strong> (${escapeHtml(item.authorOrg)})</span>
-                  <button type="button" class="btn btn-outline btn-sm" onclick="handleBulletinAction('${escapeHtml(item.id)}', '${escapeHtml(item.actionView || "products")}', '${escapeHtml(item.actionLabel || "Xem chi tiết")}')">
-                    ${escapeHtml(item.actionLabel || "Xem chi tiết")} →
-                  </button>
-                </div>
-              </div>
-            `
-            )
-            .join("");
+        : masterList.map((item) => renderSingleBulletinMediaCardHtml(item, true)).join("");
   }
 
   if (memberEl) {
     memberEl.innerHTML =
       memberList.length === 0
         ? `<div style="padding:18px;text-align:center;color:#64748b;font-size:13px;">Không tìm thấy tin tức đơn vị thành viên phù hợp.</div>`
-        : memberList
-            .map(
-              (item) => `
-              <div class="bulletin-card">
-                <div class="bulletin-top">
-                  <span class="badge badge-blue">${escapeHtml(item.badge)}</span>
-                  <span style="font-size:11.5px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
-                </div>
-                <div class="bulletin-title">${escapeHtml(item.title)}</div>
-                <div class="bulletin-summary">${escapeHtml(item.summary)}</div>
-                <div class="bulletin-footer">
-                  <span>🏢 Đơn vị đăng: <strong>${escapeHtml(item.authorOrg)}</strong> (${escapeHtml(item.authorName)})</span>
-                  <button type="button" class="btn btn-outline btn-sm" onclick="handleBulletinAction('${escapeHtml(item.id)}', '${escapeHtml(item.actionView || "forum")}', '${escapeHtml(item.actionLabel || "Kết nối ngay")}')">
-                    ${escapeHtml(item.actionLabel || "Kết nối ngay")} →
-                  </button>
-                </div>
-              </div>
-            `
-            )
-            .join("");
+        : memberList.map((item) => renderSingleBulletinMediaCardHtml(item, false)).join("");
   }
 
   const homeStreamEl = document.getElementById("publicHomeActivityStream");
@@ -5083,6 +5518,240 @@ function renderCentralBulletins() {
       .join("");
   }
 }
+
+window.openBulletinDetailModal = function (annId) {
+  const list = (STATE.announcements || []).map(enrichSingleAnnouncementItem);
+  const idx = list.findIndex((a) => a.id === annId);
+  const item = idx !== -1 ? list[idx] : list[0];
+  if (!item) return;
+
+  window.currentReadingBulletinId = item.id;
+
+  // Increment view count in memory
+  const rawItem = (STATE.announcements || []).find((a) => a.id === item.id);
+  if (rawItem) {
+    rawItem.views = Number(rawItem.views || item.views || 350) + 1;
+    item.views = rawItem.views;
+  }
+
+  let modal = document.getElementById("bulletinDetailModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "bulletinDetailModal";
+    modal.className = "bulletin-detail-modal-backdrop";
+    modal.style.display = "none";
+    modal.onclick = function (e) {
+      if (e.target === modal) window.closeBulletinDetailModal();
+    };
+    modal.innerHTML = `<div class="bulletin-detail-modal-dialog" role="dialog" aria-modal="true"><div id="bulletinDetailModalBody"></div></div>`;
+    document.body.appendChild(modal);
+  }
+
+  const bodyEl = document.getElementById("bulletinDetailModalBody");
+  if (!bodyEl) return;
+
+  const isMaster = item.sourceType === "master";
+  const prevItem = idx > 0 ? list[idx - 1] : null;
+  const nextItem = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
+  const relatedList = list.filter((a) => a.id !== item.id).slice(0, 3);
+
+  const paragraphsHtml = String(item.content || item.summary || "")
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p>${escapeHtml(p)}</p>`)
+    .join("");
+
+  const highlightsHtml = (item.highlights || [])
+    .map(
+      (h) => `
+      <div style="display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:#0f172a;margin-top:7px;line-height:1.5;">
+        <span style="color:#059669;font-weight:800;">✔</span>
+        <span>${escapeHtml(h)}</span>
+      </div>
+    `
+    )
+    .join("");
+
+  const relatedHtml = relatedList
+    .map(
+      (rel) => `
+      <div class="bulletin-related-item" onclick="openBulletinDetailModal('${escapeHtml(rel.id)}')">
+        <img
+          src="${escapeHtml(rel.imageUrl)}"
+          alt="${escapeHtml(rel.title)}"
+          loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'"
+        />
+        <div class="bulletin-related-item-body">
+          <span style="font-size:10.5px;font-weight:700;color:#0052d4;">${escapeHtml(rel.categoryTag)}</span>
+          <strong style="font-size:12.5px;color:#0f172a;line-height:1.38;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+            ${escapeHtml(rel.title)}
+          </strong>
+          <span style="font-size:11px;color:#64748b;margin-top:2px;">🕒 ${escapeHtml(rel.createdAt)} • 👁️ ${Number(rel.views).toLocaleString("vi-VN")}</span>
+        </div>
+      </div>
+    `
+    )
+    .join("");
+
+  const defaultView = isMaster ? "products" : "forum";
+  const defaultLabel = isMaster ? "Khám phá 6 Nhóm Sản phẩm" : "Mở Chuyên trang Liên kết";
+
+  bodyEl.innerHTML = `
+    <div class="bulletin-modal-topbar">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="badge ${isMaster ? "badge-amber" : "badge-blue"}">${escapeHtml(item.badge)}</span>
+        <span class="badge badge-green">🏷️ ${escapeHtml(item.categoryTag)}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="copyBulletinShareLink('${escapeHtml(item.id)}')">
+          🔗 Sao chép Link Tin
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="closeBulletinDetailModal()">
+          ✕ Đóng (ESC)
+        </button>
+      </div>
+    </div>
+
+    <div class="bulletin-modal-hero">
+      <img
+        src="${escapeHtml(item.imageUrl)}"
+        alt="${escapeHtml(item.title)}"
+        onerror="this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80'"
+      />
+      <div class="bulletin-modal-hero-caption">
+        <div>
+          <span style="background:rgba(0,82,212,0.88);padding:4px 10px;border-radius:6px;font-weight:700;font-size:11px;">
+            📸 Hình ảnh minh họa Bản tin • ${escapeHtml(item.authorOrg)}
+          </span>
+        </div>
+        <div>
+          🕒 Đăng lúc: <strong>${escapeHtml(item.createdAt)}</strong> • 📖 ${escapeHtml(item.readTime)} • 👁️ <strong>${Number(item.views).toLocaleString("vi-VN")} lượt xem</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="bulletin-modal-content-wrap">
+      <h2 class="bulletin-modal-title" id="bulletinModalTitle">${escapeHtml(item.title)}</h2>
+
+      <div class="bulletin-modal-meta-bar">
+        <div>
+          <div style="font-weight:800;color:#0b2559;font-size:13.5px;">
+            ${isMaster ? "👑 Cơ quan ban hành:" : "🏢 Đơn vị thành viên:"} <span style="color:#0052d4;">${escapeHtml(item.authorOrg)}</span>
+          </div>
+          <div style="font-size:12px;color:#475569;margin-top:2px;">
+            👤 Người phụ trách / Đại diện: <strong>${escapeHtml(item.authorName)}</strong> • Mã bản tin: <code>${escapeHtml(item.id)}</code>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="badge badge-green">✔ Đã xác thực SSO TechCorp ID</span>
+        </div>
+      </div>
+
+      <div class="bulletin-modal-lead">
+        📌 <strong>Tóm tắt trọng tâm:</strong> ${escapeHtml(item.summary)}
+      </div>
+
+      <div class="bulletin-modal-article-body">
+        ${paragraphsHtml}
+      </div>
+
+      <div class="bulletin-modal-highlights">
+        <h5>🌟 Điểm nhấn &amp; Quyền lợi Dành cho Thành viên Hệ sinh thái TechCorp:</h5>
+        ${highlightsHtml}
+      </div>
+
+      <!-- Hộp Hành động & Liên hệ nhanh -->
+      <div style="background:#f8fbff;border:1.5px solid #93c5fd;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:18px;">
+        <div>
+          <strong style="font-size:13.5px;color:#0b2559;display:block;">
+            🚀 Kết nối &amp; Triển khai ngay cùng Hệ sinh thái TechCorp
+          </strong>
+          <span style="font-size:12px;color:#475569;">
+            Hotline / Zalo tư vấn trực tiếp 24/7: <strong style="color:#0052d4;">0392.091.068</strong> • Email: <strong>info@techcorp.info.vn</strong>
+          </span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a
+            href="https://zalo.me/0392091068"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-emerald btn-sm"
+            style="text-decoration:none;"
+          >
+            💬 Chat Zalo (0392.091.068) ↗
+          </a>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            onclick="closeBulletinDetailModal(); handleBulletinAction('${escapeHtml(item.id)}', '${escapeHtml(item.actionView || defaultView)}', '${escapeHtml(item.actionLabel || defaultLabel)}')"
+          >
+            🚀 ${escapeHtml(item.actionLabel || defaultLabel)} →
+          </button>
+        </div>
+      </div>
+
+      <!-- Thanh Điều hướng Tin Trước / Tin Tiếp theo -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #e2e8f0;flex-wrap:wrap;">
+        <button
+          type="button"
+          class="btn btn-outline btn-sm"
+          ${prevItem ? `onclick="openBulletinDetailModal('${escapeHtml(prevItem.id)}')"` : "disabled style='opacity:0.45;cursor:not-allowed;'"}
+        >
+          ⬅ Bản tin trước
+        </button>
+        <span style="font-size:12px;color:#64748b;font-weight:700;">
+          Đang xem bản tin ${idx + 1} / ${list.length}
+        </span>
+        <button
+          type="button"
+          class="btn btn-outline btn-sm"
+          ${nextItem ? `onclick="openBulletinDetailModal('${escapeHtml(nextItem.id)}')"` : "disabled style='opacity:0.45;cursor:not-allowed;'"}
+        >
+          Bản tin tiếp theo ➡
+        </button>
+      </div>
+
+      <!-- Các Bản tin Liên quan có Hình ảnh đại diện -->
+      <div style="margin-top:22px;padding-top:16px;border-top:2px solid #edf4ff;">
+        <h4 style="font-size:14.5px;font-weight:800;color:#0b2559;margin-bottom:4px;">
+          📰 Các Bản tin Khác trong Hệ sinh thái TechCorp
+        </h4>
+        <div class="bulletin-modal-related-grid">
+          ${relatedHtml}
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.style.display = "flex";
+  const dialog = modal.querySelector(".bulletin-detail-modal-dialog");
+  if (dialog) dialog.scrollTop = 0;
+  renderCentralBulletins();
+};
+
+window.closeBulletinDetailModal = function () {
+  const modal = document.getElementById("bulletinDetailModal");
+  if (modal) modal.style.display = "none";
+};
+
+window.copyBulletinShareLink = function (annId) {
+  const url = `${window.location.origin}${window.location.pathname}?page=home&bulletin=${encodeURIComponent(annId)}`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).catch(() => {});
+  }
+  showToast(`🔗 Đã sao chép đường dẫn chia sẻ Bản tin mã <b>${escapeHtml(annId)}</b>!`);
+};
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const modal = document.getElementById("bulletinDetailModal");
+    if (modal && modal.style.display !== "none") {
+      window.closeBulletinDetailModal();
+    }
+  }
+});
 
 window.openBulletinModal = function (sourceType) {
   if (sourceType === "master") {
@@ -5109,12 +5778,18 @@ window.submitNewAnnouncement = async function () {
   const sourceType = document.getElementById("newBulletinSourceType")?.value || "member";
   const badge = document.getElementById("newBulletinBadge")?.value.trim();
   const title = document.getElementById("newBulletinTitle")?.value.trim();
+  const imageUrl = document.getElementById("newBulletinImageUrl")?.value.trim();
   const summary = document.getElementById("newBulletinSummary")?.value.trim();
+  const content = document.getElementById("newBulletinContent")?.value.trim() || summary;
   if (!title || !summary) {
     showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Tiêu đề và Nội dung thông báo!</span>`);
     return;
   }
   const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
+  const defaultImg =
+    sourceType === "master"
+      ? "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80"
+      : "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80";
 
   try {
     const res = await fetch("/api/v1/announcements", {
@@ -5124,7 +5799,9 @@ window.submitNewAnnouncement = async function () {
         sourceType,
         badge,
         title,
+        imageUrl: imageUrl || defaultImg,
         summary,
+        content,
         authorName: persona.name,
         authorOrg: persona.org,
         actorKey: STATE.currentPersona
@@ -5136,9 +5813,11 @@ window.submitNewAnnouncement = async function () {
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
       closeBulletinModal();
       if (document.getElementById("newBulletinTitle")) document.getElementById("newBulletinTitle").value = "";
+      if (document.getElementById("newBulletinImageUrl")) document.getElementById("newBulletinImageUrl").value = "";
       if (document.getElementById("newBulletinSummary")) document.getElementById("newBulletinSummary").value = "";
+      if (document.getElementById("newBulletinContent")) document.getElementById("newBulletinContent").value = "";
       renderAllViews();
-      showToast("📢 Đã phát hành Bản tin lên Trang Public Hệ sinh thái thành công!");
+      showToast("📢 Đã phát hành Bản tin kèm hình ảnh đại diện lên Trang Public Hệ sinh thái thành công!");
       return;
     }
   } catch (_) {}
@@ -5147,14 +5826,18 @@ window.submitNewAnnouncement = async function () {
     id: "ANN-" + Date.now(),
     sourceType,
     badge,
+    imageUrl: imageUrl || defaultImg,
     title,
     summary,
+    content,
+    views: 120,
+    readTime: "3 phút đọc",
     authorName: persona.name,
     authorOrg: persona.org,
     createdAt: "Vừa xong",
     pinned: true,
     actionLabel: "Xem chi tiết",
-    actionView: "view-workspace"
+    actionView: "products"
   });
   recordLocalAuditLog("ANNOUNCEMENT_PUBLISH", title, "INFO", `Đăng bản tin mới lên Cổng Chung (${badge}).`);
   closeBulletinModal();
@@ -5165,12 +5848,16 @@ window.submitNewAnnouncement = async function () {
 window.submitWorkspaceMemberNews = async function () {
   const badge = document.getElementById("wsBulletinBadge")?.value.trim() || "🌟 TIN TỪ ĐƠN VỊ THÀNH VIÊN";
   const title = document.getElementById("wsBulletinTitle")?.value.trim();
+  const imageUrl = document.getElementById("wsBulletinImageUrl")?.value.trim();
   const summary = document.getElementById("wsBulletinSummary")?.value.trim();
+  const content = document.getElementById("wsBulletinContent")?.value.trim() || summary;
   if (!title || !summary) {
     showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Tiêu đề và Nội dung bản tin của đơn vị!</span>`);
     return;
   }
   const persona = STATE.personas[STATE.currentPersona] || STATE.personas["ceo-sme"];
+  const resolvedImg =
+    imageUrl || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80";
 
   try {
     const res = await fetch("/api/v1/announcements", {
@@ -5179,8 +5866,10 @@ window.submitWorkspaceMemberNews = async function () {
       body: JSON.stringify({
         sourceType: "member",
         badge,
+        imageUrl: resolvedImg,
         title,
         summary,
+        content,
         authorName: persona.name,
         authorOrg: persona.org,
         actorKey: STATE.currentPersona
@@ -5191,7 +5880,7 @@ window.submitWorkspaceMemberNews = async function () {
       STATE.announcements = data.announcements;
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
       renderAllViews();
-      showToast("📢 Đã đăng tải Bản tin của Đơn vị lên Trang Public thành công!");
+      showToast("📢 Đã đăng tải Bản tin của Đơn vị kèm ảnh đại diện lên Trang Public thành công!");
       return;
     }
   } catch (_) {}
@@ -5200,14 +5889,18 @@ window.submitWorkspaceMemberNews = async function () {
     id: "ANN-" + Date.now(),
     sourceType: "member",
     badge,
+    imageUrl: resolvedImg,
     title,
     summary,
+    content,
+    views: 95,
+    readTime: "3 phút đọc",
     authorName: persona.name,
     authorOrg: persona.org,
     createdAt: "Vừa xong",
     pinned: false,
     actionLabel: "Kết nối ngay",
-    actionView: "view-talent-lms"
+    actionView: "forum"
   });
   recordLocalAuditLog("ANNOUNCEMENT_PUBLISH", title, "INFO", `Đơn vị thành viên đăng bản tin mới (${badge}).`);
   renderAllViews();
@@ -5279,24 +5972,43 @@ window.submitWorkspaceForumPost = async function () {
 function renderAdminBulletinsTable() {
   const tbody = document.getElementById("adminBulletinsTableBody");
   if (!tbody) return;
-  tbody.innerHTML = (STATE.announcements || [])
+  const enrichedList = (STATE.announcements || []).map(enrichSingleAnnouncementItem);
+  tbody.innerHTML = enrichedList
     .map(
       (a) => `
       <tr>
         <td>
-          <span class="badge ${a.sourceType === "master" ? "badge-amber" : "badge-blue"}">${escapeHtml(a.badge)}</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <img
+              src="${escapeHtml(a.imageUrl)}"
+              alt="${escapeHtml(a.title)}"
+              style="width:76px;height:52px;object-fit:cover;border-radius:8px;border:1px solid #cbd5e1;flex-shrink:0;cursor:pointer;"
+              onclick="openBulletinDetailModal('${escapeHtml(a.id)}')"
+              onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80'"
+            />
+            <div>
+              <span class="badge ${a.sourceType === "master" ? "badge-amber" : "badge-blue"}">${escapeHtml(a.badge)}</span>
+              <div style="font-size:11px;color:#64748b;margin-top:3px;">🏷️ ${escapeHtml(a.categoryTag)}</div>
+            </div>
+          </div>
         </td>
         <td>
-          <strong style="color:#0f172a;">${escapeHtml(a.title)}</strong>
+          <strong style="color:#0f172a;cursor:pointer;" onclick="openBulletinDetailModal('${escapeHtml(a.id)}')">${escapeHtml(a.title)}</strong>
           <div style="font-size:12px;color:#475569;margin-top:3px;">${escapeHtml(a.summary)}</div>
         </td>
         <td>
           <div style="font-weight:700;color:#1e293b;">${escapeHtml(a.authorOrg)}</div>
           <div style="font-size:11.5px;color:#64748b;">${escapeHtml(a.authorName)}</div>
         </td>
-        <td style="font-size:12px;color:#475569;">${escapeHtml(a.createdAt)}</td>
+        <td style="font-size:12px;color:#475569;">
+          <div>🕒 ${escapeHtml(a.createdAt)}</div>
+          <div style="font-size:11px;color:#0052d4;font-weight:700;margin-top:2px;">👁️ ${Number(a.views).toLocaleString("vi-VN")} lượt xem</div>
+        </td>
         <td>
-          <button class="btn btn-danger btn-sm" onclick="deleteAnnouncementAdmin('${escapeHtml(a.id)}')">🗑️ Xoá</button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="openBulletinDetailModal('${escapeHtml(a.id)}')">📖 Xem</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteAnnouncementAdmin('${escapeHtml(a.id)}')">🗑️ Xoá</button>
+          </div>
         </td>
       </tr>
     `
@@ -5474,7 +6186,7 @@ function renderMemberWorkspace() {
 
   // TAB 5: ĐĂNG BẢN TIN ĐƠN VỊ THÀNH VIÊN LÊN TRANG PUBLIC (CHO DOANH NGHIỆP, TRUNG TÂM, TRƯỜNG HỌC)
   if (subTab === "news") {
-    const memberBulletins = (STATE.announcements || []).filter((a) => a.sourceType !== "master");
+    const memberBulletins = (STATE.announcements || []).filter((a) => a.sourceType !== "master").map(enrichSingleAnnouncementItem);
     container.innerHTML = `
       ${masterInspectorBar}
       ${subTabNavHtml}
@@ -5485,7 +6197,7 @@ function renderMemberWorkspace() {
               <span class="badge badge-blue">📢 PHÁT HÀNH NỘI DUNG TỪ ADMIN RA TRANG PUBLIC</span>
               <h3 class="card-title" style="margin-top:6px;">Đăng Bản tin / Sự kiện / Tuyển dụng của Đơn vị lên Trang Public</h3>
               <p class="card-subtitle">
-                Đơn vị: <strong>${escapeHtml((roleUser && roleUser.org) || "Đơn vị Thành viên")}</strong> — Nội dung đăng từ đây sẽ hiển thị trực tiếp tại mục "Bản tin Đơn vị Thành viên" trên Trang chủ Public.
+                Đơn vị: <strong>${escapeHtml((roleUser && roleUser.org) || "Đơn vị Thành viên")}</strong> — Nội dung đăng từ đây sẽ hiển thị kèm hình ảnh đại diện và khung xem chi tiết trên Trang chủ Public.
               </p>
             </div>
           </div>
@@ -5499,8 +6211,16 @@ function renderMemberWorkspace() {
               <input type="text" id="wsBulletinTitle" class="input-control" style="width:100%;" placeholder="VD: Khai giảng khóa học mới / Tuyển dụng nhân sự / Ưu đãi nội bộ..." />
             </div>
             <div>
-              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung chi tiết cung cấp ra Trang Public:</label>
-              <textarea id="wsBulletinSummary" class="input-control" style="width:100%;min-height:95px;" placeholder="Nhập nội dung chi tiết chương trình, thời gian áp dụng và quyền lợi dành cho thành viên hệ sinh thái..."></textarea>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">🖼️ Đường dẫn Hình ảnh đại diện (URL ảnh hoặc để trống tự động chọn ảnh):</label>
+              <input type="text" id="wsBulletinImageUrl" class="input-control" style="width:100%;" placeholder="https://images.unsplash.com/..." />
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung tóm tắt (Hiển thị trên thẻ tin):</label>
+              <textarea id="wsBulletinSummary" class="input-control" style="width:100%;min-height:66px;" placeholder="Nhập đoạn tóm tắt ngắn gọn..."></textarea>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung bài viết chi tiết (Hiển thị khi bấm Xem tin chi tiết):</label>
+              <textarea id="wsBulletinContent" class="input-control" style="width:100%;min-height:95px;" placeholder="Nhập toàn văn nội dung chương trình, thời gian áp dụng và quyền lợi dành cho thành viên hệ sinh thái..."></textarea>
             </div>
             <button type="button" class="btn btn-primary" onclick="submitWorkspaceMemberNews()" style="justify-content:center;padding:12px;">
               🚀 Phát hành Bản tin lên Trang Public Hệ sinh thái
@@ -5519,14 +6239,24 @@ function renderMemberWorkspace() {
             ${memberBulletins
               .map(
                 (item) => `
-                <div style="background:#f8fbff;border:1px solid #dbeafe;border-radius:12px;padding:12px 14px;">
-                  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
-                    <span class="badge badge-blue">${escapeHtml(item.badge)}</span>
-                    <span style="font-size:11px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
+                <div style="background:#f8fbff;border:1px solid #dbeafe;border-radius:12px;padding:12px;display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;">
+                  <img
+                    src="${escapeHtml(item.imageUrl)}"
+                    alt="${escapeHtml(item.title)}"
+                    style="width:110px;height:82px;object-fit:cover;border-radius:8px;cursor:pointer;"
+                    onclick="openBulletinDetailModal('${escapeHtml(item.id)}')"
+                  />
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
+                      <span class="badge badge-blue">${escapeHtml(item.badge)}</span>
+                      <span style="font-size:11px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
+                    </div>
+                    <strong style="font-size:13px;color:#0f172a;display:block;cursor:pointer;" onclick="openBulletinDetailModal('${escapeHtml(item.id)}')">${escapeHtml(item.title)}</strong>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+                      <span style="font-size:11.5px;color:#0052d4;font-weight:700;">🏢 ${escapeHtml(item.authorOrg)}</span>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="openBulletinDetailModal('${escapeHtml(item.id)}')">📖 Xem chi tiết</button>
+                    </div>
                   </div>
-                  <strong style="font-size:13.5px;color:#0f172a;display:block;">${escapeHtml(item.title)}</strong>
-                  <p style="font-size:12.5px;color:#334155;margin-top:4px;">${escapeHtml(item.summary)}</p>
-                  <div style="font-size:11.5px;color:#0052d4;margin-top:6px;font-weight:700;">🏢 Đơn vị: ${escapeHtml(item.authorOrg)} (${escapeHtml(item.authorName)})</div>
                 </div>
               `
               )
@@ -6771,13 +7501,12 @@ window.submitPublicContactForm = async function (event) {
 
 function sanitizeStateTerminology() {
   if (Array.isArray(STATE.announcements)) {
-    const defaultSupplementalIds = ["ANN-MASTER-03", "ANN-MASTER-04", "ANN-MEM-03", "ANN-MEM-04"];
     const defaultExtras = [
       {
         id: "ANN-MASTER-03",
         sourceType: "master",
         badge: "🤖 NÂNG CẤP CÔNG NGHỆ • HỆ SINH THÁI TECHCORP",
-        title: "Ra mắt Sàn Tuyển dụng & Tìm việc Thông minh TechCorp HireMind AI (jobai.techcorp.info.vn)",
+        title: "Ra mắt Cổng đồng bộ 1-Click từ Sàn Tuyển dụng HireMind AI (jobai.techcorp.info.vn) sang Phân hệ HRM trên TechCorp ERP",
         summary: "Tích hợp công nghệ AI ATS đa ngôn ngữ tự động phân tích độ khớp CV – JD, xác thực điểm thi trực tuyến từ TechCorp LMS và đẩy hồ sơ ứng viên 1-Click về phân hệ HRM trên TechCorp ERP.",
         authorName: "Hệ sinh thái TechCorp",
         authorOrg: "Trung tâm R&D AI & Cloud TechCorp",
@@ -6789,22 +7518,35 @@ function sanitizeStateTerminology() {
       {
         id: "ANN-MASTER-04",
         sourceType: "master",
-        badge: "🛡️ TIÊU CHUẨN CHẤT LƯỢNG • ISO 9001:2015",
-        title: "Chuẩn hóa Quy trình Bảo mật Dữ liệu Đa tầng & Ký số Học bạ Điện tử toàn Hệ sinh thái TechCorp",
-        summary: "100% cơ sở giáo dục và doanh nghiệp thành viên được trang bị không gian quản trị riêng biệt theo phân quyền RBAC 9x5, sao lưu tự động MySQL/SQLite thời gian thực và hỗ trợ kỹ thuật 24/7.",
+        badge: "💳 LIÊN THÔNG THANH TOÁN QR ĐỘNG KHÔNG TIỀN MẶT",
+        title: "Tích hợp Cổng gạch nợ Học phí & Hóa đơn tự động 3 giây cho toàn bộ Khối Trường học K-12 và Trung tâm Ngoại ngữ",
+        summary: "Miễn phí 100% phí thiết lập cổng thanh toán VietQR động cho các trường Mầm non, Tiểu học, THCS, THPT, GDTX và Trung tâm đào tạo thuộc Hệ sinh thái TechCorp.",
         authorName: "Ban Điều hành Hệ sinh thái TechCorp",
-        authorOrg: "TechCorp Headquarters",
+        authorOrg: "Ban Tài chính & Đối tác Ngân hàng TechCorp",
         createdAt: "2 ngày trước",
         pinned: false,
         actionLabel: "Liên hệ Tư vấn & Demo",
         actionView: "contact"
       },
       {
+        id: "ANN-MASTER-05",
+        sourceType: "master",
+        badge: "🛡️ TIÊU CHUẨN CHẤT LƯỢNG • ISO 9001:2015 & ISO 27001",
+        title: "Chuẩn hóa Quy trình Bảo mật Dữ liệu Đa tầng & Ký số Học bạ Điện tử toàn Hệ sinh thái TechCorp",
+        summary: "100% cơ sở giáo dục và doanh nghiệp thành viên được trang bị không gian quản trị riêng biệt theo phân quyền RBAC 9x5, sao lưu tự động MySQL/SQLite thời gian thực và hỗ trợ kỹ thuật 24/7.",
+        authorName: "Ban Điều hành Hệ sinh thái TechCorp",
+        authorOrg: "TechCorp Headquarters (Nha Trang - Khánh Hòa)",
+        createdAt: "3 ngày trước",
+        pinned: false,
+        actionLabel: "Đăng ký Tư vấn Bảo mật",
+        actionView: "contact"
+      },
+      {
         id: "ANN-MEM-03",
         sourceType: "member",
         badge: "🎓 TIN TỪ KHỐI TRƯỜNG HỌC THÀNH VIÊN (K-12)",
-        title: "Hệ thống Giáo dục Liên cấp Sao Biển kích hoạt Cổng Thu học phí VietQR 3 giây & Điểm danh AI đầu giờ",
-        summary: "Hơn 1.200 phụ huynh tại KĐT Mỹ Gia đã nhận thông báo điểm danh khuôn mặt AI và thực đơn dinh dưỡng hàng ngày qua Sổ liên lạc điện tử EduManager Pro.",
+        title: "Hệ thống Giáo dục Sao Biển Nha Trang tổ chức Ngày hội Trải nghiệm Công nghệ AI & Kỹ năng Số cho 800 Phụ huynh Học sinh",
+        summary: "Mời các Doanh nghiệp Du lịch, F&B, Y tế và Trung tâm Ngoại ngữ trong Hệ sinh thái TechCorp đăng ký gian hàng trải nghiệm và phát hành E-Voucher trên Sổ liên lạc điện tử.",
         authorName: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
         authorOrg: "Hệ thống Giáo dục Liên cấp Sao Biển Nha Trang",
         createdAt: "4 giờ trước",
@@ -6824,6 +7566,19 @@ function sanitizeStateTerminology() {
         pinned: false,
         actionLabel: "Xem Chợ Giao thương B2B",
         actionView: "forum"
+      },
+      {
+        id: "ANN-MEM-05",
+        sourceType: "member",
+        badge: "🎓 TIN TỪ KHỐI ĐẠI HỌC & CAO ĐẲNG THÀNH VIÊN",
+        title: "Trường Đại học Nha Trang & Khối Doanh nghiệp SME ký kết Liên thông 450 Hồ sơ Năng lực Số Sinh viên Năm cuối lên Sàn JobAI",
+        summary: "Sinh viên các ngành CNTT, Quản trị Khách sạn, Kế toán – Tài chính và Ngôn ngữ được kết nối phỏng vấn trực tiếp với 30 Doanh nghiệp & Resort ngay trên hệ thống TC COMPASS.",
+        authorName: "Ban Hợp tác Doanh nghiệp & Việc làm SV",
+        authorOrg: "Trường Đại học Nha Trang (NTU) × TC COMPASS",
+        createdAt: "2 ngày trước",
+        pinned: false,
+        actionLabel: "Mở Sàn Nhân lực Xác thực",
+        actionView: "forum"
       }
     ];
 
@@ -6833,14 +7588,7 @@ function sanitizeStateTerminology() {
       }
     });
 
-    STATE.announcements = STATE.announcements.map((a) => ({
-      ...a,
-      badge: normalizeTermText(a.badge),
-      title: normalizeTermText(a.title),
-      summary: normalizeTermText(a.summary),
-      authorName: normalizeTermText(a.authorName),
-      authorOrg: normalizeTermText(a.authorOrg)
-    }));
+    STATE.announcements = STATE.announcements.map(enrichSingleAnnouncementItem);
   }
 
   if (Array.isArray(STATE.apps)) {

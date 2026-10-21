@@ -144,7 +144,7 @@
           </div>
         </div>
 
-        <!-- Thanh Bộ lọc & Tìm kiếm Bản tin Hệ sinh thái -->
+        <!-- Thanh Bộ lọc, Chế độ hiển thị & Tìm kiếm Bản tin Hệ sinh thái -->
         <div class="card" style="margin-bottom:20px;padding:14px 18px;">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
             <div class="forum-cat-pills" id="publicBulletinFilterBar" style="margin-bottom:0;">
@@ -158,17 +158,42 @@
                 🌟 Tin từ Đơn vị Thành viên (Trường / Trung tâm / DN)
               </button>
             </div>
-            <div style="flex:1;min-width:240px;max-width:360px;">
-              <input
-                type="text"
-                id="publicBulletinSearchInput"
-                class="input-control"
-                style="width:100%;"
-                placeholder="🔍 Tìm bản tin, chính sách, học bổng, tuyển dụng..."
-                oninput="renderCentralBulletins()"
-              />
+            <div style="display:flex;align-items:center;gap:10px;flex:1;justify-content:flex-end;min-width:280px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:220px;max-width:340px;">
+                <input
+                  type="text"
+                  id="publicBulletinSearchInput"
+                  class="input-control"
+                  style="width:100%;"
+                  placeholder="🔍 Tìm bản tin, chính sách, học bổng, tuyển dụng..."
+                  oninput="renderCentralBulletins()"
+                />
+              </div>
+              <button
+                type="button"
+                id="btnToggleBulletinLayout"
+                class="btn btn-outline btn-sm"
+                onclick="toggleBulletinLayoutMode()"
+                title="Chuyển đổi bố cục hiển thị Bản tin"
+              >
+                📰 Chế độ: 2 Cột Chuyên mục
+              </button>
             </div>
           </div>
+        </div>
+
+        <!-- KHỐI TIÊU ĐIỂM NỔI BẬT (FEATURED SPOTLIGHT NEWS VỚI ẢNH ĐẠI DIỆN LỚN) -->
+        <div id="publicFeaturedBulletinsWrap" style="margin-bottom:22px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge-red">🔥 TIÊU ĐIỂM ĐẦU TRANG</span>
+              <h4 style="font-size:16px;font-weight:800;color:#0b2559;margin:0;">
+                Bản tin Trọng điểm từ Hệ sinh thái TechCorp &amp; Đơn vị Thành viên Hạt nhân
+              </h4>
+            </div>
+            <span style="font-size:12px;color:#475569;font-weight:600;">💡 Nhấp vào ảnh hoặc tiêu đề bất kỳ để đọc toàn văn bài viết</span>
+          </div>
+          <div class="bulletin-featured-grid" id="publicFeaturedBulletinsGrid"></div>
         </div>
 
         <!-- Bố cục 2 Cột Chính: Bản tin Chung Hệ sinh thái TechCorp & Tin của các Đơn vị Thành viên -->
@@ -176,10 +201,10 @@
           <div class="card" id="masterBulletinsColCard">
             <div class="card-header">
               <div>
-                <h3 class="card-title">👑 Bản tin Chung & Chính sách từ Hệ sinh thái TechCorp</h3>
+                <h3 class="card-title">👑 Bản tin Chung &amp; Chính sách từ Hệ sinh thái TechCorp</h3>
                 <p class="card-subtitle">Định hướng phát triển, chính sách tài trợ hạt nhân và cập nhật công nghệ từ Hệ sinh thái TechCorp</p>
               </div>
-              <span class="badge badge-amber">Bản tin Điều hành</span>
+              <span class="badge badge-amber" id="masterColCountBadge">Bản tin Điều hành</span>
             </div>
             <div class="bulletin-list" id="masterBulletinsList"></div>
           </div>
@@ -187,10 +212,10 @@
           <div class="card" id="memberBulletinsColCard">
             <div class="card-header">
               <div>
-                <h3 class="card-title">🌟 Tin tức, Tuyển dụng & Sự kiện từ Các Đơn vị Thành viên</h3>
-                <p class="card-subtitle">Hoạt động tiêu biểu, học bổng, tuyển sinh & tuyển dụng từ Trường học, Trung tâm và Doanh nghiệp thành viên</p>
+                <h3 class="card-title">🌟 Tin tức, Tuyển dụng &amp; Sự kiện từ Các Đơn vị Thành viên</h3>
+                <p class="card-subtitle">Hoạt động tiêu biểu, học bổng, tuyển sinh &amp; tuyển dụng từ Trường học, Trung tâm và Doanh nghiệp thành viên</p>
               </div>
-              <span class="badge badge-blue">Tin Thành viên</span>
+              <span class="badge badge-blue" id="memberColCountBadge">Tin Thành viên</span>
             </div>
             <div class="bulletin-list" id="memberBulletinsList"></div>
           </div>
@@ -988,7 +1013,14 @@
     </div>
   </footer>
 
+  <!-- MODAL XEM CHI TIẾT BẢN TIN HỆ SINH THÁI & TIN ĐƠN VỊ THÀNH VIÊN -->
+  <div id="bulletinDetailModal" class="bulletin-detail-modal-backdrop" style="display:none;" onclick="if(event.target===this)closeBulletinDetailModal()">
+    <div class="bulletin-detail-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="bulletinModalTitle">
+      <div id="bulletinDetailModalBody"></div>
+    </div>
+  </div>
+
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=21"></script>
+  <script src="app.js?v=22"></script>
 </body>
 </html>

@@ -444,8 +444,16 @@
                 <input type="text" id="newBulletinTitle" class="input-control" style="width:100%;" placeholder="Nhập tiêu đề thông báo..." />
               </div>
               <div>
-                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung tóm tắt:</label>
-                <textarea id="newBulletinSummary" class="input-control" style="width:100%;min-height:80px;" placeholder="Nhập nội dung chi tiết..."></textarea>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">🖼️ Hình ảnh đại diện (URL ảnh hoặc để trống tự động chọn ảnh chuẩn):</label>
+                <input type="text" id="newBulletinImageUrl" class="input-control" style="width:100%;" placeholder="https://images.unsplash.com/..." />
+              </div>
+              <div>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung tóm tắt (Hiển thị ngoài thẻ tin):</label>
+                <textarea id="newBulletinSummary" class="input-control" style="width:100%;min-height:66px;" placeholder="Nhập đoạn tóm tắt ngắn gọn..."></textarea>
+              </div>
+              <div>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung bài viết chi tiết (Hiển thị khi bấm Xem tin chi tiết):</label>
+                <textarea id="newBulletinContent" class="input-control" style="width:100%;min-height:100px;" placeholder="Nhập toàn văn nội dung chi tiết của bản tin, chính sách áp dụng, quyền lợi thành viên..."></textarea>
               </div>
               <button class="btn btn-primary" onclick="submitNewAnnouncement()" style="padding:11px;">
                 🚀 Phát hành lên Trang Public Hệ sinh thái
@@ -851,7 +859,14 @@
     </main>
   </div>
 
+  <!-- MODAL XEM CHI TIẾT BẢN TIN HỆ SINH THÁI & TIN ĐƠN VỊ THÀNH VIÊN -->
+  <div id="bulletinDetailModal" class="bulletin-detail-modal-backdrop" style="display:none;" onclick="if(event.target===this)closeBulletinDetailModal()">
+    <div class="bulletin-detail-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="bulletinModalTitle">
+      <div id="bulletinDetailModalBody"></div>
+    </div>
+  </div>
+
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=13"></script>
+  <script src="app.js?v=22"></script>
 </body>
 </html>
