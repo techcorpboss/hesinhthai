@@ -2533,9 +2533,12 @@ function renderPublicProductsShowcase() {
       const groupApps = group.appIds
         .map((id) => activeApps.find((a) => a.id === id))
         .filter(Boolean);
-      if (idx === groupsToRender.length - 1 && selectedCat === "all" && extraApps.length > 0) {
-        groupApps.push(...extraApps);
-      }
+      const customInGroup = extraApps.filter(
+        (a) => (a.groupId && a.groupId === group.groupId) || (!a.groupId && idx === groupsToRender.length - 1)
+      );
+      customInGroup.forEach((ca) => {
+        if (!groupApps.some((x) => x.id === ca.id)) groupApps.push(ca);
+      });
       if (groupApps.length === 0) return "";
 
       return `
@@ -2562,6 +2565,172 @@ function renderPublicProductsShowcase() {
       `;
     })
     .join("");
+}
+
+// ==================== SHARED EXCEL (CSV UTF-8 BOM) & ENTERPRISE A4 PRINT HELPERS ====================
+function downloadCsvFile(filename, headers, rows) {
+  const escapeCsvCell = (val) => {
+    const str = String(val === undefined || val === null ? "" : val).replace(/\r?\n/g, " ");
+    if (str.includes(",") || str.includes('"') || str.includes(";")) {
+      return `"${str.replace(/"/g, '""')}"`;
+    }
+    return str;
+  };
+  const csvContent =
+    "\uFEFF" +
+    [headers.map(escapeCsvCell).join(","), ...rows.map((r) => r.map(escapeCsvCell).join(","))].join("\r\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function parseCsvToObjects(csvText) {
+  const cleanText = String(csvText || "").replace(/^\uFEFF/, "").trim();
+  if (!cleanText) return [];
+  const lines = cleanText.split(/\r?\n/).filter((l) => l.trim().length > 0);
+  if (lines.length < 2) return [];
+
+  const firstLine = lines[0];
+  const delimiter =
+    firstLine.split(";").length > firstLine.split(",").length
+      ? ";"
+      : firstLine.split("\t").length > firstLine.split(",").length
+      ? "\t"
+      : ",";
+
+  const splitCsvLine = (line) => {
+    const result = [];
+    let cur = "";
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          cur += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (ch === delimiter && !inQuotes) {
+        result.push(cur.trim());
+        cur = "";
+      } else {
+        cur += ch;
+      }
+    }
+    result.push(cur.trim());
+    return result;
+  };
+
+  const rawHeaders = splitCsvLine(lines[0]).map((h) => h.replace(/^"|"$/g, "").trim());
+  const records = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = splitCsvLine(lines[i]);
+    if (cols.every((c) => !c)) continue;
+    const obj = {};
+    rawHeaders.forEach((h, idx) => {
+      obj[h] = cols[idx] !== undefined ? cols[idx].replace(/^"|"$/g, "").trim() : "";
+    });
+    records.push(obj);
+  }
+  return records;
+}
+
+function openEnterprisePrintWindow(reportTitle, reportSubtitle, headers, rowsHtml, totalLabel) {
+  const nowStr = new Date().toLocaleString("vi-VN");
+  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"] || {
+    name: "Ban Điều hành Hệ sinh thái",
+    org: "TechCorp Headquarters"
+  };
+  const win = window.open("", "_blank", "width=1080,height=800");
+  if (!win) {
+    showToast(`<span style="color:#d97706">Vui lòng cho phép mở cửa sổ Pop-up trên trình duyệt để In báo cáo!</span>`);
+    return;
+  }
+  win.document.write(`
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+      <meta charset="UTF-8" />
+      <title>${escapeHtml(reportTitle)} — Hệ sinh thái TechCorp</title>
+      <style>
+        body { font-family: "Segoe UI", Arial, sans-serif; color: #0f172a; margin: 24px; font-size: 12.5px; line-height: 1.45; }
+        .print-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2.5px solid #0052d4; padding-bottom: 14px; margin-bottom: 18px; }
+        .org-box h2 { margin: 0; font-size: 16px; color: #0043b8; text-transform: uppercase; }
+        .org-box p { margin: 3px 0 0; font-size: 11.5px; color: #475569; }
+        .nat-box { text-align: right; font-size: 12px; font-weight: 700; color: #1e293b; }
+        .report-title { text-align: center; margin: 14px 0 18px; }
+        .report-title h1 { margin: 0; font-size: 19px; color: #0b2559; text-transform: uppercase; }
+        .report-title p { margin: 5px 0 0; font-size: 12px; color: #475569; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #94a3b8; padding: 8px 10px; text-align: left; vertical-align: top; }
+        th { background: #eff6ff; color: #0b2559; font-weight: 700; font-size: 12px; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .print-footer { margin-top: 24px; display: flex; justify-content: space-between; page-break-inside: avoid; }
+        .sig-box { text-align: center; min-width: 220px; }
+        .sig-box strong { display: block; margin-bottom: 55px; }
+        .no-print-bar { background: #0b2559; color: #fff; padding: 10px 16px; border-radius: 8px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; }
+        .no-print-bar button { background: #10b981; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; }
+        @media print { .no-print-bar { display: none !important; } body { margin: 10mm; } }
+      </style>
+    </head>
+    <body>
+      <div class="no-print-bar">
+        <span>🖨️ <strong>Xem trước Bản in Chuẩn A4:</strong> ${escapeHtml(reportTitle)} (${escapeHtml(totalLabel)})</span>
+        <div>
+          <button onclick="window.print()">🖨️ Xác nhận In / Lưu PDF</button>
+          <button onclick="window.close()" style="background:#ef4444;margin-left:8px;">✕ Đóng</button>
+        </div>
+      </div>
+      <div class="print-header">
+        <div class="org-box">
+          <h2>CÔNG TY TNHH CÔNG NGHỆ VÀ GIÁO DỤC TECHCORP</h2>
+          <p>Trục Quản trị Tập trung Hệ sinh thái Số — hesinhthai.techcorp.info.vn</p>
+          <p>Hotline Điều hành 24/7: 0392.091.068 • Địa chỉ: Nha Trang, Khánh Hòa</p>
+        </div>
+        <div class="nat-box">
+          <div>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+          <div style="font-weight:600;font-size:11.5px;">Độc lập - Tự do - Hạnh phúc</div>
+          <div style="font-weight:400;font-size:11px;color:#64748b;margin-top:4px;">Ngày xuất: ${escapeHtml(nowStr)}</div>
+        </div>
+      </div>
+      <div class="report-title">
+        <h1>${escapeHtml(reportTitle)}</h1>
+        <p>${escapeHtml(reportSubtitle)} — <strong>${escapeHtml(totalLabel)}</strong></p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:38px;text-align:center;">STT</th>
+            ${headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")}
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+        </tbody>
+      </table>
+      <div class="print-footer">
+        <div class="sig-box">
+          <strong>NGƯỜI LẬP BIỂU / XUẤT BÁO CÁO</strong>
+          <div>${escapeHtml(persona.name)}</div>
+          <div style="font-size:11px;color:#64748b;">(${escapeHtml(persona.org)})</div>
+        </div>
+        <div class="sig-box">
+          <strong>BAN ĐIỀU HÀNH HỆ SINH THÁI TECHCORP</strong>
+          <div>Xác thực điện tử SSO TechCorp ID</div>
+        </div>
+      </div>
+      <script>setTimeout(function(){ window.print(); }, 350);</script>
+    </body>
+    </html>
+  `);
+  win.document.close();
 }
 
 // ==================== 1. CONNECTED APPS & ROLE-BASED APP LAUNCHER ====================
@@ -2609,86 +2778,180 @@ function renderAdminAppsTable() {
   const tbody = document.getElementById("adminAppsTableBody");
   if (!tbody) return;
 
-  tbody.innerHTML = STATE.apps
-    .map((app) => {
-      const stBadge =
-        app.status === "locked"
-          ? `<span class="badge badge-red">🔴 Đã khóa</span>`
-          : app.status === "maintenance"
-          ? `<span class="badge badge-amber">🟡 Bảo trì</span>`
-          : `<span class="badge badge-green">🟢 Hoạt động</span>`;
+  const kw = (document.getElementById("adminAppSearchInput")?.value || "").trim().toLowerCase();
+  const statusFilter = document.getElementById("adminAppStatusFilter")?.value || "all";
 
-      return `
+  const filtered = (STATE.apps || []).filter((app) => {
+    const matchStatus = statusFilter === "all" || (app.status || "active") === statusFilter;
+    const matchKw =
+      !kw ||
+      (app.name || "").toLowerCase().includes(kw) ||
+      (app.id || "").toLowerCase().includes(kw) ||
+      (app.badge || "").toLowerCase().includes(kw) ||
+      (app.appUrl || "").toLowerCase().includes(kw) ||
+      (app.desc || "").toLowerCase().includes(kw);
+    return matchStatus && matchKw;
+  });
+
+  tbody.innerHTML =
+    filtered.length === 0
+      ? `<tr><td colspan="4" style="text-align:center;padding:20px;color:#64748b;">Không tìm thấy sản phẩm nào khớp với bộ lọc.</td></tr>`
+      : filtered
+          .map((app) => {
+            const meta = PRODUCT_SHOWCASE_META[app.id] || {};
+            const thumbUrl =
+              app.imageUrl ||
+              meta.imageUrl ||
+              "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80";
+            const stBadge =
+              app.status === "locked"
+                ? `<span class="badge badge-red">🔴 Đã khóa</span>`
+                : app.status === "maintenance"
+                ? `<span class="badge badge-amber">🟡 Bảo trì</span>`
+                : `<span class="badge badge-green">🟢 Hoạt động</span>`;
+
+            return `
         <tr>
           <td>
-            <strong>${escapeHtml(app.name)}</strong>
-            <div style="font-size:11.5px;color:#0052d4;">ID: <code>${escapeHtml(app.id)}</code> • Nhãn: ${escapeHtml(app.badge || "App")}</div>
-            <div style="font-size:11.5px;color:#475569;">${escapeHtml(app.desc || "")}</div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <img
+                src="${escapeHtml(thumbUrl)}"
+                alt="${escapeHtml(app.name)}"
+                style="width:68px;height:46px;object-fit:cover;border-radius:8px;border:1px solid #cbd5e1;flex-shrink:0;"
+                onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80'"
+              />
+              <div>
+                <strong>${escapeHtml(app.name)}</strong>
+                <div style="font-size:11.5px;color:#0052d4;">ID: <code>${escapeHtml(app.id)}</code> • Nhãn: ${escapeHtml(app.badge || "App")}</div>
+                <div style="font-size:11.5px;color:#475569;">${escapeHtml(app.desc || "")}</div>
+              </div>
+            </div>
           </td>
           <td>
-            <div style="font-size:12px;color:#0f172a;">🌐 ${escapeHtml(app.appUrl || "")}</div>
+            <div style="font-size:12px;color:#0f172a;">🌐 <a href="${escapeHtml(app.appUrl || "#")}" target="_blank" rel="noopener" style="color:#0052d4;text-decoration:none;font-weight:700;">${escapeHtml(app.appUrl || "")} ↗</a></div>
             <div style="font-size:11.5px;color:#d97706;margin-top:3px;">🔑 <code>${escapeHtml(app.apiKeyMasked || "tc_live_...")}</code></div>
           </td>
           <td>${stBadge}</td>
           <td>
             <div class="action-group">
-              <button class="btn btn-outline btn-sm" onclick="editEcosystemApp('${escapeHtml(app.id)}')">✏️ Sửa</button>
-              <button class="btn btn-warning btn-sm" onclick="toggleAppLock('${escapeHtml(app.id)}')">
+              <a href="product.html?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-primary btn-sm" style="text-decoration:none;" title="Xem trang giới thiệu sản phẩm">👁️ Xem</a>
+              <button type="button" class="btn btn-outline btn-sm" onclick="editEcosystemApp('${escapeHtml(app.id)}')">✏️ Sửa</button>
+              <button type="button" class="btn btn-warning btn-sm" onclick="toggleAppLock('${escapeHtml(app.id)}')">
                 ${app.status === "locked" ? "🔓 Mở" : "🔒 Khóa"}
               </button>
-              <button class="btn btn-outline btn-sm" onclick="rotateAppApiKey('${escapeHtml(app.id)}')">🔄 Đổi Key</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteEcosystemApp('${escapeHtml(app.id)}')">🗑️ Xoá</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="rotateAppApiKey('${escapeHtml(app.id)}')">🔄 Key</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deleteEcosystemApp('${escapeHtml(app.id)}')">🗑️ Xoá</button>
             </div>
           </td>
         </tr>
       `;
-    })
-    .join("");
+          })
+          .join("");
 }
 
 window.resetAppForm = function () {
-  document.getElementById("editAppMode").value = "create";
-  document.getElementById("appFormTitle").textContent = "➕ Bổ sung Ứng dụng Mới vào Hệ sinh thái";
+  const modeEl = document.getElementById("editAppMode");
+  if (modeEl) modeEl.value = "create";
+  const titleEl = document.getElementById("appFormTitle");
+  if (titleEl) titleEl.textContent = "➕ Bổ sung Sản phẩm Mới vào Hệ sinh thái";
+  const badgeEl = document.getElementById("appFormModeBadge");
+  if (badgeEl) {
+    badgeEl.textContent = "Chế độ: Tạo mới";
+    badgeEl.className = "badge badge-blue";
+  }
   const idInput = document.getElementById("newAppId");
-  idInput.disabled = false;
-  idInput.value = "";
-  document.getElementById("newAppBadge").value = "BizTech";
-  document.getElementById("newAppName").value = "";
-  document.getElementById("newAppStatus").value = "active";
-  document.getElementById("newAppUrl").value = "https://";
-  document.getElementById("newAppWebhook").value = "https://";
-  document.getElementById("newAppDesc").value = "";
+  if (idInput) {
+    idInput.disabled = false;
+    idInput.value = "";
+  }
+  if (document.getElementById("newAppBadge")) document.getElementById("newAppBadge").value = "BizTech";
+  if (document.getElementById("newAppName")) document.getElementById("newAppName").value = "";
+  if (document.getElementById("newAppStatus")) document.getElementById("newAppStatus").value = "active";
+  if (document.getElementById("newAppGroup")) document.getElementById("newAppGroup").value = "GROUP-6";
+  if (document.getElementById("newAppUrl")) document.getElementById("newAppUrl").value = "https://";
+  if (document.getElementById("newAppWebhook")) document.getElementById("newAppWebhook").value = "https://";
+  if (document.getElementById("newAppImageUrl")) document.getElementById("newAppImageUrl").value = "";
+  if (document.getElementById("newAppDesc")) document.getElementById("newAppDesc").value = "";
+};
+
+window.handleAppImageUpload = function (event) {
+  const file = event && event.target && event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (loadEvt) {
+    const img = new Image();
+    img.onload = function () {
+      const maxW = 960;
+      const maxH = 600;
+      let w = img.width;
+      let h = img.height;
+      if (w > maxW) {
+        h = Math.round((h * maxW) / w);
+        w = maxW;
+      }
+      if (h > maxH) {
+        w = Math.round((w * maxH) / h);
+        h = maxH;
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+      const urlInput = document.getElementById("newAppImageUrl");
+      if (urlInput) urlInput.value = dataUrl;
+      showToast(`📸 Đã nạp ảnh đại diện sản phẩm (${w}x${h}px)! Bấm <b>"Lưu Sản phẩm"</b> để áp dụng.`);
+    };
+    img.src = loadEvt.target.result;
+  };
+  reader.readAsDataURL(file);
 };
 
 window.editEcosystemApp = function (appId) {
   const app = STATE.apps.find((a) => a.id === appId);
   if (!app) return;
+  const meta = PRODUCT_SHOWCASE_META[app.id] || {};
+  const foundGroup = PRODUCT_GROUPS_6.find((g) => g.appIds.includes(app.id));
   document.getElementById("editAppMode").value = "edit";
-  document.getElementById("appFormTitle").textContent = `✏️ Cập nhật Ứng dụng: ${app.name}`;
+  document.getElementById("appFormTitle").textContent = `✏️ Cập nhật Sản phẩm: ${app.name}`;
+  const badgeEl = document.getElementById("appFormModeBadge");
+  if (badgeEl) {
+    badgeEl.textContent = `Đang sửa: ${app.id}`;
+    badgeEl.className = "badge badge-amber";
+  }
   const idInput = document.getElementById("newAppId");
   idInput.value = app.id;
   idInput.disabled = true;
   document.getElementById("newAppBadge").value = app.badge || "App";
   document.getElementById("newAppName").value = app.name || "";
   document.getElementById("newAppStatus").value = app.status || "active";
+  if (document.getElementById("newAppGroup")) {
+    document.getElementById("newAppGroup").value = app.groupId || (foundGroup && foundGroup.groupId) || "GROUP-6";
+  }
   document.getElementById("newAppUrl").value = app.appUrl || "";
   document.getElementById("newAppWebhook").value = app.webhookUrl || "";
+  if (document.getElementById("newAppImageUrl")) {
+    document.getElementById("newAppImageUrl").value = app.imageUrl || meta.imageUrl || "";
+  }
   document.getElementById("newAppDesc").value = app.desc || "";
-  showToast(`Đang nạp cấu hình ứng dụng <b>${escapeHtml(app.name)}</b> để chỉnh sửa.`);
+  showToast(`Đang nạp cấu hình sản phẩm <b>${escapeHtml(app.name)}</b> để chỉnh sửa.`);
 };
 
 window.saveEcosystemApp = async function () {
   const mode = document.getElementById("editAppMode")?.value || "create";
-  const id = document.getElementById("newAppId")?.value.trim();
+  const rawId = document.getElementById("newAppId")?.value.trim() || "";
+  const id = rawId.toLowerCase().replace(/[^a-z0-9-_]/g, "-");
   const name = document.getElementById("newAppName")?.value.trim();
   const badge = document.getElementById("newAppBadge")?.value.trim() || "New App";
+  const groupId = document.getElementById("newAppGroup")?.value || "GROUP-6";
   const status = document.getElementById("newAppStatus")?.value || "active";
   const appUrl = document.getElementById("newAppUrl")?.value.trim();
   const webhookUrl = document.getElementById("newAppWebhook")?.value.trim();
+  const imageUrl = document.getElementById("newAppImageUrl")?.value.trim();
   const desc = document.getElementById("newAppDesc")?.value.trim();
 
   if (!id || !name) {
-    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Mã định danh (App ID) và Tên ứng dụng!</span>`);
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Mã định danh (App ID) và Tên hiển thị Sản phẩm!</span>`);
     return;
   }
 
@@ -2700,6 +2963,8 @@ window.saveEcosystemApp = async function () {
         body: JSON.stringify({
           name,
           badge,
+          groupId,
+          imageUrl,
           status,
           appUrl,
           webhookUrl,
@@ -2715,7 +2980,7 @@ window.saveEcosystemApp = async function () {
         if (typeof window.refreshTechCorpTopbar === "function") {
           window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
         }
-        showToast(`Đã cập nhật ứng dụng <b>${escapeHtml(name)}</b> và lưu vào Audit Logs!`);
+        showToast(`✅ Đã cập nhật sản phẩm <b>${escapeHtml(name)}</b> và lưu vào Audit Logs!`);
         return;
       }
     } catch (_) {}
@@ -2724,6 +2989,8 @@ window.saveEcosystemApp = async function () {
     if (app) {
       app.name = name;
       app.badge = badge;
+      app.groupId = groupId;
+      if (imageUrl) app.imageUrl = imageUrl;
       app.status = status;
       app.appUrl = appUrl;
       app.webhookUrl = webhookUrl;
@@ -2733,7 +3000,7 @@ window.saveEcosystemApp = async function () {
       if (typeof window.refreshTechCorpTopbar === "function") {
         window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
       }
-      showToast(`Đã cập nhật ứng dụng <b>${escapeHtml(name)}</b>!`);
+      showToast(`✅ Đã cập nhật sản phẩm <b>${escapeHtml(name)}</b>!`);
     }
     return;
   }
@@ -2747,6 +3014,8 @@ window.saveEcosystemApp = async function () {
         id,
         name,
         badge,
+        groupId,
+        imageUrl,
         status,
         appUrl,
         webhookUrl,
@@ -2777,7 +3046,7 @@ window.saveEcosystemApp = async function () {
         `;
       }
 
-      showToast(`Đã bổ sung ứng dụng <b>${escapeHtml(data.app.name)}</b> vào hệ sinh thái!`);
+      showToast(`🚀 Đã bổ sung sản phẩm <b>${escapeHtml(data.app.name)}</b> vào Hệ sinh thái!`);
       return;
     } else if (data && data.error) {
       showToast(`<span style="color:#d97706">${escapeHtml(data.error)}</span>`);
@@ -2790,6 +3059,9 @@ window.saveEcosystemApp = async function () {
     id,
     name,
     badge,
+    groupId,
+    imageUrl:
+      imageUrl || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80",
     status,
     appUrl,
     webhookUrl,
@@ -2801,7 +3073,160 @@ window.saveEcosystemApp = async function () {
   if (typeof window.refreshTechCorpTopbar === "function") {
     window.refreshTechCorpTopbar(STATE.apps.filter((a) => a.status !== "locked"));
   }
-  showToast(`Đã bổ sung ứng dụng <b>${escapeHtml(name)}</b> vào hệ sinh thái!`);
+  showToast(`🚀 Đã bổ sung sản phẩm <b>${escapeHtml(name)}</b> vào Hệ sinh thái!`);
+};
+
+window.printAdminAppsReport = function () {
+  const rowsHtml = (STATE.apps || [])
+    .map(
+      (app, idx) => `
+      <tr>
+        <td style="text-align:center;font-weight:700;">${idx + 1}</td>
+        <td><strong>${escapeHtml(app.name)}</strong><br/><span style="font-size:11px;color:#0052d4;">Mã ID: ${escapeHtml(app.id)} • Nhãn: ${escapeHtml(app.badge || "App")}</span></td>
+        <td>${escapeHtml(app.appUrl || "")}</td>
+        <td>${escapeHtml(app.desc || "")}</td>
+        <td><strong>${escapeHtml((app.status || "active").toUpperCase())}</strong></td>
+      </tr>
+    `
+    )
+    .join("");
+  openEnterprisePrintWindow(
+    "DANH MỤC SẢN PHẨM & ỨNG DỤNG LIÊN THÔNG HỆ SINH THÁI TECHCORP",
+    "Báo cáo quản trị các nền tảng phần mềm đang vận hành trên trục SSO TechCorp ID",
+    ["Tên Sản phẩm & Mã Định danh", "Địa chỉ Truy cập (URL)", "Mô tả Chức năng & Liên thông", "Trạng thái"],
+    rowsHtml,
+    `Tổng số: ${(STATE.apps || []).length} Sản phẩm`
+  );
+};
+
+window.exportAppsExcel = function () {
+  const headers = ["id", "name", "badge", "groupId", "status", "appUrl", "webhookUrl", "imageUrl", "desc"];
+  const rows = (STATE.apps || []).map((a) => {
+    const meta = PRODUCT_SHOWCASE_META[a.id] || {};
+    const foundGroup = PRODUCT_GROUPS_6.find((g) => g.appIds.includes(a.id));
+    return [
+      a.id || "",
+      a.name || "",
+      a.badge || "",
+      a.groupId || (foundGroup && foundGroup.groupId) || "GROUP-6",
+      a.status || "active",
+      a.appUrl || "",
+      a.webhookUrl || "",
+      a.imageUrl || meta.imageUrl || "",
+      a.desc || ""
+    ];
+  });
+  downloadCsvFile(`TechCorp_Danh_Muc_San_Pham_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  showToast("📥 Đã xuất Danh mục Sản phẩm ra file Excel (.csv UTF-8) thành công!");
+};
+
+window.downloadAppsExcelTemplate = function () {
+  const headers = ["id", "name", "badge", "groupId", "status", "appUrl", "webhookUrl", "imageUrl", "desc"];
+  const sampleRows = [
+    [
+      "crm-spa",
+      "Quản lý Spa & Thẩm mỹ viện AI",
+      "BeautyTech",
+      "GROUP-6",
+      "active",
+      "https://spa.techcorp.info.vn",
+      "https://spa.techcorp.info.vn/api/webhooks/techcorp-hub",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=80",
+      "Phần mềm quản lý lịch hẹn, liệu trình chăm sóc khách hàng Spa & tích điểm E-Voucher liên thông"
+    ],
+    [
+      "fnb-pos",
+      "Quản lý Chuỗi Nhà hàng & Cafe (TechCorp POS)",
+      "F&B Cloud",
+      "GROUP-6",
+      "active",
+      "https://pos.techcorp.info.vn",
+      "https://pos.techcorp.info.vn/api/webhooks/techcorp-hub",
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+      "Order tại bàn bằng QR, quản lý định lượng kho bếp và đồng bộ doanh thu tự động về TechCorp ERP"
+    ]
+  ];
+  downloadCsvFile("TechCorp_Mau_Nhap_San_Pham_Template.csv", headers, sampleRows);
+  showToast("📄 Đã tải File Mẫu Excel Nhập Sản phẩm! Bạn có thể mở bằng Excel, thêm dòng và bấm 'Nhập Excel'.");
+};
+
+window.triggerImportAppsExcel = function () {
+  const input = document.getElementById("importAppsExcelInput");
+  if (input) {
+    input.value = "";
+    input.click();
+  }
+};
+
+window.handleImportAppsExcel = function (event) {
+  const file = event && event.target && event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    const records = parseCsvToObjects(e.target.result);
+    if (!records.length) {
+      showToast(`<span style="color:#d97706">File Excel/CSV trống hoặc không đúng định dạng! Hãy tải 'File Mẫu' để xem cấu trúc chuẩn.</span>`);
+      return;
+    }
+    const normalizedRows = records
+      .map((r) => ({
+        id: r.id || r.ID || r["Mã ID"] || r.appId || "",
+        name: r.name || r.Name || r["Tên sản phẩm"] || "",
+        badge: r.badge || r.Badge || r["Nhãn"] || "TechCorp Cloud",
+        groupId: r.groupId || r["Nhóm"] || "GROUP-6",
+        status: r.status || r["Trạng thái"] || "active",
+        appUrl: r.appUrl || r.URL || r["Địa chỉ Web"] || "",
+        webhookUrl: r.webhookUrl || r.Webhook || "",
+        imageUrl: r.imageUrl || r["Hình ảnh"] || "",
+        desc: r.desc || r["Mô tả"] || ""
+      }))
+      .filter((r) => r.id && r.name);
+
+    if (!normalizedRows.length) {
+      showToast(`<span style="color:#d97706">Không tìm thấy cột 'id' và 'name' hợp lệ trong file!</span>`);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/v1/apps/bulk-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows: normalizedRows, actorKey: STATE.currentPersona })
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        STATE.apps = data.apps;
+        STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+        renderAllViews();
+        showToast(
+          `📤 Đã nhập Excel thành công: Thêm mới <b>${data.createdCount}</b> sản phẩm, cập nhật <b>${data.updatedCount}</b> sản phẩm!`
+        );
+        return;
+      }
+    } catch (_) {}
+
+    let created = 0;
+    let updated = 0;
+    normalizedRows.forEach((r) => {
+      const cleanId = r.id.toLowerCase().replace(/[^a-z0-9-_]/g, "-");
+      const existing = STATE.apps.find((a) => a.id === cleanId);
+      if (existing) {
+        Object.assign(existing, { ...r, id: cleanId });
+        updated++;
+      } else {
+        STATE.apps.push({
+          ...r,
+          id: cleanId,
+          apiKeyMasked: `tc_live_${cleanId.slice(0, 6)}...aabb`
+        });
+        created++;
+      }
+    });
+    recordLocalAuditLog("APP_BULK_IMPORT", `Nhập Excel (${created} mới, ${updated} cập nhật)`, "INFO", "Nhập danh sách sản phẩm từ file Excel/CSV.");
+    renderAllViews();
+    showToast(`📤 Đã nhập Excel thành công: Thêm mới <b>${created}</b> sản phẩm, cập nhật <b>${updated}</b> sản phẩm!`);
+  };
+  reader.readAsText(file, "utf-8");
 };
 
 window.toggleAppLock = async function (appId) {
@@ -3907,21 +4332,34 @@ window.renderAdminUsersTable = function () {
   if (kpiUsers) {
     kpiUsers.textContent = `${STATE.users.length} Tài khoản`;
   }
+  const listCountBadge = document.getElementById("adminUsersListCountBadge");
   if (!tbody) return;
 
   const kw = (document.getElementById("adminUserSearchInput")?.value || "").toLowerCase();
   const roleFilter = document.getElementById("adminUserRoleFilter")?.value || "all";
+  const statusFilter = document.getElementById("adminUserStatusFilter")?.value || "all";
 
   const filtered = STATE.users.filter((u) => {
     const matchRole = roleFilter === "all" || u.role === roleFilter;
+    const matchStatus = statusFilter === "all" || (u.status || "active") === statusFilter;
     const matchKw =
       !kw ||
       (u.fullName || "").toLowerCase().includes(kw) ||
       (u.email || "").toLowerCase().includes(kw) ||
+      (u.phone || "").toLowerCase().includes(kw) ||
       (u.org || "").toLowerCase().includes(kw) ||
       (u.id || "").toLowerCase().includes(kw);
-    return matchRole && matchKw;
+    return matchRole && matchStatus && matchKw;
   });
+
+  if (listCountBadge) {
+    listCountBadge.textContent = `📊 Hiển thị: ${filtered.length} / ${STATE.users.length} thành viên`;
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:#64748b;">Không tìm thấy thành viên phù hợp với bộ lọc hiện tại.</td></tr>`;
+    return;
+  }
 
   tbody.innerHTML = filtered
     .map((u) => {
@@ -3942,8 +4380,8 @@ window.renderAdminUsersTable = function () {
             <div style="font-size:11.5px;color:#475569;">✉️ ${escapeHtml(u.email)} • 📞 ${escapeHtml(u.phone || "")}</div>
           </td>
           <td>
-            <div style="font-size:12.5px;color:#0f172a;">🏢 ${escapeHtml(u.org)}</div>
-            <span class="badge badge-purple" style="margin-top:4px;">${escapeHtml(u.roleBadge || u.role)}</span>
+            <div style="font-size:12.5px;color:#0f172a;font-weight:700;">🏢 ${escapeHtml(u.org)}</div>
+            <span class="badge badge-purple" style="margin-top:4px;">${escapeHtml(u.roleBadge || ROLE_BADGES[u.role] || u.role)}</span>
           </td>
           <td>
             <div>${appsList || "Toàn quyền"}</div>
@@ -3951,8 +4389,9 @@ window.renderAdminUsersTable = function () {
           </td>
           <td>${stBadge}</td>
           <td>
-            <div class="action-group">
-              <button class="btn btn-outline btn-sm" onclick="editEcosystemUser('${escapeHtml(u.id)}')">✏️ Sửa</button>
+            <div class="action-group" style="display:flex;gap:5px;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="viewUserDetailModal('${escapeHtml(u.id)}')" title="Xem chi tiết Hồ sơ Thành viên">👁️ Xem</button>
+              <button class="btn btn-outline btn-sm" onclick="editEcosystemUser('${escapeHtml(u.id)}')" title="Sửa thông tin thành viên">✏️ Sửa</button>
               <button class="btn btn-warning btn-sm" onclick="toggleUserLock('${escapeHtml(u.id)}')">
                 ${u.status === "locked" ? "🔓 Mở" : "🔒 Khóa"}
               </button>
@@ -3969,36 +4408,185 @@ window.renderAdminUsersTable = function () {
     .join("");
 };
 
-window.resetUserForm = function () {
-  document.getElementById("editUserId").value = "";
-  document.getElementById("userFormTitle").textContent = "➕ Tạo mới Tài khoản Người dùng (TechCorp ID)";
-  document.getElementById("userFullName").value = "";
-  document.getElementById("userPhone").value = "";
-  document.getElementById("userEmail").value = "";
-  document.getElementById("userStatus").value = "active";
-  document.getElementById("userOrg").value = "";
-  document.getElementById("userRole").value = "ceo_sme";
+window.toggleAllUserAppCheckboxes = function (checked) {
   document.querySelectorAll(".user-app-cb").forEach((cb) => {
-    cb.checked = ["lms-exam", "biz-web", "biz-erp"].includes(cb.value);
+    cb.checked = Boolean(checked);
+  });
+};
+
+window.autoSuggestAppsForRole = function (roleCode) {
+  const editId = document.getElementById("editUserId")?.value.trim();
+  if (editId) return; // Không tự động ghi đè khi đang ở chế độ Sửa tài khoản hiện hữu
+  const roleDefaults = {
+    super_admin: ["jobai", "erp", "kpi", "lms", "learn", "ttnn", "qldt", "gdtx", "mamnon", "tieuhoc", "thcs", "thpt", "qldh", "bds", "noithat", "techcorp"],
+    ceo_sme: ["jobai", "erp", "kpi", "bds", "noithat", "techcorp"],
+    center_director: ["lms", "learn", "ttnn", "qldt", "gdtx", "jobai"],
+    school_principal: ["mamnon", "tieuhoc", "thcs", "thpt", "qldh", "lms", "learn"],
+    student_parent: ["lms", "learn", "jobai", "ttnn"]
+  };
+  const suggested = roleDefaults[roleCode] || ["jobai", "erp", "kpi", "lms", "learn"];
+  document.querySelectorAll(".user-app-cb").forEach((cb) => {
+    cb.checked = suggested.includes(cb.value);
+  });
+};
+
+window.resetUserForm = function () {
+  if (document.getElementById("editUserId")) document.getElementById("editUserId").value = "";
+  if (document.getElementById("userFormTitle")) {
+    document.getElementById("userFormTitle").textContent = "➕ Tạo mới Tài khoản Thành viên (TechCorp ID)";
+  }
+  const modeBadge = document.getElementById("userFormModeBadge");
+  if (modeBadge) {
+    modeBadge.className = "badge badge-blue";
+    modeBadge.textContent = "Chế độ: Thêm mới";
+  }
+  if (document.getElementById("userFullName")) document.getElementById("userFullName").value = "";
+  if (document.getElementById("userPhone")) document.getElementById("userPhone").value = "";
+  if (document.getElementById("userEmail")) document.getElementById("userEmail").value = "";
+  if (document.getElementById("userStatus")) document.getElementById("userStatus").value = "active";
+  if (document.getElementById("userOrg")) document.getElementById("userOrg").value = "";
+  if (document.getElementById("userRole")) document.getElementById("userRole").value = "ceo_sme";
+  document.querySelectorAll(".user-app-cb").forEach((cb) => {
+    cb.checked = ["jobai", "erp", "kpi", "lms", "learn"].includes(cb.value);
   });
 };
 
 window.editEcosystemUser = function (userId) {
   const u = STATE.users.find((x) => x.id === userId);
   if (!u) return;
-  document.getElementById("editUserId").value = u.id;
-  document.getElementById("userFormTitle").textContent = `✏️ Chỉnh sửa Tài khoản: ${u.fullName} (${u.id})`;
-  document.getElementById("userFullName").value = u.fullName || "";
-  document.getElementById("userPhone").value = u.phone || "";
-  document.getElementById("userEmail").value = u.email || "";
-  document.getElementById("userStatus").value = u.status || "active";
-  document.getElementById("userOrg").value = u.org || "";
-  document.getElementById("userRole").value = u.role || "ceo_sme";
+  if (document.getElementById("editUserId")) document.getElementById("editUserId").value = u.id;
+  if (document.getElementById("userFormTitle")) {
+    document.getElementById("userFormTitle").textContent = `✏️ Chỉnh sửa Tài khoản: ${u.fullName} (${u.id})`;
+  }
+  const modeBadge = document.getElementById("userFormModeBadge");
+  if (modeBadge) {
+    modeBadge.className = "badge badge-amber";
+    modeBadge.textContent = `Đang sửa: ${u.id}`;
+  }
+  if (document.getElementById("userFullName")) document.getElementById("userFullName").value = u.fullName || "";
+  if (document.getElementById("userPhone")) document.getElementById("userPhone").value = u.phone || "";
+  if (document.getElementById("userEmail")) document.getElementById("userEmail").value = u.email || "";
+  if (document.getElementById("userStatus")) document.getElementById("userStatus").value = u.status || "active";
+  if (document.getElementById("userOrg")) document.getElementById("userOrg").value = u.org || "";
+  if (document.getElementById("userRole")) document.getElementById("userRole").value = u.role || "ceo_sme";
   const assigned = u.assignedApps || [];
   document.querySelectorAll(".user-app-cb").forEach((cb) => {
     cb.checked = assigned.includes(cb.value);
   });
-  showToast(`Đang nạp thông tin tài khoản <b>${escapeHtml(u.fullName)}</b> để chỉnh sửa.`);
+  const formEl = document.getElementById("userFormTitle");
+  if (formEl) formEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  showToast(`✏️ Đang nạp thông tin thành viên <b>${escapeHtml(u.fullName)}</b> để chỉnh sửa.`);
+};
+
+window.viewUserDetailModal = function (userId) {
+  const u = STATE.users.find((x) => x.id === userId);
+  if (!u) return;
+  let modal = document.getElementById("userDetailModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "userDetailModal";
+    modal.className = "bulletin-detail-modal-backdrop";
+    modal.style.display = "none";
+    modal.onclick = function (e) {
+      if (e.target === modal) window.closeUserDetailModal();
+    };
+    modal.innerHTML = `<div class="bulletin-detail-modal-dialog" style="max-width:680px;" role="dialog" aria-modal="true"><div id="userDetailModalBody"></div></div>`;
+    document.body.appendChild(modal);
+  }
+  const bodyEl = document.getElementById("userDetailModalBody");
+  if (!bodyEl) return;
+
+  const assignedApps = (u.assignedApps || []).map((appId) => {
+    const appObj = (STATE.apps || []).find((a) => a.id === appId);
+    return appObj ? `${appObj.name} (${appObj.id})` : appId;
+  });
+
+  bodyEl.innerHTML = `
+    <div class="bulletin-modal-topbar">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="badge badge-purple">🪪 HỒ SƠ ĐỊNH DANH SSO TECHCORP ID</span>
+        <span class="badge ${u.status === "locked" ? "badge-red" : "badge-green"}">${u.status === "locked" ? "🔴 Đã khóa" : "🟢 Active"}</span>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="printSingleUserCard('${escapeHtml(u.id)}')">🖨️ In Hồ sơ</button>
+        <button type="button" class="btn btn-danger btn-sm" onclick="closeUserDetailModal()">✕ Đóng</button>
+      </div>
+    </div>
+    <div style="padding:22px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1.5px solid #e2e8f0;">
+        <div>
+          <h3 style="font-size:20px;font-weight:800;color:#0b2559;margin:0;">👤 ${escapeHtml(u.fullName)}</h3>
+          <div style="font-size:13.5px;color:#0052d4;font-weight:700;margin-top:4px;">🏢 ${escapeHtml(u.org)}</div>
+          <div style="margin-top:6px;">
+            <span class="badge badge-blue">Mã định danh: ${escapeHtml(u.id)}</span>
+            <span class="badge badge-purple">${escapeHtml(u.roleBadge || ROLE_BADGES[u.role] || u.role)}</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn btn-primary btn-sm" onclick="closeUserDetailModal(); editEcosystemUser('${escapeHtml(u.id)}')">✏️ Chỉnh sửa Hồ sơ</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:16px;">
+        <div style="background:#f8fbff;border:1px solid #dbe6f5;border-radius:10px;padding:12px;">
+          <div style="font-size:11px;color:#64748b;font-weight:700;">📧 EMAIL SSO ĐĂNG NHẬP</div>
+          <div style="font-size:13.5px;font-weight:700;color:#0f172a;margin-top:4px;">${escapeHtml(u.email)}</div>
+        </div>
+        <div style="background:#f8fbff;border:1px solid #dbe6f5;border-radius:10px;padding:12px;">
+          <div style="font-size:11px;color:#64748b;font-weight:700;">📞 SỐ ĐIỆN THOẠI LIÊN HỆ</div>
+          <div style="font-size:13.5px;font-weight:700;color:#0f172a;margin-top:4px;">${escapeHtml(u.phone || "0392.091.068")}</div>
+        </div>
+        <div style="background:#f8fbff;border:1px solid #dbe6f5;border-radius:10px;padding:12px;">
+          <div style="font-size:11px;color:#64748b;font-weight:700;">🌐 ĐỊA CHỈ IP TRUY VẾT GẦN NHẤT</div>
+          <div style="font-size:13px;font-weight:700;color:#0f172a;margin-top:4px;">${escapeHtml(u.ipAddress || "103.170.122.138")}</div>
+        </div>
+        <div style="background:#f8fbff;border:1px solid #dbe6f5;border-radius:10px;padding:12px;">
+          <div style="font-size:11px;color:#64748b;font-weight:700;">🕒 ĐĂNG NHẬP LẦN CUỐI</div>
+          <div style="font-size:13px;font-weight:700;color:#0f172a;margin-top:4px;">${escapeHtml(u.lastLogin || "Vừa xong")}</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;">
+        <div style="font-size:12px;font-weight:800;color:#166534;margin-bottom:8px;">
+          🚀 Danh sách Ứng dụng được cấp phép SSO (${assignedApps.length} nền tảng):
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          ${
+            assignedApps.length
+              ? assignedApps.map((name) => `<span class="badge badge-green" style="font-size:11.5px;">✔ ${escapeHtml(name)}</span>`).join("")
+              : `<span class="badge badge-blue">Toàn quyền Hệ sinh thái</span>`
+          }
+        </div>
+      </div>
+    </div>
+  `;
+  modal.style.display = "flex";
+};
+
+window.closeUserDetailModal = function () {
+  const modal = document.getElementById("userDetailModal");
+  if (modal) modal.style.display = "none";
+};
+
+window.printSingleUserCard = function (userId) {
+  const u = STATE.users.find((x) => x.id === userId);
+  if (!u) return;
+  const bodyHtml = `
+    <table>
+      <tbody>
+        <tr><th style="width:30%;">Mã Định danh TechCorp ID</th><td><strong>${escapeHtml(u.id)}</strong></td></tr>
+        <tr><th>Họ và Tên Thành viên</th><td><strong>${escapeHtml(u.fullName)}</strong></td></tr>
+        <tr><th>Đơn vị / Tổ chức</th><td>${escapeHtml(u.org)}</td></tr>
+        <tr><th>Vai trò Phân quyền RBAC</th><td>${escapeHtml(u.roleBadge || ROLE_BADGES[u.role] || u.role)} (${escapeHtml(u.role)})</td></tr>
+        <tr><th>Email Đăng nhập SSO</th><td>${escapeHtml(u.email)}</td></tr>
+        <tr><th>Số điện thoại</th><td>${escapeHtml(u.phone || "")}</td></tr>
+        <tr><th>Trạng thái Tài khoản</th><td>${u.status === "locked" ? "Đã khóa (Locked)" : "Đang hoạt động (Active)"}</td></tr>
+        <tr><th>Ứng dụng được cấp phép</th><td>${escapeHtml((u.assignedApps || []).join(", "))}</td></tr>
+        <tr><th>Địa chỉ IP & Lần đăng nhập cuối</th><td>${escapeHtml(u.ipAddress || "103.170.122.138")} • ${escapeHtml(u.lastLogin || "Mới")}</td></tr>
+      </tbody>
+    </table>
+  `;
+  openEnterprisePrintWindow(`HỒ SƠ ĐỊNH DANH THÀNH VIÊN SSO: ${u.fullName}`, `Mã hồ sơ: ${u.id} • Đơn vị: ${u.org}`, bodyHtml);
 };
 
 function syncPersonaDropdown() {
@@ -4061,7 +4649,7 @@ window.saveEcosystemUser = async function () {
         syncPersonaDropdown();
         renderAllViews();
         resetUserForm();
-        showToast(`Đã cập nhật tài khoản <b>${escapeHtml(fullName)}</b> và ghi Audit Log!`);
+        showToast(`✅ Đã cập nhật thành viên <b>${escapeHtml(fullName)}</b> và ghi Audit Log!`);
         return;
       }
     } catch (_) {}
@@ -4079,7 +4667,7 @@ window.saveEcosystemUser = async function () {
       recordLocalAuditLog("USER_UPDATE", `${fullName} (${editId})`, "INFO", `Cập nhật thông tin tài khoản (${org}).`);
       renderAllViews();
       resetUserForm();
-      showToast(`Đã cập nhật tài khoản <b>${escapeHtml(fullName)}</b>!`);
+      showToast(`✅ Đã cập nhật thành viên <b>${escapeHtml(fullName)}</b>!`);
     }
     return;
   }
@@ -4108,7 +4696,7 @@ window.saveEcosystemUser = async function () {
       syncPersonaDropdown();
       renderAllViews();
       resetUserForm();
-      showToast(`Đã tạo tài khoản TechCorp ID cho <b>${escapeHtml(fullName)}</b>!`);
+      showToast(`🎉 Đã thêm mới thành viên <b>${escapeHtml(fullName)}</b> vào Hệ sinh thái!`);
       return;
     } else if (data && data.error) {
       showToast(`<span style="color:#d97706">${escapeHtml(data.error)}</span>`);
@@ -4121,12 +4709,12 @@ window.saveEcosystemUser = async function () {
     id: newId,
     personaKey: newId.toLowerCase(),
     fullName,
-    phone: phone || "0905.000.000",
+    phone: phone || "0392.091.068",
     email,
     org,
     role,
     roleBadge: ROLE_BADGES[role] || "SSO Member",
-    assignedApps: assignedApps.length ? assignedApps : ["biz-erp"],
+    assignedApps: assignedApps.length ? assignedApps : ["jobai", "erp", "kpi"],
     status,
     lastLogin: "Chưa đăng nhập",
     ipAddress: "103.170.122.138"
@@ -4143,7 +4731,7 @@ window.saveEcosystemUser = async function () {
   recordLocalAuditLog("USER_CREATE", `${fullName} (${newId})`, "INFO", `Tạo mới tài khoản thuộc đơn vị "${org}".`);
   renderAllViews();
   resetUserForm();
-  showToast(`Đã tạo tài khoản TechCorp ID cho <b>${escapeHtml(fullName)}</b>!`);
+  showToast(`🎉 Đã tạo tài khoản TechCorp ID cho <b>${escapeHtml(fullName)}</b>!`);
 };
 
 window.toggleUserLock = async function (userId) {
@@ -4220,6 +4808,189 @@ window.deleteEcosystemUser = async function (userId) {
   renderAllViews();
   showToast(`🗑️ Đã xoá tài khoản <b>${escapeHtml(u.fullName)}</b>!`);
 };
+
+window.printAdminUsersReport = function () {
+  const rowsHtml = (STATE.users || [])
+    .map(
+      (u, idx) => `
+      <tr>
+        <td style="text-align:center;">${idx + 1}</td>
+        <td><strong>${escapeHtml(u.id)}</strong></td>
+        <td><strong>${escapeHtml(u.fullName)}</strong><br/><span style="font-size:11px;color:#475569;">${escapeHtml(u.email)} • ${escapeHtml(u.phone || "")}</span></td>
+        <td>${escapeHtml(u.org)}</td>
+        <td>${escapeHtml(u.roleBadge || ROLE_BADGES[u.role] || u.role)}</td>
+        <td>${escapeHtml((u.assignedApps || []).join(", "))}</td>
+        <td>${u.status === "locked" ? "🔴 Đã khóa" : "🟢 Active"}</td>
+      </tr>
+    `
+    )
+    .join("");
+
+  const bodyHtml = `
+    <table>
+      <thead>
+        <tr>
+          <th style="width:42px;text-align:center;">STT</th>
+          <th style="width:110px;">Mã ID</th>
+          <th>Họ tên & Liên hệ</th>
+          <th>Đơn vị / Tổ chức Thành viên</th>
+          <th>Vai trò RBAC</th>
+          <th>Ứng dụng cấp phép</th>
+          <th style="width:95px;">Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>${rowsHtml}</tbody>
+    </table>
+  `;
+  openEnterprisePrintWindow(
+    "BÁO CÁO DANH SÁCH ĐƠN VỊ THÀNH VIÊN & TÀI KHOẢN SSO",
+    `Tổng số: ${(STATE.users || []).length} Tài khoản Định danh TechCorp ID`,
+    bodyHtml
+  );
+};
+
+window.exportUsersExcel = function () {
+  const headers = [
+    { key: "id", label: "Mã ID" },
+    { key: "fullName", label: "Họ và Tên" },
+    { key: "email", label: "Email SSO" },
+    { key: "phone", label: "Số điện thoại" },
+    { key: "org", label: "Đơn vị / Tổ chức" },
+    { key: "role", label: "Mã Vai trò (role)" },
+    { key: "roleBadge", label: "Tên Vai trò" },
+    { key: "assignedAppsStr", label: "Ứng dụng cấp phép (phân cách bằng dấu |)" },
+    { key: "status", label: "Trạng thái (active/locked)" },
+    { key: "lastLogin", label: "Đăng nhập cuối" },
+    { key: "ipAddress", label: "Địa chỉ IP" }
+  ];
+  const rows = (STATE.users || []).map((u) => ({
+    ...u,
+    assignedAppsStr: Array.isArray(u.assignedApps) ? u.assignedApps.join("|") : ""
+  }));
+  const dateStr = new Date().toISOString().slice(0, 10);
+  downloadCsvFile(`TechCorp_DanhSach_ThanhVien_${dateStr}.csv`, headers, rows);
+  showToast(`📥 Đã xuất file Excel (.CSV) gồm <b>${rows.length} thành viên</b>!`);
+};
+
+window.downloadUsersExcelTemplate = function () {
+  const headers = [
+    { key: "id", label: "Mã ID" },
+    { key: "fullName", label: "Họ và Tên" },
+    { key: "email", label: "Email SSO" },
+    { key: "phone", label: "Số điện thoại" },
+    { key: "org", label: "Đơn vị / Tổ chức" },
+    { key: "role", label: "Mã Vai trò (role)" },
+    { key: "assignedAppsStr", label: "Ứng dụng cấp phép (phân cách bằng dấu |)" },
+    { key: "status", label: "Trạng thái (active/locked)" }
+  ];
+  const sampleRows = [
+    {
+      id: "USR-NT-888",
+      fullName: "Nguyễn Minh Khôi",
+      email: "khoi.nm@doanhnghiepmoi.vn",
+      phone: "0905.888.999",
+      org: "Công ty CP Giải pháp Số Miền Trung",
+      role: "ceo_sme",
+      assignedAppsStr: "jobai|erp|kpi|techcorp",
+      status: "active"
+    },
+    {
+      id: "USR-NT-889",
+      fullName: "Trần Thị Thu Hà",
+      email: "ha.ttt@anhngusao.edu.vn",
+      phone: "0914.777.888",
+      org: "Hệ thống Anh ngữ Quốc tế Sao Khuê",
+      role: "center_director",
+      assignedAppsStr: "lms|learn|ttnn|qldt|jobai",
+      status: "active"
+    }
+  ];
+  downloadCsvFile("TechCorp_FileMau_Nhap_ThanhVien.csv", headers, sampleRows);
+  showToast("📄 Đã tải File Mẫu Nhập Thành viên (.CSV)!");
+};
+
+window.triggerImportUsersExcel = function () {
+  const inp = document.getElementById("importUsersExcelInput");
+  if (inp) {
+    inp.value = "";
+    inp.click();
+  }
+};
+
+window.handleImportUsersExcel = function (event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    const text = String(e.target.result || "");
+    const rawObjects = parseCsvToObjects(text);
+    if (!rawObjects.length) {
+      showToast(`<span style="color:#d97706">⚠️ File CSV trống hoặc không đúng định dạng!</span>`);
+      return;
+    }
+    const mappedRows = rawObjects
+      .map((r) => {
+        const appsRaw = r["Ứng dụng cấp phép (phân cách bằng dấu |)"] || r.assignedAppsStr || r.assignedApps || "jobai|erp|kpi";
+        return {
+          id: r["Mã ID"] || r.id || "",
+          fullName: r["Họ và Tên"] || r.fullName || "",
+          email: r["Email SSO"] || r.email || "",
+          phone: r["Số điện thoại"] || r.phone || "0392.091.068",
+          org: r["Đơn vị / Tổ chức"] || r.org || "Đơn vị Thành viên",
+          role: r["Mã Vai trò (role)"] || r.role || "ceo_sme",
+          assignedApps: String(appsRaw)
+            .split(/[|,;]/)
+            .map((s) => s.trim())
+            .filter(Boolean),
+          status: r["Trạng thái (active/locked)"] || r.status || "active"
+        };
+      })
+      .filter((x) => x.fullName && x.email);
+
+    if (!mappedRows.length) {
+      showToast(`<span style="color:#d97706">⚠️ Không tìm thấy dòng dữ liệu hợp lệ (cần có Họ và Tên, Email SSO)!</span>`);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/v1/users/bulk-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows: mappedRows, actorKey: STATE.currentPersona })
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        STATE.users = data.users;
+        STATE.personas = data.personas || STATE.personas;
+        STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+        syncPersonaDropdown();
+        renderAllViews();
+        showToast(`📤 Nhập Excel thành công: Thêm mới <b>${data.importedCount}</b>, Cập nhật <b>${data.updatedCount}</b> thành viên!`);
+        return;
+      }
+    } catch (_) {}
+
+    mappedRows.forEach((row) => {
+      const existing = STATE.users.find((u) => u.id === row.id || u.email.toLowerCase() === row.email.toLowerCase());
+      if (existing) {
+        Object.assign(existing, row);
+      } else {
+        const newId = row.id || "USR-NT-" + Math.floor(100 + Math.random() * 899);
+        STATE.users.unshift({
+          ...row,
+          id: newId,
+          roleBadge: ROLE_BADGES[row.role] || "SSO Member",
+          lastLogin: "Vừa nhập Excel",
+          ipAddress: "103.170.122.138"
+        });
+      }
+    });
+    renderAllViews();
+    showToast(`📤 Đã nhập <b>${mappedRows.length} thành viên</b> từ file Excel (.CSV)!`);
+  };
+  reader.readAsText(file, "utf-8");
+};
+
 
 // ==================== 4. USER TRACEABILITY & AUDIT LOGS ====================
 window.renderAuditLogsTable = function () {
@@ -5604,7 +6375,10 @@ window.openBulletinDetailModal = function (annId) {
         <span class="badge ${isMaster ? "badge-amber" : "badge-blue"}">${escapeHtml(item.badge)}</span>
         <span class="badge badge-green">🏷️ ${escapeHtml(item.categoryTag)}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="printSingleBulletinArticle('${escapeHtml(item.id)}')">
+          🖨️ In Bài viết
+        </button>
         <button type="button" class="btn btn-outline btn-sm" onclick="copyBulletinShareLink('${escapeHtml(item.id)}')">
           🔗 Sao chép Link Tin
         </button>
@@ -5750,6 +6524,10 @@ document.addEventListener("keydown", (e) => {
     if (modal && modal.style.display !== "none") {
       window.closeBulletinDetailModal();
     }
+    const uModal = document.getElementById("userDetailModal");
+    if (uModal && uModal.style.display !== "none") {
+      window.closeUserDetailModal();
+    }
   }
 });
 
@@ -5774,7 +6552,97 @@ window.closeBulletinModal = function () {
   if (modal) modal.style.display = "none";
 };
 
+window.handleBulletinTypeChange = function (val) {
+  const badgeInp = document.getElementById("newBulletinBadge");
+  if (!badgeInp) return;
+  const editId = document.getElementById("editBulletinId")?.value.trim();
+  if (editId) return;
+  badgeInp.value = val === "master" ? "🔥 BẢN TIN ĐIỀU HÀNH HỆ SINH THÁI" : "🌟 TIN TỪ ĐƠN VỊ THÀNH VIÊN";
+};
+
+window.handleBulletinImageUpload = function (event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const inp = document.getElementById("newBulletinImageUrl");
+    if (inp) {
+      inp.value = e.target.result;
+      showToast(`🖼️ Đã nạp ảnh đại diện bản tin <b>${escapeHtml(file.name)}</b> thành công!`);
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+window.resetBulletinForm = function () {
+  if (document.getElementById("editBulletinId")) document.getElementById("editBulletinId").value = "";
+  const titleEl = document.getElementById("bulletinFormTitle");
+  if (titleEl) titleEl.textContent = "📢 Soạn thảo & Phát hành Bản tin lên Trang Public";
+  const badgeEl = document.getElementById("bulletinFormModeBadge");
+  if (badgeEl) {
+    badgeEl.className = "badge badge-blue";
+    badgeEl.textContent = "Chế độ: Đăng tin mới";
+  }
+  const btnEl = document.getElementById("btnSubmitBulletinText");
+  if (btnEl) btnEl.textContent = "📢 Phát hành lên Trang Public ngay";
+  if (document.getElementById("newBulletinSourceType")) document.getElementById("newBulletinSourceType").value = "master";
+  if (document.getElementById("newBulletinBadge")) document.getElementById("newBulletinBadge").value = "🔥 BẢN TIN ĐIỀU HÀNH HỆ SINH THÁI";
+  if (document.getElementById("newBulletinTitle")) document.getElementById("newBulletinTitle").value = "";
+  if (document.getElementById("newBulletinImageUrl")) document.getElementById("newBulletinImageUrl").value = "";
+  if (document.getElementById("newBulletinSummary")) document.getElementById("newBulletinSummary").value = "";
+  if (document.getElementById("newBulletinContent")) document.getElementById("newBulletinContent").value = "";
+};
+
+window.editAnnouncementAdmin = function (annId) {
+  const raw = (STATE.announcements || []).find((a) => a.id === annId);
+  if (!raw) return;
+  const item = enrichSingleAnnouncementItem(raw);
+  if (document.getElementById("editBulletinId")) document.getElementById("editBulletinId").value = item.id;
+  const titleEl = document.getElementById("bulletinFormTitle");
+  if (titleEl) titleEl.textContent = `✏️ Chỉnh sửa Bản tin: ${item.title}`;
+  const badgeEl = document.getElementById("bulletinFormModeBadge");
+  if (badgeEl) {
+    badgeEl.className = "badge badge-amber";
+    badgeEl.textContent = `Đang sửa: ${item.id}`;
+  }
+  const btnEl = document.getElementById("btnSubmitBulletinText");
+  if (btnEl) btnEl.textContent = "💾 Lưu Cập nhật Bản tin";
+  if (document.getElementById("newBulletinSourceType")) document.getElementById("newBulletinSourceType").value = item.sourceType || "master";
+  if (document.getElementById("newBulletinBadge")) document.getElementById("newBulletinBadge").value = item.badge || "";
+  if (document.getElementById("newBulletinTitle")) document.getElementById("newBulletinTitle").value = item.title || "";
+  if (document.getElementById("newBulletinImageUrl")) document.getElementById("newBulletinImageUrl").value = item.imageUrl || "";
+  if (document.getElementById("newBulletinSummary")) document.getElementById("newBulletinSummary").value = item.summary || "";
+  if (document.getElementById("newBulletinContent")) document.getElementById("newBulletinContent").value = item.content || item.summary || "";
+  if (titleEl) titleEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  showToast(`✏️ Đang nạp bản tin mã <b>${escapeHtml(item.id)}</b> lên khung soạn thảo để chỉnh sửa.`);
+};
+
+window.togglePinAnnouncementAdmin = async function (annId) {
+  const raw = (STATE.announcements || []).find((a) => a.id === annId);
+  if (!raw) return;
+  const nextPinned = !raw.pinned;
+  try {
+    const res = await fetch(`/api/v1/announcements/${encodeURIComponent(annId)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pinned: nextPinned, actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.announcements = data.announcements;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      renderAllViews();
+      showToast(nextPinned ? `📌 Đã GHIM bản tin <b>${escapeHtml(raw.title)}</b> lên đầu!` : `Đã bỏ ghim bản tin <b>${escapeHtml(raw.title)}</b>.`);
+      return;
+    }
+  } catch (_) {}
+  raw.pinned = nextPinned;
+  renderAllViews();
+  showToast(nextPinned ? `📌 Đã GHIM bản tin <b>${escapeHtml(raw.title)}</b> lên đầu!` : `Đã bỏ ghim bản tin <b>${escapeHtml(raw.title)}</b>.`);
+};
+
 window.submitNewAnnouncement = async function () {
+  const editId = document.getElementById("editBulletinId")?.value.trim();
   const sourceType = document.getElementById("newBulletinSourceType")?.value || "member";
   const badge = document.getElementById("newBulletinBadge")?.value.trim();
   const title = document.getElementById("newBulletinTitle")?.value.trim();
@@ -5782,7 +6650,7 @@ window.submitNewAnnouncement = async function () {
   const summary = document.getElementById("newBulletinSummary")?.value.trim();
   const content = document.getElementById("newBulletinContent")?.value.trim() || summary;
   if (!title || !summary) {
-    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Tiêu đề và Nội dung thông báo!</span>`);
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Tiêu đề và Nội dung tóm tắt thông báo!</span>`);
     return;
   }
   const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
@@ -5791,6 +6659,49 @@ window.submitNewAnnouncement = async function () {
       ? "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80"
       : "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80";
 
+  // Update existing announcement
+  if (editId) {
+    try {
+      const res = await fetch(`/api/v1/announcements/${encodeURIComponent(editId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sourceType,
+          badge,
+          title,
+          imageUrl: imageUrl || defaultImg,
+          summary,
+          content,
+          actorKey: STATE.currentPersona
+        })
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        STATE.announcements = data.announcements;
+        STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+        resetBulletinForm();
+        renderAllViews();
+        showToast(`✅ Đã cập nhật Bản tin mã <b>${escapeHtml(editId)}</b> thành công!`);
+        return;
+      }
+    } catch (_) {}
+
+    const target = (STATE.announcements || []).find((a) => a.id === editId);
+    if (target) {
+      target.sourceType = sourceType;
+      target.badge = badge;
+      target.title = title;
+      target.imageUrl = imageUrl || defaultImg;
+      target.summary = summary;
+      target.content = content;
+    }
+    resetBulletinForm();
+    renderAllViews();
+    showToast(`✅ Đã cập nhật Bản tin mã <b>${escapeHtml(editId)}</b>!`);
+    return;
+  }
+
+  // Create new announcement
   try {
     const res = await fetch("/api/v1/announcements", {
       method: "POST",
@@ -5812,10 +6723,7 @@ window.submitNewAnnouncement = async function () {
       STATE.announcements = data.announcements;
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
       closeBulletinModal();
-      if (document.getElementById("newBulletinTitle")) document.getElementById("newBulletinTitle").value = "";
-      if (document.getElementById("newBulletinImageUrl")) document.getElementById("newBulletinImageUrl").value = "";
-      if (document.getElementById("newBulletinSummary")) document.getElementById("newBulletinSummary").value = "";
-      if (document.getElementById("newBulletinContent")) document.getElementById("newBulletinContent").value = "";
+      resetBulletinForm();
       renderAllViews();
       showToast("📢 Đã phát hành Bản tin kèm hình ảnh đại diện lên Trang Public Hệ sinh thái thành công!");
       return;
@@ -5841,6 +6749,7 @@ window.submitNewAnnouncement = async function () {
   });
   recordLocalAuditLog("ANNOUNCEMENT_PUBLISH", title, "INFO", `Đăng bản tin mới lên Cổng Chung (${badge}).`);
   closeBulletinModal();
+  resetBulletinForm();
   renderAllViews();
   showToast("📢 Đã phát hành Bản tin lên Trang Public Hệ sinh thái!");
 };
@@ -5969,11 +6878,37 @@ window.submitWorkspaceForumPost = async function () {
   showToast("🚀 Đã gửi bài viết Giao thương B2B từ trang Quản trị!");
 };
 
-function renderAdminBulletinsTable() {
+window.renderAdminBulletinsTable = function () {
   const tbody = document.getElementById("adminBulletinsTableBody");
+  const countBadge = document.getElementById("adminBulletinsListCountBadge");
   if (!tbody) return;
+
+  const kw = (document.getElementById("adminBulletinSearchInput")?.value || "").toLowerCase();
+  const typeFilter = document.getElementById("adminBulletinTypeFilter")?.value || "all";
+
   const enrichedList = (STATE.announcements || []).map(enrichSingleAnnouncementItem);
-  tbody.innerHTML = enrichedList
+  const filtered = enrichedList.filter((a) => {
+    const matchType = typeFilter === "all" || a.sourceType === typeFilter;
+    const matchKw =
+      !kw ||
+      (a.title || "").toLowerCase().includes(kw) ||
+      (a.summary || "").toLowerCase().includes(kw) ||
+      (a.authorOrg || "").toLowerCase().includes(kw) ||
+      (a.authorName || "").toLowerCase().includes(kw) ||
+      (a.id || "").toLowerCase().includes(kw);
+    return matchType && matchKw;
+  });
+
+  if (countBadge) {
+    countBadge.textContent = `📊 Hiển thị: ${filtered.length} / ${enrichedList.length} bản tin`;
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:#64748b;">Không tìm thấy bản tin nào khớp với bộ lọc hiện tại.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered
     .map(
       (a) => `
       <tr>
@@ -5988,12 +6923,15 @@ function renderAdminBulletinsTable() {
             />
             <div>
               <span class="badge ${a.sourceType === "master" ? "badge-amber" : "badge-blue"}">${escapeHtml(a.badge)}</span>
-              <div style="font-size:11px;color:#64748b;margin-top:3px;">🏷️ ${escapeHtml(a.categoryTag)}</div>
+              <div style="font-size:11px;color:#64748b;margin-top:3px;">
+                🏷️ ${escapeHtml(a.categoryTag)} ${a.pinned ? `<span style="color:#d97706;font-weight:800;">• 📌 Đang ghim</span>` : ""}
+              </div>
             </div>
           </div>
         </td>
         <td>
           <strong style="color:#0f172a;cursor:pointer;" onclick="openBulletinDetailModal('${escapeHtml(a.id)}')">${escapeHtml(a.title)}</strong>
+          <div style="font-size:11px;color:#0052d4;margin-top:2px;">Mã: <code>${escapeHtml(a.id)}</code></div>
           <div style="font-size:12px;color:#475569;margin-top:3px;">${escapeHtml(a.summary)}</div>
         </td>
         <td>
@@ -6005,18 +6943,24 @@ function renderAdminBulletinsTable() {
           <div style="font-size:11px;color:#0052d4;font-weight:700;margin-top:2px;">👁️ ${Number(a.views).toLocaleString("vi-VN")} lượt xem</div>
         </td>
         <td>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <button class="btn btn-primary btn-sm" onclick="openBulletinDetailModal('${escapeHtml(a.id)}')">📖 Xem</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteAnnouncementAdmin('${escapeHtml(a.id)}')">🗑️ Xoá</button>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="openBulletinDetailModal('${escapeHtml(a.id)}')" title="Đọc chi tiết bản tin">📖 Xem</button>
+            <button class="btn btn-outline btn-sm" onclick="editAnnouncementAdmin('${escapeHtml(a.id)}')" title="Chỉnh sửa bản tin">✏️ Sửa</button>
+            <button class="btn btn-warning btn-sm" onclick="togglePinAnnouncementAdmin('${escapeHtml(a.id)}')" title="Ghim / Bỏ ghim bản tin">${a.pinned ? "📌 Bỏ ghim" : "📌 Ghim"}</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteAnnouncementAdmin('${escapeHtml(a.id)}')" title="Xoá bản tin">🗑️ Xoá</button>
           </div>
         </td>
       </tr>
     `
     )
     .join("");
-}
+};
 
 window.deleteAnnouncementAdmin = async function (annId) {
+  const target = (STATE.announcements || []).find((a) => a.id === annId);
+  if (target && !confirm(`Bạn có chắc chắn muốn XOÁ bản tin "${target.title}" (${annId}) khỏi Cổng Hệ sinh thái?`)) {
+    return;
+  }
   try {
     const res = await fetch(`/api/v1/announcements/${encodeURIComponent(annId)}`, { method: "DELETE" });
     const data = await res.json();
@@ -6024,14 +6968,205 @@ window.deleteAnnouncementAdmin = async function (annId) {
       STATE.announcements = data.announcements;
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
       renderAllViews();
-      showToast("Đã xoá thông báo khỏi Cổng Chung!");
+      showToast("🗑️ Đã xoá thông báo khỏi Cổng Chung!");
       return;
     }
   } catch (_) {}
   STATE.announcements = (STATE.announcements || []).filter((a) => a.id !== annId);
   renderAllViews();
-  showToast("Đã xoá thông báo khỏi Cổng Chung!");
+  showToast("🗑️ Đã xoá thông báo khỏi Cổng Chung!");
 };
+
+window.printAdminBulletinsReport = function () {
+  const list = (STATE.announcements || []).map(enrichSingleAnnouncementItem);
+  const rowsHtml = list
+    .map(
+      (a, idx) => `
+      <tr>
+        <td style="text-align:center;">${idx + 1}</td>
+        <td><strong>${escapeHtml(a.id)}</strong></td>
+        <td>${a.sourceType === "master" ? "🔥 Điều hành Hệ sinh thái" : "🌟 Tin Đơn vị Thành viên"}</td>
+        <td><strong>${escapeHtml(a.title)}</strong><br/><span style="font-size:11px;color:#475569;">${escapeHtml(a.summary)}</span></td>
+        <td><strong>${escapeHtml(a.authorOrg)}</strong><br/>${escapeHtml(a.authorName)}</td>
+        <td>${escapeHtml(a.createdAt)}<br/>👁️ ${Number(a.views).toLocaleString("vi-VN")} lượt xem</td>
+      </tr>
+    `
+    )
+    .join("");
+
+  const bodyHtml = `
+    <table>
+      <thead>
+        <tr>
+          <th style="width:42px;text-align:center;">STT</th>
+          <th style="width:110px;">Mã Tin</th>
+          <th style="width:150px;">Phân loại Nguồn</th>
+          <th>Tiêu đề & Tóm tắt Nội dung</th>
+          <th style="width:180px;">Đơn vị Ban hành</th>
+          <th style="width:120px;">Thời gian & Lượt xem</th>
+        </tr>
+      </thead>
+      <tbody>${rowsHtml}</tbody>
+    </table>
+  `;
+  openEnterprisePrintWindow(
+    "BÁO CÁO TỔNG HỢP BẢN TIN ĐIỀU HÀNH & TIN ĐƠN VỊ THÀNH VIÊN",
+    `Tổng số: ${list.length} Bản tin đang lưu hành trên Cổng Hệ sinh thái TechCorp`,
+    bodyHtml
+  );
+};
+
+window.printSingleBulletinArticle = function (annId) {
+  const list = (STATE.announcements || []).map(enrichSingleAnnouncementItem);
+  const item = list.find((a) => a.id === annId) || list[0];
+  if (!item) return;
+
+  const paragraphsHtml = String(item.content || item.summary || "")
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p style="margin-bottom:10px;line-height:1.65;text-align:justify;">${escapeHtml(p)}</p>`)
+    .join("");
+
+  const bodyHtml = `
+    <div style="margin-bottom:14px;padding:12px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:8px;">
+      <div><strong>Mã Bản tin:</strong> ${escapeHtml(item.id)} • <strong>Phân loại:</strong> ${escapeHtml(item.badge)}</div>
+      <div style="margin-top:4px;"><strong>Đơn vị ban hành:</strong> ${escapeHtml(item.authorOrg)} • <strong>Người đại diện:</strong> ${escapeHtml(item.authorName)}</div>
+      <div style="margin-top:4px;"><strong>Thời gian phát hành:</strong> ${escapeHtml(item.createdAt)} • <strong>Lượt tiếp cận:</strong> ${Number(item.views).toLocaleString("vi-VN")} lượt xem</div>
+    </div>
+    <div style="margin-bottom:14px;padding:12px;background:#eff6ff;border-left:4px solid #0052d4;font-weight:700;">
+      📌 Tóm tắt trọng tâm: ${escapeHtml(item.summary)}
+    </div>
+    <div style="font-size:13.5px;">
+      ${paragraphsHtml}
+    </div>
+  `;
+  openEnterprisePrintWindow(item.title, `${item.authorOrg} • ${item.categoryTag}`, bodyHtml);
+};
+
+window.exportBulletinsExcel = function () {
+  const headers = [
+    { key: "id", label: "Mã Bản tin" },
+    { key: "sourceType", label: "Loại nguồn (master/member)" },
+    { key: "badge", label: "Nhãn Chuyên mục" },
+    { key: "title", label: "Tiêu đề Bản tin" },
+    { key: "summary", label: "Tóm tắt Nội dung" },
+    { key: "content", label: "Nội dung Chi tiết" },
+    { key: "imageUrl", label: "URL Ảnh đại diện" },
+    { key: "authorOrg", label: "Đơn vị đăng" },
+    { key: "authorName", label: "Người đăng" },
+    { key: "createdAt", label: "Thời gian đăng" },
+    { key: "views", label: "Lượt xem" },
+    { key: "pinned", label: "Ghim đầu trang (true/false)" }
+  ];
+  const rows = (STATE.announcements || []).map(enrichSingleAnnouncementItem);
+  const dateStr = new Date().toISOString().slice(0, 10);
+  downloadCsvFile(`TechCorp_DanhSach_BanTin_${dateStr}.csv`, headers, rows);
+  showToast(`📥 Đã xuất file Excel (.CSV) gồm <b>${rows.length} bản tin</b>!`);
+};
+
+window.downloadBulletinsExcelTemplate = function () {
+  const headers = [
+    { key: "id", label: "Mã Bản tin" },
+    { key: "sourceType", label: "Loại nguồn (master/member)" },
+    { key: "badge", label: "Nhãn Chuyên mục" },
+    { key: "title", label: "Tiêu đề Bản tin" },
+    { key: "summary", label: "Tóm tắt Nội dung" },
+    { key: "content", label: "Nội dung Chi tiết" },
+    { key: "imageUrl", label: "URL Ảnh đại diện" },
+    { key: "authorOrg", label: "Đơn vị đăng" },
+    { key: "authorName", label: "Người đăng" }
+  ];
+  const sampleRows = [
+    {
+      id: "ANN-SAMPLE-01",
+      sourceType: "master",
+      badge: "🔥 BẢN TIN ĐIỀU HÀNH HỆ SINH THÁI",
+      title: "Thông báo Triển khai Nền tảng Quản trị Liên thông Quý IV/2026",
+      summary: "Tất cả đơn vị thành viên được nâng cấp miễn phí hạn mức lưu trữ Cloud và API SSO.",
+      content: "Ban Điều hành Hệ sinh thái TechCorp trân trọng thông báo chương trình nâng cấp toàn diện hạ tầng dữ liệu...",
+      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80",
+      authorOrg: "Ban Điều hành Hệ sinh thái TechCorp",
+      authorName: "Ban Quản trị Hệ sinh thái"
+    }
+  ];
+  downloadCsvFile("TechCorp_FileMau_Nhap_BanTin.csv", headers, sampleRows);
+  showToast("📄 Đã tải File Mẫu Nhập Bản tin (.CSV)!");
+};
+
+window.triggerImportBulletinsExcel = function () {
+  const inp = document.getElementById("importBulletinsExcelInput");
+  if (inp) {
+    inp.value = "";
+    inp.click();
+  }
+};
+
+window.handleImportBulletinsExcel = function (event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    const text = String(e.target.result || "");
+    const rawObjects = parseCsvToObjects(text);
+    if (!rawObjects.length) {
+      showToast(`<span style="color:#d97706">⚠️ File CSV trống hoặc không đúng định dạng!</span>`);
+      return;
+    }
+    const mappedRows = rawObjects
+      .map((r) => ({
+        id: r["Mã Bản tin"] || r.id || "",
+        sourceType: r["Loại nguồn (master/member)"] || r.sourceType || "member",
+        badge: r["Nhãn Chuyên mục"] || r.badge || "🌟 TIN TỪ ĐƠN VỊ THÀNH VIÊN",
+        title: r["Tiêu đề Bản tin"] || r.title || "",
+        summary: r["Tóm tắt Nội dung"] || r.summary || "",
+        content: r["Nội dung Chi tiết"] || r.content || r["Tóm tắt Nội dung"] || "",
+        imageUrl: r["URL Ảnh đại diện"] || r.imageUrl || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80",
+        authorOrg: r["Đơn vị đăng"] || r.authorOrg || "Hệ sinh thái TechCorp",
+        authorName: r["Người đăng"] || r.authorName || "Ban Quản trị"
+      }))
+      .filter((x) => x.title && x.summary);
+
+    if (!mappedRows.length) {
+      showToast(`<span style="color:#d97706">⚠️ Không tìm thấy dòng dữ liệu hợp lệ (cần có Tiêu đề Bản tin và Tóm tắt Nội dung)!</span>`);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/v1/announcements/bulk-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows: mappedRows, actorKey: STATE.currentPersona })
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        STATE.announcements = data.announcements;
+        STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+        renderAllViews();
+        showToast(`📤 Nhập Excel thành công: Thêm mới <b>${data.importedCount}</b>, Cập nhật <b>${data.updatedCount}</b> bản tin!`);
+        return;
+      }
+    } catch (_) {}
+
+    mappedRows.forEach((row) => {
+      const existing = (STATE.announcements || []).find((a) => a.id === row.id || a.title === row.title);
+      if (existing) {
+        Object.assign(existing, row);
+      } else {
+        STATE.announcements.unshift({
+          ...row,
+          id: row.id || "ANN-" + Date.now() + "-" + Math.floor(Math.random() * 100),
+          createdAt: "Vừa nhập Excel",
+          views: 120
+        });
+      }
+    });
+    renderAllViews();
+    showToast(`📤 Đã nhập <b>${mappedRows.length} bản tin</b> từ file Excel (.CSV)!`);
+  };
+  reader.readAsText(file, "utf-8");
+};
+
 
 // ==================== DEDICATED MEMBER ORGANIZATION WORKSPACES (VIEW-WORKSPACE) ====================
 window.setPreviewTenantRole = function (roleCode) {

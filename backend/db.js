@@ -1804,8 +1804,12 @@ class HubDatabase {
       id: cleanId,
       name: payload.name || cleanId,
       badge: payload.badge || "New App",
+      groupId: payload.groupId || "GROUP-6",
       category: payload.category || "custom",
       color: payload.color || "#0ea5e9",
+      imageUrl:
+        (payload.imageUrl || "").trim() ||
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80",
       appUrl: payload.appUrl || `https://${cleanId}.techcorp.info.vn`,
       webhookUrl: payload.webhookUrl || `https://${cleanId}.techcorp.info.vn/api/webhooks/techcorp-hub`,
       desc: payload.desc || "Ứng dụng tích hợp vào Hệ sinh thái TechCorp",
@@ -1833,6 +1837,7 @@ class HubDatabase {
       severity: "INFO",
       details: `Tích hợp ứng dụng mới vào hệ sinh thái với URL: ${newApp.appUrl} (Trạng thái: ${newApp.status}).`
     });
+    this.save();
     return newApp;
   }
 
@@ -1845,6 +1850,8 @@ class HubDatabase {
     const oldStatus = app.status;
     if (payload.name !== undefined) app.name = payload.name.trim() || app.name;
     if (payload.badge !== undefined) app.badge = payload.badge.trim() || app.badge;
+    if (payload.groupId !== undefined && payload.groupId.trim()) app.groupId = payload.groupId.trim();
+    if (payload.imageUrl !== undefined && payload.imageUrl.trim()) app.imageUrl = payload.imageUrl.trim();
     if (payload.appUrl !== undefined) app.appUrl = payload.appUrl.trim() || app.appUrl;
     if (payload.webhookUrl !== undefined) app.webhookUrl = payload.webhookUrl.trim();
     if (payload.desc !== undefined) app.desc = payload.desc.trim();
@@ -1883,6 +1890,64 @@ class HubDatabase {
     });
     this.save();
     return removed;
+  }
+
+  bulkImportApps(rows, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!Array.isArray(rows) || rows.length === 0) {
+      throw new Error("Không có dữ liệu sản phẩm hợp lệ để nhập.");
+    }
+    let createdCount = 0;
+    let updatedCount = 0;
+    rows.forEach((r) => {
+      const cleanId = String(r.id || r.appId || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9-_]/g, "-");
+      const name = String(r.name || "").trim();
+      if (!cleanId || !name) return;
+      const existing = this.state.apps.find((a) => a.id === cleanId);
+      if (existing) {
+        existing.name = name;
+        if (r.badge) existing.badge = String(r.badge).trim();
+        if (r.groupId) existing.groupId = String(r.groupId).trim();
+        if (r.appUrl) existing.appUrl = String(r.appUrl).trim();
+        if (r.webhookUrl) existing.webhookUrl = String(r.webhookUrl).trim();
+        if (r.imageUrl) existing.imageUrl = String(r.imageUrl).trim();
+        if (r.desc) existing.desc = String(r.desc).trim();
+        if (r.status) existing.status = String(r.status).trim();
+        updatedCount++;
+      } else {
+        this.state.apps.push({
+          id: cleanId,
+          name,
+          badge: String(r.badge || "TechCorp Cloud").trim(),
+          groupId: String(r.groupId || "GROUP-6").trim(),
+          category: "custom",
+          color: "#0ea5e9",
+          imageUrl:
+            String(r.imageUrl || "").trim() ||
+            "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80",
+          appUrl: String(r.appUrl || `https://${cleanId}.techcorp.info.vn`).trim(),
+          webhookUrl: String(r.webhookUrl || `https://${cleanId}.techcorp.info.vn/api/webhooks/techcorp-hub`).trim(),
+          desc: String(r.desc || "Ứng dụng tích hợp vào Hệ sinh thái TechCorp").trim(),
+          apiKey: generateApiKey("tc_live"),
+          status: String(r.status || "active").trim(),
+          scopes: ["sso:login", "events:publish", "events:subscribe"],
+          createdAt: new Date().toISOString()
+        });
+        createdCount++;
+      }
+    });
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "APP_BULK_IMPORT",
+      target: `Nhập Excel Sản phẩm (${createdCount} mới, ${updatedCount} cập nhật)`,
+      severity: "INFO",
+      details: `Nhập dữ liệu hàng loạt từ file Excel/CSV: thêm mới ${createdCount} sản phẩm, cập nhật ${updatedCount} sản phẩm.`
+    });
+    this.save();
+    return { createdCount, updatedCount, apps: this.getPublicApps() };
   }
 
   // ==================== FORUM MODERATION & CRUD ====================
@@ -2245,6 +2310,82 @@ class HubDatabase {
     return removed;
   }
 
+  bulkImportUsers(rows, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!Array.isArray(rows) || rows.length === 0) {
+      throw new Error("Không có dữ liệu thành viên hợp lệ để nhập.");
+    }
+    const ROLE_BADGES = {
+      super_admin: "🛡️ Super Admin TechCorp",
+      ceo_sme: "Khối Doanh nghiệp SME",
+      center_director: "Khối Đào tạo NN-TH",
+      school_principal: "Khối Cơ sở Giáo dục",
+      hr_manager: "Quản trị Nhân sự (HR)",
+      student_parent: "Cộng đồng Học viên / SV"
+    };
+    let createdCount = 0;
+    let updatedCount = 0;
+    rows.forEach((r) => {
+      const fullName = String(r.fullName || "").trim();
+      const email = String(r.email || "").trim();
+      const org = String(r.org || "").trim();
+      if (!fullName || !email || !org) return;
+      const role = String(r.role || "ceo_sme").trim();
+      const assignedApps = Array.isArray(r.assignedApps)
+        ? r.assignedApps
+        : String(r.assignedApps || "jobai|erp|kpi|lms|learn")
+            .split(/[|,;]/)
+            .map((s) => s.trim())
+            .filter(Boolean);
+
+      const existing = this.state.users.find(
+        (u) => u.email.toLowerCase() === email.toLowerCase() || (r.id && u.id === String(r.id).trim())
+      );
+      if (existing) {
+        existing.fullName = fullName;
+        existing.email = email;
+        existing.org = org;
+        if (r.phone) existing.phone = String(r.phone).trim();
+        existing.role = role;
+        existing.roleBadge = ROLE_BADGES[role] || existing.roleBadge || "SSO Member";
+        if (assignedApps.length) existing.assignedApps = assignedApps;
+        if (r.status) existing.status = String(r.status).trim();
+        this.syncUserToPersonas(existing);
+        updatedCount++;
+      } else {
+        const newId = String(r.id || "").trim() || "USR-NT-" + Math.floor(100 + Math.random() * 900);
+        const newUser = {
+          id: newId,
+          personaKey: newId.toLowerCase(),
+          fullName,
+          email,
+          phone: String(r.phone || "0905.000.000").trim(),
+          org,
+          role,
+          roleBadge: ROLE_BADGES[role] || "SSO Member",
+          defaultAppId: assignedApps[0] || "erp",
+          assignedApps: assignedApps.length ? assignedApps : ["jobai", "erp", "lms"],
+          status: String(r.status || "active").trim(),
+          lastLogin: "Chưa đăng nhập",
+          ipAddress,
+          createdAt: new Date().toISOString()
+        };
+        this.state.users.unshift(newUser);
+        this.syncUserToPersonas(newUser);
+        createdCount++;
+      }
+    });
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "USER_BULK_IMPORT",
+      target: `Nhập Excel Thành viên (${createdCount} mới, ${updatedCount} cập nhật)`,
+      severity: "INFO",
+      details: `Nhập danh sách thành viên từ file Excel/CSV: tạo mới ${createdCount}, cập nhật ${updatedCount} tài khoản.`
+    });
+    this.save();
+    return { createdCount, updatedCount, users: this.state.users, personas: this.state.personas };
+  }
+
   // ==================== RBAC & ANNOUNCEMENTS ====================
   updateRbacPermission(roleCode, permKey, value, actorKey = "super-admin", ipAddress = "103.170.122.138") {
     if (!this.state.rbacMatrix || !this.state.rbacMatrix[roleCode]) {
@@ -2322,6 +2463,119 @@ class HubDatabase {
     });
     this.save();
     return newAnn;
+  }
+
+  updateAnnouncement(annId, payload, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    const ann = (this.state.announcements || []).find((a) => a.id === annId);
+    if (!ann) {
+      throw new Error(`Không tìm thấy bản tin '${annId}' để cập nhật.`);
+    }
+    if (payload.sourceType !== undefined) ann.sourceType = payload.sourceType === "master" ? "master" : "member";
+    if (payload.badge !== undefined && String(payload.badge).trim()) ann.badge = String(payload.badge).trim();
+    if (payload.categoryTag !== undefined && String(payload.categoryTag).trim()) {
+      ann.categoryTag = String(payload.categoryTag).trim();
+    }
+    if (payload.title !== undefined && String(payload.title).trim()) ann.title = String(payload.title).trim();
+    if (payload.summary !== undefined && String(payload.summary).trim()) ann.summary = String(payload.summary).trim();
+    if (payload.content !== undefined && String(payload.content).trim()) ann.content = String(payload.content).trim();
+    if (payload.imageUrl !== undefined && String(payload.imageUrl).trim()) {
+      ann.imageUrl = String(payload.imageUrl).trim();
+    }
+    if (payload.authorName !== undefined && String(payload.authorName).trim()) {
+      ann.authorName = String(payload.authorName).trim();
+    }
+    if (payload.authorOrg !== undefined && String(payload.authorOrg).trim()) {
+      ann.authorOrg = String(payload.authorOrg).trim();
+    }
+    if (payload.pinned !== undefined) {
+      ann.pinned = Boolean(payload.pinned);
+    }
+    if (Array.isArray(payload.highlights) && payload.highlights.length > 0) {
+      ann.highlights = payload.highlights;
+    }
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "ANNOUNCEMENT_UPDATE",
+      target: `${ann.id}: ${ann.title}`,
+      severity: "INFO",
+      details: `Cập nhật nội dung & hình ảnh bản tin "${ann.title}".`
+    });
+    this.save();
+    return ann;
+  }
+
+  bulkImportAnnouncements(rows, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!Array.isArray(rows) || rows.length === 0) {
+      throw new Error("Không có dữ liệu bản tin hợp lệ để nhập.");
+    }
+    let createdCount = 0;
+    let updatedCount = 0;
+    rows.forEach((r) => {
+      const title = String(r.title || "").trim();
+      const summary = String(r.summary || "").trim();
+      if (!title || !summary) return;
+      const sourceType = String(r.sourceType || "member").trim() === "master" ? "master" : "member";
+      const existing = r.id ? (this.state.announcements || []).find((a) => a.id === String(r.id).trim()) : null;
+      if (existing) {
+        existing.sourceType = sourceType;
+        existing.title = title;
+        existing.summary = summary;
+        if (r.badge) existing.badge = String(r.badge).trim();
+        if (r.categoryTag) existing.categoryTag = String(r.categoryTag).trim();
+        if (r.imageUrl) existing.imageUrl = String(r.imageUrl).trim();
+        if (r.content) existing.content = String(r.content).trim();
+        if (r.authorOrg) existing.authorOrg = String(r.authorOrg).trim();
+        if (r.authorName) existing.authorName = String(r.authorName).trim();
+        updatedCount++;
+      } else {
+        const defaultImg =
+          sourceType === "master"
+            ? "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80"
+            : "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1000&q=80";
+        this.state.announcements.unshift({
+          id: String(r.id || "").trim() || "ANN-" + (Date.now() + createdCount),
+          sourceType,
+          badge:
+            String(r.badge || "").trim() ||
+            (sourceType === "master"
+              ? "👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP"
+              : "🌟 THÔNG TIN TỪ ĐƠN VỊ THÀNH VIÊN"),
+          categoryTag:
+            String(r.categoryTag || "").trim() ||
+            (sourceType === "master" ? "Điều hành Hệ sinh thái" : "Tin Đơn vị Thành viên"),
+          title,
+          summary,
+          content: String(r.content || summary).trim(),
+          imageUrl: String(r.imageUrl || "").trim() || defaultImg,
+          authorName: String(r.authorName || "Ban Điều hành Hệ sinh thái").trim(),
+          authorOrg: String(r.authorOrg || "TechCorp Headquarters").trim(),
+          createdAt: String(r.createdAt || "Vừa xong").trim(),
+          pinned: Boolean(r.pinned),
+          views: Number(r.views) || 150,
+          readTime: String(r.readTime || "3 phút đọc").trim(),
+          actionLabel: sourceType === "master" ? "Xem Sản phẩm" : "Kết nối ngay",
+          actionView: sourceType === "master" ? "products" : "forum",
+          highlights: [
+            `Phát hành chính thức bởi: ${String(r.authorOrg || "TechCorp").trim()}`,
+            "Xác thực qua Cổng Thông tin Tập trung Hệ sinh thái TechCorp",
+            "Hỗ trợ kết nối B2B & tư vấn triển khai trực tiếp qua Hotline 0392.091.068"
+          ]
+        });
+        createdCount++;
+      }
+    });
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "ANNOUNCEMENT_BULK_IMPORT",
+      target: `Nhập Excel Bản tin (${createdCount} mới, ${updatedCount} cập nhật)`,
+      severity: "INFO",
+      details: `Nhập danh sách bản tin từ file Excel/CSV: thêm mới ${createdCount}, cập nhật ${updatedCount} bản tin.`
+    });
+    this.save();
+    return { createdCount, updatedCount, announcements: this.state.announcements };
   }
 
   deleteAnnouncement(annId, actorKey = "super-admin", ipAddress = "103.170.122.138") {

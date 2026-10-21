@@ -190,6 +190,20 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
+  if (pathname === "/api/v1/apps/bulk-import" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const result = db.bulkImportApps(body.rows || [], body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        ...result,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
   const appItemMatch = pathname.match(/^\/api\/v1\/apps\/([^/]+)$/);
   if (appItemMatch && method === "PUT") {
     try {
@@ -507,6 +521,20 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
+  if (pathname === "/api/v1/users/bulk-import" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const result = db.bulkImportUsers(body.rows || [], body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        ...result,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
   const userItemMatch = pathname.match(/^\/api\/v1\/users\/([^/]+)$/);
   if (userItemMatch && method === "PUT") {
     try {
@@ -799,10 +827,40 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
-  const annDeleteMatch = pathname.match(/^\/api\/v1\/announcements\/([^/]+)$/);
-  if (annDeleteMatch && method === "DELETE") {
+  if (pathname === "/api/v1/announcements/bulk-import" && method === "POST") {
     try {
-      const annId = decodeURIComponent(annDeleteMatch[1]);
+      const body = await parseBody(req);
+      const result = db.bulkImportAnnouncements(body.rows || [], body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        ...result,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  const annItemMatch = pathname.match(/^\/api\/v1\/announcements\/([^/]+)$/);
+  if (annItemMatch && method === "PUT") {
+    try {
+      const annId = decodeURIComponent(annItemMatch[1]);
+      const body = await parseBody(req);
+      const updated = db.updateAnnouncement(annId, body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        announcement: updated,
+        announcements: db.state.announcements,
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  if (annItemMatch && method === "DELETE") {
+    try {
+      const annId = decodeURIComponent(annItemMatch[1]);
       const removed = db.deleteAnnouncement(annId, "super-admin", clientIp);
       return sendJson(res, 200, {
         ok: true,

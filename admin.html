@@ -164,24 +164,48 @@
       <section id="panel-master-apps" class="tab-panel">
         <div class="grid-2">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="flex-wrap:wrap;gap:10px;">
               <div>
-                <h3 class="card-title">🚀 Danh mục Sản phẩm & Ứng dụng trong Hệ sinh thái TechCorp</h3>
+                <h3 class="card-title">🚀 Danh mục Sản phẩm &amp; Ứng dụng trong Hệ sinh thái TechCorp</h3>
                 <p class="card-subtitle">
-                  Mọi ứng dụng thêm mới hoặc cập nhật tại đây sẽ tự động hiển thị trên <strong>Trang Public Quảng bá Sản phẩm</strong> và <strong>Thanh Topbar SSO</strong>.
+                  Quản trị toàn diện (Thêm, Xem, Sửa, Xoá, Khóa/Mở, In ấn, Xuất/Nhập Excel). Mọi cập nhật tự động đồng bộ ra <strong>Trang Public Sản phẩm</strong> và <strong>Thanh Topbar SSO</strong>.
                 </p>
               </div>
-              <button class="btn btn-outline btn-sm" onclick="resetAppForm()">+ Nhập mới</button>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminAppsReport()">🖨️ In Danh mục</button>
+                <button type="button" class="btn btn-emerald btn-sm" onclick="exportAppsExcel()">📥 Xuất Excel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportAppsExcel()">📤 Nhập Excel</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="downloadAppsExcelTemplate()" title="Tải file Excel mẫu để nhập sản phẩm">📄 File Mẫu</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="resetAppForm()">➕ Nhập mới</button>
+                <input type="file" id="importAppsExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportAppsExcel(event)" />
+              </div>
+            </div>
+
+            <div class="filter-bar" style="margin-bottom:12px;">
+              <input
+                type="text"
+                id="adminAppSearchInput"
+                class="input-control"
+                style="min-width:220px;flex:1;"
+                placeholder="🔍 Tìm theo tên sản phẩm, mã App ID, tên miền, mô tả..."
+                oninput="renderAdminAppsTable()"
+              />
+              <select id="adminAppStatusFilter" class="select-control" onchange="renderAdminAppsTable()">
+                <option value="all">Tất cả trạng thái (${16}+ App)</option>
+                <option value="active">🟢 Đang hoạt động (Active)</option>
+                <option value="maintenance">🟡 Đang bảo trì (Maintenance)</option>
+                <option value="locked">🔴 Tạm khóa / Ẩn (Locked)</option>
+              </select>
             </div>
 
             <div class="table-wrap">
               <table class="tc-table">
                 <thead>
                   <tr>
-                    <th>Ứng dụng & Mã ID</th>
-                    <th>Địa chỉ Web & API Key</th>
+                    <th>Sản phẩm, Ảnh &amp; Mã ID</th>
+                    <th>Địa chỉ Web &amp; API Key</th>
                     <th>Trạng thái</th>
-                    <th>Thao tác Quản trị</th>
+                    <th>Thao tác Quản trị (CRUD)</th>
                   </tr>
                 </thead>
                 <tbody id="adminAppsTableBody"></tbody>
@@ -192,31 +216,32 @@
           <div class="card" style="align-self:start;">
             <div class="card-header">
               <div>
-                <h3 class="card-title" id="appFormTitle">➕ Bổ sung / Cập nhật Ứng dụng vào Hệ sinh thái</h3>
-                <p class="card-subtitle">Tự động cấp khóa API Key và mã nhúng liên thông SSO.</p>
+                <h3 class="card-title" id="appFormTitle">➕ Bổ sung / Cập nhật Sản phẩm vào Hệ sinh thái</h3>
+                <p class="card-subtitle">Tự động cấp khóa API Key, hình ảnh đại diện và mã nhúng liên thông SSO.</p>
               </div>
+              <span class="badge badge-blue" id="appFormModeBadge">Chế độ: Tạo mới</span>
             </div>
 
             <input type="hidden" id="editAppMode" value="create" />
-            <div style="display:flex;flex-direction:column;gap:12px;">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="display:flex;flex-direction:column;gap:11px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Mã định danh Ứng dụng (App ID):</label>
-                  <input type="text" id="newAppId" class="input-control" style="width:100%;" value="biz-hotel-pms" />
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Mã định danh Ứng dụng (App ID):</label>
+                  <input type="text" id="newAppId" class="input-control" style="width:100%;" placeholder="VD: biz-hotel-pms" value="biz-hotel-pms" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Nhãn phân loại (Badge):</label>
-                  <input type="text" id="newAppBadge" class="input-control" style="width:100%;" value="Hospitality" />
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Nhãn phân loại (Badge):</label>
+                  <input type="text" id="newAppBadge" class="input-control" style="width:100%;" placeholder="VD: Hospitality / EdTech" value="Hospitality" />
                 </div>
               </div>
 
-              <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
+              <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:10px;">
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Tên hiển thị Sản phẩm:</label>
-                  <input type="text" id="newAppName" class="input-control" style="width:100%;" value="QL Khách sạn & Resort (PMS)" />
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Tên hiển thị Sản phẩm:</label>
+                  <input type="text" id="newAppName" class="input-control" style="width:100%;" placeholder="Nhập tên sản phẩm..." value="QL Khách sạn & Resort (PMS)" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Trạng thái hoạt động:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Trạng thái hoạt động:</label>
                   <select id="newAppStatus" class="select-control" style="width:100%;">
                     <option value="active">🟢 Đang hoạt động (Active)</option>
                     <option value="maintenance">🟡 Đang bảo trì (Maintenance)</option>
@@ -225,33 +250,61 @@
                 </div>
               </div>
 
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Thuộc Nhóm Sản phẩm (Hiển thị trên Trang Sản phẩm):</label>
+                <select id="newAppGroup" class="select-control" style="width:100%;">
+                  <option value="GROUP-1">Nhóm 01: Giáo dục Mầm non &amp; Phổ thông K-12</option>
+                  <option value="GROUP-2">Nhóm 02: Đại học, Cao đẳng &amp; Giáo dục Thường xuyên</option>
+                  <option value="GROUP-3">Nhóm 03: Trung tâm Ngoại ngữ - Tin học &amp; Khảo thí LMS</option>
+                  <option value="GROUP-4">Nhóm 04: Sàn Việc làm AI (JobAI) &amp; Cổng Giải pháp Số</option>
+                  <option value="GROUP-5">Nhóm 05: Quản trị Doanh nghiệp (ERP &amp; BSC-KPI)</option>
+                  <option value="GROUP-6" selected>Nhóm 06: Khách sạn PMS, Sàn BĐS AI &amp; Nội thất</option>
+                </select>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Địa chỉ Web (App URL):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Địa chỉ Web (App URL):</label>
                   <input type="text" id="newAppUrl" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Webhook nhận sự kiện:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Webhook nhận sự kiện:</label>
                   <input type="text" id="newAppWebhook" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn/api/webhooks/techcorp-hub" />
                 </div>
               </div>
 
+              <div style="background:#f8fbff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;">
+                <label style="font-size:12px;color:#0043b8;font-weight:800;display:block;margin-bottom:5px;">🖼️ Hình ảnh Đại diện Sản phẩm (URL hoặc Tải ảnh từ máy tính):</label>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <input
+                    type="text"
+                    id="newAppImageUrl"
+                    class="input-control"
+                    style="flex:1;"
+                    placeholder="https://images.unsplash.com/..."
+                    value="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80"
+                  />
+                  <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0;white-space:nowrap;">
+                    📤 Chọn Ảnh
+                    <input type="file" id="newAppImageFileInput" accept="image/*" style="display:none;" onchange="handleAppImageUpload(event)" />
+                  </label>
+                </div>
+              </div>
+
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Mô tả chức năng & Luồng dữ liệu liên thông:</label>
-                <input
-                  type="text"
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Mô tả chức năng &amp; Luồng dữ liệu liên thông:</label>
+                <textarea
                   id="newAppDesc"
                   class="input-control"
-                  style="width:100%;"
-                  value="Quản lý buồng phòng, đặt phòng & kết nối tuyển thực tập sinh Du lịch Nha Trang"
-                />
+                  style="width:100%;min-height:62px;font-family:inherit;"
+                >Quản lý buồng phòng, đặt phòng &amp; kết nối tuyển thực tập sinh Du lịch Nha Trang</textarea>
               </div>
 
               <div style="display:flex;gap:10px;">
-                <button class="btn btn-primary" onclick="saveEcosystemApp()" style="flex:1;padding:11px;">
-                  💾 Lưu Sản phẩm & Đồng bộ ra Trang Public
+                <button type="button" class="btn btn-primary" onclick="saveEcosystemApp()" style="flex:1;padding:11px;">
+                  💾 Lưu Sản phẩm &amp; Đồng bộ ra Trang Public
                 </button>
-                <button class="btn btn-outline" onclick="resetAppForm()">Làm mới</button>
+                <button type="button" class="btn btn-outline" onclick="resetAppForm()">Hủy / Nhập mới</button>
               </div>
             </div>
 
@@ -394,24 +447,48 @@
         <!-- KHỐI 2: QUẢN TRỊ BẢN TIN ĐIỀU HÀNH & TIN TỨC ĐƠN VỊ THÀNH VIÊN -->
         <div class="grid-2">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="flex-wrap:wrap;gap:10px;">
               <div>
-                <h3 class="card-title">📢 Danh sách Bản tin Điều hành & Quảng bá Đang Hiển thị Ngoài Trang Public</h3>
+                <h3 class="card-title">📢 Danh sách Bản tin Điều hành &amp; Tin Đơn vị Thành viên (Full CRUD)</h3>
                 <p class="card-subtitle">
-                  Quản lý các thông báo chính thức từ Hệ sinh thái TechCorp và các chương trình học bổng, sự kiện, ưu đãi từ Đơn vị Thành viên.
+                  Quản lý toàn diện (Tạo mới, Xem chi tiết, Chỉnh sửa, Ghim nổi bật, Xoá, In ấn, Xuất/Nhập Excel) các bản tin hiển thị ngoài Trang chủ Public.
                 </p>
               </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminBulletinsReport()">🖨️ In Danh sách Tin</button>
+                <button type="button" class="btn btn-emerald btn-sm" onclick="exportBulletinsExcel()">📥 Xuất Excel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportBulletinsExcel()">📤 Nhập Excel</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="downloadBulletinsExcelTemplate()" title="Tải file Excel mẫu để nhập bản tin">📄 File Mẫu</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="resetBulletinForm()">➕ Soạn tin mới</button>
+                <input type="file" id="importBulletinsExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportBulletinsExcel(event)" />
+              </div>
+            </div>
+
+            <div class="filter-bar" style="margin-bottom:12px;">
+              <input
+                type="text"
+                id="adminBulletinSearchInput"
+                class="input-control"
+                style="min-width:220px;flex:1;"
+                placeholder="🔍 Tìm theo tiêu đề, tóm tắt, đơn vị đăng, chuyên mục..."
+                oninput="renderAdminBulletinsTable()"
+              />
+              <select id="adminBulletinTypeFilter" class="select-control" onchange="renderAdminBulletinsTable()">
+                <option value="all">Tất cả loại bản tin</option>
+                <option value="master">👑 Tin Điều hành Hệ sinh thái TechCorp</option>
+                <option value="member">🌟 Tin Đơn vị Thành viên</option>
+              </select>
             </div>
 
             <div class="table-wrap">
               <table class="tc-table">
                 <thead>
                   <tr>
-                    <th>Phân loại & Nhãn</th>
-                    <th>Tiêu đề & Nội dung Tóm tắt</th>
+                    <th>Ảnh &amp; Phân loại</th>
+                    <th>Tiêu đề &amp; Tóm tắt</th>
                     <th>Đơn vị Đăng tải</th>
-                    <th>Thời gian</th>
-                    <th>Thao tác</th>
+                    <th>Thời gian &amp; Lượt xem</th>
+                    <th>Thao tác (CRUD)</th>
                   </tr>
                 </thead>
                 <tbody id="adminBulletinsTableBody"></tbody>
@@ -422,42 +499,80 @@
           <div class="card" style="align-self:start;">
             <div class="card-header">
               <div>
-                <h3 class="card-title">✍️ Phát hành Bản tin Điều hành / Quảng bá Mới ra Trang Public</h3>
-                <p class="card-subtitle">Nội dung sau khi đăng sẽ xuất hiện ngay trên Trang chủ Public của Hệ sinh thái.</p>
+                <h3 class="card-title" id="bulletinFormTitle">✍️ Phát hành Bản tin Điều hành / Quảng bá Mới ra Trang Public</h3>
+                <p class="card-subtitle">Nội dung và hình ảnh đại diện sau khi lưu sẽ hiển thị ngay trên Trang chủ Public.</p>
               </div>
+              <span class="badge badge-blue" id="bulletinFormModeBadge">Chế độ: Tạo mới</span>
             </div>
 
-            <div style="display:flex;flex-direction:column;gap:12px;">
-              <div>
-                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Loại Bản tin:</label>
-                <select id="newBulletinSourceType" class="select-control" style="width:100%;">
-                  <option value="master">👑 Thông báo Điều hành Chính thức từ Hệ sinh thái TechCorp</option>
-                  <option value="member">🌟 Tin tức / Sự kiện / Ưu đãi từ Đơn vị Thành viên</option>
-                </select>
+            <input type="hidden" id="editBulletinId" value="" />
+            <div style="display:flex;flex-direction:column;gap:11px;">
+              <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:10px;">
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Loại Bản tin:</label>
+                  <select id="newBulletinSourceType" class="select-control" style="width:100%;" onchange="handleBulletinTypeChange(this.value)">
+                    <option value="master">👑 Thông báo Điều hành Hệ sinh thái TechCorp</option>
+                    <option value="member">🌟 Tin tức / Sự kiện / Ưu đãi Đơn vị Thành viên</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Chuyên mục (Category Tag):</label>
+                  <input type="text" id="newBulletinCategoryTag" class="input-control" style="width:100%;" value="Điều hành Hệ sinh thái" placeholder="VD: Học bổng & Khảo thí" />
+                </div>
               </div>
-              <div>
-                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nhãn hiển thị (Badge):</label>
-                <input type="text" id="newBulletinBadge" class="input-control" style="width:100%;" value="👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP" />
+
+              <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:10px;">
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nhãn hiển thị (Badge):</label>
+                  <input type="text" id="newBulletinBadge" class="input-control" style="width:100%;" value="👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP" />
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Đơn vị phát hành:</label>
+                  <input type="text" id="newBulletinAuthorOrg" class="input-control" style="width:100%;" placeholder="VD: TechCorp Headquarters" />
+                </div>
               </div>
+
               <div>
                 <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Tiêu đề Bản tin:</label>
                 <input type="text" id="newBulletinTitle" class="input-control" style="width:100%;" placeholder="Nhập tiêu đề thông báo..." />
               </div>
-              <div>
-                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">🖼️ Hình ảnh đại diện (URL ảnh hoặc để trống tự động chọn ảnh chuẩn):</label>
-                <input type="text" id="newBulletinImageUrl" class="input-control" style="width:100%;" placeholder="https://images.unsplash.com/..." />
+
+              <div style="background:#f8fbff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;">
+                <label style="font-size:12px;font-weight:800;color:#0043b8;display:block;margin-bottom:5px;">🖼️ Hình ảnh đại diện (Nhập URL hoặc Tải ảnh từ máy tính):</label>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <input
+                    type="text"
+                    id="newBulletinImageUrl"
+                    class="input-control"
+                    style="flex:1;"
+                    placeholder="https://images.unsplash.com/..."
+                  />
+                  <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0;white-space:nowrap;">
+                    📤 Chọn Ảnh
+                    <input type="file" id="newBulletinImageFileInput" accept="image/*" style="display:none;" onchange="handleBulletinImageUpload(event)" />
+                  </label>
+                </div>
               </div>
+
               <div>
                 <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung tóm tắt (Hiển thị ngoài thẻ tin):</label>
-                <textarea id="newBulletinSummary" class="input-control" style="width:100%;min-height:66px;" placeholder="Nhập đoạn tóm tắt ngắn gọn..."></textarea>
+                <textarea id="newBulletinSummary" class="input-control" style="width:100%;min-height:60px;font-family:inherit;" placeholder="Nhập đoạn tóm tắt ngắn gọn..."></textarea>
               </div>
               <div>
                 <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung bài viết chi tiết (Hiển thị khi bấm Xem tin chi tiết):</label>
-                <textarea id="newBulletinContent" class="input-control" style="width:100%;min-height:100px;" placeholder="Nhập toàn văn nội dung chi tiết của bản tin, chính sách áp dụng, quyền lợi thành viên..."></textarea>
+                <textarea id="newBulletinContent" class="input-control" style="width:100%;min-height:95px;font-family:inherit;" placeholder="Nhập toàn văn nội dung chi tiết của bản tin, chính sách áp dụng, quyền lợi thành viên..."></textarea>
               </div>
-              <button class="btn btn-primary" onclick="submitNewAnnouncement()" style="padding:11px;">
-                🚀 Phát hành lên Trang Public Hệ sinh thái
-              </button>
+
+              <label style="font-size:12.5px;color:#0f172a;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;">
+                <input type="checkbox" id="newBulletinPinned" checked /> 📌 Ghim nổi bật bản tin này lên Khu vực Tâm điểm Trang chủ
+              </label>
+
+              <div style="display:flex;gap:10px;">
+                <button type="button" class="btn btn-primary" id="btnSubmitBulletinForm" onclick="submitNewAnnouncement()" style="flex:1;padding:11px;">
+                  🚀 Phát hành lên Trang Public Hệ sinh thái
+                </button>
+                <button type="button" class="btn btn-outline" onclick="resetBulletinForm()">Hủy / Tạo mới</button>
+              </div>
             </div>
           </div>
         </div>
@@ -547,14 +662,21 @@
       <section id="panel-master-users" class="tab-panel">
         <div class="grid-2">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="flex-wrap:wrap;gap:10px;">
               <div>
-                <h3 class="card-title">👥 Danh sách Đơn vị Thành viên & Tài khoản SSO (TechCorp ID)</h3>
+                <h3 class="card-title">👥 Danh sách Đơn vị Thành viên &amp; Tài khoản SSO (TechCorp ID)</h3>
                 <p class="card-subtitle">
-                  Quản lý tập trung tài khoản lãnh đạo doanh nghiệp, hiệu trưởng, giám đốc trung tâm và học viên cùng gói ứng dụng được cấp phép.
+                  Quản lý tập trung (Tạo mới, Xem, Sửa, Khóa/Mở, Xoá, In ấn, Xuất/Nhập Excel) tài khoản lãnh đạo doanh nghiệp, hiệu trưởng, giám đốc trung tâm và học viên.
                 </p>
               </div>
-              <button class="btn btn-outline btn-sm" onclick="resetUserForm()">+ Tạo tài khoản mới</button>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminUsersReport()">🖨️ In Danh sách</button>
+                <button type="button" class="btn btn-emerald btn-sm" onclick="exportUsersExcel()">📥 Xuất Excel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportUsersExcel()">📤 Nhập Excel</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="downloadUsersExcelTemplate()" title="Tải file Excel mẫu để nhập danh sách thành viên">📄 File Mẫu</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="resetUserForm()">➕ Tạo tài khoản mới</button>
+                <input type="file" id="importUsersExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportUsersExcel(event)" />
+              </div>
             </div>
 
             <div class="filter-bar">
@@ -562,8 +684,8 @@
                 type="text"
                 id="adminUserSearchInput"
                 class="input-control"
-                style="min-width:220px;"
-                placeholder="Tìm theo tên, email, đơn vị, mã ID..."
+                style="min-width:200px;flex:1;"
+                placeholder="🔍 Tìm theo tên, email, SĐT, đơn vị, mã ID..."
                 oninput="renderAdminUsersTable()"
               />
               <select id="adminUserRoleFilter" class="select-control" onchange="renderAdminUsersTable()">
@@ -574,17 +696,22 @@
                 <option value="school_principal">🎓 Hiệu trưởng Cơ sở Giáo dục</option>
                 <option value="student_parent">👨‍🎓 Cộng đồng Học viên / SV</option>
               </select>
+              <select id="adminUserStatusFilter" class="select-control" onchange="renderAdminUsersTable()">
+                <option value="all">Mọi trạng thái</option>
+                <option value="active">🟢 Active</option>
+                <option value="locked">🔴 Locked</option>
+              </select>
             </div>
 
             <div class="table-wrap">
               <table class="tc-table">
                 <thead>
                   <tr>
-                    <th>Tài khoản & Liên hệ</th>
-                    <th>Đơn vị & Vai trò</th>
-                    <th>Quyền Ứng dụng & IP</th>
+                    <th>Tài khoản &amp; Liên hệ</th>
+                    <th>Đơn vị &amp; Vai trò</th>
+                    <th>Quyền Ứng dụng &amp; IP</th>
                     <th>Trạng thái</th>
-                    <th>Thao tác</th>
+                    <th>Thao tác (CRUD)</th>
                   </tr>
                 </thead>
                 <tbody id="adminUsersTableBody"></tbody>
@@ -598,6 +725,7 @@
                 <h3 class="card-title" id="userFormTitle">➕ Tạo mới / Cập nhật Tài khoản Thành viên</h3>
                 <p class="card-subtitle">Cấp định danh SSO <code>TechCorp ID</code> và gán vai trò RBAC.</p>
               </div>
+              <span class="badge badge-blue" id="userFormModeBadge">Chế độ: Tạo mới</span>
             </div>
 
             <input type="hidden" id="editUserId" value="" />
@@ -629,13 +757,13 @@
 
               <div>
                 <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Đơn vị / Doanh nghiệp / Trường học Thành viên:</label>
-                <input type="text" id="userOrg" class="input-control" style="width:100%;" placeholder="VD: Cam Ranh Riviera Resort & Spa" />
+                <input type="text" id="userOrg" class="input-control" style="width:100%;" placeholder="VD: Cam Ranh Riviera Resort &amp; Spa" />
               </div>
 
               <div>
                 <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Nhóm Vai trò RBAC trong Hệ sinh thái:</label>
-                <select id="userRole" class="select-control" style="width:100%;">
-                  <option value="ceo_sme">🏢 Chủ Doanh nghiệp SME (ERP & Website)</option>
+                <select id="userRole" class="select-control" style="width:100%;" onchange="autoSuggestAppsForRole(this.value)">
+                  <option value="ceo_sme">🏢 Chủ Doanh nghiệp SME (ERP &amp; Website)</option>
                   <option value="center_director">🏫 Giám đốc Trung tâm Ngoại ngữ - Tin học</option>
                   <option value="school_principal">🎓 Hiệu trưởng Trường học (Mầm non - Đại học)</option>
                   <option value="student_parent">👨‍🎓 Học viên / Sinh viên / Phụ huynh</option>
@@ -644,8 +772,14 @@
               </div>
 
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:6px;">Phân quyền Truy cập Ứng dụng qua SSO:</label>
-                <div id="userAppPermissionsBox" style="display:flex;flex-wrap:wrap;gap:10px;background:#f0f7ff;padding:12px;border-radius:10px;border:1px solid #bfdbfe;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px;">
+                  <label style="font-size:12px;color:#334155;font-weight:700;">Phân quyền Truy cập 16 Ứng dụng qua SSO:</label>
+                  <div style="display:flex;gap:6px;">
+                    <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:11px;" onclick="toggleAllUserAppCheckboxes(true)">✔ Chọn tất cả 16 App</button>
+                    <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:11px;" onclick="toggleAllUserAppCheckboxes(false)">✕ Bỏ chọn</button>
+                  </div>
+                </div>
+                <div id="userAppPermissionsBox" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f0f7ff;padding:12px;border-radius:10px;border:1px solid #bfdbfe;">
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="jobai" checked /> 🤖 Sàn Việc làm JobAI
                   </label>
@@ -656,7 +790,7 @@
                     <input type="checkbox" class="user-app-cb" value="kpi" checked /> 📊 BSC-KPI
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="lms" checked /> 📝 LMS & Thi Online
+                    <input type="checkbox" class="user-app-cb" value="lms" checked /> 📝 LMS &amp; Thi Online
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="learn" checked /> 💻 TechCorpLearn
@@ -668,7 +802,19 @@
                     <input type="checkbox" class="user-app-cb" value="qldt" /> 🧭 Đại học TC COMPASS
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="thpt" /> 🎓 QL Trường K12
+                    <input type="checkbox" class="user-app-cb" value="gdtx" /> 🏛️ QL Trung tâm GDTX
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="mamnon" /> 🧸 QL Trường Mầm non
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="tieuhoc" /> 🎒 QL Trường Tiểu học
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="thcs" /> 📘 QL Trường THCS
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="thpt" /> 🎓 QL Trường THPT
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="qldh" /> 🏨 Khách sạn PMS
@@ -676,14 +822,20 @@
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
                     <input type="checkbox" class="user-app-cb" value="bds" /> 🏙️ Sàn BĐS AI
                   </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="noithat" /> 🛋️ Nội thất 3D
+                  </label>
+                  <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
+                    <input type="checkbox" class="user-app-cb" value="techcorp" /> 🚀 Cổng Giải pháp TechCorp
+                  </label>
                 </div>
               </div>
 
               <div style="display:flex;gap:10px;margin-top:4px;">
-                <button class="btn btn-primary" onclick="saveEcosystemUser()" style="flex:1;padding:11px;">
-                  💾 Lưu Tài khoản & Cấp Quyền SSO
+                <button type="button" class="btn btn-primary" onclick="saveEcosystemUser()" style="flex:1;padding:11px;">
+                  💾 Lưu Tài khoản &amp; Cấp Quyền SSO
                 </button>
-                <button class="btn btn-outline" onclick="resetUserForm()">Hủy / Nhập mới</button>
+                <button type="button" class="btn btn-outline" onclick="resetUserForm()">Hủy / Nhập mới</button>
               </div>
             </div>
           </div>
@@ -866,7 +1018,14 @@
     </div>
   </div>
 
+  <!-- MODAL XEM HỒ SƠ CHI TIẾT THÀNH VIÊN TECHCORP ID -->
+  <div id="userDetailModal" class="bulletin-detail-modal-backdrop" style="display:none;" onclick="if(event.target===this)closeUserDetailModal()">
+    <div class="bulletin-detail-modal-dialog" style="max-width:680px;" role="dialog" aria-modal="true">
+      <div id="userDetailModalBody"></div>
+    </div>
+  </div>
+
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=22"></script>
+  <script src="app.js?v=23"></script>
 </body>
 </html>
