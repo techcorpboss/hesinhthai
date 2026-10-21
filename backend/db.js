@@ -140,9 +140,11 @@ const INITIAL_FORUM_POSTS = [
     status: "approved",
     locked: false,
     pinned: true,
+    unitGroup: "sme_hospitality",
+    unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
     title: "[Cần tìm đối tác tại Nha Trang] Tìm Trung tâm đào tạo Tiếng Anh & Tiếng Hàn giao tiếp cho 25 nhân sự Lễ tân - Nhà hàng",
     content:
-      "Chào các anh/chị trong Cộng đồng TechCorp Khánh Hòa. Chuẩn bị đón đoàn khách quốc tế mùa cao điểm cuối năm, Nha Trang Bay Resort cần tìm 01 Trung tâm Ngoại ngữ uy tín trong hệ sinh thái để đào tạo cấp tốc 8 tuần (học kết hợp trên LMS Thi Online của TechCorp và thực hành tại khách sạn). Ưu tiên các trung tâm đang dùng hệ thống TechCorp để đồng bộ điểm chuyên cần trực tiếp về phân hệ HRM của chúng tôi.",
+      "Chào các anh/chị trong Cộng đồng Hệ sinh thái TechCorp Khánh Hòa. Chuẩn bị đón đoàn khách quốc tế mùa cao điểm cuối năm, Nha Trang Bay Resort cần tìm 01 Trung tâm Ngoại ngữ uy tín trong hệ sinh thái để đào tạo cấp tốc 8 tuần (học kết hợp trên LMS Thi Online của TechCorp và thực hành tại khách sạn). Ưu tiên các trung tâm đang dùng hệ thống TechCorp để đồng bộ điểm chuyên cần trực tiếp về phân hệ HRM của chúng tôi.",
     memberDeal: "Ký hợp đồng đào tạo dài hạn 12 tháng + Tài trợ địa điểm tổ chức sự kiện cho Trung tâm tại Resort.",
     author: {
       name: "Nguyễn Hải Đăng (CEO Resort & Travel)",
@@ -179,6 +181,8 @@ const INITIAL_FORUM_POSTS = [
     status: "approved",
     locked: false,
     pinned: true,
+    unitGroup: "training_center",
+    unitGroupName: "🏫 Khối Trung tâm Ngoại ngữ - Tin học",
     title: "[Tài trợ Học bổng & Kiểm tra Năng lực] Tặng 500 suất Thi thử IELTS/TOEIC & Tin học Quốc tế + Học bổng 40% cho con em Doanh nghiệp & Trường học",
     content:
       "Nhằm đồng hành cùng các Trường Mầm non - Phổ thông và gia đình cán bộ nhân viên các Doanh nghiệp SME tại Nha Trang, Ocean English & IT Center mở cổng kiểm tra năng lực Ngoại ngữ - Tin học định kỳ hoàn toàn miễn phí trên nền tảng Thi Online TechCorp. Toàn bộ kết quả được trả tự động về Sổ liên lạc điện tử của Phụ huynh.",
@@ -189,7 +193,7 @@ const INITIAL_FORUM_POSTS = [
       roleBadge: "Khối Đào tạo NN-TH",
       verifiedApp: "Đang dùng: QL Trung tâm + Thi Online"
     },
-    createdAt: "2 giờ trước",
+    createdAt: "1 giờ trước",
     likes: 34,
     views: 289,
     comments: [
@@ -199,6 +203,39 @@ const INITIAL_FORUM_POSTS = [
         authorOrg: "Hệ thống Giáo dục Sao Biển Nha Trang",
         roleBadge: "Khối Cơ sở Giáo dục",
         text: "Chương trình rất thiết thực! Trường Sao Biển đăng ký 120 suất kiểm tra tiếng Anh năng khiếu cuối tuần này cho các bé khối Lá và Tiểu học nhé.",
+        time: "45 phút trước"
+      }
+    ]
+  },
+  {
+    id: "POST-1792469740466",
+    category: "rfq",
+    categoryLabel: "📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ)",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "sme_hospitality",
+    unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+    title: "[Cam Ranh - Nha Trang] Cần đơn vị thiết kế Website đa ngôn ngữ & cung cấp đồng phục cho 40 nhân sự",
+    content:
+      "Chúng tôi vừa mở thêm chi nhánh dịch vụ du lịch & lưu trú tại Bãi Dài - Cam Ranh, cần tìm đối tác trong Hệ sinh thái TechCorp thiết kế Website đa ngôn ngữ (Việt - Anh - Hàn - Nga) tích hợp đặt phòng trực tuyến và đơn vị may đồng phục khách sạn cao cấp cho 40 nhân sự mới.",
+    memberDeal: "Tặng 10 Voucher nghỉ dưỡng cuối tuần tại Resort cho đối tác ký hợp đồng triển khai trong tháng này.",
+    author: {
+      name: "Nguyễn Hải Đăng (CEO Resort & Travel)",
+      org: "Nha Trang Bay Resort & Travel",
+      roleBadge: "Khối Doanh nghiệp SME",
+      verifiedApp: "Đang dùng: ERP + Website TechCorp"
+    },
+    createdAt: "2 giờ trước",
+    likes: 19,
+    views: 164,
+    comments: [
+      {
+        id: "CMT-1792",
+        authorName: "Ông Vũ Đình Khôi (Giám đốc Điều hành)",
+        authorOrg: "Công ty CP Thương mại & Dịch vụ SeaTech Khánh Hòa",
+        roleBadge: "Khối Doanh nghiệp SME",
+        text: "Bên SeaTech có bộ phận cung ứng đồng phục khách sạn chống nhăn cao cấp tại Nha Trang, giảm 15% cho thành viên Hệ sinh thái TechCorp. Em đã gửi mẫu vải qua Zalo nhé anh!",
         time: "1 giờ trước"
       }
     ]
@@ -207,10 +244,12 @@ const INITIAL_FORUM_POSTS = [
     id: "POST-103",
     category: "comarketing",
     categoryLabel: "🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện",
-    status: "pending",
+    status: "approved",
     locked: false,
     pinned: false,
-    title: "[Chờ thẩm định] Mời 05 Doanh nghiệp Du lịch / F&B / Nha khoa tại Nha Trang đồng hành Ngày hội Gia đình & Tuyển sinh Mùa Hè (Quy mô 800 Phụ huynh)",
+    unitGroup: "school_uni",
+    unitGroupName: "🎓 Khối Trường học Mầm non – K12 & Đại học",
+    title: "Mời 05 Doanh nghiệp Du lịch / F&B / Nha khoa tại Nha Trang đồng hành Ngày hội Gia đình & Tuyển sinh Mùa Hè (Quy mô 800 Phụ huynh)",
     content:
       "Tháng tới Hệ thống Giáo dục Sao Biển (KĐT Mỹ Gia & Vĩnh Điềm Trung) tổ chức Ngày hội Trải nghiệm Công nghệ & Kỹ năng cho 800 phụ huynh học sinh. Nhà trường dành tặng 05 gian hàng trưng bày miễn phí và tích hợp phát E-Voucher trên App Sổ liên lạc Điện tử cho các doanh nghiệp cùng thuộc Hệ sinh thái TechCorp.",
     memberDeal: "Miễn phí 100% gian hàng + Đẩy thông báo thương hiệu tài trợ tới 1.200 Phụ huynh trên App Trường.",
@@ -220,9 +259,138 @@ const INITIAL_FORUM_POSTS = [
       roleBadge: "Khối Cơ sở Giáo dục",
       verifiedApp: "Đang dùng: QL Trường học + LMS"
     },
+    createdAt: "3 giờ trước",
+    likes: 27,
+    views: 195,
+    comments: []
+  },
+  {
+    id: "POST-105",
+    category: "rfq",
+    categoryLabel: "📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ)",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "sme_hospitality",
+    unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+    title: "[Bãi Dài - Cam Ranh] Tìm nhà cung ứng thực phẩm sạch VietGAP hàng ngày & tiếp nhận 15 Sinh viên Thực tập Quản trị Khách sạn",
+    content:
+      "Asia Bay Resort & Spa Cam Ranh (quy mô 220 phòng & biệt thự biển) đang mở rộng công suất đón đoàn khách MICE quốc tế. Chúng tôi cần kết nối với đơn vị cung ứng thực phẩm - rau củ - hải sản đạt chuẩn VietGAP tại Khánh Hòa và tiếp nhận 15 sinh viên năm cuối ngành Du lịch - Nhà hàng thực tập có hưởng phụ cấp.",
+    memberDeal: "Thanh toán công nợ tự động 7 ngày/lần qua TechCorp ERP + Tài trợ gói Teambuilding bãi biển giảm 35% cho đối tác.",
+    author: {
+      name: "Ông Trần Quốc Bảo (Tổng Quản lý GM)",
+      org: "Asia Bay Resort & Spa Cam Ranh",
+      roleBadge: "Khối Doanh nghiệp SME",
+      verifiedApp: "Đang dùng: TechCorp PMS + ERP"
+    },
     createdAt: "4 giờ trước",
-    likes: 12,
-    views: 95,
+    likes: 23,
+    views: 178,
+    comments: [
+      {
+        id: "CMT-105-1",
+        authorName: "Bà Nguyễn Thị Thu Thủy (Giám đốc Điều hành)",
+        authorOrg: "Công ty CP Thực phẩm & Suất ăn Học đường Biển Xanh Nha Trang",
+        roleBadge: "Khối Doanh nghiệp SME",
+        text: "Thực phẩm Biển Xanh hiện có xe lạnh giao tuyến Nha Trang - Bãi Dài Cam Ranh lúc 5h30 sáng hàng ngày, đầy đủ chứng nhận VietGAP & ISO 22000. Rất mong được hợp tác cùng Asia Bay Resort!",
+        time: "2 giờ trước"
+      }
+    ]
+  },
+  {
+    id: "POST-106",
+    category: "spotlight",
+    categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "sme_hospitality",
+    unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+    title: "[Đặc quyền Học đường] Giảm 12% hợp đồng suất ăn bán trú chuẩn VietGAP & đồng bộ thực đơn dinh dưỡng lên Sổ liên lạc EduManager",
+    content:
+      "Nhà máy chế biến suất ăn học đường Biển Xanh (KCN Đắc Lộc - Nha Trang) đạt chuẩn ISO 22000 & VietGAP hiện đang cung cấp 6.500 suất ăn/ngày. Chúng tôi tích hợp API đồng bộ thực đơn hàng ngày, hình ảnh mẫu thức ăn lưu nghiệm và định lượng Kcal trực tiếp lên Sổ liên lạc điện tử EduManager Pro để phụ huynh theo dõi minh bạch.",
+    memberDeal: "🎁 Giảm ngay 12% giá trị hợp đồng năm học mới + Tài trợ 100% tủ giữ nhiệt inox công nghiệp tại bếp ăn nhà trường.",
+    author: {
+      name: "Bà Nguyễn Thị Thu Thủy (Giám đốc Điều hành)",
+      org: "Công ty CP Thực phẩm & Suất ăn Học đường Biển Xanh Nha Trang",
+      roleBadge: "Khối Doanh nghiệp SME",
+      verifiedApp: "Đang dùng: ERP Kho vận + Website TechCorp"
+    },
+    createdAt: "5 giờ trước",
+    likes: 31,
+    views: 215,
+    comments: []
+  },
+  {
+    id: "POST-107",
+    category: "spotlight",
+    categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "realestate_interior",
+    unitGroupName: "🏙️ Khối Bất động sản & Nội thất",
+    title: "[Ưu đãi Mở rộng Cơ sở] Giảm 20% gói Thiết kế - Thi công Phòng học Thông minh & Văn phòng Doanh nghiệp tại Nha Trang",
+    content:
+      "Liên minh Sàn Giao dịch BĐS Hưng Phát Land & Xưởng Nội thất TechCorp 3D cung cấp dịch vụ trọn gói từ tìm kiếm mặt bằng mở trường/trung tâm tại KĐT Mỹ Gia, Hà Quang II, Vĩnh Điềm Trung đến thiết kế 3D và thi công nội thất phòng học chuẩn quốc tế, văn phòng làm việc hiện đại.",
+    memberDeal: "🎁 Miễn phí 100% bản vẽ thiết kế 3D phối cảnh + Chiết khấu 20% giá xuất xưởng nội thất cho đơn vị thành viên TechCorp.",
+    author: {
+      name: "Ban Giám đốc Hưng Phát Land",
+      org: "Sàn Giao dịch BĐS Hưng Phát Land & Nội thất 3D",
+      roleBadge: "Khối Bất động sản & Nội thất",
+      verifiedApp: "Đang dùng: BĐS AI + Nội thất 3D"
+    },
+    createdAt: "6 giờ trước",
+    likes: 29,
+    views: 240,
+    comments: []
+  },
+  {
+    id: "POST-108",
+    category: "comarketing",
+    categoryLabel: "🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "school_uni",
+    unitGroupName: "🎓 Khối Trường học Mầm non – K12 & Đại học",
+    title: "[Job Fair & Thực tập Doanh nghiệp] Mời 30 Doanh nghiệp SME & Resort tham gia Tuần lễ Tuyển dụng & Phỏng vấn Thực tập sinh Số",
+    content:
+      "Phối hợp cùng Sàn Tuyển dụng AI (jobai.techcorp.info.vn), Trung tâm Hợp tác Doanh nghiệp tổ chức đợt kết nối 450 sinh viên năm cuối các ngành CNTT, Quản trị Khách sạn, Kế toán, Ngôn ngữ Anh - Hàn - Trung đã có Hồ sơ Năng lực Số xác thực điểm thi LMS với các doanh nghiệp trong Hệ sinh thái TechCorp.",
+    memberDeal: "Miễn phí bàn phỏng vấn trực tiếp tại Hội trường + Cấp quyền truy cập sớm 450 CV xác thực trên Sàn JobAI.",
+    author: {
+      name: "Ban Hợp tác Doanh nghiệp & Việc làm Sinh viên",
+      org: "Trường Đại học Nha Trang (NTU)",
+      roleBadge: "Khối Cơ sở Giáo dục",
+      verifiedApp: "Đang dùng: TC COMPASS + JobAI"
+    },
+    createdAt: "8 giờ trước",
+    likes: 45,
+    views: 360,
+    comments: []
+  },
+  {
+    id: "POST-109",
+    category: "spotlight",
+    categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "training_center",
+    unitGroupName: "🏫 Khối Trung tâm Ngoại ngữ - Tin học",
+    title: "[Đào tạo Ngoại ngữ Doanh nghiệp] Tặng gói đào tạo Tiếng Hàn - Nhật - Trung chuyên ngành Du lịch & F&B giảm 30% học phí",
+    content:
+      "Đáp ứng làn sóng du khách Hàn Quốc, Nhật Bản và Trung Quốc tăng mạnh tại Nha Trang - Khánh Hòa, Trung tâm Ngoại ngữ Á Châu thiết kế các khóa giao tiếp thực chiến 6 tuần dành riêng cho nhân viên Lễ tân, Buồng phòng, Nhà hàng, Spa với lịch học linh hoạt theo ca.",
+    memberDeal: "🎁 Giảm 30% học phí cho doanh nghiệp đăng ký từ 10 nhân sự + Miễn phí kiểm tra đầu vào và cấp chứng chỉ số trên TechCorp LMS.",
+    author: {
+      name: "Ban Giám đốc Trung tâm Ngoại ngữ Á Châu",
+      org: "Á Châu Language Center",
+      roleBadge: "Khối Đào tạo NN-TH",
+      verifiedApp: "Đang dùng: QL Trung tâm + LMS"
+    },
+    createdAt: "12 giờ trước",
+    likes: 22,
+    views: 185,
     comments: []
   },
   {
@@ -232,6 +400,8 @@ const INITIAL_FORUM_POSTS = [
     status: "approved",
     locked: true,
     pinned: false,
+    unitGroup: "school_uni",
+    unitGroupName: "🎓 Khối Trường học Mầm non – K12 & Đại học",
     title: "[Chủ đề đã chốt quy trình] Kinh nghiệm tự động hóa 95% quy trình thu học phí QR & chấm công giáo viên tại Nha Trang bằng hệ sinh thái TechCorp",
     content:
       "Trước đây mỗi đầu tháng bộ phận kế toán của trường mất gần 5 ngày để đối soát tin nhắn chuyển khoản học phí của phụ huynh. Từ khi bật tính năng gạch nợ tự động qua QR động trên phần mềm Quản lý Trường học và đồng bộ sang phân hệ Tài chính ERP của TechCorp, phụ huynh quét mã 3 giây là biên lai điện tử xuất tự động, kế toán giảm được 80% khối lượng việc thủ công.",
@@ -245,6 +415,78 @@ const INITIAL_FORUM_POSTS = [
     createdAt: "1 ngày trước",
     likes: 41,
     views: 310,
+    comments: []
+  },
+  {
+    id: "POST-110",
+    category: "knowledge",
+    categoryLabel: "💡 Góc Chia sẻ Quản trị, HR & Chuyển đổi số",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "sme_hospitality",
+    unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+    title: "[Case Study Thực tế] Cách SeaTech Khánh Hòa áp dụng Thẻ điểm cân bằng BSC-KPI & ERP giúp tăng 38% năng suất đội ngũ kinh doanh",
+    content:
+      "Sau 3 tháng chuyển đổi từ bảng tính Excel rời rạc sang bộ đôi TechCorp ERP và Quản trị Mục tiêu BSC-KPI (kpi.techcorp.info.vn), toàn bộ 85 nhân sự của SeaTech đã nắm rõ mục tiêu OKR/KPI theo tuần. Hệ thống tự động tính hoa hồng và thưởng hiệu suất minh bạch, giảm 90% tranh chấp cuối kỳ.",
+    memberDeal: "Chia sẻ miễn phí bộ thư viện 45 chỉ số KPI mẫu cho bộ phận Sales, Marketing, Nhân sự & Kế toán doanh nghiệp SME.",
+    author: {
+      name: "Ông Vũ Đình Khôi (Giám đốc Điều hành)",
+      org: "Công ty CP Thương mại & Dịch vụ SeaTech Khánh Hòa",
+      roleBadge: "Khối Doanh nghiệp SME",
+      verifiedApp: "Đang dùng: TechCorp ERP + BSC-KPI"
+    },
+    createdAt: "1 ngày trước",
+    likes: 36,
+    views: 274,
+    comments: []
+  },
+  {
+    id: "POST-111",
+    category: "comarketing",
+    categoryLabel: "🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "training_center",
+    unitGroupName: "🏫 Khối Trung tâm Ngoại ngữ - Tin học",
+    title: "[Hợp tác CLB Tiếng Anh Học đường] Tài trợ Giáo viên Bản xứ giao lưu Ngoại khóa cuối tuần cho các Trường Tiểu học & THCS",
+    content:
+      "Hệ thống Anh ngữ Quốc tế Global Star (3 cơ sở tại Nha Trang) triển khai chương trình 'English STEM & Robotics Weekend' dành cho các trường Tiểu học và THCS. Đội ngũ giáo viên bản xứ của Global Star sẽ trực tiếp về trường đồng tổ chức CLB tiếng Anh hoàn toàn miễn phí.",
+    memberDeal: "Tài trợ 100% chi phí giáo viên bản xứ + Tặng 50 học bổng bán phần khóa hè cho học sinh xuất sắc của trường.",
+    author: {
+      name: "Bà Phạm Hoàng Yến (Giám đốc Học vụ)",
+      org: "Hệ thống Anh ngữ Quốc tế Global Star",
+      roleBadge: "Khối Đào tạo NN-TH",
+      verifiedApp: "Đang dùng: QL Trung tâm + TechCorpLearn"
+    },
+    createdAt: "2 ngày trước",
+    likes: 25,
+    views: 208,
+    comments: []
+  },
+  {
+    id: "POST-112",
+    category: "spotlight",
+    categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+    status: "approved",
+    locked: false,
+    pinned: false,
+    unitGroup: "sme_hospitality",
+    unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+    title: "[Phúc lợi Y tế Học đường & Doanh nghiệp] Khám răng định kỳ miễn phí tại Trường học & Giảm 30% dịch vụ Nha khoa cho nhân sự TechCorp ID",
+    content:
+      "Hệ thống Nha khoa & Phòng khám Quốc tế Sài Gòn - Nha Trang triển khai gói chăm sóc sức khỏe răng miệng lưu động tại các trường Mầm non, Tiểu học và tặng gói khám tổng quát miễn phí cho toàn bộ cán bộ nhân viên doanh nghiệp thuộc Hệ sinh thái TechCorp.",
+    memberDeal: "🎁 Khám răng định kỳ miễn phí 100% tại trường học + Giảm 30% dịch vụ nha khoa thẩm mỹ cho chủ thẻ TechCorp ID.",
+    author: {
+      name: "BS. CKII Nguyễn Trọng Nghĩa (Giám đốc Chuyên môn)",
+      org: "Hệ thống Nha khoa Quốc tế Sài Gòn - Nha Trang",
+      roleBadge: "Khối Doanh nghiệp SME",
+      verifiedApp: "Đang dùng: CRM Chăm sóc khách hàng TechCorp"
+    },
+    createdAt: "2 ngày trước",
+    likes: 33,
+    views: 256,
     comments: []
   }
 ];
@@ -502,7 +744,7 @@ const INITIAL_DEMO_REQUESTS = [
 const INITIAL_SEED = {
   meta: {
     domain: "hesinhthai.techcorp.info.vn",
-    version: "6.5.0",
+    version: "6.6.0",
     region: "Nha Trang - Khánh Hòa",
     updatedAt: new Date().toISOString()
   },
@@ -1209,13 +1451,55 @@ class HubDatabase {
           this.state.forumPosts = JSON.parse(JSON.stringify(INITIAL_FORUM_POSTS));
           needsSave = true;
         } else {
-          this.state.forumPosts.forEach((p) => {
+          // Repair corrupted UTF-8 post POST-1792469740466 & enrich with seed posts
+          const seedPostsMap = new Map(INITIAL_FORUM_POSTS.map((sp) => [sp.id, sp]));
+          this.state.forumPosts = this.state.forumPosts.map((p) => {
+            const seedMatch = seedPostsMap.get(p.id);
+            if (
+              p.id === "POST-1792469740466" ||
+              (typeof p.title === "string" && p.title.includes("??")) ||
+              (typeof p.content === "string" && p.content.includes("??"))
+            ) {
+              needsSave = true;
+              if (seedMatch) {
+                return JSON.parse(JSON.stringify(seedMatch));
+              }
+            }
+            if (seedMatch) {
+              if (!p.unitGroup && seedMatch.unitGroup) {
+                p.unitGroup = seedMatch.unitGroup;
+                p.unitGroupName = seedMatch.unitGroupName;
+                needsSave = true;
+              }
+              if (p.id === "POST-103" && p.status === "pending") {
+                p.status = "approved";
+                p.title = seedMatch.title;
+                needsSave = true;
+              }
+            }
             if (!p.status) {
               p.status = "approved";
               needsSave = true;
             }
             if (typeof p.locked !== "boolean") {
               p.locked = false;
+              needsSave = true;
+            }
+            return p;
+          });
+
+          INITIAL_FORUM_POSTS.forEach((sp) => {
+            if (!this.state.forumPosts.some((existing) => existing.id === sp.id)) {
+              this.state.forumPosts.push(JSON.parse(JSON.stringify(sp)));
+              needsSave = true;
+            }
+          });
+        }
+        if (Array.isArray(this.state.activityLogs)) {
+          this.state.activityLogs.forEach((ev) => {
+            if (ev.id === "EVT-1792469740467" || (typeof ev.text === "string" && ev.text.includes("??"))) {
+              ev.text =
+                '[Diễn đàn Cộng đồng] CEO Khách sạn & Lữ hành Biển Nha Trang vừa đăng bài mới: "[Cam Ranh - Nha Trang] Cần đơn vị thiết kế Website đa ngôn ngữ & cung cấp đồng phục cho 40 nhân sự"';
               needsSave = true;
             }
           });
@@ -1248,7 +1532,7 @@ class HubDatabase {
           this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
           needsSave = true;
         }
-        if (!this.state.meta || this.state.meta.version !== "6.5.0") {
+        if (!this.state.meta || this.state.meta.version !== "6.6.0") {
           this.state.meta = JSON.parse(JSON.stringify(INITIAL_SEED.meta));
           this.state.apps = JSON.parse(JSON.stringify(INITIAL_SEED.apps));
           this.state.users = JSON.parse(JSON.stringify(INITIAL_USERS));

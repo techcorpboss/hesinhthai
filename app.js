@@ -415,9 +415,11 @@ const STATE = {
       status: "approved",
       locked: false,
       pinned: true,
+      unitGroup: "sme_hospitality",
+      unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
       title: "[Cần tìm đối tác tại Nha Trang] Tìm Trung tâm đào tạo Tiếng Anh & Tiếng Hàn giao tiếp cho 25 nhân sự Lễ tân - Nhà hàng",
       content:
-        "Chào các anh/chị trong Cộng đồng TechCorp Khánh Hòa. Chuẩn bị đón đoàn khách quốc tế mùa cao điểm cuối năm, Nha Trang Bay Resort cần tìm 01 Trung tâm Ngoại ngữ uy tín trong hệ sinh thái để đào tạo cấp tốc 8 tuần (học kết hợp trên LMS Thi Online của TechCorp và thực hành tại khách sạn). Ưu tiên các trung tâm đang dùng hệ thống TechCorp để đồng bộ điểm chuyên cần trực tiếp về phân hệ HRM của chúng tôi.",
+        "Chào các anh/chị trong Cộng đồng Hệ sinh thái TechCorp Khánh Hòa. Chuẩn bị đón đoàn khách quốc tế mùa cao điểm cuối năm, Nha Trang Bay Resort cần tìm 01 Trung tâm Ngoại ngữ uy tín trong hệ sinh thái để đào tạo cấp tốc 8 tuần (học kết hợp trên LMS Thi Online của TechCorp và thực hành tại khách sạn). Ưu tiên các trung tâm đang dùng hệ thống TechCorp để đồng bộ điểm chuyên cần trực tiếp về phân hệ HRM của chúng tôi.",
       memberDeal: "Ký hợp đồng đào tạo dài hạn 12 tháng + Tài trợ địa điểm tổ chức sự kiện cho Trung tâm tại Resort.",
       author: {
         name: "Nguyễn Hải Đăng (CEO Resort & Travel)",
@@ -454,6 +456,8 @@ const STATE = {
       status: "approved",
       locked: false,
       pinned: true,
+      unitGroup: "training_center",
+      unitGroupName: "🏫 Khối Trung tâm Ngoại ngữ - Tin học",
       title: "[Tài trợ Học bổng & Kiểm tra Năng lực] Tặng 500 suất Thi thử IELTS/TOEIC & Tin học Quốc tế + Học bổng 40% cho con em Doanh nghiệp & Trường học",
       content:
         "Nhằm đồng hành cùng các Trường Mầm non - Phổ thông và gia đình cán bộ nhân viên các Doanh nghiệp SME tại Nha Trang, Ocean English & IT Center mở cổng kiểm tra năng lực Ngoại ngữ - Tin học định kỳ hoàn toàn miễn phí trên nền tảng Thi Online TechCorp. Toàn bộ kết quả được trả tự động về Sổ liên lạc điện tử của Phụ huynh.",
@@ -464,7 +468,7 @@ const STATE = {
         roleBadge: "Khối Đào tạo NN-TH",
         verifiedApp: "Đang dùng: QL Trung tâm + Thi Online"
       },
-      createdAt: "2 giờ trước",
+      createdAt: "1 giờ trước",
       likes: 34,
       views: 289,
       comments: [
@@ -474,6 +478,39 @@ const STATE = {
           authorOrg: "Hệ thống Giáo dục Sao Biển Nha Trang",
           roleBadge: "Khối Cơ sở Giáo dục",
           text: "Chương trình rất thiết thực! Trường Sao Biển đăng ký 120 suất kiểm tra tiếng Anh năng khiếu cuối tuần này cho các bé khối Lá và Tiểu học nhé.",
+          time: "45 phút trước"
+        }
+      ]
+    },
+    {
+      id: "POST-1792469740466",
+      category: "rfq",
+      categoryLabel: "📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ)",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "sme_hospitality",
+      unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+      title: "[Cam Ranh - Nha Trang] Cần đơn vị thiết kế Website đa ngôn ngữ & cung cấp đồng phục cho 40 nhân sự",
+      content:
+        "Chúng tôi vừa mở thêm chi nhánh dịch vụ du lịch & lưu trú tại Bãi Dài - Cam Ranh, cần tìm đối tác trong Hệ sinh thái TechCorp thiết kế Website đa ngôn ngữ (Việt - Anh - Hàn - Nga) tích hợp đặt phòng trực tuyến và đơn vị may đồng phục khách sạn cao cấp cho 40 nhân sự mới.",
+      memberDeal: "Tặng 10 Voucher nghỉ dưỡng cuối tuần tại Resort cho đối tác ký hợp đồng triển khai trong tháng này.",
+      author: {
+        name: "Nguyễn Hải Đăng (CEO Resort & Travel)",
+        org: "Nha Trang Bay Resort & Travel",
+        roleBadge: "Khối Doanh nghiệp SME",
+        verifiedApp: "Đang dùng: ERP + Website TechCorp"
+      },
+      createdAt: "2 giờ trước",
+      likes: 19,
+      views: 164,
+      comments: [
+        {
+          id: "CMT-1792",
+          authorName: "Ông Vũ Đình Khôi (Giám đốc Điều hành)",
+          authorOrg: "Công ty CP Thương mại & Dịch vụ SeaTech Khánh Hòa",
+          roleBadge: "Khối Doanh nghiệp SME",
+          text: "Bên SeaTech có bộ phận cung ứng đồng phục khách sạn chống nhăn cao cấp tại Nha Trang, giảm 15% cho thành viên Hệ sinh thái TechCorp. Em đã gửi mẫu vải qua Zalo nhé anh!",
           time: "1 giờ trước"
         }
       ]
@@ -482,10 +519,12 @@ const STATE = {
       id: "POST-103",
       category: "comarketing",
       categoryLabel: "🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện",
-      status: "pending",
+      status: "approved",
       locked: false,
       pinned: false,
-      title: "[Chờ thẩm định] Mời 05 Doanh nghiệp Du lịch / F&B / Nha khoa tại Nha Trang đồng hành Ngày hội Gia đình & Tuyển sinh Mùa Hè (Quy mô 800 Phụ huynh)",
+      unitGroup: "school_uni",
+      unitGroupName: "🎓 Khối Trường học Mầm non – K12 & Đại học",
+      title: "Mời 05 Doanh nghiệp Du lịch / F&B / Nha khoa tại Nha Trang đồng hành Ngày hội Gia đình & Tuyển sinh Mùa Hè (Quy mô 800 Phụ huynh)",
       content:
         "Tháng tới Hệ thống Giáo dục Sao Biển (KĐT Mỹ Gia & Vĩnh Điềm Trung) tổ chức Ngày hội Trải nghiệm Công nghệ & Kỹ năng cho 800 phụ huynh học sinh. Nhà trường dành tặng 05 gian hàng trưng bày miễn phí và tích hợp phát E-Voucher trên App Sổ liên lạc Điện tử cho các doanh nghiệp cùng thuộc Hệ sinh thái TechCorp.",
       memberDeal: "Miễn phí 100% gian hàng + Đẩy thông báo thương hiệu tài trợ tới 1.200 Phụ huynh trên App Trường.",
@@ -495,9 +534,138 @@ const STATE = {
         roleBadge: "Khối Cơ sở Giáo dục",
         verifiedApp: "Đang dùng: QL Trường học + LMS"
       },
+      createdAt: "3 giờ trước",
+      likes: 27,
+      views: 195,
+      comments: []
+    },
+    {
+      id: "POST-105",
+      category: "rfq",
+      categoryLabel: "📢 Cần Mua / Tìm Đối tác Nội bộ (RFQ)",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "sme_hospitality",
+      unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+      title: "[Bãi Dài - Cam Ranh] Tìm nhà cung ứng thực phẩm sạch VietGAP hàng ngày & tiếp nhận 15 Sinh viên Thực tập Quản trị Khách sạn",
+      content:
+        "Asia Bay Resort & Spa Cam Ranh (quy mô 220 phòng & biệt thự biển) đang mở rộng công suất đón đoàn khách MICE quốc tế. Chúng tôi cần kết nối với đơn vị cung ứng thực phẩm - rau củ - hải sản đạt chuẩn VietGAP tại Khánh Hòa và tiếp nhận 15 sinh viên năm cuối ngành Du lịch - Nhà hàng thực tập có hưởng phụ cấp.",
+      memberDeal: "Thanh toán công nợ tự động 7 ngày/lần qua TechCorp ERP + Tài trợ gói Teambuilding bãi biển giảm 35% cho đối tác.",
+      author: {
+        name: "Ông Trần Quốc Bảo (Tổng Quản lý GM)",
+        org: "Asia Bay Resort & Spa Cam Ranh",
+        roleBadge: "Khối Doanh nghiệp SME",
+        verifiedApp: "Đang dùng: TechCorp PMS + ERP"
+      },
       createdAt: "4 giờ trước",
-      likes: 12,
-      views: 95,
+      likes: 23,
+      views: 178,
+      comments: [
+        {
+          id: "CMT-105-1",
+          authorName: "Bà Nguyễn Thị Thu Thủy (Giám đốc Điều hành)",
+          authorOrg: "Công ty CP Thực phẩm & Suất ăn Học đường Biển Xanh Nha Trang",
+          roleBadge: "Khối Doanh nghiệp SME",
+          text: "Thực phẩm Biển Xanh hiện có xe lạnh giao tuyến Nha Trang - Bãi Dài Cam Ranh lúc 5h30 sáng hàng ngày, đầy đủ chứng nhận VietGAP & ISO 22000. Rất mong được hợp tác cùng Asia Bay Resort!",
+          time: "2 giờ trước"
+        }
+      ]
+    },
+    {
+      id: "POST-106",
+      category: "spotlight",
+      categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "sme_hospitality",
+      unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+      title: "[Đặc quyền Học đường] Giảm 12% hợp đồng suất ăn bán trú chuẩn VietGAP & đồng bộ thực đơn dinh dưỡng lên Sổ liên lạc EduManager",
+      content:
+        "Nhà máy chế biến suất ăn học đường Biển Xanh (KCN Đắc Lộc - Nha Trang) đạt chuẩn ISO 22000 & VietGAP hiện đang cung cấp 6.500 suất ăn/ngày. Chúng tôi tích hợp API đồng bộ thực đơn hàng ngày, hình ảnh mẫu thức ăn lưu nghiệm và định lượng Kcal trực tiếp lên Sổ liên lạc điện tử EduManager Pro để phụ huynh theo dõi minh bạch.",
+      memberDeal: "🎁 Giảm ngay 12% giá trị hợp đồng năm học mới + Tài trợ 100% tủ giữ nhiệt inox công nghiệp tại bếp ăn nhà trường.",
+      author: {
+        name: "Bà Nguyễn Thị Thu Thủy (Giám đốc Điều hành)",
+        org: "Công ty CP Thực phẩm & Suất ăn Học đường Biển Xanh Nha Trang",
+        roleBadge: "Khối Doanh nghiệp SME",
+        verifiedApp: "Đang dùng: ERP Kho vận + Website TechCorp"
+      },
+      createdAt: "5 giờ trước",
+      likes: 31,
+      views: 215,
+      comments: []
+    },
+    {
+      id: "POST-107",
+      category: "spotlight",
+      categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "realestate_interior",
+      unitGroupName: "🏙️ Khối Bất động sản & Nội thất",
+      title: "[Ưu đãi Mở rộng Cơ sở] Giảm 20% gói Thiết kế - Thi công Phòng học Thông minh & Văn phòng Doanh nghiệp tại Nha Trang",
+      content:
+        "Liên minh Sàn Giao dịch BĐS Hưng Phát Land & Xưởng Nội thất TechCorp 3D cung cấp dịch vụ trọn gói từ tìm kiếm mặt bằng mở trường/trung tâm tại KĐT Mỹ Gia, Hà Quang II, Vĩnh Điềm Trung đến thiết kế 3D và thi công nội thất phòng học chuẩn quốc tế, văn phòng làm việc hiện đại.",
+      memberDeal: "🎁 Miễn phí 100% bản vẽ thiết kế 3D phối cảnh + Chiết khấu 20% giá xuất xưởng nội thất cho đơn vị thành viên TechCorp.",
+      author: {
+        name: "Ban Giám đốc Hưng Phát Land",
+        org: "Sàn Giao dịch BĐS Hưng Phát Land & Nội thất 3D",
+        roleBadge: "Khối Bất động sản & Nội thất",
+        verifiedApp: "Đang dùng: BĐS AI + Nội thất 3D"
+      },
+      createdAt: "6 giờ trước",
+      likes: 29,
+      views: 240,
+      comments: []
+    },
+    {
+      id: "POST-108",
+      category: "comarketing",
+      categoryLabel: "🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "school_uni",
+      unitGroupName: "🎓 Khối Trường học Mầm non – K12 & Đại học",
+      title: "[Job Fair & Thực tập Doanh nghiệp] Mời 30 Doanh nghiệp SME & Resort tham gia Tuần lễ Tuyển dụng & Phỏng vấn Thực tập sinh Số",
+      content:
+        "Phối hợp cùng Sàn Tuyển dụng AI (jobai.techcorp.info.vn), Trung tâm Hợp tác Doanh nghiệp tổ chức đợt kết nối 450 sinh viên năm cuối các ngành CNTT, Quản trị Khách sạn, Kế toán, Ngôn ngữ Anh - Hàn - Trung đã có Hồ sơ Năng lực Số xác thực điểm thi LMS với các doanh nghiệp trong Hệ sinh thái TechCorp.",
+      memberDeal: "Miễn phí bàn phỏng vấn trực tiếp tại Hội trường + Cấp quyền truy cập sớm 450 CV xác thực trên Sàn JobAI.",
+      author: {
+        name: "Ban Hợp tác Doanh nghiệp & Việc làm Sinh viên",
+        org: "Trường Đại học Nha Trang (NTU)",
+        roleBadge: "Khối Cơ sở Giáo dục",
+        verifiedApp: "Đang dùng: TC COMPASS + JobAI"
+      },
+      createdAt: "8 giờ trước",
+      likes: 45,
+      views: 360,
+      comments: []
+    },
+    {
+      id: "POST-109",
+      category: "spotlight",
+      categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "training_center",
+      unitGroupName: "🏫 Khối Trung tâm Ngoại ngữ - Tin học",
+      title: "[Đào tạo Ngoại ngữ Doanh nghiệp] Tặng gói đào tạo Tiếng Hàn - Nhật - Trung chuyên ngành Du lịch & F&B giảm 30% học phí",
+      content:
+        "Đáp ứng làn sóng du khách Hàn Quốc, Nhật Bản và Trung Quốc tăng mạnh tại Nha Trang - Khánh Hòa, Trung tâm Ngoại ngữ Á Châu thiết kế các khóa giao tiếp thực chiến 6 tuần dành riêng cho nhân viên Lễ tân, Buồng phòng, Nhà hàng, Spa với lịch học linh hoạt theo ca.",
+      memberDeal: "🎁 Giảm 30% học phí cho doanh nghiệp đăng ký từ 10 nhân sự + Miễn phí kiểm tra đầu vào và cấp chứng chỉ số trên TechCorp LMS.",
+      author: {
+        name: "Ban Giám đốc Trung tâm Ngoại ngữ Á Châu",
+        org: "Á Châu Language Center",
+        roleBadge: "Khối Đào tạo NN-TH",
+        verifiedApp: "Đang dùng: QL Trung tâm + LMS"
+      },
+      createdAt: "12 giờ trước",
+      likes: 22,
+      views: 185,
       comments: []
     },
     {
@@ -507,6 +675,8 @@ const STATE = {
       status: "approved",
       locked: true,
       pinned: false,
+      unitGroup: "school_uni",
+      unitGroupName: "🎓 Khối Trường học Mầm non – K12 & Đại học",
       title: "[Chủ đề đã chốt quy trình] Kinh nghiệm tự động hóa 95% quy trình thu học phí QR & chấm công giáo viên tại Nha Trang bằng hệ sinh thái TechCorp",
       content:
         "Trước đây mỗi đầu tháng bộ phận kế toán của trường mất gần 5 ngày để đối soát tin nhắn chuyển khoản học phí của phụ huynh. Từ khi bật tính năng gạch nợ tự động qua QR động trên phần mềm Quản lý Trường học và đồng bộ sang phân hệ Tài chính ERP của TechCorp, phụ huynh quét mã 3 giây là biên lai điện tử xuất tự động, kế toán giảm được 80% khối lượng việc thủ công.",
@@ -520,6 +690,78 @@ const STATE = {
       createdAt: "1 ngày trước",
       likes: 41,
       views: 310,
+      comments: []
+    },
+    {
+      id: "POST-110",
+      category: "knowledge",
+      categoryLabel: "💡 Góc Chia sẻ Quản trị, HR & Chuyển đổi số",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "sme_hospitality",
+      unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+      title: "[Case Study Thực tế] Cách SeaTech Khánh Hòa áp dụng Thẻ điểm cân bằng BSC-KPI & ERP giúp tăng 38% năng suất đội ngũ kinh doanh",
+      content:
+        "Sau 3 tháng chuyển đổi từ bảng tính Excel rời rạc sang bộ đôi TechCorp ERP và Quản trị Mục tiêu BSC-KPI (kpi.techcorp.info.vn), toàn bộ 85 nhân sự của SeaTech đã nắm rõ mục tiêu OKR/KPI theo tuần. Hệ thống tự động tính hoa hồng và thưởng hiệu suất minh bạch, giảm 90% tranh chấp cuối kỳ.",
+      memberDeal: "Chia sẻ miễn phí bộ thư viện 45 chỉ số KPI mẫu cho bộ phận Sales, Marketing, Nhân sự & Kế toán doanh nghiệp SME.",
+      author: {
+        name: "Ông Vũ Đình Khôi (Giám đốc Điều hành)",
+        org: "Công ty CP Thương mại & Dịch vụ SeaTech Khánh Hòa",
+        roleBadge: "Khối Doanh nghiệp SME",
+        verifiedApp: "Đang dùng: TechCorp ERP + BSC-KPI"
+      },
+      createdAt: "1 ngày trước",
+      likes: 36,
+      views: 274,
+      comments: []
+    },
+    {
+      id: "POST-111",
+      category: "comarketing",
+      categoryLabel: "🤝 Hợp tác Chéo & Đồng tổ chức Sự kiện",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "training_center",
+      unitGroupName: "🏫 Khối Trung tâm Ngoại ngữ - Tin học",
+      title: "[Hợp tác CLB Tiếng Anh Học đường] Tài trợ Giáo viên Bản xứ giao lưu Ngoại khóa cuối tuần cho các Trường Tiểu học & THCS",
+      content:
+        "Hệ thống Anh ngữ Quốc tế Global Star (3 cơ sở tại Nha Trang) triển khai chương trình 'English STEM & Robotics Weekend' dành cho các trường Tiểu học và THCS. Đội ngũ giáo viên bản xứ của Global Star sẽ trực tiếp về trường đồng tổ chức CLB tiếng Anh hoàn toàn miễn phí.",
+      memberDeal: "Tài trợ 100% chi phí giáo viên bản xứ + Tặng 50 học bổng bán phần khóa hè cho học sinh xuất sắc của trường.",
+      author: {
+        name: "Bà Phạm Hoàng Yến (Giám đốc Học vụ)",
+        org: "Hệ thống Anh ngữ Quốc tế Global Star",
+        roleBadge: "Khối Đào tạo NN-TH",
+        verifiedApp: "Đang dùng: QL Trung tâm + TechCorpLearn"
+      },
+      createdAt: "2 ngày trước",
+      likes: 25,
+      views: 208,
+      comments: []
+    },
+    {
+      id: "POST-112",
+      category: "spotlight",
+      categoryLabel: "🎁 Quảng bá & Đặc quyền Thành viên (Give-to-Get)",
+      status: "approved",
+      locked: false,
+      pinned: false,
+      unitGroup: "sme_hospitality",
+      unitGroupName: "🏢 Khối Doanh nghiệp SME, Du lịch & Khách sạn",
+      title: "[Phúc lợi Y tế Học đường & Doanh nghiệp] Khám răng định kỳ miễn phí tại Trường học & Giảm 30% dịch vụ Nha khoa cho nhân sự TechCorp ID",
+      content:
+        "Hệ thống Nha khoa & Phòng khám Quốc tế Sài Gòn - Nha Trang triển khai gói chăm sóc sức khỏe răng miệng lưu động tại các trường Mầm non, Tiểu học và tặng gói khám tổng quát miễn phí cho toàn bộ cán bộ nhân viên doanh nghiệp thuộc Hệ sinh thái TechCorp.",
+      memberDeal: "🎁 Khám răng định kỳ miễn phí 100% tại trường học + Giảm 30% dịch vụ nha khoa thẩm mỹ cho chủ thẻ TechCorp ID.",
+      author: {
+        name: "BS. CKII Nguyễn Trọng Nghĩa (Giám đốc Chuyên môn)",
+        org: "Hệ thống Nha khoa Quốc tế Sài Gòn - Nha Trang",
+        roleBadge: "Khối Doanh nghiệp SME",
+        verifiedApp: "Đang dùng: CRM Chăm sóc khách hàng TechCorp"
+      },
+      createdAt: "2 ngày trước",
+      likes: 33,
+      views: 256,
       comments: []
     }
   ],
@@ -1027,6 +1269,8 @@ const STATE = {
   ],
   previewTenantRole: "ceo_sme"
 };
+
+const CLIENT_DEFAULT_FORUM_POSTS = JSON.parse(JSON.stringify(STATE.forumPosts));
 
 const PERSONA_TO_ROLE = {
   "super-admin": "super_admin",
@@ -2512,7 +2756,423 @@ window.deleteEcosystemApp = async function (appId) {
   showToast(`Đã xoá ứng dụng <b>${escapeHtml(app.name)}</b>!`);
 };
 
-// ==================== 2. FORUM FEED & ADMIN FORUM MODERATION ====================
+// ==================== 2. FORUM FEED (SPLIT-PANE TREE VIEW) & ADMIN FORUM MODERATION ====================
+const FORUM_UNIT_GROUPS_CONFIG = [
+  {
+    key: "sme_hospitality",
+    title: "🏢 Khối Doanh nghiệp SME & Du lịch",
+    shortTitle: "Khối Doanh nghiệp SME & Du lịch"
+  },
+  {
+    key: "school_uni",
+    title: "🎓 Khối Trường học K-12 & Đại học",
+    shortTitle: "Khối Trường học K-12 & Đại học"
+  },
+  {
+    key: "training_center",
+    title: "🏫 Khối Trung tâm Ngoại ngữ - Tin học",
+    shortTitle: "Khối Trung tâm Ngoại ngữ - Tin học"
+  },
+  {
+    key: "realestate_interior",
+    title: "🏙️ Khối Bất động sản & Nội thất",
+    shortTitle: "Khối Bất động sản & Nội thất"
+  }
+];
+
+function resolveForumPostUnitInfo(post) {
+  const rawOrg = String(post?.author?.org || "Đơn vị Thành viên TechCorp").trim();
+  const cleanOrg = rawOrg.replace(/\s*\(Đang dùng:.*$/i, "").trim();
+  const lower = (cleanOrg + " " + (post?.author?.roleBadge || "")).toLowerCase();
+
+  let groupKey = post.unitGroup || "";
+  if (!groupKey) {
+    if (lower.includes("bđs") || lower.includes("bất động sản") || lower.includes("hưng phát") || lower.includes("nội thất")) {
+      groupKey = "realestate_interior";
+    } else if (lower.includes("trung tâm") || lower.includes("english") || lower.includes("language") || lower.includes("nn-th") || lower.includes("global star") || lower.includes("á châu")) {
+      groupKey = "training_center";
+    } else if (lower.includes("trường") || lower.includes("đại học") || lower.includes("cao đẳng") || lower.includes("giáo dục") || lower.includes("sao biển") || lower.includes("ntu")) {
+      groupKey = "school_uni";
+    } else {
+      groupKey = "sme_hospitality";
+    }
+  }
+
+  let icon = "🏢";
+  if (cleanOrg.toLowerCase().includes("resort") || cleanOrg.toLowerCase().includes("khách sạn")) icon = "🏨";
+  else if (cleanOrg.toLowerCase().includes("thực phẩm") || cleanOrg.toLowerCase().includes("biển xanh")) icon = "🍱";
+  else if (cleanOrg.toLowerCase().includes("nha khoa") || cleanOrg.toLowerCase().includes("phòng khám")) icon = "🦷";
+  else if (cleanOrg.toLowerCase().includes("seatech")) icon = "⚙️";
+  else if (cleanOrg.toLowerCase().includes("hưng phát") || cleanOrg.toLowerCase().includes("nội thất")) icon = "🛋️";
+  else if (cleanOrg.toLowerCase().includes("đại học") || cleanOrg.toLowerCase().includes("cao đẳng")) icon = "🏛️";
+  else if (cleanOrg.toLowerCase().includes("sao biển") || cleanOrg.toLowerCase().includes("trường")) icon = "🏫";
+  else if (cleanOrg.toLowerCase().includes("ocean")) icon = "🇬🇧";
+  else if (cleanOrg.toLowerCase().includes("á châu")) icon = "🇰🇷";
+  else if (cleanOrg.toLowerCase().includes("global star")) icon = "🌟";
+
+  // Short display name for tree leaf
+  let shortOrg = cleanOrg
+    .replace(/^Công ty CP Thực phẩm & Suất ăn Học đường\s+/i, "Thực phẩm Học đường ")
+    .replace(/^Công ty CP Thương mại & Dịch vụ\s+/i, "Công ty TM&DV ")
+    .replace(/^Hệ thống Nha khoa Quốc tế\s+/i, "Nha khoa Quốc tế ")
+    .replace(/^Sàn Giao dịch BĐS\s+/i, "BĐS ")
+    .replace(/^Hệ thống Anh ngữ Quốc tế\s+/i, "Anh ngữ Quốc tế ");
+
+  return {
+    cleanOrg,
+    shortOrg,
+    groupKey,
+    icon
+  };
+}
+
+if (!STATE.selectedForumTreeFilter) {
+  STATE.selectedForumTreeFilter = { type: "all", value: "all", label: "Tất cả Đơn vị Thành viên" };
+}
+if (!STATE.forumDisplayMode) {
+  STATE.forumDisplayMode = "split";
+}
+if (!STATE.collapsedTreeGroups) {
+  STATE.collapsedTreeGroups = {};
+}
+
+window.selectForumTreeNode = function (filterType, filterValue, filterLabel) {
+  STATE.selectedForumTreeFilter = {
+    type: filterType || "all",
+    value: filterValue || "all",
+    label: filterLabel || "Tất cả Đơn vị Thành viên"
+  };
+  STATE.selectedForumPostId = null; // Auto-select first post in the filtered node
+  renderForumPosts();
+};
+
+window.toggleForumTreeGroup = function (groupKey, event) {
+  if (event) {
+    event.stopPropagation();
+  }
+  STATE.collapsedTreeGroups[groupKey] = !Boolean(STATE.collapsedTreeGroups[groupKey]);
+  renderForumPosts();
+};
+
+window.toggleAllForumTreeGroups = function () {
+  const anyCollapsed = FORUM_UNIT_GROUPS_CONFIG.some((g) => Boolean(STATE.collapsedTreeGroups[g.key]));
+  FORUM_UNIT_GROUPS_CONFIG.forEach((g) => {
+    STATE.collapsedTreeGroups[g.key] = !anyCollapsed;
+  });
+  renderForumPosts();
+};
+
+window.handleForumTreeSearch = function (val) {
+  STATE.forumTreeSearchQuery = String(val || "").trim();
+  renderForumPosts();
+};
+
+window.selectForumPostToRead = function (postId, scrollReader = false) {
+  STATE.selectedForumPostId = postId;
+  const post = STATE.forumPosts.find((p) => p.id === postId);
+  if (post) {
+    post.views = (post.views || 1) + 1;
+  }
+  renderForumPosts();
+  if (scrollReader) {
+    setTimeout(() => {
+      const readerEl = document.getElementById("forumActiveReaderPane");
+      if (readerEl) {
+        readerEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }, 40);
+  }
+};
+
+window.navigateForumPostReader = function (step) {
+  const list = window._lastFilteredForumPosts || [];
+  if (list.length === 0) return;
+  const currentIdx = list.findIndex((p) => p.id === STATE.selectedForumPostId);
+  const nextIdx = (currentIdx + step + list.length) % list.length;
+  window.selectForumPostToRead(list[nextIdx].id, false);
+};
+
+window.toggleForumDisplayMode = function () {
+  STATE.forumDisplayMode = STATE.forumDisplayMode === "split" ? "expanded" : "split";
+  const btn = document.getElementById("forumViewModeBtn");
+  if (btn) {
+    btn.innerHTML =
+      STATE.forumDisplayMode === "split"
+        ? "📰 Chuyển sang Xem Mở rộng Tất cả"
+        : "🌳 Chuyển về Chế độ Đọc Tách Khung";
+  }
+  renderForumPosts();
+};
+
+function renderForumUnitTreeSidebar(approvedPosts) {
+  const treeEl = document.getElementById("forumUnitTreeContainer");
+  if (!treeEl) return;
+
+  const activeFilter = STATE.selectedForumTreeFilter || { type: "all", value: "all" };
+  const activeCat = STATE.selectedForumCategory || "all";
+
+  // Filter by category & search query when computing counts or show total approved counts per unit
+  const groupsMap = new Map();
+  FORUM_UNIT_GROUPS_CONFIG.forEach((g) => {
+    groupsMap.set(g.key, {
+      ...g,
+      totalCount: 0,
+      unitsMap: new Map()
+    });
+  });
+
+  approvedPosts.forEach((p) => {
+    const info = resolveForumPostUnitInfo(p);
+    const grp = groupsMap.get(info.groupKey) || groupsMap.get("sme_hospitality");
+    grp.totalCount += 1;
+    if (!grp.unitsMap.has(info.cleanOrg)) {
+      grp.unitsMap.set(info.cleanOrg, {
+        cleanOrg: info.cleanOrg,
+        shortOrg: info.shortOrg,
+        icon: info.icon,
+        count: 0
+      });
+    }
+    grp.unitsMap.get(info.cleanOrg).count += 1;
+  });
+
+  const isAllActive = activeFilter.type === "all";
+
+  const groupsHtml = Array.from(groupsMap.values())
+    .map((grp) => {
+      const isCollapsed = Boolean(STATE.collapsedTreeGroups[grp.key]);
+      const isGroupActive = activeFilter.type === "group" && activeFilter.value === grp.key;
+      const units = Array.from(grp.unitsMap.values());
+
+      const leavesHtml = units
+        .map((u) => {
+          const isLeafActive = activeFilter.type === "org" && activeFilter.value === u.cleanOrg;
+          const safeOrgParam = escapeHtml(u.cleanOrg).replace(/'/g, "\\'");
+          return `
+            <div
+              class="tree-unit-leaf ${isLeafActive ? "active" : ""}"
+              onclick="selectForumTreeNode('org', '${safeOrgParam}', '${safeOrgParam}')"
+              title="${escapeHtml(u.cleanOrg)} (${u.count} bài viết)"
+            >
+              <span class="tree-unit-leaf-name">
+                <span>${u.icon}</span>
+                <span style="overflow:hidden;text-overflow:ellipsis;">${escapeHtml(u.shortOrg)}</span>
+              </span>
+              <span class="tree-count-badge">${u.count}</span>
+            </div>
+          `;
+        })
+        .join("");
+
+      const safeGrpTitle = escapeHtml(grp.shortTitle).replace(/'/g, "\\'");
+
+      return `
+        <div class="tree-group-block ${isCollapsed ? "collapsed" : ""}">
+          <div
+            class="tree-group-header ${isGroupActive ? "active" : ""}"
+            onclick="selectForumTreeNode('group', '${grp.key}', '${safeGrpTitle}')"
+          >
+            <div class="tree-group-left">
+              <span
+                class="tree-caret"
+                onclick="toggleForumTreeGroup('${grp.key}', event)"
+                title="Thu gọn / Mở rộng nhánh này"
+              >▾</span>
+              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(grp.title)}</span>
+            </div>
+            <span class="tree-count-badge">${grp.totalCount}</span>
+          </div>
+          <div class="tree-group-children">
+            ${leavesHtml}
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  // Category counts for quick tree navigation
+  const catCounts = {
+    rfq: approvedPosts.filter((p) => p.category === "rfq").length,
+    spotlight: approvedPosts.filter((p) => p.category === "spotlight").length,
+    comarketing: approvedPosts.filter((p) => p.category === "comarketing").length,
+    knowledge: approvedPosts.filter((p) => p.category === "knowledge").length
+  };
+
+  treeEl.innerHTML = `
+    <div
+      class="tree-root-node ${isAllActive ? "active" : ""}"
+      onclick="selectForumTreeNode('all', 'all', 'Tất cả Đơn vị Thành viên')"
+    >
+      <span>🌐 Toàn Hệ sinh thái TechCorp</span>
+      <span class="tree-count-badge">${approvedPosts.length} bài</span>
+    </div>
+
+    <div style="font-size:10.5px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin:8px 4px 6px;">
+      📂 Phân nhánh theo Khối & Đơn vị
+    </div>
+    ${groupsHtml}
+
+    <div style="font-size:10.5px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin:12px 4px 6px;padding-top:8px;border-top:1px dashed #cbd5e1;">
+      🏷️ Nhánh Chuyên mục Giao thương
+    </div>
+    <div class="tree-group-children" style="margin-left:6px;">
+      <div class="tree-unit-leaf ${activeCat === "rfq" ? "active" : ""}" onclick="selectForumCategoryFromTree('rfq')">
+        <span class="tree-unit-leaf-name">📢 Cần Mua / Tìm Đối tác (RFQ)</span>
+        <span class="tree-count-badge">${catCounts.rfq}</span>
+      </div>
+      <div class="tree-unit-leaf ${activeCat === "spotlight" ? "active" : ""}" onclick="selectForumCategoryFromTree('spotlight')">
+        <span class="tree-unit-leaf-name">🎁 Đặc quyền Give-to-Get</span>
+        <span class="tree-count-badge">${catCounts.spotlight}</span>
+      </div>
+      <div class="tree-unit-leaf ${activeCat === "comarketing" ? "active" : ""}" onclick="selectForumCategoryFromTree('comarketing')">
+        <span class="tree-unit-leaf-name">🤝 Hợp tác Sự kiện & Tuyển sinh</span>
+        <span class="tree-count-badge">${catCounts.comarketing}</span>
+      </div>
+      <div class="tree-unit-leaf ${activeCat === "knowledge" ? "active" : ""}" onclick="selectForumCategoryFromTree('knowledge')">
+        <span class="tree-unit-leaf-name">💡 Chia sẻ Quản trị & HR</span>
+        <span class="tree-count-badge">${catCounts.knowledge}</span>
+      </div>
+    </div>
+  `;
+}
+
+window.selectForumCategoryFromTree = function (catKey) {
+  const nextCat = STATE.selectedForumCategory === catKey ? "all" : catKey;
+  STATE.selectedForumCategory = nextCat;
+  const bar = document.getElementById("forumCategoryBar");
+  if (bar) {
+    bar.querySelectorAll(".forum-cat-btn").forEach((b) => {
+      b.classList.toggle("active", b.getAttribute("data-cat") === nextCat);
+    });
+  }
+  renderForumPosts();
+};
+
+function renderSingleForumPostDetailHtml(post, isLoggedIn, activeIdx, totalCount, isReaderMode = true) {
+  const isLocked = Boolean(post.locked);
+  const info = resolveForumPostUnitInfo(post);
+
+  const navHeaderHtml = isReaderMode
+    ? `
+      <div class="forum-reader-top-nav">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="badge badge-blue">📖 NỘI DUNG CHI TIẾT TIN BÀI (${activeIdx + 1}/${totalCount})</span>
+          <span class="badge ${post.pinned ? "badge-amber" : "badge-green"}">
+            ${post.pinned ? "📌 GHIM VIP • " : "✔ Đã xác thực SSO • "}${escapeHtml(post.categoryLabel)}
+          </span>
+          ${isLocked ? `<span class="badge badge-red">🔒 Đã đóng bình luận</span>` : ""}
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="navigateForumPostReader(-1)">◀ Tin trước</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="navigateForumPostReader(1)">Tin tiếp ▶</button>
+        </div>
+      </div>
+    `
+    : `
+      <div class="forum-author-bar">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <span class="badge ${post.pinned ? "badge-amber" : "badge-blue"}">
+            ${post.pinned ? "📌 GHIM VIP • " : ""}${escapeHtml(post.categoryLabel)}
+          </span>
+          <span class="badge badge-green">✔ Đã thẩm định & Xác thực SSO</span>
+          ${isLocked ? `<span class="badge badge-red">🔒 Đã đóng bình luận</span>` : ""}
+        </div>
+        <span style="font-size:11.5px;color:#475569;">🕒 ${escapeHtml(post.createdAt)} • 👁️ ${post.views || 1} lượt xem</span>
+      </div>
+    `;
+
+  return `
+    <div class="${isReaderMode ? "forum-reader-pane" : `forum-post-card ${post.pinned ? "pinned" : ""}`}" ${isReaderMode ? 'id="forumActiveReaderPane"' : ""}>
+      ${navHeaderHtml}
+
+      <h3 class="forum-reader-title">
+        ${escapeHtml(post.title)}
+      </h3>
+
+      <div class="forum-reader-author-card">
+        <div>
+          <div style="color:#0b2559;font-weight:800;font-size:13.5px;">
+            ${info.icon} Đơn vị: <span style="color:#0052d4;">${escapeHtml(info.cleanOrg)}</span>
+          </div>
+          <div style="color:#334155;font-size:12px;margin-top:2px;">
+            👤 Người đăng: <strong>${escapeHtml(post.author?.name)}</strong> • <span style="color:#059669;font-weight:700;">${escapeHtml(post.author?.verifiedApp || post.author?.roleBadge)}</span>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:12px;color:#475569;">
+          <div>🕒 Đăng lúc: <strong>${escapeHtml(post.createdAt)}</strong></div>
+          <div style="margin-top:2px;">👁️ <strong>${post.views || 1}</strong> lượt xem • 👍 <strong>${post.likes || 0}</strong> quan tâm</div>
+        </div>
+      </div>
+
+      <div class="forum-reader-body">
+        ${escapeHtml(post.content)}
+      </div>
+
+      ${
+        post.memberDeal
+          ? `<div class="forum-deal-box" style="margin-top:14px;padding:12px 15px;font-size:13px;">
+              <strong>🎁 Quyền lợi / Đặc quyền Nội bộ (Give-to-Get):</strong> ${escapeHtml(post.memberDeal)}
+            </div>`
+          : ""
+      }
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;flex-wrap:wrap;gap:10px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" onclick="likeForumPost('${post.id}')">
+            👍 Quan tâm (${post.likes || 0})
+          </button>
+          <button class="btn btn-emerald btn-sm" onclick="connectB2B('${escapeHtml(info.cleanOrg)}')">
+            🤝 Kết nối Giao thương / Nhận Ưu đãi cùng ${escapeHtml(info.shortOrg)}
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="selectForumTreeNode('org', '${escapeHtml(info.cleanOrg).replace(/'/g, "\\'")}', '${escapeHtml(info.cleanOrg).replace(/'/g, "\\'")}')">
+            📂 Xem tất cả bài của Đơn vị này
+          </button>
+        </div>
+        <span style="font-size:12.5px;font-weight:700;color:#0b2559;">💬 ${(post.comments || []).length} phản hồi giao thương</span>
+      </div>
+
+      <div class="forum-comments-wrap">
+        ${(post.comments || [])
+          .map(
+            (c) => `
+            <div class="forum-comment-item">
+              <div style="display:flex;justify-content:space-between;margin-bottom:3px;flex-wrap:wrap;gap:6px;">
+                <strong style="color:#0052d4;">✔ ${escapeHtml(c.authorName)} — <span style="color:#0f172a;">${escapeHtml(c.authorOrg || "")}</span> <span style="color:#475569;font-weight:400;">(${escapeHtml(c.roleBadge)})</span></strong>
+                <span style="font-size:11px;color:#64748b;">🕒 ${escapeHtml(c.time)}</span>
+              </div>
+              <div style="color:#1e293b;line-height:1.5;">${escapeHtml(c.text)}</div>
+            </div>
+          `
+          )
+          .join("")}
+
+        ${
+          isLocked
+            ? `<div style="background:#fff1f2;border:1px solid #fda4af;color:#be123c;padding:9px 12px;border-radius:8px;font-size:12.5px;margin-top:8px;">
+                🔒 <strong>Chủ đề đã đóng phản hồi:</strong> Quản trị viên đã khóa bình luận cho chủ đề này.
+              </div>`
+            : isLoggedIn
+            ? `<div style="display:flex;gap:8px;margin-top:10px;">
+                <input
+                  type="text"
+                  id="cmtInput_${post.id}"
+                  class="input-control"
+                  style="flex:1;padding:8px 12px;font-size:12.5px;"
+                  placeholder="Gửi báo giá / phản hồi trực tiếp với tư cách TechCorp ID đã đăng nhập..."
+                />
+                <button class="btn btn-primary btn-sm" onclick="submitForumComment('${post.id}')">
+                  📨 Gửi phản hồi
+                </button>
+              </div>`
+            : `<div style="margin-top:10px;font-size:12.5px;color:#475569;background:#f8fafc;padding:9px 12px;border-radius:8px;border:1px solid #e2e8f0;">
+                <a href="login.html" style="color:#0052d4;font-weight:800;text-decoration:none;">🔐 Đăng nhập TechCorp ID</a> để gửi báo giá trực tiếp hoặc phản hồi giao thương với <strong>${escapeHtml(info.shortOrg)}</strong>.
+              </div>`
+        }
+      </div>
+    </div>
+  `;
+}
+
 function renderForumPosts() {
   const container = document.getElementById("forumPostsContainer");
   const kpiEl = document.getElementById("kpiForumPostsCount");
@@ -2527,6 +3187,9 @@ function renderForumPosts() {
     pendingBadge.className = pendingCount > 0 ? "badge badge-amber" : "badge badge-green";
   }
 
+  const approvedPosts = STATE.forumPosts.filter((p) => p.status === "approved");
+  renderForumUnitTreeSidebar(approvedPosts);
+
   if (!container) return;
 
   let isLoggedIn = false;
@@ -2538,107 +3201,134 @@ function renderForumPosts() {
   } catch (_) {}
 
   const cat = STATE.selectedForumCategory || "all";
-  // Trang Public chỉ hiển thị các bài đã được thẩm định & duyệt (status === "approved") từ trang Admin
-  const filtered = STATE.forumPosts.filter(
-    (p) => p.status === "approved" && (cat === "all" || p.category === cat)
-  );
+  const treeFilter = STATE.selectedForumTreeFilter || { type: "all", value: "all", label: "Tất cả Đơn vị Thành viên" };
+  const kw = (STATE.forumTreeSearchQuery || "").toLowerCase();
+
+  const filtered = approvedPosts.filter((p) => {
+    const info = resolveForumPostUnitInfo(p);
+    const matchCat = cat === "all" || p.category === cat;
+    const matchTree =
+      treeFilter.type === "all" ||
+      (treeFilter.type === "group" && info.groupKey === treeFilter.value) ||
+      (treeFilter.type === "org" && info.cleanOrg === treeFilter.value);
+    const matchKw =
+      !kw ||
+      (p.title || "").toLowerCase().includes(kw) ||
+      (p.content || "").toLowerCase().includes(kw) ||
+      (p.memberDeal || "").toLowerCase().includes(kw) ||
+      info.cleanOrg.toLowerCase().includes(kw) ||
+      (p.author?.name || "").toLowerCase().includes(kw);
+    return matchCat && matchTree && matchKw;
+  });
+
+  window._lastFilteredForumPosts = filtered;
+
+  // Update Breadcrumb
+  const breadcrumbEl = document.getElementById("forumTreeBreadcrumb");
+  if (breadcrumbEl) {
+    const resetFilterBtn =
+      treeFilter.type !== "all" || cat !== "all" || kw
+        ? `<button type="button" class="btn btn-outline btn-sm" style="padding:3px 8px;font-size:11px;margin-left:6px;" onclick="selectForumTreeNode('all','all','Tất cả Đơn vị Thành viên'); selectForumCategoryFromTree('all');">🔄 Xem tất cả (${approvedPosts.length})</button>`
+        : "";
+    breadcrumbEl.innerHTML = `
+      <span class="crumb-root" style="cursor:pointer;" onclick="selectForumTreeNode('all','all','Tất cả Đơn vị Thành viên')">🌐 Hệ sinh thái TechCorp</span>
+      <span class="crumb-sep">›</span>
+      <strong class="crumb-current">${escapeHtml(treeFilter.label || "Tất cả Đơn vị Thành viên")}</strong>
+      <span class="badge badge-blue" style="margin-left:4px;">${filtered.length} bài viết</span>
+      ${resetFilterBtn}
+    `;
+  }
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="padding:24px;text-align:center;color:#475569;">Chưa có bài viết đã duyệt nào trong chuyên mục này.</div>`;
+    container.innerHTML = `
+      <div style="padding:32px 20px;text-align:center;color:#475569;background:#f8fbff;border:1.5px dashed #bfd7fa;border-radius:14px;">
+        <div style="font-size:28px;margin-bottom:8px;">🌳</div>
+        <div style="font-weight:800;color:#0b2559;font-size:15px;">Chưa có bài viết nào khớp với bộ lọc nhánh cây hiện tại</div>
+        <p style="font-size:12.5px;margin-top:4px;margin-bottom:12px;">Hãy chọn nhánh Đơn vị khác ở cây bên trái hoặc bấm nút khôi phục bộ lọc.</p>
+        <button type="button" class="btn btn-primary btn-sm" onclick="selectForumTreeNode('all','all','Tất cả Đơn vị Thành viên'); selectForumCategoryFromTree('all');">
+          🌐 Hiển thị Toàn bộ ${approvedPosts.length} Bài viết Hệ sinh thái
+        </button>
+      </div>
+    `;
     return;
   }
 
-  container.innerHTML = filtered
-    .map((post) => {
-      const isLocked = Boolean(post.locked);
+  // Ensure a valid post is selected for the Reader Pane
+  if (!STATE.selectedForumPostId || !filtered.some((p) => p.id === STATE.selectedForumPostId)) {
+    STATE.selectedForumPostId = filtered[0].id;
+  }
+  const activeIdx = filtered.findIndex((p) => p.id === STATE.selectedForumPostId);
+  const activePost = filtered[activeIdx] || filtered[0];
+
+  if (STATE.forumDisplayMode === "expanded") {
+    container.innerHTML = filtered
+      .map((post, idx) => renderSingleForumPostDetailHtml(post, isLoggedIn, idx, filtered.length, false))
+      .join("");
+    return;
+  }
+
+  const SHORT_CAT_BADGE = {
+    rfq: { label: "📢 RFQ Cần Mua", cls: "badge-blue" },
+    spotlight: { label: "🎁 Give-to-Get", cls: "badge-amber" },
+    comarketing: { label: "🤝 Hợp tác Sự kiện", cls: "badge-purple" },
+    knowledge: { label: "💡 Kinh nghiệm Số", cls: "badge-green" }
+  };
+
+  const compactRowsHtml = filtered
+    .map((p) => {
+      const isSelected = p.id === activePost.id;
+      const info = resolveForumPostUnitInfo(p);
+      const catMeta = SHORT_CAT_BADGE[p.category] || SHORT_CAT_BADGE.rfq;
       return `
-        <div class="forum-post-card ${post.pinned ? "pinned" : ""}">
-          <div class="forum-author-bar">
-            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
-              <span class="badge ${post.pinned ? "badge-amber" : "badge-blue"}">
-                ${post.pinned ? "📌 GHIM VIP • " : ""}${escapeHtml(post.categoryLabel)}
-              </span>
-              <span class="badge badge-green">✔ Đã thẩm định & Xác thực SSO</span>
-              ${isLocked ? `<span class="badge badge-red">🔒 Đã đóng bình luận</span>` : ""}
+        <div
+          class="forum-compact-row ${isSelected ? "active" : ""}"
+          onclick="selectForumPostToRead('${escapeHtml(p.id)}', true)"
+        >
+          <div class="forum-compact-row-main">
+            <div class="forum-compact-title-line">
+              ${p.pinned ? `<span class="badge badge-amber" style="padding:2px 7px;font-size:10px;">📌 Ghim</span>` : ""}
+              <span class="badge ${catMeta.cls}" style="padding:2px 8px;font-size:10.5px;">${catMeta.label}</span>
+              <span class="forum-compact-title">${escapeHtml(p.title)}</span>
             </div>
-            <span style="font-size:11.5px;color:#475569;">🕒 ${escapeHtml(post.createdAt)} • 👁️ ${post.views || 1} lượt xem</span>
-          </div>
-
-          <h4 style="font-size:16px;font-weight:700;color:#0f172a;margin-bottom:6px;">
-            ${escapeHtml(post.title)}
-          </h4>
-
-          <div style="font-size:12.5px;color:#0052d4;margin-bottom:10px;">
-            👤 <strong>${escapeHtml(post.author?.name)}</strong> — ${escapeHtml(post.author?.org)}
-            <span style="color:#475569;">(${escapeHtml(post.author?.verifiedApp || post.author?.roleBadge)})</span>
-          </div>
-
-          <p style="font-size:13.5px;color:#1e293b;line-height:1.6;">
-            ${escapeHtml(post.content)}
-          </p>
-
-          ${
-            post.memberDeal
-              ? `<div class="forum-deal-box">
-                  <strong>🎁 Quyền lợi / Đặc quyền Nội bộ (Give-to-Get):</strong> ${escapeHtml(post.memberDeal)}
-                </div>`
-              : ""
-          }
-
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:10px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn btn-outline btn-sm" onclick="likeForumPost('${post.id}')">
-                👍 Quan tâm (${post.likes || 0})
-              </button>
-              <button class="btn btn-emerald btn-sm" onclick="connectB2B('${escapeHtml(post.author?.org || post.author?.name)}')">
-                🤝 Kết nối Giao thương / Nhận Ưu đãi
-              </button>
+            <div class="forum-compact-subline">
+              <span class="forum-compact-org">${info.icon} ${escapeHtml(info.cleanOrg)}</span>
+              <span>• 👤 ${escapeHtml(p.author?.name)}</span>
+              ${p.memberDeal ? `<span style="color:#059669;font-weight:700;">• 🎁 Có Ưu đãi Thành viên</span>` : ""}
             </div>
-            <span style="font-size:12px;color:#475569;">💬 ${(post.comments || []).length} phản hồi</span>
           </div>
 
-          <div class="forum-comments-wrap">
-            ${(post.comments || [])
-              .map(
-                (c) => `
-                <div class="forum-comment-item">
-                  <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                    <strong style="color:#0052d4;">✔ ${escapeHtml(c.authorName)} <span style="color:#475569;font-weight:400;">(${escapeHtml(c.roleBadge)})</span></strong>
-                    <span style="font-size:11px;color:#64748b;">${escapeHtml(c.time)}</span>
-                  </div>
-                  <div style="color:#1e293b;">${escapeHtml(c.text)}</div>
-                </div>
-              `
-              )
-              .join("")}
-
+          <div class="forum-compact-metrics">
+            <span>🕒 ${escapeHtml(p.createdAt)}</span>
+            <span>👁️ ${p.views || 1}</span>
+            <span>💬 ${(p.comments || []).length}</span>
             ${
-              isLocked
-                ? `<div style="background:#fff1f2;border:1px solid #fda4af;color:#be123c;padding:9px 12px;border-radius:8px;font-size:12.5px;margin-top:8px;">
-                    🔒 <strong>Chủ đề đã đóng phản hồi:</strong> Quản trị viên đã khóa bình luận cho chủ đề này.
-                  </div>`
-                : isLoggedIn
-                ? `<div style="display:flex;gap:8px;margin-top:8px;">
-                    <input
-                      type="text"
-                      id="cmtInput_${post.id}"
-                      class="input-control"
-                      style="flex:1;padding:7px 11px;font-size:12.5px;"
-                      placeholder="Gửi báo giá / phản hồi trực tiếp với tư cách TechCorp ID đã đăng nhập..."
-                    />
-                    <button class="btn btn-primary btn-sm" onclick="submitForumComment('${post.id}')">
-                      Gửi phản hồi
-                    </button>
-                  </div>`
-                : `<div style="margin-top:8px;font-size:12px;color:#475569;">
-                    <a href="login.html" style="color:#0052d4;font-weight:700;text-decoration:none;">🔐 Đăng nhập TechCorp ID</a> để gửi báo giá hoặc phản hồi giao thương.
-                  </div>`
+              isSelected
+                ? `<span class="badge badge-blue" style="font-size:10.5px;">👁️ Đang đọc</span>`
+                : `<span class="badge" style="background:#f1f5f9;color:#334155;font-size:10.5px;">Đọc tin →</span>`
             }
           </div>
         </div>
       `;
     })
     .join("");
+
+  container.innerHTML = `
+    <div class="forum-master-detail-wrap">
+      <!-- DANH SÁCH TIÊU ĐỀ MẬT ĐỘ CAO (HIỂN THỊ NHIỀU BÀI CÙNG LÚC) -->
+      <div class="forum-compact-list-box">
+        <div class="forum-compact-list-head">
+          <span>📋 DANH SÁCH BÀI VIẾT TRONG NHÁNH ĐANG CHỌN (${filtered.length} BÀI VIẾT)</span>
+          <span style="font-weight:600;color:#0052d4;font-size:11.5px;">💡 Bấm vào bài viết bất kỳ để xem toàn bộ nội dung bên dưới</span>
+        </div>
+        <div class="forum-compact-scroll">
+          ${compactRowsHtml}
+        </div>
+      </div>
+
+      <!-- VÙNG ĐỌC NỘI DUNG CHI TIẾT CỦA TIN BÀI ĐANG CHỌN -->
+      ${renderSingleForumPostDetailHtml(activePost, isLoggedIn, activeIdx, filtered.length, true)}
+    </div>
+  `;
 }
 
 window.renderAdminForumTable = function () {
@@ -6173,6 +6863,51 @@ function sanitizeStateTerminology() {
 
   if (STATE.rbacMatrix && STATE.rbacMatrix.super_admin) {
     STATE.rbacMatrix.super_admin.roleName = normalizeTermText(STATE.rbacMatrix.super_admin.roleName);
+  }
+
+  if (Array.isArray(STATE.forumPosts)) {
+    const defaultMap = new Map(CLIENT_DEFAULT_FORUM_POSTS.map((p) => [p.id, p]));
+    STATE.forumPosts = STATE.forumPosts.map((p) => {
+      const defMatch = defaultMap.get(p.id);
+      if (
+        p.id === "POST-1792469740466" ||
+        (typeof p.title === "string" && p.title.includes("??")) ||
+        (typeof p.content === "string" && p.content.includes("??"))
+      ) {
+        if (defMatch) {
+          return JSON.parse(JSON.stringify(defMatch));
+        }
+      }
+      if (defMatch) {
+        if (!p.unitGroup && defMatch.unitGroup) {
+          p.unitGroup = defMatch.unitGroup;
+          p.unitGroupName = defMatch.unitGroupName;
+        }
+        if (p.id === "POST-103" && p.status === "pending") {
+          p.status = "approved";
+          p.title = defMatch.title;
+        }
+      }
+      return p;
+    });
+
+    CLIENT_DEFAULT_FORUM_POSTS.forEach((defPost) => {
+      if (!STATE.forumPosts.some((existing) => existing.id === defPost.id)) {
+        STATE.forumPosts.push(JSON.parse(JSON.stringify(defPost)));
+      }
+    });
+  }
+
+  if (Array.isArray(STATE.activityLogs)) {
+    STATE.activityLogs = STATE.activityLogs.map((ev) => {
+      if (ev.id === "EVT-1792469740467" || (typeof ev.text === "string" && ev.text.includes("??"))) {
+        return {
+          ...ev,
+          text: '[Diễn đàn Cộng đồng] CEO Khách sạn & Lữ hành Biển Nha Trang vừa đăng bài mới: "[Cam Ranh - Nha Trang] Cần đơn vị thiết kế Website đa ngôn ngữ & cung cấp đồng phục cho 40 nhân sự"'
+        };
+      }
+      return ev;
+    });
   }
 }
 

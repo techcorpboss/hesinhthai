@@ -300,56 +300,86 @@
          TRANG 3: TRANG DIỄN ĐÀN GIAO THƯƠNG B2B, ƯU ĐÃI CHÉO & SÀN NHÂN LỰC - LMS
          ========================================================================= -->
     <div id="pub-page-forum" class="pub-page-view">
-      <!-- Phần 1: Diễn đàn Trao đổi Thành viên & Chợ Giao thương Nội bộ -->
+      <!-- Phần 1: Diễn đàn Trao đổi Thành viên & Chợ Giao thương Nội bộ (Cấu trúc Hình Cây Chia 2 Bên) -->
       <section id="sec-exchange" class="pub-section" style="margin-top:16px;">
         <div class="pub-section-header">
           <div>
-            <div class="pub-section-tag">💬 TRANG DIỄN ĐÀN HỆ SINH THÁI TECHCORP • KẾT NỐI CỘNG ĐỒNG & QUẢNG BÁ CHÉO B2B</div>
+            <div class="pub-section-tag">🌳 DIỄN ĐÀN HỆ SINH THÁI TECHCORP • CẤU TRÚC CÂY ĐƠN VỊ THÀNH VIÊN & TRÌNH ĐỌC TIN GIAO THƯƠNG</div>
             <h3 class="pub-section-title">Diễn đàn Trao đổi Thành viên & Chợ Giao thương Nội bộ (Give-to-Get)</h3>
           </div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            <span class="badge badge-green">✔ Chỉ hiển thị Tin Giao thương đã được Thẩm định & Phê duyệt</span>
+            <span class="badge badge-green">✔ 100% Tin bài Chuẩn UTF-8 & Đã Xác thực SSO</span>
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleForumDisplayMode()" id="forumViewModeBtn">
+              📰 Chuyển sang Xem Mở rộng Tất cả
+            </button>
             <button type="button" class="btn btn-primary btn-sm" onclick="switchPublicPage('contact')">
               🤝 Liên hệ Đăng ký Thành viên
             </button>
           </div>
         </div>
 
-        <div class="grid-2">
-          <!-- Cột Trái: Danh sách Bài viết Giao thương đã duyệt -->
-          <div class="card">
-            <div class="card-header">
+        <!-- KHUNG EXPLORER HÌNH CÂY CHIA 2 BÊN (TRÁI: CÂY ĐƠN VỊ THÀNH VIÊN • PHẢI: DANH SÁCH & NỘI DUNG CHI TIẾT TIN) -->
+        <div class="forum-tree-split-layout">
+          <!-- CỘT TRÁI: CÂY DANH MỤC CÁC KHỐI & ĐƠN VỊ THÀNH VIÊN -->
+          <aside class="forum-tree-sidebar">
+            <div class="forum-tree-sidebar-header">
               <div>
-                <h3 class="card-title">💬 Bảng Tin Hợp tác, Tìm Đối tác (RFQ) & Quảng bá Chéo Đã Phê Duyệt</h3>
-                <p class="card-subtitle">
-                  Tổng hợp các nhu cầu mua sắm nội bộ, hợp tác đào tạo và ưu đãi chéo chính thức từ các đơn vị thành viên Hệ sinh thái TechCorp.
-                </p>
+                <div class="forum-tree-sidebar-title">🌳 Cây Danh mục Đơn vị</div>
+                <div class="forum-tree-sidebar-sub">Chọn Khối hoặc Đơn vị để lọc bài viết</div>
+              </div>
+              <button type="button" class="forum-tree-expand-btn" onclick="toggleAllForumTreeGroups()" title="Mở rộng / Thu gọn toàn bộ cây">
+                ▾ Mở/Thu
+              </button>
+            </div>
+
+            <div class="forum-tree-search-box">
+              <input
+                type="text"
+                id="forumTreeSearchInput"
+                class="input-control"
+                style="width:100%;font-size:12.5px;padding:8px 11px;"
+                placeholder="🔍 Tìm đơn vị, tiêu đề, từ khóa..."
+                oninput="handleForumTreeSearch(this.value)"
+              />
+            </div>
+
+            <div class="forum-tree-nav-scroll" id="forumUnitTreeContainer"></div>
+          </aside>
+
+          <!-- CỘT PHẢI: VÙNG TRANG HIỂN THỊ DANH SÁCH BÀI VIẾT & NỘI DUNG CHI TIẾT CỦA TIN -->
+          <div class="forum-tree-main-pane">
+            <!-- Thanh Breadcrumb Đơn vị đang chọn + Lọc Chuyên mục -->
+            <div class="forum-tree-main-header">
+              <div class="forum-tree-breadcrumb" id="forumTreeBreadcrumb">
+                <span class="crumb-root">🌐 Toàn Hệ sinh thái TechCorp</span>
+                <span class="crumb-sep">›</span>
+                <strong class="crumb-current">Tất cả Đơn vị Thành viên</strong>
+              </div>
+
+              <div class="forum-cat-pills" id="forumCategoryBar" style="margin-bottom:0;">
+                <button class="forum-cat-btn active" data-cat="all">Tất cả chủ đề</button>
+                <button class="forum-cat-btn" data-cat="rfq">📢 Cần Mua / RFQ</button>
+                <button class="forum-cat-btn" data-cat="spotlight">🎁 Ưu đãi Give-to-Get</button>
+                <button class="forum-cat-btn" data-cat="comarketing">🤝 Hợp tác Sự kiện</button>
+                <button class="forum-cat-btn" data-cat="knowledge">💡 Kinh nghiệm Quản trị</button>
               </div>
             </div>
 
-            <div class="forum-cat-pills" id="forumCategoryBar">
-              <button class="forum-cat-btn active" data-cat="all">Tất cả chủ đề</button>
-              <button class="forum-cat-btn" data-cat="rfq">📢 Cần Mua / Tìm Đối tác (RFQ)</button>
-              <button class="forum-cat-btn" data-cat="spotlight">🎁 Quảng bá & Ưu đãi (Give-to-Get)</button>
-              <button class="forum-cat-btn" data-cat="comarketing">🤝 Hợp tác Sự kiện & Tuyển sinh</button>
-              <button class="forum-cat-btn" data-cat="knowledge">💡 Kinh nghiệm Quản trị & Chuyển đổi số</button>
-            </div>
-
+            <!-- Vùng Hiển thị Danh sách Bài viết & Nội dung Chi tiết Tin -->
             <div id="forumPostsContainer"></div>
           </div>
+        </div>
 
-          <!-- Cột Phải: Danh sách Ưu đãi B2B Nội bộ Đang Mở -->
-          <div style="display:flex;flex-direction:column;gap:20px;">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h3 class="card-title">🎁 Đặc quyền & Ưu đãi Chéo B2B Đang Mở</h3>
-                  <p class="card-subtitle">Các gói tài trợ & chiết khấu độc quyền được cung cấp từ Không gian Quản trị của Đơn vị Thành viên</p>
-                </div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:12px;" id="b2bGrid"></div>
+        <!-- Kệ Đặc quyền & Ưu đãi Chéo B2B Đang Mở (Hiển thị ngang bên dưới Cây Diễn đàn) -->
+        <div class="card" style="margin-top:20px;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">🎁 Kệ Đặc quyền & Ưu đãi Chéo B2B Đang Mở Toàn Hệ sinh thái</h3>
+              <p class="card-subtitle">Các gói tài trợ & chiết khấu độc quyền được cung cấp trực tiếp từ Không gian Quản trị của Đơn vị Thành viên</p>
             </div>
+            <span class="badge badge-amber">Give-to-Get B2B Offers</span>
           </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;" id="b2bGrid"></div>
         </div>
       </section>
 
