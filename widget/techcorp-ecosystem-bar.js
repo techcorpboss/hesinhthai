@@ -263,6 +263,9 @@
       color: #ffffff;
       border-color: #dc2626;
     }
+    .tc-eco-mobile-short {
+      display: none;
+    }
     @media (max-width: 1024px) {
       .tc-eco-quick-stats, .tc-eco-user-badge {
         display: none;
@@ -271,12 +274,65 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .tc-eco-bar {
-        padding: 0 12px;
+        height: auto;
+        min-height: 38px;
+        padding: 6px 10px;
+      }
+      .tc-eco-inner {
+        gap: 6px;
+      }
+      .tc-eco-left, .tc-eco-right {
+        gap: 6px;
+      }
+      .tc-eco-divider {
+        display: none;
+      }
+      .tc-eco-desktop-full {
+        display: none;
+      }
+      .tc-eco-mobile-short {
+        display: inline;
+      }
+      .tc-eco-brand {
+        font-size: 11px;
+        gap: 5px;
+      }
+      .tc-eco-launcher-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+        gap: 4px;
+      }
+      .tc-eco-link {
+        padding: 4px 7px;
+        font-size: 11px;
+      }
+      .tc-eco-sso-btn, .tc-eco-logout-btn {
+        padding: 4px 9px;
+        font-size: 11px;
+      }
+      .tc-eco-dropdown {
+        position: fixed;
+        top: 44px;
+        left: 8px;
+        right: 8px;
+        width: auto;
+        max-width: none;
+        max-height: 78vh;
+        overflow-y: auto;
+        padding: 14px;
+        border-radius: 14px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tc-eco-dd-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
       }
       .tc-eco-dd-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
       }
     }
   `;
@@ -285,8 +341,8 @@
   const basePrefix = hubBaseUrl ? hubBaseUrl + "/" : "";
   const publicLinkHtml =
     isAdminPage || isLoginPage
-      ? `<a href="${basePrefix}index.html" class="tc-eco-link">🌍 Về Trang Public</a>`
-      : `<a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="tc-eco-link" style="color:#38bdf8;font-weight:700;">🤖 Sàn Việc làm JobAI ↗</a>`;
+      ? `<a href="${basePrefix}index.html" class="tc-eco-link"><span class="tc-eco-desktop-full">🌍 Về Trang Public</span><span class="tc-eco-mobile-short">🌍 Trang chủ</span></a>`
+      : `<a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="tc-eco-link" style="color:#38bdf8;font-weight:700;"><span class="tc-eco-desktop-full">🤖 Sàn Việc làm JobAI ↗</span><span class="tc-eco-mobile-short">🤖 JobAI ↗</span></a>`;
 
   function buildRightAuthHtml() {
     const savedSession = getSavedSsoSession();
@@ -298,7 +354,7 @@
         </a>
       `;
     }
-    const workspaceLabel =
+    const workspaceLabelFull =
       savedSession.roleCode === "super_admin"
         ? "👑 Quản trị Hệ sinh thái"
         : "⚙️ Không gian Quản trị";
@@ -308,10 +364,12 @@
         👤 ${savedSession.name} • <span style="color:#38bdf8;">${savedSession.roleBadge || "Thành viên"}</span>
       </span>
       <a href="${basePrefix}admin.html" class="tc-eco-link ${isAdminPage ? "active" : ""}">
-        ${workspaceLabel}
+        <span class="tc-eco-desktop-full">${workspaceLabelFull}</span>
+        <span class="tc-eco-mobile-short">⚙️ Quản trị</span>
       </a>
       <button type="button" class="tc-eco-logout-btn" onclick="window.handleGlobalSsoLogout(event)">
-        🚪 Đăng xuất
+        <span class="tc-eco-desktop-full">🚪 Đăng xuất</span>
+        <span class="tc-eco-mobile-short">🚪 Thoát</span>
       </button>
     `;
   }
@@ -323,12 +381,14 @@
       <div class="tc-eco-left">
         <a href="${basePrefix}index.html" class="tc-eco-brand">
           <span class="tc-eco-dot"></span>
-          TECHCORP CLOUD ECOSYSTEM
+          <span class="tc-eco-desktop-full">TECHCORP CLOUD ECOSYSTEM</span>
+          <span class="tc-eco-mobile-short">TECHCORP</span>
         </a>
         <span class="tc-eco-divider"></span>
         <div class="tc-eco-launcher-wrap" id="tcEcoLauncherWrap">
           <button type="button" class="tc-eco-launcher-btn" id="tcEcoLauncherBtn">
-            <span>🌐 Khám phá 16 Nền tảng Live</span>
+            <span class="tc-eco-desktop-full">🌐 Khám phá 16 Nền tảng Live</span>
+            <span class="tc-eco-mobile-short">🌐 16 App Live</span>
             <span style="font-size:10px;opacity:0.85;">▼</span>
           </button>
           <div class="tc-eco-dropdown" id="tcEcoDropdown">
@@ -337,7 +397,7 @@
                 <strong style="font-size:13.5px;color:#071936;">Danh mục 16 Hệ thống Phần mềm Đang Vận hành Thực tế (*.techcorp.info.vn)</strong>
                 <div style="font-size:11.5px;color:#64748b;">100% Trực tuyến (HTTP 200 & SSL) • Kết nối định danh tập trung TechCorp ID</div>
               </div>
-              <a href="${basePrefix}index.html#sec-products" style="font-size:12px;font-weight:700;color:#0055e5;text-decoration:none;">Xem chi tiết 16 Sản phẩm →</a>
+              <a href="${basePrefix}index.html?page=products" style="font-size:12px;font-weight:700;color:#0055e5;text-decoration:none;">Xem chi tiết 16 Sản phẩm →</a>
             </div>
             <div class="tc-eco-dd-grid" id="tcEcoDropdownGrid"></div>
           </div>

@@ -6,8 +6,8 @@
   <title>Chi tiết Sản phẩm & Đăng ký Demo | Hệ sinh thái Số TechCorp</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="icon" type="image/png" href="logo.png?v=20" />
-  <link rel="stylesheet" href="styles.css?v=20" />
+  <link rel="icon" type="image/png" href="logo.png?v=24" />
+  <link rel="stylesheet" href="styles.css?v=24" />
   <style>
     /* ==================== MODERN MULTI-DEVICE CONTAINER & LAYOUT (v6.5 UI/UX) ==================== */
     .tc-corp-footer,
@@ -590,7 +590,8 @@
     }
   </style>
 </head>
-<body>
+<body class="has-mobile-bottom-nav">
+  <script src="widget/techcorp-ecosystem-bar.js?v=24"></script>
 
   <!-- HEADER CHÍNH ĐỒNG BỘ VỚI TRANG PUBLIC -->
   <header class="hub-header">
@@ -1038,6 +1039,32 @@
       </div>
     </div>
   </footer>
+
+  <!-- MOBILE BOTTOM APP BAR (HIỂN THỊ TRÊN ĐIỆN THOẠI <= 768PX) -->
+  <nav class="mobile-bottom-nav" aria-label="Điều hướng nhanh trên Điện thoại">
+    <div class="mobile-bottom-nav-inner">
+      <a href="index.html?page=home" class="mobile-bottom-nav-item">
+        <span class="mb-icon">📢</span>
+        <span>Bản tin</span>
+      </a>
+      <a href="index.html?page=products" class="mobile-bottom-nav-item active">
+        <span class="mb-icon">🚀</span>
+        <span>16 Sản phẩm</span>
+      </a>
+      <a href="index.html?page=forum" class="mobile-bottom-nav-item">
+        <span class="mb-icon">💬</span>
+        <span>Diễn đàn</span>
+      </a>
+      <a href="#demo-form" class="mobile-bottom-nav-item">
+        <span class="mb-icon">📝</span>
+        <span>ĐK Demo</span>
+      </a>
+      <a href="index.html?page=contact" class="mobile-bottom-nav-item">
+        <span class="mb-icon">📞</span>
+        <span>Liên hệ</span>
+      </a>
+    </div>
+  </nav>
 
   <script>
     // Dữ liệu chi tiết 16 Sản phẩm thực tế trong Hệ sinh thái TechCorp

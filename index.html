@@ -4,18 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hệ sinh thái TechCorp — hesinhthai.techcorp.info.vn (Bản tin Hệ sinh thái, 6 Nhóm Sản phẩm, Diễn đàn B2B & Báo giá Combo)</title>
-  <link rel="icon" type="image/png" href="logo.png?v=20" />
-  <link rel="stylesheet" href="styles.css?v=20" />
+  <link rel="icon" type="image/png" href="logo.png?v=24" />
+  <link rel="stylesheet" href="styles.css?v=24" />
   <!-- Thanh Liên thông Hệ sinh thái (Topbar SSO dùng chung) -->
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=20"
+    src="widget/techcorp-ecosystem-bar.js?v=24"
     data-app-id="erp"
     data-org-name="TechCorp Ecosystem Hub"
     data-user-role="SSO Connected"
     defer
   ></script>
 </head>
-<body>
+<body class="has-mobile-bottom-nav">
   <!-- HEADER HỆ SINH THÁI TECHCORP (5 TRANG PUBLIC RÕ RÀNG & NÚT ĐĂNG NHẬP GỌN GÀNG) -->
   <header class="hub-header">
     <div class="hub-header-inner">
@@ -178,6 +178,22 @@
               >
                 📰 Chế độ: 2 Cột Chuyên mục
               </button>
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                onclick="printAdminBulletinsReport()"
+                title="In danh sách bản tin Hệ sinh thái"
+              >
+                🖨️ In Bản tin
+              </button>
+              <button
+                type="button"
+                class="btn btn-emerald btn-sm"
+                onclick="exportBulletinsExcel()"
+                title="Xuất danh sách bản tin ra Excel (.CSV)"
+              >
+                📥 Xuất Excel
+              </button>
             </div>
           </div>
         </div>
@@ -279,14 +295,17 @@
             <h3 class="pub-section-title">Hệ thống 6 Nhóm Sản phẩm Công nghệ, Sàn Tuyển dụng AI & Giải pháp Chuyển đổi Số</h3>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="btn btn-emerald btn-sm" style="text-decoration:none;">
-              🤖 Mở Sàn Việc làm AI (jobai.techcorp.info.vn) ↗
+            <button type="button" class="btn btn-outline btn-sm" onclick="printAdminAppsReport()">
+              🖨️ In Danh mục 16 Sản phẩm
+            </button>
+            <button type="button" class="btn btn-emerald btn-sm" onclick="exportAppsExcel()">
+              📥 Xuất Excel
+            </button>
+            <a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="text-decoration:none;">
+              🤖 Sàn JobAI ↗
             </a>
             <button type="button" class="btn btn-primary btn-sm" onclick="switchPublicPage('pricing')">
               💳 Xem Báo giá Combo →
-            </button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="switchPublicPage('contact')">
-              📞 Đăng ký Tư vấn / Demo
             </button>
           </div>
         </div>
@@ -333,12 +352,17 @@
             <h3 class="pub-section-title">Diễn đàn Trao đổi Thành viên & Chợ Giao thương Nội bộ (Give-to-Get)</h3>
           </div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            <span class="badge badge-green">✔ 100% Tin bài Chuẩn UTF-8 & Đã Xác thực SSO</span>
             <button type="button" class="btn btn-outline btn-sm" onclick="toggleForumDisplayMode()" id="forumViewModeBtn">
               📰 Chuyển sang Xem Mở rộng Tất cả
             </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="printAdminForumReport()">
+              🖨️ In Bài viết Diễn đàn
+            </button>
+            <button type="button" class="btn btn-emerald btn-sm" onclick="exportForumExcel()">
+              📥 Xuất Excel
+            </button>
             <button type="button" class="btn btn-primary btn-sm" onclick="switchPublicPage('contact')">
-              🤝 Liên hệ Đăng ký Thành viên
+              🤝 Liên hệ Thành viên
             </button>
           </div>
         </div>
@@ -472,8 +496,14 @@
             <h3 class="pub-section-title">Bảng Báo giá Gói Combo Phần mềm & Công cụ Tự Tính Chi phí Triển khai</h3>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button type="button" class="btn btn-emerald btn-sm" onclick="switchPublicPage('contact')">
-              📞 Nhận Báo giá Chính thức & Hợp đồng Mẫu →
+            <button type="button" class="btn btn-outline btn-sm" onclick="printComboPricingQuote()">
+              🖨️ In Báo giá Gói Combo
+            </button>
+            <button type="button" class="btn btn-emerald btn-sm" onclick="exportComboPricingExcel()">
+              📥 Xuất Excel Báo giá
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="switchPublicPage('contact')">
+              📞 Nhận Báo giá & Hợp đồng Mẫu →
             </button>
           </div>
         </div>
@@ -1020,7 +1050,31 @@
     </div>
   </div>
 
+  <!-- THANH ĐIỀU HƯỚNG ĐÁY MÀN HÌNH KIỂU APP TRÊN ĐIỆN THOẠI (MOBILE BOTTOM TABBAR) -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Điều hướng nhanh trên điện thoại">
+    <a href="index.html?page=home" data-pub-page="home" onclick="switchPublicPage('home'); return false;" class="mobile-bottom-nav-item active">
+      <span class="mb-icon">📢</span>
+      <span>Bản tin</span>
+    </a>
+    <a href="index.html?page=products" data-pub-page="products" onclick="switchPublicPage('products'); return false;" class="mobile-bottom-nav-item">
+      <span class="mb-icon">🚀</span>
+      <span>16 Sản phẩm</span>
+    </a>
+    <a href="index.html?page=forum" data-pub-page="forum" onclick="switchPublicPage('forum'); return false;" class="mobile-bottom-nav-item">
+      <span class="mb-icon">💬</span>
+      <span>Diễn đàn</span>
+    </a>
+    <a href="index.html?page=pricing" data-pub-page="pricing" onclick="switchPublicPage('pricing'); return false;" class="mobile-bottom-nav-item">
+      <span class="mb-icon">💳</span>
+      <span>Báo giá</span>
+    </a>
+    <a href="index.html?page=contact" data-pub-page="contact" onclick="switchPublicPage('contact'); return false;" class="mobile-bottom-nav-item">
+      <span class="mb-icon">📞</span>
+      <span>Liên hệ</span>
+    </a>
+  </nav>
+
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=23"></script>
+  <script src="app.js?v=24"></script>
 </body>
 </html>

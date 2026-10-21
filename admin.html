@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cổng Quản trị Hệ sinh thái Theo Vai trò (RBAC Admin Portal) — hesinhthai.techcorp.info.vn</title>
-  <link rel="icon" type="image/png" href="logo.png?v=6.2" />
-  <link rel="stylesheet" href="styles.css?v=6.2" />
+  <link rel="icon" type="image/png" href="logo.png?v=24" />
+  <link rel="stylesheet" href="styles.css?v=24" />
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=6.2"
+    src="widget/techcorp-ecosystem-bar.js?v=24"
     data-app-id="erp"
     data-org-name="TechCorp Role-Based Admin"
     data-user-role="SSO Workspace"
@@ -579,25 +579,33 @@
       </section>
 
       <!-- =====================================================================
-           PANEL E: KIỂM DUYỆT DIỄN ĐÀN & GIAO THƯƠNG B2B (APPROVE / CLOCK / LOCK / DELETE)
+           PANEL E: KIỂM DUYỆT DIỄN ĐÀN & GIAO THƯƠNG B2B (APPROVE / CLOCK / LOCK / DELETE / EXCEL / PRINT)
            ===================================================================== -->
       <section id="panel-master-forum" class="tab-panel">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
-              <h3 class="card-title">🛡️ Kiểm duyệt & Quản trị Diễn đàn Giao thương (Thẩm định, Tạo mới, Xem, Sửa, Xoá, Clock/Lock)</h3>
+              <h3 class="card-title">🛡️ Kiểm duyệt &amp; Quản trị Diễn đàn Giao thương (Full CRUD, In ấn, Xuất/Nhập Excel)</h3>
               <p class="card-subtitle">
-                Duyệt bài viết chờ thẩm định để cho phép hiển thị ra Trang Public, khóa bình luận (Clock/Lock), ghim VIP hoặc xoá bài vi phạm.
+                Tạo mới, xem, sửa, duyệt hiển thị ra Trang Public, khóa bình luận (Clock/Lock), ghim VIP, xoá bài, in báo cáo hoặc nhập/xuất Excel.
               </p>
             </div>
-            <a href="index.html#sec-exchange" class="btn btn-outline btn-sm">🌍 Xem Diễn đàn ngoài Trang Public</a>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="openAdminCreateForumModal()">➕ Đăng bài mới</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="printAdminForumReport()">🖨️ In Danh sách</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportForumExcel()">📥 Xuất Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="triggerImportForumExcel()">📤 Nhập Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="downloadForumExcelTemplate()">📄 File Mẫu</button>
+              <a href="index.html?page=forum" class="btn btn-outline btn-sm">🌍 Xem ngoài Public</a>
+              <input type="file" id="importForumExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportForumExcel(event)" />
+            </div>
           </div>
 
           <div class="filter-bar">
             <select id="adminForumStatusFilter" class="select-control" onchange="renderAdminForumTable()">
               <option value="all">Tất cả trạng thái thẩm định</option>
               <option value="pending">⏳ Chờ thẩm định (Pending)</option>
-              <option value="approved">✅ Đã thẩm định & Hiển thị Public (Approved)</option>
+              <option value="approved">✅ Đã thẩm định &amp; Hiển thị Public (Approved)</option>
               <option value="rejected">🚫 Đã từ chối / Ẩn (Rejected)</option>
               <option value="locked">🔒 Đã khóa bình luận (Clocked / Locked)</option>
             </select>
@@ -605,8 +613,8 @@
               type="text"
               id="adminForumSearchInput"
               class="input-control"
-              style="min-width:260px;"
-              placeholder="Tìm theo tiêu đề, người đăng, đơn vị..."
+              style="min-width:240px;flex:1;"
+              placeholder="🔍 Tìm theo tiêu đề, người đăng, đơn vị, mã bài viết..."
               oninput="renderAdminForumTable()"
             />
           </div>
@@ -616,26 +624,41 @@
             style="display:none;background:#f0f7ff;border:2px solid #0061ff;border-radius:14px;padding:18px;margin-bottom:18px;"
           >
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-              <h4 style="color:#0043b8;font-weight:800;" id="adminForumModalHeader">👁️ Xem & Chỉnh sửa / Thẩm định Bài viết</h4>
-              <button class="btn btn-outline btn-sm" onclick="closeAdminForumModal()">Đóng ✕</button>
+              <h4 style="color:#0043b8;font-weight:800;" id="adminForumModalHeader">👁️ Tạo mới / Chỉnh sửa / Thẩm định Bài viết Diễn đàn</h4>
+              <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminForumModal()">Đóng ✕</button>
             </div>
             <input type="hidden" id="adminEditPostId" />
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;">
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Tiêu đề bài viết:</label>
-                <input type="text" id="adminEditPostTitle" class="input-control" style="width:100%;" />
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Tiêu đề bài viết (*):</label>
+                <input type="text" id="adminEditPostTitle" class="input-control" style="width:100%;" placeholder="Nhập tiêu đề tin giao thương B2B..." />
               </div>
               <div>
                 <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Đặc quyền cam kết (Give-to-Get):</label>
-                <input type="text" id="adminEditPostDeal" class="input-control" style="width:100%;" />
+                <input type="text" id="adminEditPostDeal" class="input-control" style="width:100%;" placeholder="VD: Tặng 20 suất học bổng / Giảm 30% phí..." />
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;">
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Chuyên mục Giao thương:</label>
+                <select id="adminEditPostCategory" class="select-control" style="width:100%;">
+                  <option value="rfq">📢 Cần Mua / Tìm Đối tác (RFQ)</option>
+                  <option value="spotlight">🎁 Đặc quyền Give-to-Get</option>
+                  <option value="comarketing">🤝 Hợp tác Sự kiện &amp; Tuyển sinh</option>
+                  <option value="knowledge">💡 Chia sẻ Quản trị &amp; AI</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Đơn vị Thành viên đăng bài:</label>
+                <input type="text" id="adminEditPostOrg" class="input-control" style="width:100%;" placeholder="VD: Công ty TNHH Công nghệ TechCorp" />
               </div>
             </div>
             <div style="margin-bottom:12px;">
-              <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Nội dung chi tiết:</label>
-              <textarea id="adminEditPostContent" class="input-control" style="width:100%;min-height:80px;font-family:inherit;"></textarea>
+              <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Nội dung chi tiết (*):</label>
+              <textarea id="adminEditPostContent" class="input-control" style="width:100%;min-height:80px;font-family:inherit;" placeholder="Nhập nội dung chi tiết bài viết..."></textarea>
             </div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
-              <button class="btn btn-primary btn-sm" onclick="saveAdminForumEdit()">💾 Lưu nội dung & Duyệt hiển thị Public</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="saveAdminForumEdit()">💾 Lưu Bài viết &amp; Duyệt hiển thị Public</button>
             </div>
           </div>
 
@@ -643,8 +666,8 @@
             <table class="tc-table">
               <thead>
                 <tr>
-                  <th>Mã & Chủ đề Thảo luận</th>
-                  <th>Người đăng & Đặc quyền</th>
+                  <th>Mã &amp; Chủ đề Thảo luận</th>
+                  <th>Người đăng &amp; Đặc quyền</th>
                   <th>Trạng thái Thẩm định</th>
                   <th>Trạng thái Khóa (Clock)</th>
                   <th>Thao tác Quản trị</th>
@@ -847,12 +870,16 @@
            ===================================================================== -->
       <section id="panel-master-rbac" class="tab-panel">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
               <h3 class="card-title">🔐 Cấu hình Ma trận Phân quyền Chi tiết theo Vai trò (Role-Based Access Control - RBAC)</h3>
               <p class="card-subtitle">
                 Hệ sinh thái TechCorp định nghĩa chính xác từng nhóm đối tượng được phép xem hoặc thực thi chức năng nào. Khi bật/tắt ô chọn bên dưới, Menu Quản trị của vai trò đó sẽ tự động mở rộng hoặc thu hẹp tức thì!
               </p>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="printRbacMatrixReport()">🖨️ In Ma trận RBAC</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportRbacMatrixExcel()">📥 Xuất Excel</button>
             </div>
           </div>
 
@@ -879,16 +906,21 @@
            ===================================================================== -->
       <section id="panel-master-audit" class="tab-panel">
         <div class="card" style="margin-bottom:20px;">
-          <div class="card-header">
+          <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
-              <h3 class="card-title">🔍 Truy vết Người dùng & Nhật ký Kiểm toán Tập trung (Security Audit Trail)</h3>
+              <h3 class="card-title">🔍 Truy vết Người dùng &amp; Nhật ký Kiểm toán Tập trung (Security Audit Trail)</h3>
               <p class="card-subtitle">
                 Ghi nhận tự động mọi thao tác phân quyền RBAC, quản trị ứng dụng, thẩm định diễn đàn, quản lý tài khoản và đồng bộ dữ liệu kèm địa chỉ IP.
               </p>
             </div>
-            <button class="btn btn-emerald btn-sm" onclick="exportAuditLogsCsv()">
-              📥 Xuất Báo cáo Truy vết (CSV)
-            </button>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="printAuditLogsReport()">
+                🖨️ In Báo cáo Truy vết
+              </button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportAuditLogsCsv()">
+                📥 Xuất Excel (CSV)
+              </button>
+            </div>
           </div>
 
           <div class="filter-bar">
@@ -912,10 +944,10 @@
             <table class="tc-table">
               <thead>
                 <tr>
-                  <th>Mã Log & Thời gian</th>
-                  <th>Người thực hiện & Đơn vị</th>
+                  <th>Mã Log &amp; Thời gian</th>
+                  <th>Người thực hiện &amp; Đơn vị</th>
                   <th>Địa chỉ IP</th>
-                  <th>Hành động & Mức độ</th>
+                  <th>Hành động &amp; Mức độ</th>
                   <th>Đối tượng tác động</th>
                   <th>Chi tiết Truy vết</th>
                 </tr>
@@ -926,17 +958,21 @@
         </div>
 
         <div class="card">
-          <div class="card-header">
+          <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
               <h3 class="card-title">📊 Bảng Theo dõi 57 Khách hàng Hạt nhân Nha Trang (Giai đoạn 1)</h3>
               <p class="card-subtitle">Theo dõi mục tiêu phát triển thành viên nòng cốt của Hệ sinh thái TechCorp</p>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="printLighthouseReport()">🖨️ In Tiến độ 57 Hạt nhân</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportLighthouseExcel()">📥 Xuất Excel</button>
             </div>
           </div>
           <div class="table-wrap">
             <table class="tc-table">
               <thead>
                 <tr>
-                  <th>Phân khúc & Khu vực</th>
+                  <th>Phân khúc &amp; Khu vực</th>
                   <th>Gói Combo Mũi nhọn</th>
                   <th>Tiến độ Chốt</th>
                   <th>Ghi chú</th>
@@ -954,17 +990,49 @@
            ===================================================================== -->
       <section id="panel-master-demos" class="tab-panel">
         <div class="card" style="border-top:4px solid #059669;">
-          <div class="card-header">
+          <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
-              <span class="badge badge-green">📋 CRM QUẢN LÝ KHÁCH HÀNG ĐĂNG KÝ DEMO 16 SẢN PHẨM</span>
+              <span class="badge badge-green">📋 CRM QUẢN LÝ KHÁCH HÀNG ĐĂNG KÝ DEMO 16 SẢN PHẨM (FULL CRUD)</span>
               <h3 class="card-title" style="margin-top:6px;">Danh sách Khách hàng Liên hệ Tư vấn &amp; Đăng ký Dùng thử Demo</h3>
               <p class="card-subtitle">
-                Lưu trữ tự động toàn bộ thông tin khách hàng đăng ký từ trang giới thiệu chi tiết của 16 sản phẩm (<code>product.html</code>). Cho phép cập nhật trạng thái chăm sóc, ghi chú lịch hẹn Demo và xuất danh sách Excel/CSV.
+                Quản lý trọn vòng đời khách hàng đăng ký Demo (Thêm mới, Xem, Sửa ghi chú/trạng thái, Xoá, In báo cáo CRM, Xuất/Nhập Excel).
               </p>
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <a href="product.html?id=erp#demo-form" target="_blank" class="btn btn-outline btn-sm">🌍 Mở Trang Đăng ký Demo ↗</a>
-              <button class="btn btn-emerald btn-sm" onclick="exportDemoLeadsCsv()">📥 Xuất Danh sách Khách hàng (CSV)</button>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="toggleAdminDemoLeadForm()">➕ Thêm Khách hàng</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="printDemoLeadsReport()">🖨️ In Danh sách CRM</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportDemoLeadsCsv()">📥 Xuất Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="triggerImportDemoLeadsExcel()">📤 Nhập Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="downloadDemoLeadsTemplate()">📄 File Mẫu</button>
+              <input type="file" id="importDemoLeadsExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportDemoLeadsExcel(event)" />
+            </div>
+          </div>
+
+          <!-- Form Thêm mới Khách hàng Đăng ký Demo trực tiếp trong CRM -->
+          <div id="adminDemoLeadCreateBox" style="display:none;background:#f0fdf4;border:1.5px solid #6ee7b7;border-radius:14px;padding:16px;margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <h4 style="color:#065f46;font-weight:800;font-size:14.5px;">➕ Thêm Mới Hồ sơ Khách hàng Đăng ký Tư vấn / Demo</h4>
+              <button type="button" class="btn btn-outline btn-sm" onclick="toggleAdminDemoLeadForm(false)">Đóng ✕</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+              <input type="text" id="crmNewLeadName" class="input-control" placeholder="Họ và tên khách hàng (*)" />
+              <input type="text" id="crmNewLeadPhone" class="input-control" placeholder="Số điện thoại / Zalo (*)" />
+              <input type="email" id="crmNewLeadEmail" class="input-control" placeholder="Email liên hệ" />
+              <input type="text" id="crmNewLeadOrg" class="input-control" placeholder="Đơn vị / Trường học / Doanh nghiệp (*)" />
+              <select id="crmNewLeadProduct" class="select-control">
+                <option value="erp">🏢 TechCorp ERP — Quản trị Doanh nghiệp</option>
+                <option value="kpi">📊 Hệ thống Quản trị BSC-KPI</option>
+                <option value="jobai">🤖 Sàn Tuyển dụng JobAI</option>
+                <option value="lms">📝 TechCorp LMS &amp; Khảo thí Online</option>
+                <option value="ttnn">🏫 Quản lý Trung tâm Ngoại ngữ - Tin học</option>
+                <option value="mamnon">🧸 Quản lý Trường Mầm non</option>
+                <option value="thpt">🎓 Quản lý Trường Phổ thông K-12</option>
+                <option value="qldh">🏨 TechCorp PMS — Khách sạn &amp; Resort</option>
+              </select>
+              <input type="text" id="crmNewLeadNotes" class="input-control" placeholder="Yêu cầu trọng tâm / Ghi chú lịch hẹn Demo..." />
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;">
+              <button type="button" class="btn btn-emerald btn-sm" onclick="saveAdminNewDemoLead()">💾 Lưu Khách hàng vào CRM</button>
             </div>
           </div>
 
@@ -984,8 +1052,8 @@
               type="text"
               id="adminDemoSearchInput"
               class="input-control"
-              style="min-width:280px;"
-              placeholder="Tìm theo tên khách hàng, SĐT/Zalo, đơn vị, sản phẩm..."
+              style="min-width:260px;flex:1;"
+              placeholder="🔍 Tìm theo tên khách hàng, SĐT/Zalo, đơn vị, sản phẩm..."
               oninput="renderAdminDemoRequestsTable()"
             />
           </div>
@@ -1000,7 +1068,7 @@
                   <th>Sản phẩm Đăng ký Demo</th>
                   <th>Lịch hẹn &amp; Yêu cầu Trọng tâm</th>
                   <th>Trạng thái Chăm sóc &amp; Ghi chú Admin</th>
-                  <th>Thao tác</th>
+                  <th>Thao tác (CRUD)</th>
                 </tr>
               </thead>
               <tbody id="adminDemoRequestsTableBody"></tbody>
@@ -1026,6 +1094,6 @@
   </div>
 
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=23"></script>
+  <script src="app.js?v=24"></script>
 </body>
 </html>

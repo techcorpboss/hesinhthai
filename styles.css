@@ -3060,5 +3060,602 @@ body {
   gap: 4px;
 }
 
+/* ============================================================================
+   v7.0 COMPREHENSIVE MULTI-DEVICE RESPONSIVE ARCHITECTURE (MOBILE & TABLET)
+   Tối ưu hóa trải nghiệm chạm (Touch UX), chống tràn ngang (Zero Horizontal Overflow),
+   Menu điều hướng đáy màn hình kiểu App (Bottom Nav) & Bố cục thích ứng thông minh
+   ============================================================================ */
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Thanh Điều hướng Đáy Màn hình kiểu App Mobile (Chỉ hiển thị trên Điện thoại <= 768px) */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 1080px) {
+  .portal-shell {
+    grid-template-columns: 1fr !important;
+    padding: 0 14px !important;
+    margin: 12px auto 50px !important;
+    gap: 14px !important;
+  }
+
+  /* KHẮC PHỤC TRIỆT ĐỂ LỖI SIDEBAR DÍNH CHE KHUẤT MÀN HÌNH ĐIỆN THOẠI / TABLET */
+  .portal-sidebar {
+    position: static !important;
+    top: auto !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+    width: 100% !important;
+    overflow: hidden;
+  }
+
+  .sidebar-section-label {
+    padding: 2px 4px 8px !important;
+    font-size: 10.5px !important;
+  }
+
+  /* Chuyển Menu dọc Admin thành Thanh Tab cuộn ngang mượt mà trên Mobile/Tablet */
+  .sidebar-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-bottom: 6px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .sidebar-nav .nav-btn {
+    width: auto !important;
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    padding: 9px 13px !important;
+    font-size: 12px !important;
+  }
+
+  .sidebar-role-card {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body.has-mobile-bottom-nav {
+    padding-bottom: 74px !important;
+  }
+
+  /* 1. Header gọn gàng, không chiếm diện tích dọc trên điện thoại */
+  .hub-header {
+    padding: 8px 12px !important;
+    min-height: auto !important;
+    position: sticky;
+    top: 0;
+  }
+
+  .hub-header-inner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding-right: 0 !important;
+  }
+
+  .brand-box {
+    gap: 10px !important;
+    min-width: 0 !important;
+  }
+
+  .brand-logo {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 10px !important;
+  }
+
+  .brand-title {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .brand-title h1 {
+    font-size: 15px !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .brand-domain-pill {
+    font-size: 10px !important;
+    padding: 2px 7px !important;
+  }
+
+  .brand-title p {
+    font-size: 11px !important;
+    white-space: normal !important;
+    line-height: 1.35 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Cụm nút Header bên trang Admin trên điện thoại */
+  .hub-header-inner > div:last-child {
+    width: 100%;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    padding-bottom: 2px;
+  }
+
+  #apiStatusBadge {
+    display: none !important;
+  }
+
+  .user-session-pill {
+    padding: 4px 9px !important;
+    gap: 6px !important;
+    flex-shrink: 0;
+  }
+
+  .user-session-avatar {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 12px !important;
+  }
+
+  .user-session-meta strong {
+    font-size: 11.5px !important;
+    display: block;
+    max-width: 125px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .user-session-meta span {
+    display: none !important;
+  }
+
+  /* Thanh Menu Ngang 5 Trang Public trên Điện thoại: Cuộn ngang mượt dạng Chip */
+  .pub-nav-links {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    gap: 6px !important;
+    padding-bottom: 4px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .pub-nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pub-nav-link {
+    font-size: 12px !important;
+    padding: 7px 11px !important;
+    border-radius: 999px !important;
+    background: #f1f6ff;
+    border: 1px solid #dbeafe;
+    flex-shrink: 0;
+  }
+
+  /* 2. Container & Khoảng cách chung trên Điện thoại */
+  .pub-container {
+    padding: 12px 12px 44px !important;
+  }
+
+  .card {
+    padding: 14px 13px !important;
+    border-radius: 14px !important;
+  }
+
+  .card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .card-title {
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+  }
+
+  .pub-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .pub-section-title {
+    font-size: 18px !important;
+    line-height: 1.32 !important;
+  }
+
+  /* 3. Hero Slider 6 Slide gọn đẹp, dễ vuốt chạm trên Điện thoại */
+  .hero-slider-shell {
+    border-radius: 16px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .hero-slide-card {
+    padding: 18px 14px 16px !important;
+    min-height: auto !important;
+  }
+
+  .hero-slide-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .hero-slide-badge {
+    font-size: 10.5px !important;
+    padding: 4px 10px !important;
+    margin-bottom: 8px !important;
+    white-space: normal !important;
+  }
+
+  .hero-slide-title {
+    font-size: 19px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .hero-slide-subtitle {
+    font-size: 12.8px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 12px !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-slide-highlights {
+    gap: 6px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-highlight-pill {
+    font-size: 11px !important;
+    padding: 4px 9px !important;
+  }
+
+  .hero-slide-visual {
+    height: 195px !important;
+    min-height: 185px !important;
+    border-radius: 14px !important;
+  }
+
+  .hero-slide-visual-caption {
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+  }
+
+  .hero-slider-controls {
+    margin-top: 14px !important;
+    padding-top: 10px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .hero-slider-dots {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .hero-slider-dots::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-dot-btn {
+    flex-shrink: 0 !important;
+    font-size: 11px !important;
+    padding: 5px 10px !important;
+  }
+
+  .hero-arrow-group {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .hero-arrow-btn {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 8px 10px !important;
+  }
+
+  /* 4. Dải Chỉ số KPI & Thống kê 2 cột gọn gàng trên Điện thoại */
+  .pub-bulletin-stats-grid,
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .pub-bstat-card {
+    padding: 10px 11px !important;
+    gap: 8px !important;
+  }
+
+  .pub-bstat-icon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 16px !important;
+    border-radius: 9px !important;
+  }
+
+  .pub-bstat-val {
+    font-size: 13.5px !important;
+  }
+
+  .pub-bstat-label {
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
+  }
+
+  .kpi-card {
+    padding: 12px !important;
+  }
+
+  .kpi-value {
+    font-size: 19px !important;
+  }
+
+  /* 5. Thanh Lọc Chuyên mục (Pills) cuộn ngang 1 hàng mượt mà trên Điện thoại */
+  .forum-cat-pills,
+  #productCategoryFilterBar,
+  #publicBulletinFilterBar {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 6px !important;
+    padding-bottom: 6px !important;
+    margin-bottom: 10px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .forum-cat-pills::-webkit-scrollbar,
+  #productCategoryFilterBar::-webkit-scrollbar,
+  #publicBulletinFilterBar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .forum-cat-btn {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    padding: 7px 12px !important;
+  }
+
+  /* 6. Tự động chuyển mọi lưới 2 cột inline trong Form/Card thành 1 cột trên Điện thoại */
+  div[style*="grid-template-columns:1fr 1fr"],
+  div[style*="grid-template-columns: 1fr 1fr"],
+  div[style*="grid-template-columns:1.2fr 1fr"],
+  div[style*="grid-template-columns:1.3fr 1fr"],
+  div[style*="grid-template-columns:160px 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  div[style*="min-width:280px"],
+  div[style*="min-width:260px"],
+  div[style*="min-width:220px"],
+  input[style*="min-width:"] {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .filter-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 10px !important;
+  }
+
+  .filter-bar .input-control,
+  .filter-bar .select-control {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 14px !important; /* Ngăn iOS tự động zoom khi chạm vào ô input */
+    min-height: 40px !important;
+  }
+
+  .input-control,
+  .select-control,
+  textarea.input-control {
+    font-size: 14px !important;
+  }
+
+  /* 7. Thẻ Sản phẩm (16 Sản phẩm) dễ bấm trên Điện thoại */
+  .prod-group-section {
+    padding: 14px 12px 16px !important;
+    border-radius: 14px !important;
+  }
+
+  .pub-product-card {
+    padding: 14px !important;
+  }
+
+  .pub-prod-links-row {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .pub-prod-actions-row {
+    flex-wrap: wrap !important;
+    gap: 7px !important;
+  }
+
+  .pub-prod-action-btn {
+    flex: 1 1 calc(50% - 4px) !important;
+    min-height: 38px !important;
+    font-size: 12px !important;
+    padding: 8px 10px !important;
+  }
+
+  .pub-prod-action-btn:last-child {
+    flex: 1 1 100% !important;
+  }
+
+  /* 8. Diễn đàn Hình Cây trên Điện thoại: Cây danh mục gọn gàng, có nút đóng/mở */
+  .forum-tree-nav-scroll {
+    max-height: 210px !important;
+  }
+
+  .forum-tree-main-pane {
+    padding: 13px 12px !important;
+  }
+
+  .forum-compact-row {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    padding: 10px 11px !important;
+  }
+
+  .forum-reader-pane {
+    padding: 14px 12px !important;
+  }
+
+  .forum-reader-title {
+    font-size: 16px !important;
+  }
+
+  /* 9. Bảng Dữ liệu Quản trị (Tables) cuộn ngang mượt với hướng dẫn vuốt */
+  .table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -4px;
+    border-radius: 10px !important;
+  }
+
+  .tc-table th,
+  .tc-table td {
+    padding: 9px 10px !important;
+    font-size: 12px !important;
+  }
+
+  /* 10. Cửa sổ Đọc Tin Chi tiết (Modal) chuẩn Bottom-Sheet trên Điện thoại */
+  .bulletin-detail-modal-backdrop {
+    padding: 6px !important;
+    align-items: flex-end !important;
+  }
+
+  .bulletin-detail-modal-dialog {
+    max-height: 92vh !important;
+    border-radius: 18px 18px 12px 12px !important;
+  }
+
+  .bulletin-modal-topbar {
+    padding: 10px 12px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .bulletin-modal-hero {
+    height: 185px !important;
+  }
+
+  .bulletin-modal-hero-caption {
+    padding: 20px 12px 8px !important;
+    font-size: 11px !important;
+  }
+
+  .bulletin-modal-content-wrap {
+    padding: 14px 13px 20px !important;
+  }
+
+  .bulletin-modal-title {
+    font-size: 17.5px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .bulletin-modal-lead {
+    font-size: 13.5px !important;
+    padding: 11px 13px !important;
+  }
+
+  .bulletin-modal-article-body {
+    font-size: 13.8px !important;
+  }
+
+  /* 11. Thanh Điều hướng Đáy Màn hình kiểu App (Mobile Bottom Tabbar) */
+  .mobile-bottom-nav {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 62px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(14px);
+    border-top: 1.5px solid #bfdbfe;
+    box-shadow: 0 -6px 24px rgba(11, 37, 89, 0.14);
+    z-index: 9500;
+    padding: 4px 4px env(safe-area-inset-bottom, 4px);
+  }
+
+  .mobile-bottom-nav-item {
+    border: none;
+    background: transparent;
+    color: #475569;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.16s ease;
+    padding: 4px 2px;
+  }
+
+  .mobile-bottom-nav-item .mb-icon {
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  .mobile-bottom-nav-item.active {
+    color: #0052d4;
+    background: #eff6ff;
+    font-weight: 800;
+  }
+
+  .toast-container {
+    bottom: 72px !important;
+    left: 12px !important;
+    right: 12px !important;
+  }
+
+  .toast {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
 
 

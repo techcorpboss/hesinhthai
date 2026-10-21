@@ -1581,7 +1581,7 @@ window.switchPublicPage = function (pageKey, updateHistory = true, scrollTargetI
     });
   }
 
-  const navLinks = document.querySelectorAll("#publicMainNav .pub-nav-link[data-pub-page]");
+  const navLinks = document.querySelectorAll("#publicMainNav .pub-nav-link[data-pub-page], #mobileBottomNav .mobile-bottom-nav-item[data-pub-page]");
   if (navLinks.length > 0) {
     navLinks.forEach((link) => {
       link.classList.toggle("active", link.getAttribute("data-pub-page") === normalized);
@@ -2576,9 +2576,18 @@ function downloadCsvFile(filename, headers, rows) {
     }
     return str;
   };
-  const csvContent =
-    "\uFEFF" +
-    [headers.map(escapeCsvCell).join(","), ...rows.map((r) => r.map(escapeCsvCell).join(","))].join("\r\n");
+  const isObjectHeaders = Array.isArray(headers) && headers.length > 0 && typeof headers[0] === "object" && headers[0] !== null;
+  const headerLabels = isObjectHeaders ? headers.map((h) => h.label || h.key || "") : headers;
+  const formattedRows = (rows || []).map((r) => {
+    if (Array.isArray(r)) {
+      return r.map(escapeCsvCell).join(",");
+    }
+    if (isObjectHeaders && r && typeof r === "object") {
+      return headers.map((h) => escapeCsvCell(r[h.key])).join(",");
+    }
+    return "";
+  });
+  const csvContent = "\uFEFF" + [headerLabels.map(escapeCsvCell).join(","), ...formattedRows].join("\r\n");
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -2642,7 +2651,7 @@ function parseCsvToObjects(csvText) {
   return records;
 }
 
-function openEnterprisePrintWindow(reportTitle, reportSubtitle, headers, rowsHtml, totalLabel) {
+function openEnterprisePrintWindow(reportTitle, reportSubtitle, headersOrBodyHtml, rowsHtml, totalLabel) {
   const nowStr = new Date().toLocaleString("vi-VN");
   const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"] || {
     name: "Ban Điều hành Hệ sinh thái",
@@ -2653,6 +2662,25 @@ function openEnterprisePrintWindow(reportTitle, reportSubtitle, headers, rowsHtm
     showToast(`<span style="color:#d97706">Vui lòng cho phép mở cửa sổ Pop-up trên trình duyệt để In báo cáo!</span>`);
     return;
   }
+
+  const isCustomHtml = typeof headersOrBodyHtml === "string";
+  const resolvedContentHtml = isCustomHtml
+    ? headersOrBodyHtml
+    : `
+      <table>
+        <thead>
+          <tr>
+            <th style="width:38px;text-align:center;">STT</th>
+            ${(headersOrBodyHtml || []).map((h) => `<th>${escapeHtml(h)}</th>`).join("")}
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHtml || ""}
+        </tbody>
+      </table>
+    `;
+  const resolvedTotal = totalLabel || "Tài liệu Xác thực Điện tử";
+
   win.document.write(`
     <!DOCTYPE html>
     <html lang="vi">
@@ -2682,7 +2710,7 @@ function openEnterprisePrintWindow(reportTitle, reportSubtitle, headers, rowsHtm
     </head>
     <body>
       <div class="no-print-bar">
-        <span>🖨️ <strong>Xem trước Bản in Chuẩn A4:</strong> ${escapeHtml(reportTitle)} (${escapeHtml(totalLabel)})</span>
+        <span>🖨️ <strong>Xem trước Bản in Chuẩn A4:</strong> ${escapeHtml(reportTitle)} (${escapeHtml(resolvedTotal)})</span>
         <div>
           <button onclick="window.print()">🖨️ Xác nhận In / Lưu PDF</button>
           <button onclick="window.close()" style="background:#ef4444;margin-left:8px;">✕ Đóng</button>
@@ -2702,19 +2730,9 @@ function openEnterprisePrintWindow(reportTitle, reportSubtitle, headers, rowsHtm
       </div>
       <div class="report-title">
         <h1>${escapeHtml(reportTitle)}</h1>
-        <p>${escapeHtml(reportSubtitle)} — <strong>${escapeHtml(totalLabel)}</strong></p>
+        <p>${escapeHtml(reportSubtitle)} ${totalLabel ? `— <strong>${escapeHtml(totalLabel)}</strong>` : ""}</p>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th style="width:38px;text-align:center;">STT</th>
-            ${headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")}
-          </tr>
-        </thead>
-        <tbody>
-          ${rowsHtml}
-        </tbody>
-      </table>
+      ${resolvedContentHtml}
       <div class="print-footer">
         <div class="sig-box">
           <strong>NGƯỜI LẬP BIỂU / XUẤT BÁO CÁO</strong>
@@ -4073,17 +4091,39 @@ window.toggleForumPin = async function (postId) {
   showToast(nextPinned ? `📌 Đã Ghim VIP bài viết <b>${postId}</b>!` : `Đã bỏ ghim bài viết <b>${postId}</b>!`);
 };
 
+window.openAdminCreateForumModal = function () {
+  const modal = document.getElementById("adminForumEditModal");
+  if (!modal) return;
+  if (document.getElementById("adminEditPostId")) document.getElementById("adminEditPostId").value = "";
+  if (document.getElementById("adminEditPostCategory")) document.getElementById("adminEditPostCategory").value = "rfq";
+  if (document.getElementById("adminEditPostStatus")) document.getElementById("adminEditPostStatus").value = "approved";
+  if (document.getElementById("adminEditPostTitle")) document.getElementById("adminEditPostTitle").value = "";
+  if (document.getElementById("adminEditPostDeal")) document.getElementById("adminEditPostDeal").value = "";
+  if (document.getElementById("adminEditPostContent")) document.getElementById("adminEditPostContent").value = "";
+  const headerEl = document.getElementById("adminForumModalHeader");
+  if (headerEl) headerEl.textContent = "➕ Tạo Chủ đề Giao thương B2B Mới (Từ Cổng Quản trị)";
+  modal.style.display = "block";
+  modal.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+
 window.openAdminForumModal = function (postId) {
   const post = STATE.forumPosts.find((p) => p.id === postId);
   if (!post) return;
   const modal = document.getElementById("adminForumEditModal");
   if (!modal) return;
   document.getElementById("adminEditPostId").value = post.id;
+  if (document.getElementById("adminEditPostCategory")) {
+    document.getElementById("adminEditPostCategory").value = post.category || "rfq";
+  }
+  if (document.getElementById("adminEditPostStatus")) {
+    document.getElementById("adminEditPostStatus").value = post.status || "approved";
+  }
   document.getElementById("adminEditPostTitle").value = post.title || "";
   document.getElementById("adminEditPostDeal").value = post.memberDeal || "";
   document.getElementById("adminEditPostContent").value = post.content || "";
   document.getElementById("adminForumModalHeader").textContent = `👁️ Xem & Chỉnh sửa Bài viết: ${post.id} (${post.author?.name})`;
   modal.style.display = "block";
+  modal.scrollIntoView({ behavior: "smooth", block: "center" });
 };
 
 window.closeAdminForumModal = function () {
@@ -4092,21 +4132,86 @@ window.closeAdminForumModal = function () {
 };
 
 window.saveAdminForumEdit = async function () {
-  const postId = document.getElementById("adminEditPostId")?.value;
+  const postId = document.getElementById("adminEditPostId")?.value.trim();
+  const category = document.getElementById("adminEditPostCategory")?.value || "rfq";
+  const status = document.getElementById("adminEditPostStatus")?.value || "approved";
   const title = document.getElementById("adminEditPostTitle")?.value.trim();
   const memberDeal = document.getElementById("adminEditPostDeal")?.value.trim();
   const content = document.getElementById("adminEditPostContent")?.value.trim();
-  if (!postId || !title || !content) return;
+  if (!title || !content) {
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Tiêu đề và Nội dung bài viết!</span>`);
+    return;
+  }
 
+  // Create new Forum Post from Admin Modal
+  if (!postId) {
+    try {
+      const res = await fetch("/api/v1/forum/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          category,
+          title,
+          content,
+          memberDeal: memberDeal || "Ưu đãi hợp tác nội bộ dành cho Thành viên Hệ sinh thái TechCorp.",
+          pinned: false,
+          status,
+          personaKey: STATE.currentPersona
+        })
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        STATE.forumPosts = data.forumPosts;
+        STATE.activityLogs = data.activityLogs || STATE.activityLogs;
+        STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+        closeAdminForumModal();
+        renderAllViews();
+        showToast(`🚀 Đã tạo mới chủ đề Giao thương B2B và hiển thị trên Diễn đàn!`);
+        return;
+      }
+    } catch (_) {}
+
+    const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
+    const newId = "POST-" + Date.now();
+    STATE.forumPosts.unshift({
+      id: newId,
+      category,
+      categoryLabel: CATEGORY_MAP[category] || CATEGORY_MAP.rfq,
+      status,
+      locked: false,
+      pinned: false,
+      title,
+      content,
+      memberDeal: memberDeal || "Ưu đãi hợp tác nội bộ dành cho Thành viên Hệ sinh thái TechCorp.",
+      author: {
+        name: persona.name,
+        org: persona.org,
+        roleBadge: persona.roleBadge,
+        verifiedApp: "Xác thực SSO TechCorp ID"
+      },
+      createdAt: "Vừa xong",
+      likes: 1,
+      views: 1,
+      comments: []
+    });
+    recordLocalAuditLog("FORUM_CREATE", `${newId}: ${title}`, "INFO", `Tạo chủ đề mới từ Admin (${status}).`);
+    closeAdminForumModal();
+    renderAllViews();
+    showToast(`🚀 Đã tạo mới chủ đề Giao thương B2B mã <b>${newId}</b>!`);
+    return;
+  }
+
+  // Update existing Forum Post
   try {
     const res = await fetch(`/api/v1/forum/posts/${encodeURIComponent(postId)}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        category,
         title,
         memberDeal,
         content,
-        status: "approved",
+        status,
         actorKey: STATE.currentPersona
       })
     });
@@ -4116,21 +4221,23 @@ window.saveAdminForumEdit = async function () {
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
       closeAdminForumModal();
       renderAllViews();
-      showToast(`Đã lưu chỉnh sửa và duyệt hiển thị bài viết <b>${postId}</b>!`);
+      showToast(`✅ Đã lưu chỉnh sửa bài viết <b>${postId}</b>!`);
       return;
     }
   } catch (_) {}
 
   const post = STATE.forumPosts.find((p) => p.id === postId);
   if (post) {
+    post.category = category;
+    post.categoryLabel = CATEGORY_MAP[category] || post.categoryLabel;
     post.title = title;
     post.memberDeal = memberDeal;
     post.content = content;
-    post.status = "approved";
-    recordLocalAuditLog("FORUM_EDIT_APPROVE", `${post.id}: ${title}`, "INFO", "Chỉnh sửa nội dung và duyệt hiển thị.");
+    post.status = status;
+    recordLocalAuditLog("FORUM_EDIT_APPROVE", `${post.id}: ${title}`, "INFO", "Chỉnh sửa nội dung bài viết Diễn đàn.");
     closeAdminForumModal();
     renderAllViews();
-    showToast(`Đã lưu chỉnh sửa và duyệt hiển thị bài viết <b>${postId}</b>!`);
+    showToast(`✅ Đã lưu chỉnh sửa bài viết <b>${postId}</b>!`);
   }
 };
 
@@ -4159,6 +4266,158 @@ window.deleteForumPostAdmin = async function (postId) {
   recordLocalAuditLog("FORUM_DELETE", `${post.id}: ${post.title}`, "CRITICAL", `Xoá vĩnh viễn bài viết của ${post.author?.name}.`);
   renderAllViews();
   showToast(`🗑️ Đã xoá bài viết <b>${postId}</b>!`);
+};
+
+window.printAdminForumReport = function () {
+  const list = STATE.forumPosts || [];
+  const rowsHtml = list
+    .map(
+      (p, idx) => `
+      <tr>
+        <td style="text-align:center;">${idx + 1}</td>
+        <td><strong>${escapeHtml(p.id)}</strong><br/><span style="font-size:11px;color:#475569;">${escapeHtml(p.categoryLabel || p.category)}</span></td>
+        <td><strong>${escapeHtml(p.title)}</strong><br/><span style="font-size:11px;color:#059669;">🎁 ${escapeHtml(p.memberDeal || "")}</span></td>
+        <td><strong>${escapeHtml((p.author && p.author.org) || "")}</strong><br/>${escapeHtml((p.author && p.author.name) || "")}</td>
+        <td>${escapeHtml(p.status || "approved")}<br/>${p.locked ? "🔒 Đã khóa BL" : "🔓 Mở BL"}</td>
+        <td>👁️ ${p.views || 0} • ❤️ ${p.likes || 0}<br/>💬 ${(p.comments && p.comments.length) || 0} phản hồi</td>
+      </tr>
+    `
+    )
+    .join("");
+  openEnterprisePrintWindow(
+    "BÁO CÁO CHỦ ĐỀ DIỄN ĐÀN & GIAO THƯƠNG B2B HỆ SINH THÁI",
+    "Danh mục các chủ đề kết nối cung cầu (RFQ), đặc quyền thành viên (Give-to-Get) và thảo luận chuyên môn",
+    ["Mã & Chuyên mục", "Tiêu đề Chủ đề & Đặc quyền Give-to-Get", "Đơn vị & Tác giả", "Trạng thái", "Tương tác"],
+    rowsHtml,
+    `Tổng số: ${list.length} Chủ đề`
+  );
+};
+
+window.exportForumExcel = function () {
+  const headers = [
+    { key: "id", label: "Mã Chủ đề" },
+    { key: "category", label: "Mã Chuyên mục (rfq/spotlight/comarketing/knowledge)" },
+    { key: "title", label: "Tiêu đề Chủ đề" },
+    { key: "content", label: "Nội dung Chi tiết" },
+    { key: "memberDeal", label: "Ưu đãi Thành viên (Give-to-Get)" },
+    { key: "authorOrg", label: "Đơn vị Đăng" },
+    { key: "authorName", label: "Người Đăng" },
+    { key: "status", label: "Trạng thái (approved/pending/rejected)" },
+    { key: "locked", label: "Khóa Bình luận (true/false)" },
+    { key: "views", label: "Lượt xem" },
+    { key: "likes", label: "Lượt thích" }
+  ];
+  const rows = (STATE.forumPosts || []).map((p) => ({
+    id: p.id,
+    category: p.category || "rfq",
+    title: p.title || "",
+    content: p.content || "",
+    memberDeal: p.memberDeal || "",
+    authorOrg: (p.author && p.author.org) || "Hệ sinh thái TechCorp",
+    authorName: (p.author && p.author.name) || "Thành viên SSO",
+    status: p.status || "approved",
+    locked: Boolean(p.locked),
+    views: p.views || 0,
+    likes: p.likes || 0
+  }));
+  const dateStr = new Date().toISOString().slice(0, 10);
+  downloadCsvFile(`TechCorp_DienDan_GiaoThuong_B2B_${dateStr}.csv`, headers, rows);
+  showToast(`📥 Đã xuất file Excel (.CSV) gồm <b>${rows.length} chủ đề Diễn đàn</b>!`);
+};
+
+window.downloadForumExcelTemplate = function () {
+  const headers = [
+    { key: "id", label: "Mã Chủ đề" },
+    { key: "category", label: "Mã Chuyên mục (rfq/spotlight/comarketing/knowledge)" },
+    { key: "title", label: "Tiêu đề Chủ đề" },
+    { key: "content", label: "Nội dung Chi tiết" },
+    { key: "memberDeal", label: "Ưu đãi Thành viên (Give-to-Get)" },
+    { key: "authorOrg", label: "Đơn vị Đăng" },
+    { key: "authorName", label: "Người Đăng" },
+    { key: "status", label: "Trạng thái (approved/pending/rejected)" }
+  ];
+  const sampleRows = [
+    {
+      id: "POST-SAMPLE-01",
+      category: "rfq",
+      title: "[Nha Trang] Tìm đối tác đào tạo Tiếng Anh Giao tiếp Du lịch cho 50 nhân sự Lễ tân & F&B",
+      content: "Khách sạn cần tìm Trung tâm Ngoại ngữ trong Hệ sinh thái TechCorp tổ chức lớp đào tạo tại chỗ trong 2 tháng...",
+      memberDeal: "Tặng 20 Voucher nghỉ dưỡng 2N1Đ và giảm 30% dịch vụ hội nghị cho các đơn vị thành viên TechCorp",
+      authorOrg: "Nha Trang Bay Resort & Travel",
+      authorName: "Nguyễn Hải Đăng (CEO)",
+      status: "approved"
+    }
+  ];
+  downloadCsvFile("TechCorp_FileMau_Nhap_DienDan_B2B.csv", headers, sampleRows);
+  showToast("📄 Đã tải File Mẫu Nhập Diễn đàn B2B (.CSV)!");
+};
+
+window.triggerImportForumExcel = function () {
+  const inp = document.getElementById("importForumExcelInput");
+  if (inp) {
+    inp.value = "";
+    inp.click();
+  }
+};
+
+window.handleImportForumExcel = function (event) {
+  const file = event && event.target && event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const rawObjects = parseCsvToObjects(String(e.target.result || ""));
+    if (!rawObjects.length) {
+      showToast(`<span style="color:#d97706">⚠️ File CSV trống hoặc không đúng định dạng!</span>`);
+      return;
+    }
+    let added = 0;
+    rawObjects.forEach((r) => {
+      const title = r["Tiêu đề Chủ đề"] || r.title || "";
+      const content = r["Nội dung Chi tiết"] || r.content || title;
+      if (!title) return;
+      const id = r["Mã Chủ đề"] || r.id || "POST-" + Date.now() + "-" + Math.floor(Math.random() * 100);
+      const category = r["Mã Chuyên mục (rfq/spotlight/comarketing/knowledge)"] || r.category || "rfq";
+      const memberDeal = r["Ưu đãi Thành viên (Give-to-Get)"] || r.memberDeal || "Ưu đãi dành cho thành viên Hệ sinh thái TechCorp";
+      const authorOrg = r["Đơn vị Đăng"] || r.authorOrg || "Đơn vị Thành viên TechCorp";
+      const authorName = r["Người Đăng"] || r.authorName || "Đại diện Đơn vị";
+      const status = r["Trạng thái (approved/pending/rejected)"] || r.status || "approved";
+
+      const existing = STATE.forumPosts.find((p) => p.id === id || p.title === title);
+      if (existing) {
+        existing.category = category;
+        existing.title = title;
+        existing.content = content;
+        existing.memberDeal = memberDeal;
+        existing.status = status;
+      } else {
+        STATE.forumPosts.unshift({
+          id,
+          category,
+          categoryLabel: CATEGORY_MAP[category] || CATEGORY_MAP.rfq,
+          status,
+          locked: false,
+          pinned: false,
+          title,
+          content,
+          memberDeal,
+          author: {
+            name: authorName,
+            org: authorOrg,
+            roleBadge: "Thành viên SSO",
+            verifiedApp: "Xác thực SSO TechCorp ID"
+          },
+          createdAt: "Vừa nhập Excel",
+          likes: 5,
+          views: 25,
+          comments: []
+        });
+      }
+      added++;
+    });
+    renderAllViews();
+    showToast(`📤 Đã nhập thành công <b>${added} chủ đề Diễn đàn</b> từ file Excel (.CSV)!`);
+  };
+  reader.readAsText(file, "utf-8");
 };
 
 window.submitNewForumPost = async function () {
@@ -5077,6 +5336,32 @@ window.exportAuditLogsCsv = function () {
   showToast("📥 Đã xuất file báo cáo Truy vết Người dùng (Audit Logs CSV) thành công!");
 };
 
+window.printAuditLogsReport = function () {
+  const logs = STATE.auditLogs || [];
+  const rowsHtml = logs
+    .map(
+      (l, idx) => `
+      <tr>
+        <td style="text-align:center;">${idx + 1}</td>
+        <td><strong>${escapeHtml(l.id)}</strong><br/>${escapeHtml(l.timestamp)}</td>
+        <td><strong>${escapeHtml(l.actorName)}</strong><br/>${escapeHtml(l.actorOrg)} (${escapeHtml(l.actorId)})</td>
+        <td><code>${escapeHtml(l.ipAddress)}</code></td>
+        <td><strong>${escapeHtml(l.action)}</strong> (${escapeHtml(l.severity)})</td>
+        <td>${escapeHtml(l.target)}</td>
+        <td>${escapeHtml(l.details)}</td>
+      </tr>
+    `
+    )
+    .join("");
+  openEnterprisePrintWindow(
+    "BÁO CÁO NHẬT KÝ KIỂM TOÁN & TRUY VẾT AN NINH (SECURITY AUDIT LOGS)",
+    "Giám sát hoạt động xác thực SSO, phân quyền RBAC và thay đổi dữ liệu trên toàn Hệ sinh thái TechCorp",
+    ["Mã Log & Thời gian", "Người thực hiện & Đơn vị", "Địa chỉ IP", "Hành động", "Đối tượng tác động", "Chi tiết"],
+    rowsHtml,
+    `Tổng số: ${logs.length} Bản ghi`
+  );
+};
+
 // ==================== 5. ACTIVITY FEED, TALENTS, CONTESTS, B2B, LIGHTHOUSE ====================
 function renderActivityFeed() {
   const feedEl = document.getElementById("liveFeedList");
@@ -5398,6 +5683,163 @@ window.calculateComboPrice = function () {
     <p style="font-size:13px;margin-bottom:6px;">🎁 <strong>Ưu đãi Giai đoạn 1 tại Nha Trang:</strong> ${bonusGift}</p>
     <p style="font-size:13px;color:#d97706;">🚀 <strong>Đặc quyền Hệ sinh thái đi kèm:</strong> ${ecoBenefit}</p>
   `;
+};
+
+window.printLighthouseReport = function () {
+  const list = STATE.lighthouseTargets || [];
+  const totalSigned = list.reduce((acc, x) => acc + (x.currentSigned || 0), 0);
+  const totalTarget = list.reduce((acc, x) => acc + (x.targetCount || 0), 0);
+  const rowsHtml = list
+    .map(
+      (item, idx) => `
+      <tr>
+        <td style="text-align:center;">${idx + 1}</td>
+        <td><strong>${escapeHtml(item.segment)}</strong><br/>📍 ${escapeHtml(item.focusArea)}</td>
+        <td>${escapeHtml(item.comboPackage)}</td>
+        <td><strong>${item.currentSigned} / ${item.targetCount}</strong> đơn vị<br/>Đang đàm phán: ${item.inPipeline}</td>
+        <td>${escapeHtml(item.notes)}</td>
+      </tr>
+    `
+    )
+    .join("");
+  openEnterprisePrintWindow(
+    "BÁO CÁO TIẾN ĐỘ PHÁT TRIỂN 57 ĐƠN VỊ HẠT NHÂN TẠI KHÁNH HÒA",
+    `Tổng tiến độ ký kết: ${totalSigned} / ${totalTarget} đơn vị hạt nhân Giai đoạn 1`,
+    ["Phân khúc & Khu vực Trọng điểm", "Gói Giải pháp Combo", "Tiến độ Ký kết", "Danh sách Đơn vị & Ghi chú"],
+    rowsHtml,
+    `Đã ký: ${totalSigned}/${totalTarget} đơn vị`
+  );
+};
+
+window.exportLighthouseExcel = function () {
+  const headers = [
+    { key: "segment", label: "Phân khúc Khách hàng" },
+    { key: "focusArea", label: "Khu vực Trọng điểm" },
+    { key: "comboPackage", label: "Gói Giải pháp Combo" },
+    { key: "currentSigned", label: "Số lượng Đã ký" },
+    { key: "targetCount", label: "Chỉ tiêu Giai đoạn 1" },
+    { key: "inPipeline", label: "Đang đàm phán" },
+    { key: "notes", label: "Chi tiết Đơn vị & Ghi chú" }
+  ];
+  const rows = STATE.lighthouseTargets || [];
+  const dateStr = new Date().toISOString().slice(0, 10);
+  downloadCsvFile(`TechCorp_TienDo_57_DonVi_HatNhan_${dateStr}.csv`, headers, rows);
+  showToast("📥 Đã xuất Báo cáo Tiến độ 57 Đơn vị Hạt nhân (.CSV) thành công!");
+};
+
+window.printComboPricingQuote = function () {
+  const type = document.getElementById("calcCustomerType")?.value || "sme";
+  const scale = parseInt(document.getElementById("calcScaleInput")?.value || "25", 10);
+  const period = document.getElementById("calcPeriod")?.value || "12";
+  const typeLabelMap = {
+    kindergarten: "Khối Trường Mầm non & Phổ thông Liên cấp (EduManager Pro K-12)",
+    center: "Khối Trung tâm Ngoại ngữ - Tin học & LMS Khảo thí",
+    sme: "Khối Doanh nghiệp SME, Du lịch - Khách sạn, BĐS & Nội thất"
+  };
+  let monthlyFee = 0;
+  let bonusGift = "";
+  let ecoBenefit = "";
+  if (type === "kindergarten") {
+    monthlyFee = Math.max(2500000, scale * 15000);
+    bonusGift = "Miễn phí 100% phí khởi tạo + Cổng gạch nợ học phí QR tự động";
+    ecoBenefit = "Tặng gói Test Năng lực Tiếng Anh thiếu nhi & E-Voucher gia đình cho toàn bộ Phụ huynh";
+  } else if (type === "center") {
+    monthlyFee = scale <= 200 ? 1800000 : 2800000;
+    bonusGift = period === "12" ? "Tặng miễn phí Website Tuyển sinh Chuẩn SEO (Trị giá 8.000.000đ)" : "Giảm 50% chi phí thiết kế Website Trung tâm";
+    ecoBenefit = "Được đồng tổ chức Kỳ thi Thử IELTS/TOEIC/Tin học toàn tỉnh Khánh Hòa để nhận Lead học viên";
+  } else {
+    monthlyFee = scale <= 30 ? 2200000 : 3500000;
+    bonusGift = period === "12" ? "Tặng 100% Website Doanh nghiệp Đa ngôn ngữ (Trị giá 10.000.000đ)" : "Tặng gói chuẩn hóa CRM & HRM ban đầu";
+    ecoBenefit = "Truy cập kho CV Thực tập sinh & Nhân sự đã xác thực Ngoại ngữ/Tin học tại Nha Trang + Phát Voucher tới >10.000 Phụ huynh/SV";
+  }
+  const months = parseInt(period, 10);
+  const total = monthlyFee * months;
+
+  const customHtml = `
+    <div style="padding:16px;border:2px solid #0052d4;border-radius:10px;background:#f8fbff;margin-bottom:18px;">
+      <h3 style="margin:0 0 10px;color:#0043b8;">I. THÔNG TIN CẤU HÌNH BÁO GIÁ GÓI COMBO HỆ SINH THÁI</h3>
+      <p style="margin:4px 0;"><strong>1. Nhóm đơn vị áp dụng:</strong> ${escapeHtml(typeLabelMap[type] || typeLabelMap.sme)}</p>
+      <p style="margin:4px 0;"><strong>2. Quy mô vận hành:</strong> ${scale} nhân sự / học sinh</p>
+      <p style="margin:4px 0;"><strong>3. Chu kỳ thanh toán:</strong> ${months} tháng</p>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:45px;text-align:center;">STT</th>
+          <th>Hạng mục Phần mềm & Đặc quyền Liên thông Hệ sinh thái</th>
+          <th style="width:160px;">Đơn giá / Tháng</th>
+          <th style="width:170px;">Thành tiền (${months} tháng)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;">1</td>
+          <td><strong>Thuê bao Nền tảng Phần mềm Chuyên sâu + Định danh SSO TechCorp ID</strong><br/>Bao gồm Hosting Cloud tốc độ cao, SSL, sao lưu tự động hàng ngày & hỗ trợ kỹ thuật 24/7</td>
+          <td><strong>${monthlyFee.toLocaleString("vi-VN")} VNĐ</strong></td>
+          <td><strong style="color:#059669;font-size:14px;">${total.toLocaleString("vi-VN")} VNĐ</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">2</td>
+          <td><strong>Quà tặng Tài trợ Hạt nhân Giai đoạn 1:</strong><br/>${escapeHtml(bonusGift)}</td>
+          <td>Miễn phí 100%</td>
+          <td><strong>0 VNĐ (Tài trợ)</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">3</td>
+          <td><strong>Đặc quyền Cộng hưởng Hệ sinh thái TechCorp (Give-to-Get):</strong><br/>${escapeHtml(ecoBenefit)}</td>
+          <td>Đã bao gồm</td>
+          <td><strong>0 VNĐ (Đặc quyền)</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  `;
+  openEnterprisePrintWindow(
+    "BẢNG BÁO GIÁ CHÍNH THỨC GÓI COMBO CHUYỂN ĐỔI SỐ TECHCORP",
+    `Áp dụng cho: ${typeLabelMap[type] || "Đơn vị Thành viên"} • Quy mô: ${scale} người • Chu kỳ: ${months} tháng`,
+    customHtml,
+    "",
+    `Tổng cộng: ${total.toLocaleString("vi-VN")} VNĐ`
+  );
+};
+
+window.exportComboPricingExcel = function () {
+  const headers = [
+    { key: "code", label: "Mã Gói Combo" },
+    { key: "segment", label: "Nhóm Khách hàng Mục tiêu" },
+    { key: "appsIncluded", label: "Các Nền tảng Phần mềm Tích hợp" },
+    { key: "monthlyPrice", label: "Chi phí Thuê bao / Tháng (VNĐ)" },
+    { key: "yearlyPrice", label: "Chi phí Trọn gói 12 Tháng (VNĐ)" },
+    { key: "bonus", label: "Quà tặng Tài trợ Hạt nhân & Đặc quyền Liên thông" }
+  ];
+  const rows = [
+    {
+      code: "COMBO-K12-EDU",
+      segment: "Khối Trường Mầm non & Phổ thông K-12",
+      appsIncluded: "mamnon | tieuhoc | thcs | thpt | VietQR | Sổ liên lạc Điện tử",
+      monthlyPrice: "2.500.000",
+      yearlyPrice: "30.000.000",
+      bonus: "Miễn 100% phí khởi tạo + Tặng cổng gạch nợ học phí VietQR tự động 3 giây"
+    },
+    {
+      code: "COMBO-CENTER-LMS",
+      segment: "Khối Trung tâm Ngoại ngữ - Tin học & Đào tạo",
+      appsIncluded: "ttnn | lms | learn | qldt | gdtx | jobai",
+      monthlyPrice: "1.800.000",
+      yearlyPrice: "21.600.000",
+      bonus: "Tặng Website Tuyển sinh Chuẩn SEO (8.000.000đ) + Nhận Lead thí sinh từ Đấu trường Thi Online"
+    },
+    {
+      code: "COMBO-SME-ERP",
+      segment: "Khối Doanh nghiệp SME, Khách sạn PMS, BĐS & Nội thất",
+      appsIncluded: "erp | kpi | jobai | qldh | bds | noithat | techcorp",
+      monthlyPrice: "2.200.000",
+      yearlyPrice: "26.400.000",
+      bonus: "Tặng Website Doanh nghiệp Đa ngôn ngữ (10.000.000đ) + Tuyển dụng 1-Click từ Sàn JobAI"
+    }
+  ];
+  const dateStr = new Date().toISOString().slice(0, 10);
+  downloadCsvFile(`TechCorp_Bang_Bao_Gia_Combo_${dateStr}.csv`, headers, rows);
+  showToast("📥 Đã xuất Bảng Báo giá Gói Combo Hệ sinh thái (.CSV) thành công!");
 };
 
 const RBAC_PERMISSION_LABELS = [
@@ -8081,6 +8523,65 @@ window.toggleRbacPermission = async function (roleCode, permKey, value) {
   );
 };
 
+window.printRbacMatrixReport = function () {
+  const roleOrder = ["super_admin", "ceo_sme", "center_director", "school_principal", "student_parent"];
+  const rowsHtml = RBAC_PERMISSION_LABELS.map((row, idx) => {
+    const cells = roleOrder
+      .map((rCode) => {
+        const rObj = STATE.rbacMatrix[rCode] || {};
+        const checked = Boolean(rObj.permissions && rObj.permissions[row.key]);
+        return `<td style="text-align:center;font-weight:700;color:${checked ? "#059669" : "#dc2626"};">${checked ? "✔ CHO PHÉP" : "✕ KHÓA"}</td>`;
+      })
+      .join("");
+    return `
+      <tr>
+        <td style="text-align:center;">${idx + 1}</td>
+        <td><strong>${escapeHtml(row.label)}</strong><br/><span style="font-size:11px;color:#64748b;">${escapeHtml(row.desc)}</span></td>
+        ${cells}
+      </tr>
+    `;
+  }).join("");
+
+  openEnterprisePrintWindow(
+    "MA TRẬN PHÂN QUYỀN ĐA TẦNG (RBAC 9x5) HỆ SINH THÁI TECHCORP",
+    "Quy định quyền hạn truy cập giữa 05 Nhóm Định danh SSO trên 09 Nghiệp vụ Trọng tâm",
+    [
+      "Chức năng / Nghiệp vụ Hệ sinh thái",
+      "1. Super Admin",
+      "2. Chủ DN SME",
+      "3. GĐ Trung tâm",
+      "4. Hiệu trưởng",
+      "5. SV / Phụ huynh"
+    ],
+    rowsHtml,
+    "Ma trận RBAC 9x5"
+  );
+};
+
+window.exportRbacMatrixExcel = function () {
+  const headers = [
+    { key: "permKey", label: "Mã Quyền (permKey)" },
+    { key: "label", label: "Tên Chức năng / Nghiệp vụ" },
+    { key: "super_admin", label: "Super Admin" },
+    { key: "ceo_sme", label: "Chủ Doanh nghiệp SME" },
+    { key: "center_director", label: "Giám đốc Trung tâm" },
+    { key: "school_principal", label: "Hiệu trưởng Trường học" },
+    { key: "student_parent", label: "Học viên / Phụ huynh" }
+  ];
+  const rows = RBAC_PERMISSION_LABELS.map((row) => ({
+    permKey: row.key,
+    label: row.label,
+    super_admin: Boolean(STATE.rbacMatrix.super_admin?.permissions?.[row.key]) ? "ALLOW" : "DENY",
+    ceo_sme: Boolean(STATE.rbacMatrix.ceo_sme?.permissions?.[row.key]) ? "ALLOW" : "DENY",
+    center_director: Boolean(STATE.rbacMatrix.center_director?.permissions?.[row.key]) ? "ALLOW" : "DENY",
+    school_principal: Boolean(STATE.rbacMatrix.school_principal?.permissions?.[row.key]) ? "ALLOW" : "DENY",
+    student_parent: Boolean(STATE.rbacMatrix.student_parent?.permissions?.[row.key]) ? "ALLOW" : "DENY"
+  }));
+  const dateStr = new Date().toISOString().slice(0, 10);
+  downloadCsvFile(`TechCorp_MaTran_PhanQuyen_RBAC_${dateStr}.csv`, headers, rows);
+  showToast("📥 Đã xuất Ma trận Phân quyền RBAC (.CSV) thành công!");
+};
+
 // ==================== TABS, ROLE SWITCHER & SERVER BOOTSTRAP ====================
 function setupTabs() {
   const buttons = document.querySelectorAll(".nav-btn, .tab-btn");
@@ -8519,6 +9020,211 @@ window.exportDemoLeadsCsv = function () {
   a.click();
   document.body.removeChild(a);
   showToast("📥 Đã xuất danh sách Khách hàng Đăng ký Demo (CSV) thành công!");
+};
+
+window.deleteDemoLeadAdmin = window.deleteDemoLead;
+
+window.toggleAdminDemoLeadForm = function (show) {
+  const box = document.getElementById("adminNewDemoLeadFormBox");
+  if (!box) return;
+  const shouldShow = show === undefined ? box.style.display === "none" : Boolean(show);
+  box.style.display = shouldShow ? "block" : "none";
+  if (shouldShow) {
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+};
+
+window.saveAdminNewDemoLead = async function () {
+  const fullName = document.getElementById("adminDemoNewFullName")?.value.trim();
+  const phone = document.getElementById("adminDemoNewPhone")?.value.trim();
+  const orgName = document.getElementById("adminDemoNewOrgName")?.value.trim();
+  const email = document.getElementById("adminDemoNewEmail")?.value.trim() || "Chưa cung cấp";
+  const productId = document.getElementById("adminDemoNewProductId")?.value || "erp";
+  const status = document.getElementById("adminDemoNewStatus")?.value || "new";
+  const notes = document.getElementById("adminDemoNewNotes")?.value.trim() || "Khách hàng đăng ký trực tiếp qua Hotline/Zalo Điều hành.";
+
+  if (!fullName || !phone || !orgName) {
+    showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Họ tên, Số điện thoại/Zalo và Tên Đơn vị/Doanh nghiệp!</span>`);
+    return;
+  }
+
+  const matchedApp = (STATE.apps || []).find((a) => a.id === productId);
+  const productName = matchedApp ? matchedApp.name : "Giải pháp Chuyển đổi số Hệ sinh thái TechCorp";
+  const appUrl = matchedApp ? matchedApp.appUrl : "https://hesinhthai.techcorp.info.vn";
+
+  let savedLead = null;
+  try {
+    const res = await fetch("/api/v1/demo-requests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName,
+        phone,
+        email,
+        orgName,
+        orgScale: "50 - 200 nhân sự / học viên",
+        productId,
+        productName,
+        appUrl,
+        preferredTime: "Trong giờ hành chính",
+        notes
+      })
+    });
+    const data = await res.json();
+    if (data && data.ok && data.lead) {
+      savedLead = data.lead;
+      savedLead.status = status;
+      if (Array.isArray(data.demoRequests)) {
+        STATE.demoRequests = data.demoRequests;
+      }
+    }
+  } catch (_) {}
+
+  if (!savedLead) {
+    savedLead = {
+      id: "DEMO-" + String(Date.now()).slice(-6),
+      fullName,
+      phone,
+      email,
+      orgName,
+      orgScale: "50 - 200 nhân sự / học viên",
+      productId,
+      productName,
+      appUrl,
+      preferredTime: "Trong giờ hành chính",
+      notes,
+      status,
+      adminNote: "Tạo từ Cổng Quản trị",
+      ipAddress: "103.170.122.138",
+      createdAt: new Date().toISOString().replace("T", " ").slice(0, 19)
+    };
+    STATE.demoRequests.unshift(savedLead);
+  }
+
+  syncDemoRequestsToLocal();
+  if (document.getElementById("adminDemoNewFullName")) document.getElementById("adminDemoNewFullName").value = "";
+  if (document.getElementById("adminDemoNewPhone")) document.getElementById("adminDemoNewPhone").value = "";
+  if (document.getElementById("adminDemoNewOrgName")) document.getElementById("adminDemoNewOrgName").value = "";
+  if (document.getElementById("adminDemoNewEmail")) document.getElementById("adminDemoNewEmail").value = "";
+  if (document.getElementById("adminDemoNewNotes")) document.getElementById("adminDemoNewNotes").value = "";
+  toggleAdminDemoLeadForm(false);
+  renderAllViews();
+  showToast(`✅ Đã thêm mới khách hàng Demo <b>${escapeHtml(fullName)}</b> (${escapeHtml(savedLead.id)})!`);
+};
+
+window.printDemoLeadsReport = function () {
+  const list = STATE.demoRequests || [];
+  const rowsHtml = list
+    .map(
+      (item, idx) => `
+      <tr>
+        <td style="text-align:center;">${idx + 1}</td>
+        <td><strong>${escapeHtml(item.id)}</strong><br/>${escapeHtml(item.createdAt || "")}</td>
+        <td><strong>${escapeHtml(item.fullName)}</strong><br/>🏢 ${escapeHtml(item.orgName)}<br/>📞 ${escapeHtml(item.phone)} • ✉️ ${escapeHtml(item.email || "")}</td>
+        <td><strong>${escapeHtml(item.productName)}</strong><br/>Mã: ${escapeHtml((item.productId || "").toUpperCase())}</td>
+        <td>${escapeHtml(item.notes || "")}<br/><em>Lịch hẹn: ${escapeHtml(item.preferredTime || "Giờ hành chính")}</em></td>
+        <td><strong>${escapeHtml((item.status || "new").toUpperCase())}</strong><br/>${escapeHtml(item.adminNote || "")}</td>
+      </tr>
+    `
+    )
+    .join("");
+  openEnterprisePrintWindow(
+    "BÁO CÁO DANH SÁCH KHÁCH HÀNG ĐĂNG KÝ DEMO & TƯ VẤN GIẢI PHÁP (CRM LEADS)",
+    "Tổng hợp dữ liệu khách hàng đăng ký từ 16 trang chi tiết sản phẩm & cổng liên hệ",
+    ["Mã Phiếu & Ngày ĐK", "Khách hàng & Đơn vị", "Sản phẩm Quan tâm", "Yêu cầu & Lịch hẹn", "Trạng thái & Ghi chú CSKH"],
+    rowsHtml,
+    `Tổng số: ${list.length} Khách hàng`
+  );
+};
+
+window.downloadDemoLeadsTemplate = function () {
+  const headers = [
+    { key: "id", label: "MaPhieu" },
+    { key: "fullName", label: "HoTenKhachHang" },
+    { key: "phone", label: "SoDienThoai" },
+    { key: "email", label: "Email" },
+    { key: "orgName", label: "DonViToChuc" },
+    { key: "orgScale", label: "QuyMo" },
+    { key: "productId", label: "MaSanPham" },
+    { key: "preferredTime", label: "LichHenDemo" },
+    { key: "notes", label: "YeuCauChiTiet" },
+    { key: "status", label: "TrangThai" }
+  ];
+  const sampleRows = [
+    {
+      id: "DEMO-8801",
+      fullName: "Phạm Quốc Bảo (Giám đốc)",
+      phone: "0918.666.888",
+      email: "bao.pq@hotelbienxanh.vn",
+      orgName: "Khách sạn Biển Xanh Nha Trang",
+      orgScale: "50 - 200 nhân sự",
+      productId: "qldh",
+      preferredTime: "9h00 Sáng Thứ 5",
+      notes: "Cần tư vấn phần mềm quản lý khách sạn PMS liên thông kế toán ERP",
+      status: "new"
+    }
+  ];
+  downloadCsvFile("TechCorp_FileMau_Nhap_KhachHang_Demo.csv", headers, sampleRows);
+  showToast("📄 Đã tải File Mẫu Nhập Khách hàng Demo (.CSV)!");
+};
+
+window.triggerImportDemoLeadsExcel = function () {
+  const inp = document.getElementById("importDemoLeadsExcelInput");
+  if (inp) {
+    inp.value = "";
+    inp.click();
+  }
+};
+
+window.handleImportDemoLeadsExcel = function (event) {
+  const file = event && event.target && event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const rawObjects = parseCsvToObjects(String(e.target.result || ""));
+    if (!rawObjects.length) {
+      showToast(`<span style="color:#d97706">⚠️ File CSV trống hoặc không đúng định dạng!</span>`);
+      return;
+    }
+    let added = 0;
+    rawObjects.forEach((r) => {
+      const fullName = r.HoTenKhachHang || r.fullName || r["Họ tên"] || "";
+      const phone = r.SoDienThoai || r.phone || r["Số điện thoại"] || "";
+      const orgName = r.DonViToChuc || r.orgName || r["Đơn vị"] || "Đơn vị Đăng ký Demo";
+      if (!fullName || !phone) return;
+      const productId = (r.MaSanPham || r.productId || "erp").toLowerCase();
+      const matchedApp = (STATE.apps || []).find((a) => a.id === productId);
+      const id = r.MaPhieu || r.id || "DEMO-" + Math.floor(100000 + Math.random() * 899999);
+      const existing = (STATE.demoRequests || []).find((x) => x.id === id);
+      const leadObj = {
+        id,
+        fullName,
+        phone,
+        email: r.Email || r.email || "Chưa cung cấp",
+        orgName,
+        orgScale: r.QuyMo || r.orgScale || "50 - 200 nhân sự",
+        productId,
+        productName: matchedApp ? matchedApp.name : r.TenSanPham || "Giải pháp Số TechCorp",
+        appUrl: matchedApp ? matchedApp.appUrl : "https://hesinhthai.techcorp.info.vn",
+        preferredTime: r.LichHenDemo || r.preferredTime || "Giờ hành chính",
+        notes: r.YeuCauChiTiet || r.notes || "Nhập từ file Excel CRM",
+        status: r.TrangThai || r.status || "new",
+        adminNote: r.GhiChuAdmin || r.adminNote || "Nhập từ Excel",
+        ipAddress: "103.170.122.138",
+        createdAt: r.ThoiGianDangKy || new Date().toISOString().replace("T", " ").slice(0, 19)
+      };
+      if (existing) {
+        Object.assign(existing, leadObj);
+      } else {
+        STATE.demoRequests.unshift(leadObj);
+      }
+      added++;
+    });
+    syncDemoRequestsToLocal();
+    renderAllViews();
+    showToast(`📤 Đã nhập thành công <b>${added} khách hàng Demo</b> từ file Excel (.CSV)!`);
+  };
+  reader.readAsText(file, "utf-8");
 };
 
 window.selectPricingPreset = function (customerType, scaleVal) {

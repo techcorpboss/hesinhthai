@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Đăng nhập Định danh Tập trung TechCorp ID (SSO) — hesinhthai.techcorp.info.vn</title>
-  <link rel="icon" type="image/png" href="logo.png?v=19" />
-  <link rel="stylesheet" href="styles.css?v=19" />
+  <link rel="icon" type="image/png" href="logo.png?v=24" />
+  <link rel="stylesheet" href="styles.css?v=24" />
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=19"
+    src="widget/techcorp-ecosystem-bar.js?v=24"
     data-app-id="erp"
     data-org-name="TechCorp ID SSO"
     data-user-role="Cổng Xác thực Tập trung"
@@ -255,6 +255,30 @@
       transition: all 0.18s ease;
       text-align: center;
       white-space: nowrap;
+    }
+
+    @media (max-width: 680px) {
+      .sso-page-container {
+        margin: 14px auto 40px;
+        padding: 0 12px;
+      }
+      .sso-sector-panel,
+      .login-card-shell {
+        padding: 18px 14px;
+        border-radius: 16px;
+      }
+      .sso-trust-strip {
+        grid-template-columns: 1fr;
+      }
+      .auth-method-tab {
+        font-size: 11px;
+        padding: 8px 4px;
+        white-space: normal;
+        line-height: 1.25;
+      }
+      .sector-card-head {
+        flex-wrap: wrap;
+      }
     }
 
     .auth-method-tab:hover {
