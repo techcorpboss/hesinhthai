@@ -6732,6 +6732,33 @@ function renderCentralBulletins() {
   }
 }
 
+window.bulletinReaderFontSize = 16.5;
+window.bulletinReaderFullscreen = false;
+
+window.changeBulletinFontSize = function (delta) {
+  window.bulletinReaderFontSize = Math.min(22, Math.max(14, (window.bulletinReaderFontSize || 16.5) + delta));
+  const bodyArticle = document.querySelector(".bulletin-modal-article-body");
+  if (bodyArticle) {
+    bodyArticle.style.setProperty("--bulletin-reader-font-size", `${window.bulletinReaderFontSize}px`);
+  }
+  const leadEl = document.querySelector(".bulletin-modal-lead");
+  if (leadEl) {
+    leadEl.style.fontSize = `${window.bulletinReaderFontSize}px`;
+  }
+};
+
+window.toggleBulletinFullscreen = function () {
+  window.bulletinReaderFullscreen = !window.bulletinReaderFullscreen;
+  const dialog = document.querySelector("#bulletinDetailModal .bulletin-detail-modal-dialog");
+  const btn = document.getElementById("btnToggleBulletinFullscreen");
+  if (dialog) {
+    dialog.classList.toggle("is-fullscreen", window.bulletinReaderFullscreen);
+  }
+  if (btn) {
+    btn.innerHTML = window.bulletinReaderFullscreen ? "🗗 Thu nhỏ khung" : "⛶ Toàn màn hình";
+  }
+};
+
 window.openBulletinDetailModal = function (annId) {
   const list = (STATE.announcements || []).map(enrichSingleAnnouncementItem);
   const idx = list.findIndex((a) => a.id === annId);
@@ -6756,8 +6783,13 @@ window.openBulletinDetailModal = function (annId) {
     modal.onclick = function (e) {
       if (e.target === modal) window.closeBulletinDetailModal();
     };
-    modal.innerHTML = `<div class="bulletin-detail-modal-dialog" role="dialog" aria-modal="true"><div id="bulletinDetailModalBody"></div></div>`;
+    modal.innerHTML = `<div class="bulletin-detail-modal-dialog" role="dialog" aria-modal="true"><div id="bulletinDetailModalBody" style="display:flex;flex-direction:column;height:100%;overflow:hidden;"></div></div>`;
     document.body.appendChild(modal);
+  }
+
+  const dialogEl = modal.querySelector(".bulletin-detail-modal-dialog");
+  if (dialogEl) {
+    dialogEl.classList.toggle("is-fullscreen", Boolean(window.bulletinReaderFullscreen));
   }
 
   const bodyEl = document.getElementById("bulletinDetailModalBody");
@@ -6766,7 +6798,6 @@ window.openBulletinDetailModal = function (annId) {
   const isMaster = item.sourceType === "master";
   const prevItem = idx > 0 ? list[idx - 1] : null;
   const nextItem = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
-  const relatedList = list.filter((a) => a.id !== item.id).slice(0, 3);
 
   const paragraphsHtml = String(item.content || item.summary || "")
     .split(/\n\n+/)
@@ -6778,30 +6809,36 @@ window.openBulletinDetailModal = function (annId) {
   const highlightsHtml = (item.highlights || [])
     .map(
       (h) => `
-      <div style="display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:#0f172a;margin-top:7px;line-height:1.5;">
-        <span style="color:#059669;font-weight:800;">✔</span>
+      <div style="display:flex;align-items:flex-start;gap:10px;font-size:15px;color:#0f172a;margin-top:9px;line-height:1.58;">
+        <span style="color:#059669;font-weight:800;font-size:16px;">✔</span>
         <span>${escapeHtml(h)}</span>
       </div>
     `
     )
     .join("");
 
-  const relatedHtml = relatedList
+  const sidebarListHtml = list
     .map(
-      (rel) => `
-      <div class="bulletin-related-item" onclick="openBulletinDetailModal('${escapeHtml(rel.id)}')">
+      (rel, rIdx) => `
+      <div
+        class="bulletin-sidebar-item ${rel.id === item.id ? "active" : ""}"
+        onclick="openBulletinDetailModal('${escapeHtml(rel.id)}')"
+      >
         <img
           src="${escapeHtml(rel.imageUrl)}"
           alt="${escapeHtml(rel.title)}"
           loading="lazy"
           onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'"
         />
-        <div class="bulletin-related-item-body">
-          <span style="font-size:10.5px;font-weight:700;color:#0052d4;">${escapeHtml(rel.categoryTag)}</span>
-          <strong style="font-size:12.5px;color:#0f172a;line-height:1.38;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+        <div style="min-width:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;">
+            <span style="font-size:10.5px;font-weight:800;color:${rel.sourceType === "master" ? "#d97706" : "#0052d4"};">
+              #${rIdx + 1} • ${escapeHtml(rel.categoryTag)}
+            </span>
+          </div>
+          <strong style="font-size:12.5px;color:#0f172a;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px;">
             ${escapeHtml(rel.title)}
           </strong>
-          <span style="font-size:11px;color:#64748b;margin-top:2px;">🕒 ${escapeHtml(rel.createdAt)} • 👁️ ${Number(rel.views).toLocaleString("vi-VN")}</span>
         </div>
       </div>
     `
@@ -6812,138 +6849,170 @@ window.openBulletinDetailModal = function (annId) {
   const defaultLabel = isMaster ? "Khám phá 6 Nhóm Sản phẩm" : "Mở Chuyên trang Liên kết";
 
   bodyEl.innerHTML = `
+    <!-- THANH CÔNG CỤ ĐỌC BÁO ĐIỆN TỬ TRÊN CÙNG (1 HÀNG GỌN GÀNG) -->
     <div class="bulletin-modal-topbar">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <span class="badge ${isMaster ? "badge-amber" : "badge-blue"}">${escapeHtml(item.badge)}</span>
-        <span class="badge badge-green">🏷️ ${escapeHtml(item.categoryTag)}</span>
+      <div class="bulletin-topbar-left">
+        <span class="badge ${isMaster ? "badge-amber" : "badge-blue"}" style="white-space:nowrap;">${escapeHtml(item.badge)}</span>
+        <span class="badge badge-green" style="white-space:nowrap;">🏷️ ${escapeHtml(item.categoryTag)}</span>
+        <span style="font-size:12px;color:#cbd5e1;font-weight:600;white-space:nowrap;margin-left:4px;">
+          📰 Bản tin ${idx + 1} / ${list.length}
+        </span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <button type="button" class="btn btn-outline btn-sm" onclick="printSingleBulletinArticle('${escapeHtml(item.id)}')">
-          🖨️ In Bài viết
+      <div class="bulletin-topbar-right">
+        <button type="button" class="bulletin-reader-tool-btn" onclick="changeBulletinFontSize(-1)" title="Thu nhỏ cỡ chữ bài viết">
+          A-
         </button>
-        <button type="button" class="btn btn-outline btn-sm" onclick="copyBulletinShareLink('${escapeHtml(item.id)}')">
-          🔗 Sao chép Link Tin
+        <button type="button" class="bulletin-reader-tool-btn" onclick="changeBulletinFontSize(1)" title="Phóng to cỡ chữ bài viết">
+          A+
         </button>
-        <button type="button" class="btn btn-danger btn-sm" onclick="closeBulletinDetailModal()">
+        <button type="button" class="bulletin-reader-tool-btn" id="btnToggleBulletinFullscreen" onclick="toggleBulletinFullscreen()">
+          ${window.bulletinReaderFullscreen ? "🗗 Thu nhỏ khung" : "⛶ Toàn màn hình"}
+        </button>
+        <button type="button" class="bulletin-reader-tool-btn" onclick="printSingleBulletinArticle('${escapeHtml(item.id)}')">
+          🖨️ In A4
+        </button>
+        <button type="button" class="bulletin-reader-tool-btn" onclick="copyBulletinShareLink('${escapeHtml(item.id)}')">
+          🔗 Copy Link
+        </button>
+        <button type="button" class="bulletin-reader-tool-btn btn-close-reader" onclick="closeBulletinDetailModal()">
           ✕ Đóng (ESC)
         </button>
       </div>
     </div>
 
-    <div class="bulletin-modal-hero">
-      <img
-        src="${escapeHtml(item.imageUrl)}"
-        alt="${escapeHtml(item.title)}"
-        onerror="this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80'"
-      />
-      <div class="bulletin-modal-hero-caption">
-        <div>
-          <span style="background:rgba(0,82,212,0.88);padding:4px 10px;border-radius:6px;font-weight:700;font-size:11px;">
-            📸 Hình ảnh minh họa Bản tin • ${escapeHtml(item.authorOrg)}
-          </span>
-        </div>
-        <div>
-          🕒 Đăng lúc: <strong>${escapeHtml(item.createdAt)}</strong> • 📖 ${escapeHtml(item.readTime)} • 👁️ <strong>${Number(item.views).toLocaleString("vi-VN")} lượt xem</strong>
-        </div>
-      </div>
-    </div>
+    <!-- VÙNG CUỘN NỘI DUNG CHIA 2 CỘT RỘNG RÃI (1280PX) -->
+    <div class="bulletin-modal-scroll-area" id="bulletinModalScrollArea">
+      <div class="bulletin-editorial-grid">
+        <!-- CỘT TRÁI (70%): TOÀN VĂN BẢN TIN CHI TIẾT -->
+        <article class="bulletin-main-article-card">
+          <h2 class="bulletin-modal-title" id="bulletinModalTitle">${escapeHtml(item.title)}</h2>
 
-    <div class="bulletin-modal-content-wrap">
-      <h2 class="bulletin-modal-title" id="bulletinModalTitle">${escapeHtml(item.title)}</h2>
-
-      <div class="bulletin-modal-meta-bar">
-        <div>
-          <div style="font-weight:800;color:#0b2559;font-size:13.5px;">
-            ${isMaster ? "👑 Cơ quan ban hành:" : "🏢 Đơn vị thành viên:"} <span style="color:#0052d4;">${escapeHtml(item.authorOrg)}</span>
+          <div class="bulletin-modal-meta-bar">
+            <div>
+              <div style="font-weight:800;color:#0b2559;font-size:14px;">
+                ${isMaster ? "👑 Cơ quan ban hành:" : "🏢 Đơn vị thành viên:"} <span style="color:#0052d4;">${escapeHtml(item.authorOrg)}</span>
+              </div>
+              <div style="font-size:12.5px;color:#475569;margin-top:3px;">
+                👤 Người phụ trách: <strong>${escapeHtml(item.authorName)}</strong> • Mã tin: <code>${escapeHtml(item.id)}</code> • 🕒 ${escapeHtml(item.createdAt)}
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span class="badge badge-blue">👁️ ${Number(item.views).toLocaleString("vi-VN")} lượt xem</span>
+              <span class="badge badge-green">✔ Đã xác thực SSO TechCorp ID</span>
+            </div>
           </div>
-          <div style="font-size:12px;color:#475569;margin-top:2px;">
-            👤 Người phụ trách / Đại diện: <strong>${escapeHtml(item.authorName)}</strong> • Mã bản tin: <code>${escapeHtml(item.id)}</code>
+
+          <div class="bulletin-modal-lead" style="font-size:${window.bulletinReaderFontSize || 16.5}px;">
+            📌 <strong>Tóm tắt trọng tâm:</strong> ${escapeHtml(item.summary)}
           </div>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <span class="badge badge-green">✔ Đã xác thực SSO TechCorp ID</span>
-        </div>
-      </div>
 
-      <div class="bulletin-modal-lead">
-        📌 <strong>Tóm tắt trọng tâm:</strong> ${escapeHtml(item.summary)}
-      </div>
+          <div class="bulletin-modal-hero">
+            <img
+              src="${escapeHtml(item.imageUrl)}"
+              alt="${escapeHtml(item.title)}"
+              onerror="this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80'"
+            />
+            <div class="bulletin-modal-hero-caption">
+              <div>
+                <span style="background:rgba(0,82,212,0.9);padding:5px 12px;border-radius:6px;font-weight:700;font-size:11.5px;">
+                  📸 Hình ảnh Bản tin • ${escapeHtml(item.authorOrg)}
+                </span>
+              </div>
+              <div>
+                📖 Thời lượng: <strong>${escapeHtml(item.readTime)}</strong>
+              </div>
+            </div>
+          </div>
 
-      <div class="bulletin-modal-article-body">
-        ${paragraphsHtml}
-      </div>
+          <div class="bulletin-modal-article-body" style="--bulletin-reader-font-size:${window.bulletinReaderFontSize || 16.5}px;">
+            ${paragraphsHtml}
+          </div>
 
-      <div class="bulletin-modal-highlights">
-        <h5>🌟 Điểm nhấn &amp; Quyền lợi Dành cho Thành viên Hệ sinh thái TechCorp:</h5>
-        ${highlightsHtml}
-      </div>
+          <div class="bulletin-modal-highlights">
+            <h5>🌟 Điểm nhấn &amp; Quyền lợi Dành cho Thành viên Hệ sinh thái TechCorp:</h5>
+            ${highlightsHtml}
+          </div>
 
-      <!-- Hộp Hành động & Liên hệ nhanh -->
-      <div style="background:#f8fbff;border:1.5px solid #93c5fd;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:18px;">
-        <div>
-          <strong style="font-size:13.5px;color:#0b2559;display:block;">
-            🚀 Kết nối &amp; Triển khai ngay cùng Hệ sinh thái TechCorp
-          </strong>
-          <span style="font-size:12px;color:#475569;">
-            Hotline / Zalo tư vấn trực tiếp 24/7: <strong style="color:#0052d4;">0392.091.068</strong> • Email: <strong>info@techcorp.info.vn</strong>
-          </span>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <a
-            href="https://zalo.me/0392091068"
-            target="_blank"
-            rel="noopener"
-            class="btn btn-emerald btn-sm"
-            style="text-decoration:none;"
-          >
-            💬 Chat Zalo (0392.091.068) ↗
-          </a>
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            onclick="closeBulletinDetailModal(); handleBulletinAction('${escapeHtml(item.id)}', '${escapeHtml(item.actionView || defaultView)}', '${escapeHtml(item.actionLabel || defaultLabel)}')"
-          >
-            🚀 ${escapeHtml(item.actionLabel || defaultLabel)} →
-          </button>
-        </div>
-      </div>
+          <!-- Thanh Điều hướng Tin Trước / Tin Tiếp theo -->
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:24px;padding-top:16px;border-top:2px solid #edf4ff;flex-wrap:wrap;">
+            <button
+              type="button"
+              class="btn btn-outline"
+              ${prevItem ? `onclick="openBulletinDetailModal('${escapeHtml(prevItem.id)}')"` : "disabled style='opacity:0.45;cursor:not-allowed;'"}
+            >
+              ⬅ Bản tin trước
+            </button>
+            <span style="font-size:13px;color:#475569;font-weight:700;">
+              Đang đọc bản tin ${idx + 1} / ${list.length}
+            </span>
+            <button
+              type="button"
+              class="btn btn-outline"
+              ${nextItem ? `onclick="openBulletinDetailModal('${escapeHtml(nextItem.id)}')"` : "disabled style='opacity:0.45;cursor:not-allowed;'"}
+            >
+              Bản tin tiếp theo ➡
+            </button>
+          </div>
+        </article>
 
-      <!-- Thanh Điều hướng Tin Trước / Tin Tiếp theo -->
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #e2e8f0;flex-wrap:wrap;">
-        <button
-          type="button"
-          class="btn btn-outline btn-sm"
-          ${prevItem ? `onclick="openBulletinDetailModal('${escapeHtml(prevItem.id)}')"` : "disabled style='opacity:0.45;cursor:not-allowed;'"}
-        >
-          ⬅ Bản tin trước
-        </button>
-        <span style="font-size:12px;color:#64748b;font-weight:700;">
-          Đang xem bản tin ${idx + 1} / ${list.length}
-        </span>
-        <button
-          type="button"
-          class="btn btn-outline btn-sm"
-          ${nextItem ? `onclick="openBulletinDetailModal('${escapeHtml(nextItem.id)}')"` : "disabled style='opacity:0.45;cursor:not-allowed;'"}
-        >
-          Bản tin tiếp theo ➡
-        </button>
-      </div>
+        <!-- CỘT PHẢI (30% STICKY SIDEBAR): HÀNH ĐỘNG NHANH & DANH MỤC 10 BẢN TIN -->
+        <aside class="bulletin-sidebar-col">
+          <div class="bulletin-sidebar-box" style="background:linear-gradient(180deg,#f0f7ff 0%,#ffffff 100%);border:2px solid #93c5fd;">
+            <span class="badge badge-blue" style="margin-bottom:8px;">🚀 KẾT NỐI &amp; HÀNH ĐỘNG NHANH</span>
+            <h4 style="font-size:15.5px;font-weight:800;color:#0b2559;line-height:1.4;margin-bottom:8px;">
+              Triển khai &amp; Nhận Đặc quyền từ Bản tin này
+            </h4>
+            <p style="font-size:12.5px;color:#475569;line-height:1.55;margin-bottom:14px;">
+              Liên hệ trực tiếp Ban Điều phối Hệ sinh thái TechCorp hoặc mở chuyên trang liên kết để kích hoạt ưu đãi cho đơn vị của bạn:
+            </p>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <button
+                type="button"
+                class="btn btn-primary"
+                style="width:100%;justify-content:center;padding:11px 14px;"
+                onclick="closeBulletinDetailModal(); handleBulletinAction('${escapeHtml(item.id)}', '${escapeHtml(item.actionView || defaultView)}', '${escapeHtml(item.actionLabel || defaultLabel)}')"
+              >
+                🚀 ${escapeHtml(item.actionLabel || defaultLabel)} →
+              </button>
+              <a
+                href="https://zalo.me/0392091068"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-emerald"
+                style="width:100%;justify-content:center;padding:10px 14px;text-decoration:none;"
+              >
+                💬 Chat Zalo Tư vấn (0392.091.068) ↗
+              </a>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <button type="button" class="btn btn-outline btn-sm" style="justify-content:center;" onclick="printSingleBulletinArticle('${escapeHtml(item.id)}')">
+                  🖨️ In Bản tin A4
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" style="justify-content:center;" onclick="copyBulletinShareLink('${escapeHtml(item.id)}')">
+                  🔗 Sao chép Link
+                </button>
+              </div>
+            </div>
+          </div>
 
-      <!-- Các Bản tin Liên quan có Hình ảnh đại diện -->
-      <div style="margin-top:22px;padding-top:16px;border-top:2px solid #edf4ff;">
-        <h4 style="font-size:14.5px;font-weight:800;color:#0b2559;margin-bottom:4px;">
-          📰 Các Bản tin Khác trong Hệ sinh thái TechCorp
-        </h4>
-        <div class="bulletin-modal-related-grid">
-          ${relatedHtml}
-        </div>
+          <div class="bulletin-sidebar-box">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <h4 style="font-size:14.5px;font-weight:800;color:#0b2559;margin:0;">
+                📰 Danh sách Bản tin (${list.length})
+              </h4>
+              <span class="badge badge-green">Chọn đọc ngay</span>
+            </div>
+            <div class="bulletin-sidebar-list">
+              ${sidebarListHtml}
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   `;
 
   modal.style.display = "flex";
-  const dialog = modal.querySelector(".bulletin-detail-modal-dialog");
-  if (dialog) dialog.scrollTop = 0;
+  const scrollArea = document.getElementById("bulletinModalScrollArea");
+  if (scrollArea) scrollArea.scrollTop = 0;
   renderCentralBulletins();
 };
 
