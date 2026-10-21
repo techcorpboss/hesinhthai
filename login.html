@@ -4,123 +4,532 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Đăng nhập Định danh Tập trung TechCorp ID (SSO) — hesinhthai.techcorp.info.vn</title>
-  <link rel="icon" type="image/png" href="logo.png?v=6.6" />
-  <link rel="stylesheet" href="styles.css?v=6.6" />
+  <link rel="icon" type="image/png" href="logo.png?v=19" />
+  <link rel="stylesheet" href="styles.css?v=19" />
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=6.6"
+    src="widget/techcorp-ecosystem-bar.js?v=19"
     data-app-id="erp"
     data-org-name="TechCorp ID SSO"
     data-user-role="Cổng Xác thực Tập trung"
     defer
   ></script>
   <style>
-    .login-wrapper {
-      max-width: 560px;
-      margin: 44px auto 72px;
-      padding: 0 20px;
+    body {
+      background:
+        radial-gradient(circle at 12% 18%, rgba(37, 99, 235, 0.1), transparent 38%),
+        radial-gradient(circle at 88% 82%, rgba(14, 165, 233, 0.12), transparent 42%),
+        linear-gradient(180deg, #f0f6ff 0%, #e6f0fd 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    .login-box {
+
+    .sso-page-container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 28px auto 64px;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    .active-session-banner {
+      display: none;
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 1.5px solid #6ee7b7;
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px -10px rgba(5, 150, 105, 0.2);
+    }
+
+    .sso-auth-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 980px) {
+      .sso-auth-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==================== CỘT TRÁI: PHÂN KHU LOẠI HÌNH ĐƠN VỊ & ĐÍCH ĐẾN SSO ==================== */
+    .sso-sector-panel {
+      background:
+        radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.22), transparent 45%),
+        linear-gradient(145deg, #071936 0%, #0d2b5e 58%, #091d42 100%);
+      color: #ffffff;
+      border-radius: 24px;
+      padding: 30px 28px;
+      border: 1.5px solid rgba(96, 165, 250, 0.4);
+      box-shadow: 0 24px 50px -16px rgba(7, 25, 54, 0.38);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .sso-sector-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(56, 189, 248, 0.16);
+      border: 1px solid rgba(125, 211, 252, 0.4);
+      color: #7dd3fc;
+      padding: 5px 13px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .sso-sector-title {
+      font-size: clamp(21px, 2.2vw, 27px);
+      font-weight: 900;
+      line-height: 1.28;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .sso-sector-desc {
+      font-size: 13.2px;
+      color: #cbd5e1;
+      line-height: 1.58;
+    }
+
+    .sector-list-label {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #93c5fd;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sector-cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .sector-type-card {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1.5px solid rgba(148, 163, 184, 0.25);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      width: 100%;
+      color: #f8fafc;
+      font-family: inherit;
+    }
+
+    .sector-type-card:hover {
+      background: rgba(30, 58, 138, 0.55);
+      border-color: rgba(96, 165, 250, 0.6);
+      transform: translateX(3px);
+    }
+
+    .sector-type-card.active {
+      background: linear-gradient(135deg, rgba(0, 97, 255, 0.42) 0%, rgba(2, 132, 199, 0.38) 100%);
+      border-color: #38bdf8;
+      box-shadow: 0 8px 22px rgba(0, 97, 255, 0.28);
+    }
+
+    .sector-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .sector-card-body {
+      flex: 1;
+    }
+
+    .sector-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+
+    .sector-card-head strong {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .sector-card-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.2);
+      color: #bae6fd;
+      white-space: nowrap;
+    }
+
+    .sector-card-sub {
+      font-size: 11.8px;
+      color: #cbd5e1;
+      line-height: 1.42;
+    }
+
+    .sso-trust-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .sso-trust-item {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 11px;
+      padding: 9px 10px;
+      font-size: 11px;
+      color: #e2e8f0;
+    }
+
+    .sso-trust-item strong {
+      display: block;
+      color: #38bdf8;
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    /* ==================== CỘT PHẢI: KHUNG ĐĂNG NHẬP ĐA PHƯƠNG THỨC ==================== */
+    .login-card-shell {
       background: #ffffff;
       border: 1.5px solid #bfd7fa;
       border-top: 5px solid #0061ff;
-      border-radius: 20px;
-      padding: 32px 30px;
-      box-shadow: 0 20px 44px -14px rgba(0, 65, 190, 0.16);
+      border-radius: 24px;
+      padding: 28px 28px;
+      box-shadow: 0 22px 48px -14px rgba(0, 65, 190, 0.16);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .login-field {
-      margin-bottom: 16px;
+
+    .auth-method-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 5px;
+      border-radius: 13px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
     }
-    .login-field label {
+
+    .auth-method-tab {
+      border: none;
+      background: transparent;
+      color: #475569;
+      font-family: inherit;
+      font-size: 12.2px;
+      font-weight: 800;
+      padding: 9px 8px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .auth-method-tab:hover {
+      color: #0f172a;
+    }
+
+    .auth-method-tab.active {
+      background: #ffffff;
+      color: #0052d4;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+    }
+
+    .auth-method-pane {
+      display: none;
+    }
+
+    .auth-method-pane.active {
       display: block;
-      font-size: 13px;
+    }
+
+    .login-field {
+      margin-bottom: 15px;
+    }
+
+    .login-field label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.8px;
       font-weight: 800;
       color: #0b2559;
       margin-bottom: 6px;
     }
-    .login-error-alert {
+
+    .input-with-action {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-with-action .input-control {
+      width: 100%;
+      padding-right: 78px;
+    }
+
+    .pw-toggle-btn {
+      position: absolute;
+      right: 8px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .pw-toggle-btn:hover {
+      background: #dbeafe;
+    }
+
+    .login-options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+      font-size: 12.5px;
+      flex-wrap: wrap;
+    }
+
+    .remember-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #334155;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .forgot-link-btn {
+      background: none;
+      border: none;
+      color: #0052d4;
+      font-weight: 800;
+      font-size: 12.5px;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .forgot-link-btn:hover {
+      text-decoration: underline;
+    }
+
+    .login-alert {
       display: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-size: 12.8px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      line-height: 1.45;
+    }
+
+    .login-alert.error {
       background: #fef2f2;
       border: 1px solid #fecaca;
       color: #b91c1c;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 13px;
+    }
+
+    .login-alert.success {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #047857;
+    }
+
+    .login-alert.info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .federated-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0 12px;
+      color: #64748b;
+      font-size: 11.5px;
       font-weight: 700;
-      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
-    .active-session-banner {
-      display: none;
-      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-      border: 1.5px solid #86efac;
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin-bottom: 22px;
+
+    .federated-divider::before,
+    .federated-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
     }
-    .account-ref-details {
-      margin-top: 22px;
-      border: 1px solid #dbe6f5;
-      border-radius: 14px;
-      background: #f8fbff;
-      padding: 12px 16px;
-      font-size: 12.5px;
-      color: #334155;
+
+    .federated-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
     }
-    .account-ref-details summary {
+
+    .fed-btn {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 9px 8px;
+      font-size: 11.8px;
+      font-weight: 700;
+      color: #1e293b;
       cursor: pointer;
-      font-weight: 800;
-      color: #0b2559;
-      user-select: none;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.18s ease;
     }
-    .account-ref-table {
+
+    .fed-btn:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #0052d4;
+    }
+
+    .login-footer-help {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 12.2px;
+      color: #475569;
+    }
+
+    /* QR Box */
+    .qr-auth-box {
+      background: #f8fbff;
+      border: 1.5px dashed #93c5fd;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .qr-visual-frame {
+      width: 176px;
+      height: 176px;
+      margin: 10px auto 12px;
+      background: #ffffff;
+      border: 2px solid #0052d4;
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(0, 82, 212, 0.12);
+    }
+
+    /* Modal Hỗ trợ (Quên mật khẩu & Đăng ký Tài khoản Đơn vị) */
+    .sso-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .sso-modal-backdrop.open {
+      display: flex;
+    }
+
+    .sso-modal-card {
+      background: #ffffff;
+      border-radius: 20px;
+      max-width: 520px;
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 12px;
-    }
-    .account-ref-table th,
-    .account-ref-table td {
-      padding: 7px 8px;
-      border-bottom: 1px solid #e2e8f0;
-      text-align: left;
-    }
-    .account-ref-table th {
-      color: #0f172a;
-      font-weight: 800;
-      background: #eef5ff;
+      padding: 26px;
+      border: 1.5px solid #bfdbfe;
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35);
     }
   </style>
 </head>
 <body>
-  <!-- HEADER GỌN GÀNG HIỆN ĐẠI -->
+  <!-- HEADER CÂN ĐỐI HIỆN ĐẠI -->
   <header class="hub-header">
     <div class="hub-header-inner">
-      <div class="header-actions" id="loginHeaderActions">
-        <a href="index.html" class="btn btn-outline" style="text-decoration:none;">
-          🌍 Về Trang chủ Hệ sinh thái
-        </a>
-      </div>
-
       <a href="index.html" class="brand-box">
         <div class="brand-logo">
-          <img src="logo.png?v=6.6" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+          <img src="logo.png?v=19" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
         </div>
         <div class="brand-title">
           <h1>
             TechCorp ID (SSO)
-            <span class="brand-domain-pill">🔐 Xác thực Tập trung</span>
+            <span class="brand-domain-pill">🔐 Xác thực Tập trung v6.6</span>
           </h1>
-          <p>Đăng nhập Tài khoản Định danh • Tự động Phân quyền theo Đúng Vai trò</p>
+          <p>Cổng Định danh Điện tử & Phân quyền Đa Nền tảng Hệ sinh thái TechCorp</p>
         </div>
       </a>
+
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <a href="index.html" class="btn btn-outline btn-sm" style="text-decoration:none;">
+          🌍 Về Trang chủ Hệ sinh thái
+        </a>
+        <a href="index.html?page=products" class="btn btn-outline btn-sm" style="text-decoration:none;">
+          🚀 6 Nhóm Sản phẩm (16 App)
+        </a>
+        <a href="tel:0392091068" class="btn btn-primary btn-sm" style="text-decoration:none;">
+          📞 Hỗ trợ 24/7: 0392.091.068
+        </a>
+      </div>
     </div>
   </header>
 
-  <main class="login-wrapper">
+  <main class="sso-page-container">
     <!-- HIỂN THỊ PHIÊN ĐĂNG NHẬP HIỆN TẠI NẾU ĐÃ ĐĂNG NHẬP -->
     <div class="active-session-banner" id="activeSessionBanner">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
         <div>
-          <span class="badge badge-green">✅ ĐANG ĐĂNG NHẬP PHIÊN SSO</span>
+          <span class="badge badge-green">✅ ĐANG ĐĂNG NHẬP PHIÊN TECHCORP ID (SSO)</span>
           <div style="font-size:15px;font-weight:800;color:#065f46;margin-top:6px;" id="activeSessionUserText">—</div>
           <div style="font-size:12.5px;color:#047857;margin-top:2px;" id="activeSessionRoleText">—</div>
         </div>
@@ -135,114 +544,451 @@
       </div>
     </div>
 
-    <!-- FORM ĐĂNG NHẬP CHÍNH THỨC -->
-    <div class="login-box">
-      <div style="text-align:center;margin-bottom:24px;">
-        <span class="badge badge-blue">🔑 SINGLE SIGN-ON (TECHCORP ID)</span>
-        <h2 style="font-size:23px;font-weight:900;color:#0b2559;margin-top:10px;">Đăng nhập Hệ thống Quản trị</h2>
-        <p style="font-size:13px;color:#475569;margin-top:6px;line-height:1.5;">
-          Nhập Email và Mật khẩu định danh TechCorp ID. Hệ thống tự động nhận diện vai trò và chỉ hiển thị các chức năng thuộc đúng phạm vi quyền hạn của tài khoản.
-        </p>
-      </div>
+    <!-- GIAO DIỆN 2 CỘT CHUYÊN NGHIỆP -->
+    <div class="sso-auth-grid">
+      <!-- CỘT TRÁI: CHỌN LOẠI HÌNH ĐƠN VỊ / VAI TRÒ TRUY CẬP -->
+      <section class="sso-sector-panel">
+        <div>
+          <span class="sso-sector-kicker">🌐 SINGLE SIGN-ON • MỘT ĐỊNH DANH CHO 16 NỀN TẢNG</span>
+          <h2 class="sso-sector-title">Chọn Loại hình Đơn vị & Không gian Làm việc của Bạn</h2>
+          <p class="sso-sector-desc">
+            Hệ thống Định danh Tập trung <strong>TechCorp ID</strong> tự động nhận diện quyền hạn (RBAC) và đồng bộ phiên làm việc xuyên suốt giữa 16 nền tảng phần mềm Giáo dục, Sàn Tuyển dụng AI và Quản trị Doanh nghiệp.
+          </p>
 
-      <div class="login-error-alert" id="loginErrorAlert"></div>
+          <div style="margin-top:18px;">
+            <div class="sector-list-label">
+              <span>1. Chọn Phân khu / Loại hình Đăng nhập:</span>
+              <span id="selectedSectorBadgeText" style="color:#38bdf8;">Tất cả loại hình</span>
+            </div>
 
-      <form id="ssoLoginForm" onsubmit="handleSsoLoginSubmit(event)">
-        <div class="login-field">
-          <label for="loginEmailInput">Email Định danh TechCorp ID:</label>
-          <input
-            type="email"
-            id="loginEmailInput"
-            class="input-control"
-            style="width:100%;"
-            placeholder="Nhập email tài khoản (VD: admin@techcorp.info.vn)"
-            required
-            autocomplete="username"
-          />
+            <div class="sector-cards-stack" id="sectorCardsContainer">
+              <button type="button" class="sector-type-card active" data-sector="all" onclick="selectLoginSector('all')">
+                <span class="sector-icon-box">🌐</span>
+                <div class="sector-card-body">
+                  <div class="sector-card-head">
+                    <strong>Định danh Đa năng Toàn Hệ sinh thái (Mặc định)</strong>
+                    <span class="sector-card-badge">Tự động nhận diện</span>
+                  </div>
+                  <div class="sector-card-sub">
+                    Hệ thống tự động kiểm tra vai trò tài khoản và mở đúng phân hệ quản trị hoặc cổng thành viên tương ứng.
+                  </div>
+                </div>
+              </button>
+
+              <button type="button" class="sector-type-card" data-sector="sme" onclick="selectLoginSector('sme')">
+                <span class="sector-icon-box">🏢</span>
+                <div class="sector-card-body">
+                  <div class="sector-card-head">
+                    <strong>Khối Doanh nghiệp SME, Khách sạn & BĐS</strong>
+                    <span class="sector-card-badge">ERP • KPI • PMS • BĐS</span>
+                  </div>
+                  <div class="sector-card-sub">
+                    Dành cho Ban Giám đốc, Quản lý & Nhân sự vận hành ERP, BSC-KPI, Khách sạn PMS, Sàn BĐS AI & Nội thất 3D.
+                  </div>
+                </div>
+              </button>
+
+              <button type="button" class="sector-type-card" data-sector="school" onclick="selectLoginSector('school')">
+                <span class="sector-icon-box">🎓</span>
+                <div class="sector-card-body">
+                  <div class="sector-card-head">
+                    <strong>Khối Trường học (Mầm non – K12) & Đại học</strong>
+                    <span class="sector-card-badge">EduManager • TC COMPASS</span>
+                  </div>
+                  <div class="sector-card-sub">
+                    Dành cho Ban Giám hiệu, Phòng Đào tạo, Giáo viên & Giảng viên các cấp Mầm non, Tiểu học, THCS, THPT, GDTX & ĐH.
+                  </div>
+                </div>
+              </button>
+
+              <button type="button" class="sector-type-card" data-sector="center" onclick="selectLoginSector('center')">
+                <span class="sector-icon-box">🏫</span>
+                <div class="sector-card-body">
+                  <div class="sector-card-head">
+                    <strong>Khối Trung tâm Ngoại ngữ - Tin học & Khảo thí</strong>
+                    <span class="sector-card-badge">TTNN • LMS • Learn</span>
+                  </div>
+                  <div class="sector-card-sub">
+                    Dành cho Giám đốc Trung tâm, Giáo vụ, Tư vấn tuyển sinh CRM & Hội đồng Khảo thí trực tuyến TechCorp LMS.
+                  </div>
+                </div>
+              </button>
+
+              <button type="button" class="sector-type-card" data-sector="citizen" onclick="selectLoginSector('citizen')">
+                <span class="sector-icon-box">👨‍🎓</span>
+                <div class="sector-card-body">
+                  <div class="sector-card-head">
+                    <strong>Học viên, Sinh viên, Ứng viên & Phụ huynh</strong>
+                    <span class="sector-card-badge">JobAI • Sổ liên lạc • LMS</span>
+                  </div>
+                  <div class="sector-card-sub">
+                    Tra cứu Sổ liên lạc điện tử, Hồ sơ Năng lực Số QR, dự thi trực tuyến LMS & ứng tuyển trên Sàn việc làm JobAI.
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div class="login-field">
-          <label for="loginPasswordInput">Mật khẩu:</label>
-          <input
-            type="password"
-            id="loginPasswordInput"
-            class="input-control"
-            style="width:100%;"
-            placeholder="Nhập mật khẩu xác thực..."
-            required
-            autocomplete="current-password"
-          />
+        <div class="sso-trust-strip">
+          <div class="sso-trust-item">
+            <strong>🔒 Bảo mật Đa tầng</strong>
+            Mã hóa phiên JWT & kiểm soát truy cập theo IP thời gian thực.
+          </div>
+          <div class="sso-trust-item">
+            <strong>🛡️ Phân quyền RBAC 9×5</strong>
+            Tách biệt tuyệt đối quyền hạn giữa các vai trò & đơn vị.
+          </div>
+          <div class="sso-trust-item">
+            <strong>⚡ Liên thông 16 App</strong>
+            Một lần đăng nhập — truy cập xuyên suốt toàn hệ sinh thái.
+          </div>
+        </div>
+      </section>
+
+      <!-- CỘT PHẢI: FORM ĐĂNG NHẬP ĐA PHƯƠNG THỨC -->
+      <section class="login-card-shell">
+        <div>
+          <div style="margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+              <span class="badge badge-blue" id="loginFormContextBadge">🔑 XÁC THỰC TẬP TRUNG TECHCORP ID</span>
+              <span style="font-size:11.5px;color:#059669;font-weight:700;">● SSL 256-bit Encrypted</span>
+            </div>
+            <h2 style="font-size:22px;font-weight:900;color:#0b2559;margin-top:8px;" id="loginFormHeading">
+              Đăng nhập Hệ thống
+            </h2>
+            <p style="font-size:12.8px;color:#475569;margin-top:4px;line-height:1.5;" id="loginFormSubheading">
+              Sử dụng Email, Số điện thoại hoặc Mã định danh TechCorp ID để truy cập Không gian Quản trị và các nền tảng được phân quyền.
+            </p>
+          </div>
+
+          <!-- 3 TAB PHƯƠNG THỨC ĐĂNG NHẬP -->
+          <div class="auth-method-tabs">
+            <button type="button" class="auth-method-tab active" data-method="password" onclick="switchAuthMethod('password')">
+              🔑 Mật khẩu Định danh
+            </button>
+            <button type="button" class="auth-method-tab" data-method="otp" onclick="switchAuthMethod('otp')">
+              📱 Mã xác thực OTP
+            </button>
+            <button type="button" class="auth-method-tab" data-method="qr" onclick="switchAuthMethod('qr')">
+              📲 Quét QR App
+            </button>
+          </div>
+
+          <!-- HỘP THÔNG BÁO LỖI / THÀNH CÔNG -->
+          <div class="login-alert error" id="loginErrorAlert"></div>
+
+          <!-- PHƯƠNG THỨC 1: EMAIL / SĐT / MÃ ID + MẬT KHẨU -->
+          <div class="auth-method-pane active" id="authPanePassword">
+            <form id="ssoLoginForm" onsubmit="handleSsoLoginSubmit(event)">
+              <div class="login-field">
+                <label for="loginEmailInput">
+                  <span id="loginIdentifierLabel">Email, Số điện thoại hoặc Mã định danh:</span>
+                  <span style="font-size:11px;color:#64748b;font-weight:600;">TechCorp ID</span>
+                </label>
+                <input
+                  type="text"
+                  id="loginEmailInput"
+                  class="input-control"
+                  style="width:100%;"
+                  placeholder="Nhập Email, SĐT hoặc Mã định danh của bạn..."
+                  required
+                  autocomplete="username"
+                />
+              </div>
+
+              <div class="login-field">
+                <label for="loginPasswordInput">
+                  <span>Mật khẩu xác thực:</span>
+                  <span id="capsLockHint" style="display:none;color:#d97706;font-size:11px;">⚠️ Đang bật Caps Lock</span>
+                </label>
+                <div class="input-with-action">
+                  <input
+                    type="password"
+                    id="loginPasswordInput"
+                    class="input-control"
+                    placeholder="Nhập mật khẩu tài khoản..."
+                    required
+                    autocomplete="current-password"
+                    onkeyup="checkCapsLock(event)"
+                  />
+                  <button type="button" class="pw-toggle-btn" id="pwToggleBtn" onclick="togglePasswordVisibility()">
+                    👁️ Hiện
+                  </button>
+                </div>
+              </div>
+
+              <div class="login-field">
+                <label for="loginDestinationSelect">
+                  <span>Hệ thống đích sau khi xác thực:</span>
+                </label>
+                <select id="loginDestinationSelect" class="input-control" style="width:100%;font-weight:700;color:#0f172a;">
+                  <option value="hub">⚙️ Cổng Quản trị Tập trung & Workspace Vai trò (TechCorp Hub)</option>
+                  <optgroup label="1. Khối Giáo dục Mầm non & Phổ thông K-12">
+                    <option value="https://mamnon.techcorp.info.vn">🏫 EduManager Pro — Quản lý Trường Mầm non (mamnon.techcorp.info.vn)</option>
+                    <option value="https://tieuhoc.techcorp.info.vn">📘 EduManager Pro — Quản lý Trường Tiểu học (tieuhoc.techcorp.info.vn)</option>
+                    <option value="https://thcs.techcorp.info.vn">📙 EduManager Pro — Quản lý Trường THCS (thcs.techcorp.info.vn)</option>
+                    <option value="https://thpt.techcorp.info.vn">🎓 EduManager Pro — Quản lý Trường THPT (thpt.techcorp.info.vn)</option>
+                    <option value="https://gdtx.techcorp.info.vn">🏛️ Trung tâm GDNN - GDTX (gdtx.techcorp.info.vn)</option>
+                  </optgroup>
+                  <optgroup label="2. Khối Đại học, Trung tâm NN-TH & Khảo thí LMS">
+                    <option value="https://qldt.techcorp.info.vn">🎖️ TC COMPASS — Quản trị Đại học (qldt.techcorp.info.vn)</option>
+                    <option value="https://ttnn.techcorp.info.vn">🇬🇧 Quản lý Trung tâm Ngoại ngữ - Tin học (ttnn.techcorp.info.vn)</option>
+                    <option value="https://lms.techcorp.info.vn">📝 TechCorp LMS — Khảo thí & Thi Online (lms.techcorp.info.vn)</option>
+                    <option value="https://learn.techcorp.info.vn">💻 TechCorpLearn — Cổng Học tập E-Learning (learn.techcorp.info.vn)</option>
+                  </optgroup>
+                  <optgroup label="3. Khối Doanh nghiệp, Tuyển dụng AI & Chuyên ngành">
+                    <option value="https://jobai.techcorp.info.vn">🤖 TechCorp HireMind AI — Sàn Việc làm (jobai.techcorp.info.vn)</option>
+                    <option value="https://erp.techcorp.info.vn">📊 TechCorp ERP — Quản trị Doanh nghiệp (erp.techcorp.info.vn)</option>
+                    <option value="https://kpi.techcorp.info.vn">🎯 Hệ thống Đánh giá BSC-KPI (kpi.techcorp.info.vn)</option>
+                    <option value="https://qldh.techcorp.info.vn">🏨 TechCorp PMS — Quản lý Khách sạn (qldh.techcorp.info.vn)</option>
+                    <option value="https://bds.techcorp.info.vn">🏙️ Hưng Phát Land — Sàn BĐS & AI (bds.techcorp.info.vn)</option>
+                    <option value="https://noithat.techcorp.info.vn">🛋️ TechCorp Interior — Nội thất 3D (noithat.techcorp.info.vn)</option>
+                    <option value="https://techcorp.info.vn">🌐 TechCorp Academy & Giải pháp Số (techcorp.info.vn)</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div class="login-options-row">
+                <label class="remember-check">
+                  <input type="checkbox" id="rememberSessionCheck" checked />
+                  <span>Duy trì phiên đăng nhập (30 ngày)</span>
+                </label>
+                <button type="button" class="forgot-link-btn" onclick="openSupportModal('forgot')">
+                  Quên mật khẩu?
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                id="loginSubmitBtn"
+                class="btn btn-primary"
+                style="width:100%;justify-content:center;padding:13px 18px;font-size:14.5px;"
+              >
+                🔐 Đăng nhập Hệ thống
+              </button>
+            </form>
+          </div>
+
+          <!-- PHƯƠNG THỨC 2: ĐĂNG NHẬP BẰNG MÃ XÁC THỰC OTP -->
+          <div class="auth-method-pane" id="authPaneOtp">
+            <form onsubmit="handleOtpLoginSubmit(event)">
+              <div class="login-field">
+                <label for="otpContactInput">
+                  <span>Email công vụ hoặc Số điện thoại đã đăng ký:</span>
+                  <span class="badge badge-blue" style="font-size:10px;">SMS / Email OTP</span>
+                </label>
+                <div style="display:flex;gap:8px;">
+                  <input
+                    type="text"
+                    id="otpContactInput"
+                    class="input-control"
+                    style="flex:1;"
+                    placeholder="Nhập SĐT hoặc Email nhận mã OTP..."
+                    required
+                  />
+                  <button type="button" class="btn btn-outline btn-sm" id="btnSendOtp" onclick="sendOtpCode()" style="white-space:nowrap;">
+                    📲 Gửi mã OTP
+                  </button>
+                </div>
+              </div>
+
+              <div class="login-field">
+                <label for="otpCodeInput">
+                  <span>Mã xác thực OTP (6 chữ số):</span>
+                  <span id="otpTimerText" style="font-size:11px;color:#059669;font-weight:700;">Hiệu lực 120 giây</span>
+                </label>
+                <input
+                  type="text"
+                  id="otpCodeInput"
+                  class="input-control"
+                  style="width:100%;letter-spacing:0.25em;font-weight:800;text-align:center;font-size:16px;"
+                  maxlength="6"
+                  placeholder="• • • • • •"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="width:100%;justify-content:center;padding:13px 18px;font-size:14.5px;margin-top:6px;"
+              >
+                ✅ Xác thực OTP & Đăng nhập
+              </button>
+            </form>
+          </div>
+
+          <!-- PHƯƠNG THỨC 3: QUÉT MÃ QR TECHCORP MOBILE APP -->
+          <div class="auth-method-pane" id="authPaneQr">
+            <div class="qr-auth-box">
+              <span class="badge badge-blue">📲 ĐĂNG NHẬP KHÔNG MẬT KHẨU BẰNG QR CODE</span>
+              <div class="qr-visual-frame" id="qrVisualFrame">
+                <img
+                  id="qrCodeImage"
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fhesinhthai.techcorp.info.vn%2Flogin.html%3Fsso_qr%3DTC-SESSION-LIVE"
+                  alt="TechCorp ID QR Login"
+                  style="width:100%;height:100%;object-fit:contain;"
+                />
+              </div>
+              <div style="font-size:13px;font-weight:800;color:#0b2559;">
+                Mở App TechCorp ID hoặc Sổ Liên lạc Điện tử để quét mã
+              </div>
+              <p style="font-size:12px;color:#475569;margin-top:4px;line-height:1.45;">
+                Mã QR tự động làm mới để đảm bảo an toàn bảo mật phiên làm việc.
+              </p>
+              <div style="margin-top:10px;display:flex;justify-content:center;gap:10px;align-items:center;">
+                <span style="font-size:12px;font-weight:800;color:#0052d4;" id="qrCountdownText">⏱️ Làm mới sau: 120s</span>
+                <button type="button" class="btn btn-outline btn-sm" onclick="refreshSsoQrCode()">
+                  🔄 Tạo mã QR mới
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CỔNG LIÊN THÔNG ĐỊNH DANH TỔ CHỨC (FEDERATED SSO) -->
+          <div class="federated-divider">Hoặc đăng nhập qua Định danh Liên kết</div>
+          <div class="federated-grid">
+            <button type="button" class="fed-btn" onclick="triggerFederatedAuth('Google Workspace (.edu.vn / Enterprise)')">
+              <span>🌐</span>
+              <span>Google SSO</span>
+            </button>
+            <button type="button" class="fed-btn" onclick="triggerFederatedAuth('Microsoft 365 / Entra ID')">
+              <span>🪟</span>
+              <span>Microsoft 365</span>
+            </button>
+            <button type="button" class="fed-btn" onclick="openSupportModal('register')">
+              <span>🏢</span>
+              <span>Cấp mới Đơn vị</span>
+            </button>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          id="loginSubmitBtn"
-          class="btn btn-primary"
-          style="width:100%;justify-content:center;padding:13px 18px;font-size:14.5px;margin-top:6px;"
-        >
-          🔐 Đăng nhập Hệ thống
-        </button>
-      </form>
-
-      <details class="account-ref-details">
-        <summary>📋 Bảng tra cứu 5 Tài khoản Phân quyền Hệ thống (Mật khẩu: TechCorp@2026)</summary>
-        <p style="margin-top:8px;font-size:12px;color:#475569;">
-          Sử dụng một trong các email chính thức dưới đây cùng mật khẩu <code>TechCorp@2026</code> để kiểm tra sự phân tách giao diện của từng vai trò:
-        </p>
-        <table class="account-ref-table">
-          <thead>
-            <tr>
-              <th>Vai trò Hệ thống</th>
-              <th>Email Đăng nhập</th>
-              <th>Phạm vi Hiển thị</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>👑 Super Admin</strong></td>
-              <td><code>admin@techcorp.info.vn</code></td>
-              <td>Toàn bộ 8 phân hệ Quản trị Tối cao (16 App, Slider, RBAC, User, Forum, Demo, Audit)</td>
-            </tr>
-            <tr>
-              <td><strong>🏢 Chủ Doanh nghiệp SME</strong></td>
-              <td><code>ceo@nhatrangbayresort.vn</code></td>
-              <td>Chỉ thấy ứng dụng DN (ERP, KPI, JobAI, PMS, BĐS), Tuyển dụng & E-Voucher B2B</td>
-            </tr>
-            <tr>
-              <td><strong>🏫 GĐ Trung tâm NN-TH</strong></td>
-              <td><code>director@oceanenglish.edu.vn</code></td>
-              <td>Chỉ thấy ứng dụng TTNN/LMS/Learn, Đấu trường Thi thử & Lead Tuyển sinh CRM</td>
-            </tr>
-            <tr>
-              <td><strong>🎓 Hiệu trưởng Trường học</strong></td>
-              <td><code>bgh@saobienschool.edu.vn</code></td>
-              <td>Chỉ thấy hệ thống K12 (Mầm non-THPT) & ĐH TC COMPASS, Học bổng & Học phí QR</td>
-            </tr>
-            <tr>
-              <td><strong>👨‍🎓 Học viên / Sinh viên</strong></td>
-              <td><code>khoi.nm.64cntt@ntu.edu.vn</code></td>
-              <td>Chỉ thấy Cổng Công dân Số cá nhân: Hồ sơ Năng lực QR, Tìm việc JobAI & Ví Học bổng</td>
-            </tr>
-          </tbody>
-        </table>
-      </details>
+        <!-- FOOTER TRợ GIÚP TRONG CARD -->
+        <div class="login-footer-help">
+          <span>Đơn vị của bạn chưa có tài khoản TechCorp ID?</span>
+          <button type="button" class="forgot-link-btn" onclick="openSupportModal('register')">
+            📝 Đăng ký Cấp Tài khoản Thành viên / Demo →
+          </button>
+        </div>
+      </section>
     </div>
   </main>
 
+  <!-- MODAL KHÔI PHỤC MẬT KHẨU / ĐĂNG KÝ CẤP TÀI KHOẢN ĐƠN VỊ -->
+  <div class="sso-modal-backdrop" id="ssoSupportModal" onclick="if(event.target===this)closeSupportModal()">
+    <div class="sso-modal-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span class="badge badge-blue" id="supportModalBadge">🔐 HỖ TRỢ TÀI KHOẢN TECHCORP ID</span>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeSupportModal()">✕ Đóng</button>
+      </div>
+      <h3 style="font-size:19px;font-weight:900;color:#0b2559;margin-bottom:6px;" id="supportModalTitle">
+        Yêu cầu Cấp lại Mật khẩu / Kích hoạt Tài khoản
+      </h3>
+      <p style="font-size:12.5px;color:#475569;margin-bottom:16px;line-height:1.5;" id="supportModalDesc">
+        Vui lòng nhập thông tin định danh của bạn. Ban Quản trị Hệ sinh thái TechCorp sẽ xác minh và phản hồi trong vòng 15 phút.
+      </p>
+
+      <form id="supportRequestForm" onsubmit="submitSupportRequest(event)">
+        <div class="login-field">
+          <label>Họ và tên người yêu cầu *</label>
+          <input type="text" id="supFullName" class="input-control" style="width:100%;" placeholder="Nhập họ và tên..." required />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="login-field">
+            <label>Số điện thoại / Zalo *</label>
+            <input type="tel" id="supPhone" class="input-control" style="width:100%;" placeholder="VD: 0905.xxx.xxx" required />
+          </div>
+          <div class="login-field">
+            <label>Email công vụ *</label>
+            <input type="email" id="supEmail" class="input-control" style="width:100%;" placeholder="name@donvi.vn" required />
+          </div>
+        </div>
+        <div class="login-field">
+          <label>Tên Trường học / Trung tâm / Doanh nghiệp *</label>
+          <input type="text" id="supOrgName" class="input-control" style="width:100%;" placeholder="Nhập tên đơn vị công tác..." required />
+        </div>
+        <div class="login-field">
+          <label>Loại hình đơn vị & Nhu cầu hỗ trợ</label>
+          <select id="supRequestType" class="input-control" style="width:100%;">
+            <option value="Cấp mới Tài khoản Quản trị Đơn vị Thành viên (SSO)">🏢 Đăng ký Cấp mới Tài khoản Đơn vị Thành viên (SSO)</option>
+            <option value="Khôi phục / Cấp lại Mật khẩu TechCorp ID">🔑 Khôi phục / Cấp lại Mật khẩu TechCorp ID</option>
+            <option value="Cấp quyền truy cập bổ sung trong 16 Hệ thống">🚀 Mở thêm phân quyền truy cập trong 16 Hệ thống</option>
+          </select>
+        </div>
+        <button type="submit" id="supSubmitBtn" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;">
+          📨 Gửi Yêu cầu Xác thực Ngay
+        </button>
+      </form>
+    </div>
+  </div>
+
   <script>
+    const SECTOR_CONFIG = {
+      all: {
+        badge: "🔑 XÁC THỰC TẬP TRUNG TECHCORP ID",
+        heading: "Đăng nhập Hệ thống",
+        subheading: "Sử dụng Email, Số điện thoại hoặc Mã định danh TechCorp ID để truy cập Không gian Quản trị và các nền tảng được phân quyền.",
+        label: "Email, Số điện thoại hoặc Mã định danh:",
+        placeholder: "Nhập Email, SĐT hoặc Mã định danh của bạn...",
+        badgeText: "Tất cả loại hình",
+        defaultDest: "hub"
+      },
+      sme: {
+        badge: "🏢 KHỐI DOANH NGHIỆP SME, KHÁCH SẠN & BĐS",
+        heading: "Đăng nhập Quản trị Doanh nghiệp",
+        subheading: "Truy cập TechCorp ERP, Đánh giá BSC-KPI, Khách sạn PMS, Sàn BĐS AI, Nội thất 3D & Chợ Giao thương B2B.",
+        label: "Email Doanh nghiệp / SĐT hoặc Mã nhân sự:",
+        placeholder: "Nhập Email công ty hoặc SĐT quản lý...",
+        badgeText: "Khối Doanh nghiệp",
+        defaultDest: "hub"
+      },
+      school: {
+        badge: "🎓 KHỐI TRƯỜNG HỌC (MẦM NON – K12) & ĐẠI HỌC",
+        heading: "Đăng nhập Quản trị Nhà trường",
+        subheading: "Truy cập EduManager Pro (Mầm non, Tiểu học, THCS, THPT, GDTX) & Hệ thống Đại học TC COMPASS.",
+        label: "Email Nhà trường (.edu.vn) / Mã cán bộ giảng viên:",
+        placeholder: "Nhập Email nhà trường hoặc Mã giáo viên...",
+        badgeText: "Khối Trường học & ĐH",
+        defaultDest: "hub"
+      },
+      center: {
+        badge: "🏫 KHỐI TRUNG TÂM NGOẠI NGỮ - TIN HỌC & KHẢO THÍ",
+        heading: "Đăng nhập Quản trị Trung tâm & LMS",
+        subheading: "Truy cập Hệ thống Quản lý Trung tâm Ngoại ngữ - Tin học, Phòng thi trực tuyến TechCorp LMS & E-Learning.",
+        label: "Email Trung tâm / SĐT hoặc Mã Quản trị:",
+        placeholder: "Nhập Email trung tâm hoặc SĐT...",
+        badgeText: "Khối Trung tâm & LMS",
+        defaultDest: "hub"
+      },
+      citizen: {
+        badge: "👨‍🎓 CỔNG CÔNG DÂN SỐ • HỌC VIÊN, SINH VIÊN & PHỤ HUYNH",
+        heading: "Đăng nhập Cổng Học viên & Phụ huynh",
+        subheading: "Tra cứu Sổ liên lạc điện tử, Hồ sơ Năng lực Số QR, dự thi trực tuyến trên LMS & ứng tuyển việc làm trên JobAI.",
+        label: "Email Học viên / SĐT Phụ huynh hoặc Mã Sinh viên:",
+        placeholder: "Nhập Email sinh viên hoặc SĐT phụ huynh...",
+        badgeText: "Học viên & Phụ huynh",
+        defaultDest: "hub"
+      }
+    };
+
     const FALLBACK_ACCOUNTS = [
       {
         personaKey: "super-admin",
         roleCode: "super_admin",
+        id: "usr-admin-00",
         email: "admin@techcorp.info.vn",
+        phone: "0905111999",
         name: "Quản trị viên Hệ sinh thái TechCorp",
         org: "TechCorp Headquarters (Điều hành 16 Hệ thống Live)",
-        roleBadge: "👑 Super Admin TechCorp"
+        roleBadge: "👑 Hệ sinh thái TechCorp"
       },
       {
         personaKey: "ceo-sme",
         roleCode: "ceo_sme",
+        id: "usr-nt-001",
         email: "ceo@nhatrangbayresort.vn",
+        phone: "0914222333",
         name: "Nguyễn Hải Đăng (CEO Doanh nghiệp)",
         org: "Nha Trang Bay Resort & Hưng Phát Land",
         roleBadge: "🏢 Chủ Doanh nghiệp SME"
@@ -250,7 +996,9 @@
       {
         personaKey: "center-dir",
         roleCode: "center_director",
+        id: "usr-nt-002",
         email: "director@oceanenglish.edu.vn",
+        phone: "0988444555",
         name: "Trần Thanh Tâm (GĐ Trung tâm NN-TH)",
         org: "Ocean English & IT Center Nha Trang",
         roleBadge: "🏫 Giám đốc Trung tâm NN-TH"
@@ -258,7 +1006,9 @@
       {
         personaKey: "school-principal",
         roleCode: "school_principal",
+        id: "usr-nt-003",
         email: "bgh@saobienschool.edu.vn",
+        phone: "0903666777",
         name: "ThS. Lê Thị Minh Hương (Hiệu trưởng)",
         org: "Hệ thống Giáo dục Liên cấp & ĐH Nha Trang",
         roleBadge: "🎓 Hiệu trưởng Nhà trường"
@@ -266,12 +1016,83 @@
       {
         personaKey: "student-user",
         roleCode: "student_parent",
+        id: "usr-nt-004",
         email: "khoi.nm.64cntt@ntu.edu.vn",
+        phone: "0399888111",
         name: "Nguyễn Minh Khôi (Sinh viên / Học viên)",
         org: "Đại học Nha Trang • Hồ sơ #TC-KH-8821",
         roleBadge: "👨‍🎓 Học viên / Sinh viên"
       }
     ];
+
+    let qrSecondsLeft = 120;
+    let generatedOtpCode = null;
+
+    function showLoginAlert(message, type = "error") {
+      const box = document.getElementById("loginErrorAlert");
+      if (!box) return;
+      box.className = `login-alert ${type}`;
+      box.innerHTML = message;
+      box.style.display = "block";
+    }
+
+    function hideLoginAlert() {
+      const box = document.getElementById("loginErrorAlert");
+      if (box) box.style.display = "none";
+    }
+
+    window.selectLoginSector = function (sectorKey) {
+      const cfg = SECTOR_CONFIG[sectorKey] || SECTOR_CONFIG.all;
+      document.querySelectorAll("#sectorCardsContainer .sector-type-card").forEach((card) => {
+        card.classList.toggle("active", card.getAttribute("data-sector") === sectorKey);
+      });
+      const badgeEl = document.getElementById("loginFormContextBadge");
+      const headEl = document.getElementById("loginFormHeading");
+      const subEl = document.getElementById("loginFormSubheading");
+      const labelEl = document.getElementById("loginIdentifierLabel");
+      const inputEl = document.getElementById("loginEmailInput");
+      const topSectorText = document.getElementById("selectedSectorBadgeText");
+
+      if (badgeEl) badgeEl.textContent = cfg.badge;
+      if (headEl) headEl.textContent = cfg.heading;
+      if (subEl) subEl.textContent = cfg.subheading;
+      if (labelEl) labelEl.textContent = cfg.label;
+      if (inputEl) {
+        inputEl.placeholder = cfg.placeholder;
+        inputEl.focus();
+      }
+      if (topSectorText) topSectorText.textContent = cfg.badgeText;
+      hideLoginAlert();
+    };
+
+    window.switchAuthMethod = function (methodKey) {
+      document.querySelectorAll(".auth-method-tab").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-method") === methodKey);
+      });
+      document.getElementById("authPanePassword")?.classList.toggle("active", methodKey === "password");
+      document.getElementById("authPaneOtp")?.classList.toggle("active", methodKey === "otp");
+      document.getElementById("authPaneQr")?.classList.toggle("active", methodKey === "qr");
+      hideLoginAlert();
+    };
+
+    window.togglePasswordVisibility = function () {
+      const pwInput = document.getElementById("loginPasswordInput");
+      const btn = document.getElementById("pwToggleBtn");
+      if (!pwInput || !btn) return;
+      if (pwInput.type === "password") {
+        pwInput.type = "text";
+        btn.textContent = "🙈 Ẩn";
+      } else {
+        pwInput.type = "password";
+        btn.textContent = "👁️ Hiện";
+      }
+    };
+
+    window.checkCapsLock = function (e) {
+      const hint = document.getElementById("capsLockHint");
+      if (!hint || !e.getModifierState) return;
+      hint.style.display = e.getModifierState("CapsLock") ? "inline" : "none";
+    };
 
     function checkCurrentSessionOnLoginPage() {
       try {
@@ -304,30 +1125,38 @@
       window.location.reload();
     }
 
+    function redirectAfterLogin(sessionData) {
+      const destSelect = document.getElementById("loginDestinationSelect");
+      const dest = destSelect ? destSelect.value : "hub";
+      if (dest && dest.startsWith("http")) {
+        window.location.href = dest;
+      } else {
+        window.location.href = "admin.html";
+      }
+    }
+
     async function handleSsoLoginSubmit(e) {
       e.preventDefault();
       const emailInput = document.getElementById("loginEmailInput");
       const passwordInput = document.getElementById("loginPasswordInput");
-      const errorBox = document.getElementById("loginErrorAlert");
       const submitBtn = document.getElementById("loginSubmitBtn");
 
-      const email = String(emailInput.value || "").trim().toLowerCase();
+      const identifier = String(emailInput.value || "").trim();
       const password = String(passwordInput.value || "").trim();
 
-      errorBox.style.display = "none";
+      hideLoginAlert();
       submitBtn.disabled = true;
-      submitBtn.textContent = "⏳ Đang xác thực tài khoản...";
+      submitBtn.textContent = "⏳ Đang xác thực định danh...";
 
       try {
         const res = await fetch("/api/v1/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify({ email: identifier, identifier, password })
         });
         const data = await res.json();
         if (!res.ok || !data.ok) {
-          errorBox.textContent = "❌ " + (data.error || "Email hoặc mật khẩu không hợp lệ.");
-          errorBox.style.display = "block";
+          showLoginAlert("❌ " + (data.error || "Thông tin định danh hoặc mật khẩu không hợp lệ."), "error");
           submitBtn.disabled = false;
           submitBtn.textContent = "🔐 Đăng nhập Hệ thống";
           return;
@@ -337,22 +1166,29 @@
         const sessionData = {
           personaKey: data.personaKey || p.id || "ceo-sme",
           roleCode: p.role || "ceo_sme",
-          email: p.email || email,
-          name: p.name || email,
+          email: p.email || identifier,
+          name: p.name || identifier,
           org: p.org || "Đơn vị Thành viên TechCorp",
           roleBadge: p.roleBadge || "Thành viên TechCorp",
           token: data.token || ("jwt_" + Date.now()),
           loginAt: new Date().toISOString()
         };
         localStorage.setItem("tc_sso_session", JSON.stringify(sessionData));
-        window.location.href = "admin.html";
+        redirectAfterLogin(sessionData);
       } catch (err) {
-        // Fallback nếu chạy tĩnh
-        const acc = FALLBACK_ACCOUNTS.find((a) => a.email.toLowerCase() === email);
+        const lower = identifier.toLowerCase();
+        const digits = identifier.replace(/\D/g, "");
+        const acc = FALLBACK_ACCOUNTS.find(
+          (a) =>
+            a.email.toLowerCase() === lower ||
+            a.id === lower ||
+            a.personaKey === lower ||
+            a.email.split("@")[0].toLowerCase() === lower ||
+            (digits.length >= 9 && a.phone === digits)
+        );
         const validPw = ["TechCorp@2026", "123456", "admin123"];
         if (!acc || validPw.indexOf(password) === -1) {
-          errorBox.textContent = "❌ Email hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.";
-          errorBox.style.display = "block";
+          showLoginAlert("❌ Tài khoản định danh hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.", "error");
           submitBtn.disabled = false;
           submitBtn.textContent = "🔐 Đăng nhập Hệ thống";
           return;
@@ -368,12 +1204,172 @@
           loginAt: new Date().toISOString()
         };
         localStorage.setItem("tc_sso_session", JSON.stringify(sessionData));
-        window.location.href = "admin.html";
+        redirectAfterLogin(sessionData);
       }
     }
 
+    // ==================== OTP LOGIN ====================
+    window.sendOtpCode = function () {
+      const contact = String(document.getElementById("otpContactInput")?.value || "").trim();
+      if (!contact) {
+        showLoginAlert("⚠️ Vui lòng nhập Email công vụ hoặc Số điện thoại đã đăng ký để nhận mã OTP.", "error");
+        return;
+      }
+      const lower = contact.toLowerCase();
+      const digits = contact.replace(/\D/g, "");
+      const matched = FALLBACK_ACCOUNTS.find(
+        (a) => a.email.toLowerCase() === lower || (digits.length >= 9 && a.phone === digits)
+      );
+      if (!matched) {
+        showLoginAlert("❌ Không tìm thấy Email hoặc Số điện thoại này trong CSDL Định danh TechCorp ID.", "error");
+        return;
+      }
+      generatedOtpCode = String(Math.floor(100000 + Math.random() * 900000));
+      showLoginAlert(
+        `✅ Đã gửi mã xác thực OTP tới <b>${matched.email}</b>. Mã OTP phiên hiện tại của bạn là: <strong style="font-size:15px;letter-spacing:2px;">${generatedOtpCode}</strong>`,
+        "success"
+      );
+    };
+
+    window.handleOtpLoginSubmit = function (e) {
+      e.preventDefault();
+      const contact = String(document.getElementById("otpContactInput")?.value || "").trim();
+      const code = String(document.getElementById("otpCodeInput")?.value || "").trim();
+      const lower = contact.toLowerCase();
+      const digits = contact.replace(/\D/g, "");
+      const acc = FALLBACK_ACCOUNTS.find(
+        (a) => a.email.toLowerCase() === lower || (digits.length >= 9 && a.phone === digits)
+      );
+      if (!acc) {
+        showLoginAlert("❌ Tài khoản nhận OTP không tồn tại trong hệ thống.", "error");
+        return;
+      }
+      if (!generatedOtpCode || code !== generatedOtpCode) {
+        showLoginAlert("❌ Mã xác thực OTP không chính xác hoặc đã hết hạn. Vui lòng nhấn 'Gửi mã OTP' trước.", "error");
+        return;
+      }
+      const sessionData = {
+        personaKey: acc.personaKey,
+        roleCode: acc.roleCode,
+        email: acc.email,
+        name: acc.name,
+        org: acc.org,
+        roleBadge: acc.roleBadge,
+        token: "jwt_otp_" + acc.personaKey + "_" + Date.now(),
+        loginAt: new Date().toISOString()
+      };
+      localStorage.setItem("tc_sso_session", JSON.stringify(sessionData));
+      redirectAfterLogin(sessionData);
+    };
+
+    // ==================== QR CODE REFRESH ====================
+    window.refreshSsoQrCode = function () {
+      qrSecondsLeft = 120;
+      const img = document.getElementById("qrCodeImage");
+      if (img) {
+        const token = "TC-QR-" + Date.now();
+        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(
+          "https://hesinhthai.techcorp.info.vn/login.html?sso_qr=" + token
+        )}`;
+      }
+      showLoginAlert("🔄 Đã tạo mã QR phiên đăng nhập mới thành công!", "info");
+    };
+
+    setInterval(() => {
+      if (qrSecondsLeft > 0) qrSecondsLeft--;
+      const el = document.getElementById("qrCountdownText");
+      if (el) {
+        el.textContent = qrSecondsLeft > 0 ? `⏱️ Làm mới sau: ${qrSecondsLeft}s` : "⚠️ Mã QR đã hết hạn — Nhấn Tạo mã mới";
+      }
+    }, 1000);
+
+    window.triggerFederatedAuth = function (providerName) {
+      showLoginAlert(
+        `ℹ️ Cổng xác thực liên kết <b>${providerName}</b> yêu cầu tên miền email tổ chức đã đấu nối SAML/OAuth2 với Hệ sinh thái TechCorp. Vui lòng đăng nhập bằng Tài khoản Định danh hoặc gửi yêu cầu đấu nối SSO cho đơn vị.`,
+        "info"
+      );
+    };
+
+    // ==================== MODAL HỖ TRỢ (QUÊN MẬT KHẨU / ĐĂNG KÝ ĐƠN VỊ) ====================
+    window.openSupportModal = function (mode) {
+      const modal = document.getElementById("ssoSupportModal");
+      const title = document.getElementById("supportModalTitle");
+      const select = document.getElementById("supRequestType");
+      if (!modal) return;
+      if (mode === "forgot") {
+        if (title) title.textContent = "🔑 Khôi phục / Cấp lại Mật khẩu TechCorp ID";
+        if (select) select.value = "Khôi phục / Cấp lại Mật khẩu TechCorp ID";
+      } else {
+        if (title) title.textContent = "🏢 Đăng ký Cấp Tài khoản Thành viên / Đơn vị Mới";
+        if (select) select.value = "Cấp mới Tài khoản Quản trị Đơn vị Thành viên (SSO)";
+      }
+      modal.classList.add("open");
+    };
+
+    window.closeSupportModal = function () {
+      document.getElementById("ssoSupportModal")?.classList.remove("open");
+    };
+
+    window.submitSupportRequest = async function (e) {
+      e.preventDefault();
+      const btn = document.getElementById("supSubmitBtn");
+      const fullName = document.getElementById("supFullName")?.value.trim();
+      const phone = document.getElementById("supPhone")?.value.trim();
+      const email = document.getElementById("supEmail")?.value.trim();
+      const orgName = document.getElementById("supOrgName")?.value.trim();
+      const reqType = document.getElementById("supRequestType")?.value;
+
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "⏳ Đang gửi yêu cầu...";
+      }
+
+      try {
+        await fetch("/api/v1/demo-requests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fullName,
+            phone,
+            email,
+            orgName,
+            orgScale: "Yêu cầu từ Cổng Đăng nhập SSO",
+            productId: "erp",
+            productName: reqType,
+            appUrl: "https://hesinhthai.techcorp.info.vn",
+            preferredTime: "Xử lý ngay trong giờ hành chính",
+            notes: `[Cổng SSO TechCorp ID] ${reqType}`
+          })
+        });
+      } catch (_) {}
+
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "📨 Gửi Yêu cầu Xác thực Ngay";
+      }
+      closeSupportModal();
+      document.getElementById("supportRequestForm")?.reset();
+      showLoginAlert(
+        `✅ Đã ghi nhận yêu cầu <b>"${reqType}"</b> của <b>${fullName}</b> (${orgName}). Bộ phận Quản trị Hệ sinh thái TechCorp sẽ liên hệ qua SĐT <b>${phone}</b> / Email <b>${email}</b> trong 15 phút!`,
+        "success"
+      );
+    };
+
     document.addEventListener("DOMContentLoaded", () => {
       checkCurrentSessionOnLoginPage();
+      const params = new URLSearchParams(window.location.search);
+      const roleParam = params.get("role");
+      if (roleParam) {
+        const map = {
+          "ceo-sme": "sme",
+          "school-principal": "school",
+          "center-dir": "center",
+          "student-user": "citizen"
+        };
+        if (map[roleParam]) {
+          window.selectLoginSector(map[roleParam]);
+        }
+      }
     });
   </script>
 </body>

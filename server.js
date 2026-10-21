@@ -222,16 +222,18 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
-  // 4b. Authenticate User by Email & Password (SSO Login) + Logout Audit
+  // 4b. Authenticate User by Email / Phone / TechCorp ID & Password (SSO Login) + Logout Audit
   if (pathname === "/api/v1/auth/login" && method === "POST") {
     try {
       const body = await parseBody(req);
-      const email = String(body.email || "").trim().toLowerCase();
+      const rawIdentifier = String(body.email || body.identifier || "").trim();
+      const identifierLower = rawIdentifier.toLowerCase();
+      const identifierDigits = rawIdentifier.replace(/\D/g, "");
       const password = String(body.password || "").trim();
-      if (!email || !password) {
+      if (!rawIdentifier || !password) {
         return sendJson(res, 400, {
           ok: false,
-          error: "Vui lòng nhập đầy đủ Email và Mật khẩu."
+          error: "Vui lòng nhập đầy đủ Định danh (Email / SĐT / Mã ID) và Mật khẩu."
         });
       }
 
@@ -244,11 +246,24 @@ async function handleApi(req, res, parsedUrl) {
       };
 
       const users = db.state.users || [];
-      const matchedUser = users.find((u) => String(u.email || "").trim().toLowerCase() === email);
+      const matchedUser = users.find((u) => {
+        const uEmail = String(u.email || "").trim().toLowerCase();
+        const uId = String(u.id || "").trim().toLowerCase();
+        const uPersona = String(u.personaKey || "").trim().toLowerCase();
+        const uPhoneDigits = String(u.phone || "").replace(/\D/g, "");
+        const uPrefix = uEmail.split("@")[0];
+        return (
+          uEmail === identifierLower ||
+          uId === identifierLower ||
+          uPersona === identifierLower ||
+          (uPrefix && uPrefix === identifierLower) ||
+          (identifierDigits.length >= 9 && uPhoneDigits === identifierDigits)
+        );
+      });
       if (!matchedUser) {
         return sendJson(res, 401, {
           ok: false,
-          error: "Tài khoản Email không tồn tại trong Hệ thống Định danh TechCorp ID."
+          error: "Tài khoản định danh (Email / SĐT / Mã TechCorp ID) không tồn tại trong hệ thống."
         });
       }
 
@@ -275,7 +290,7 @@ async function handleApi(req, res, parsedUrl) {
       const persona = {
         id: personaKey,
         userId: matchedUser.id || basePersona.userId || "USR-SSO",
-        name: matchedUser.fullName || basePersona.name || email,
+        name: matchedUser.fullName || basePersona.name || rawIdentifier,
         email: matchedUser.email,
         org: matchedUser.org || basePersona.org || "Đơn vị Thành viên TechCorp",
         role: matchedUser.role || "ceo_sme",
