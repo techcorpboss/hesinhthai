@@ -6783,7 +6783,7 @@ window.openBulletinDetailModal = function (annId) {
     modal.onclick = function (e) {
       if (e.target === modal) window.closeBulletinDetailModal();
     };
-    modal.innerHTML = `<div class="bulletin-detail-modal-dialog" role="dialog" aria-modal="true"><div id="bulletinDetailModalBody" style="display:flex;flex-direction:column;height:100%;overflow:hidden;"></div></div>`;
+    modal.innerHTML = `<div class="bulletin-detail-modal-dialog" role="dialog" aria-modal="true"><div id="bulletinDetailModalBody"></div></div>`;
     document.body.appendChild(modal);
   }
 
@@ -7011,7 +7011,6 @@ window.openBulletinDetailModal = function (annId) {
   `;
 
   modal.style.display = "flex";
-  const dialogEl = modal.querySelector(".bulletin-detail-modal-dialog");
   if (dialogEl) dialogEl.scrollTop = 0;
   const scrollArea = document.getElementById("bulletinModalScrollArea");
   if (scrollArea) scrollArea.scrollTop = 0;
