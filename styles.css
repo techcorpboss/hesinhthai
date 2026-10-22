@@ -2135,9 +2135,10 @@ body {
 /* ==================== v6.6 FORUM SPLIT-PANE TREE VIEW (CẤU TRÚC HÌNH CÂY 2 BÊN) ==================== */
 .forum-tree-split-layout {
   display: grid;
-  grid-template-columns: 335px 1fr;
+  grid-template-columns: 335px minmax(0, 1fr);
   gap: 18px;
   align-items: start;
+  position: relative;
 }
 
 @media (max-width: 1080px) {
@@ -2152,65 +2153,41 @@ body {
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 10px 26px rgba(11, 37, 89, 0.06);
+  position: -webkit-sticky;
   position: sticky;
-  top: 78px;
+  top: 82px;
+  align-self: start;
+  max-height: calc(100vh - 98px);
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
 }
 
 @media (max-width: 1080px) {
   .forum-tree-sidebar {
     position: static;
+    max-height: none;
   }
 }
 
 .forum-tree-sidebar-header {
-  background: linear-gradient(135deg, #0b2559 0%, #0047cc 100%);
-  color: #ffffff;
-  padding: 15px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.forum-tree-sidebar-title {
-  font-size: 14.5px;
-  font-weight: 800;
-  letter-spacing: -0.2px;
-}
-
-.forum-tree-sidebar-sub {
-  font-size: 11.5px;
-  color: #bfdbfe;
-  margin-top: 2px;
-}
-
-.forum-tree-expand-btn {
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #ffffff;
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.15s;
-}
-
-.forum-tree-expand-btn:hover {
-  background: rgba(255, 255, 255, 0.28);
+  display: none;
 }
 
 .forum-tree-search-box {
   padding: 11px 12px;
   background: #f4f9ff;
   border-bottom: 1px solid #dbeafe;
+  flex-shrink: 0;
 }
 
 .forum-tree-nav-scroll {
   padding: 10px 10px 14px;
-  max-height: 680px;
+  flex: 1;
+  min-height: 0;
+  max-height: calc(100vh - 156px);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tree-root-node {
@@ -2887,19 +2864,28 @@ body {
 }
 
 .bulletin-detail-modal-dialog {
-  background: #ffffff;
+  background: #f8fbff;
   width: min(96vw, 1280px);
   max-width: 1280px;
-  height: min(92vh, 940px);
+  height: auto;
   max-height: 92vh;
   border-radius: 22px;
   border: 2px solid #93c5fd;
   box-shadow: 0 32px 72px -12px rgba(7, 25, 54, 0.65);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   position: relative;
   transition: all 0.22s ease;
+}
+
+#bulletinDetailModalBody,
+#userDetailModalBody {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .bulletin-detail-modal-dialog.is-fullscreen {
@@ -2912,7 +2898,10 @@ body {
 }
 
 .bulletin-modal-topbar {
-  flex-shrink: 0;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 50;
   background: linear-gradient(90deg, #081c3a 0%, #0d2e63 100%);
   color: #ffffff;
   padding: 12px 24px;
@@ -2922,6 +2911,7 @@ body {
   align-items: center;
   gap: 12px;
   flex-wrap: nowrap;
+  box-shadow: 0 4px 16px rgba(8, 28, 58, 0.25);
 }
 
 .bulletin-topbar-left {
@@ -2973,8 +2963,6 @@ body {
 
 /* KHUNG CUỘN NỘI DUNG CHÍNH CHIA 2 CỘT HIỆN ĐẠI (70% BÀI VIẾT - 30% SIDEBAR BẢN TIN) */
 .bulletin-modal-scroll-area {
-  flex: 1;
-  overflow-y: auto;
   padding: clamp(20px, 2.6vw, 34px);
   background: #f8fbff;
 }
@@ -3093,8 +3081,9 @@ body {
 
 /* CỘT SIDEBAR BÊN PHẢI: CHUYỂN NHANH BẢN TIN & HÀNH ĐỘNG */
 .bulletin-sidebar-col {
+  position: -webkit-sticky;
   position: sticky;
-  top: 0;
+  top: 72px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -3182,7 +3171,7 @@ body {
 
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100vw;
   -webkit-text-size-adjust: 100%;
 }

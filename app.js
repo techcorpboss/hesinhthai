@@ -7011,6 +7011,8 @@ window.openBulletinDetailModal = function (annId) {
   `;
 
   modal.style.display = "flex";
+  const dialogEl = modal.querySelector(".bulletin-detail-modal-dialog");
+  if (dialogEl) dialogEl.scrollTop = 0;
   const scrollArea = document.getElementById("bulletinModalScrollArea");
   if (scrollArea) scrollArea.scrollTop = 0;
   renderCentralBulletins();

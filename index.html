@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hệ sinh thái TechCorp — hesinhthai.techcorp.info.vn (Bản tin Hệ sinh thái, 6 Nhóm Sản phẩm, Diễn đàn B2B & Báo giá Combo)</title>
-  <link rel="icon" type="image/png" href="logo.png?v=25" />
-  <link rel="stylesheet" href="styles.css?v=25" />
+  <link rel="icon" type="image/png" href="logo.png?v=26" />
+  <link rel="stylesheet" href="styles.css?v=26" />
   <!-- Thanh Liên thông Hệ sinh thái (Topbar SSO dùng chung) -->
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=25"
+    src="widget/techcorp-ecosystem-bar.js?v=26"
     data-app-id="erp"
     data-org-name="TechCorp Ecosystem Hub"
     data-user-role="SSO Connected"
@@ -367,119 +367,120 @@
           </div>
         </div>
 
-        <!-- KHUNG EXPLORER HÌNH CÂY CHIA 2 BÊN (TRÁI: CÂY ĐƠN VỊ THÀNH VIÊN • PHẢI: DANH SÁCH & NỘI DUNG CHI TIẾT TIN) -->
+        <!-- KHUNG EXPLORER HÌNH CÂY CHIA 2 BÊN (TRÁI CỐ ĐỊNH: CÂY ĐƠN VỊ THÀNH VIÊN • PHẢI: TOÀN BỘ NỘI DUNG DIỄN ĐÀN, KỆ B2B & SÀN NHÂN LỰC) -->
         <div class="forum-tree-split-layout">
-          <!-- CỘT TRÁI: CÂY DANH MỤC CÁC KHỐI & ĐƠN VỊ THÀNH VIÊN -->
+          <!-- CỘT TRÁI CỐ ĐỊNH KHI CUỘN (STICKY): CÂY DANH MỤC CÁC KHỐI & ĐƠN VỊ THÀNH VIÊN -->
           <aside class="forum-tree-sidebar">
-            <div class="forum-tree-sidebar-header">
-              <div>
-                <div class="forum-tree-sidebar-title">🌳 Cây Danh mục Đơn vị</div>
-                <div class="forum-tree-sidebar-sub">Chọn Khối hoặc Đơn vị để lọc bài viết</div>
-              </div>
-              <button type="button" class="forum-tree-expand-btn" onclick="toggleAllForumTreeGroups()" title="Mở rộng / Thu gọn toàn bộ cây">
-                ▾ Mở/Thu
-              </button>
-            </div>
-
-            <div class="forum-tree-search-box">
+            <div class="forum-tree-search-box" style="display:flex;align-items:center;gap:6px;">
               <input
                 type="text"
                 id="forumTreeSearchInput"
                 class="input-control"
-                style="width:100%;font-size:12.5px;padding:8px 11px;"
+                style="flex:1;min-width:0;font-size:12.5px;padding:8px 11px;"
                 placeholder="🔍 Tìm đơn vị, tiêu đề, từ khóa..."
                 oninput="handleForumTreeSearch(this.value)"
               />
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                style="padding:7px 9px;font-size:11px;white-space:nowrap;flex-shrink:0;"
+                onclick="toggleAllForumTreeGroups()"
+                title="Mở rộng / Thu gọn toàn bộ cây đơn vị"
+              >
+                ▾ Mở/Thu
+              </button>
             </div>
 
             <div class="forum-tree-nav-scroll" id="forumUnitTreeContainer"></div>
           </aside>
 
-          <!-- CỘT PHẢI: VÙNG TRANG HIỂN THỊ DANH SÁCH BÀI VIẾT & NỘI DUNG CHI TIẾT CỦA TIN -->
-          <div class="forum-tree-main-pane">
-            <!-- Thanh Breadcrumb Đơn vị đang chọn + Lọc Chuyên mục -->
-            <div class="forum-tree-main-header">
-              <div class="forum-tree-breadcrumb" id="forumTreeBreadcrumb">
-                <span class="crumb-root">🌐 Toàn Hệ sinh thái TechCorp</span>
-                <span class="crumb-sep">›</span>
-                <strong class="crumb-current">Tất cả Đơn vị Thành viên</strong>
+          <!-- CỘT PHẢI: VÙNG TRANG HIỂN THỊ DANH SÁCH BÀI VIẾT, NỘI DUNG CHI TIẾT TIN, KỆ ĐẶC QUYỀN B2B & SÀN NHÂN LỰC LMS -->
+          <div class="forum-tree-right-col" style="display:flex;flex-direction:column;gap:20px;min-width:0;">
+            <div class="forum-tree-main-pane">
+              <!-- Thanh Breadcrumb Đơn vị đang chọn + Lọc Chuyên mục -->
+              <div class="forum-tree-main-header">
+                <div class="forum-tree-breadcrumb" id="forumTreeBreadcrumb">
+                  <span class="crumb-root">🌐 Toàn Hệ sinh thái TechCorp</span>
+                  <span class="crumb-sep">›</span>
+                  <strong class="crumb-current">Tất cả Đơn vị Thành viên</strong>
+                </div>
+
+                <div class="forum-cat-pills" id="forumCategoryBar" style="margin-bottom:0;">
+                  <button class="forum-cat-btn active" data-cat="all">Tất cả chủ đề</button>
+                  <button class="forum-cat-btn" data-cat="rfq">📢 Cần Mua / RFQ</button>
+                  <button class="forum-cat-btn" data-cat="spotlight">🎁 Ưu đãi Give-to-Get</button>
+                  <button class="forum-cat-btn" data-cat="comarketing">🤝 Hợp tác Sự kiện</button>
+                  <button class="forum-cat-btn" data-cat="knowledge">💡 Kinh nghiệm Quản trị</button>
+                </div>
               </div>
 
-              <div class="forum-cat-pills" id="forumCategoryBar" style="margin-bottom:0;">
-                <button class="forum-cat-btn active" data-cat="all">Tất cả chủ đề</button>
-                <button class="forum-cat-btn" data-cat="rfq">📢 Cần Mua / RFQ</button>
-                <button class="forum-cat-btn" data-cat="spotlight">🎁 Ưu đãi Give-to-Get</button>
-                <button class="forum-cat-btn" data-cat="comarketing">🤝 Hợp tác Sự kiện</button>
-                <button class="forum-cat-btn" data-cat="knowledge">💡 Kinh nghiệm Quản trị</button>
+              <!-- Vùng Hiển thị Danh sách Bài viết & Nội dung Chi tiết Tin -->
+              <div id="forumPostsContainer"></div>
+            </div>
+
+            <!-- Kệ Đặc quyền & Ưu đãi Chéo B2B Đang Mở (Nằm gọn trong cột phải, đồng bộ cấu trúc 2 bên với cây bên trái) -->
+            <div class="card" style="margin-top:0;">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">🎁 Kệ Đặc quyền & Ưu đãi Chéo B2B Đang Mở Toàn Hệ sinh thái</h3>
+                  <p class="card-subtitle">Các gói tài trợ & chiết khấu độc quyền được cung cấp trực tiếp từ Không gian Quản trị của Đơn vị Thành viên</p>
+                </div>
+                <span class="badge badge-amber">Give-to-Get B2B Offers</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:14px;" id="b2bGrid"></div>
+            </div>
+
+            <!-- Phần 2: Sàn Nhân lực Đã xác thực & Đấu trường Học & Thi Online Khánh Hòa (Nằm gọn trong cột phải) -->
+            <div id="sec-talent-lms" class="card" style="margin-top:0;">
+              <div class="pub-section-header" style="margin-bottom:14px;">
+                <div>
+                  <div class="pub-section-tag">🤖 SÀN TUYỂN DỤNG AI (JOBAI.TECHCORP.INFO.VN) & LIÊN THÔNG KHẢO THÍ TRỰC TUYẾN</div>
+                  <h3 class="pub-section-title" style="font-size:20px;">Hồ sơ Nhân lực Xác thực (TechCorp HireMind AI) & Đấu trường Thi Online</h3>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+                    🤖 Mở Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
+                  </a>
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="card" style="box-shadow:none;background:#f8fbff;">
+                  <div class="card-header">
+                    <div>
+                      <h3 class="card-title">🏅 Hồ sơ Ứng viên & Thực tập sinh Đã Xác thực Điểm Thi Online</h3>
+                      <p class="card-subtitle">Sẵn sàng kết nối thực tập & làm việc tại các Doanh nghiệp thành viên Hệ sinh thái TechCorp</p>
+                    </div>
+                  </div>
+                  <div class="filter-bar">
+                    <input
+                      type="text"
+                      id="talentSearchInput"
+                      class="input-control"
+                      style="flex:1;"
+                      placeholder="Tìm theo tên, trường, chứng chỉ (IELTS, TOEIC, ERP)..."
+                    />
+                    <select id="talentDomainFilter" class="select-control">
+                      <option value="all">Tất cả lĩnh vực</option>
+                      <option value="tourism">Du lịch - Khách sạn - Ngoại ngữ</option>
+                      <option value="it">CNTT - Quản trị ERP</option>
+                      <option value="finance">Kế toán - Tài chính</option>
+                    </select>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:12px;" id="talentGrid"></div>
+                </div>
+
+                <div class="card" style="box-shadow:none;background:#f8fbff;">
+                  <div class="card-header">
+                    <div>
+                      <h3 class="card-title">🏆 Đấu trường Học & Thi Online Khánh Hòa (LMS Funnel)</h3>
+                      <p class="card-subtitle">Các kỳ thi năng lực trực tuyến do các Trung tâm & Trường học thành viên đồng tổ chức</p>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:12px;" id="contestList"></div>
+                </div>
               </div>
             </div>
-
-            <!-- Vùng Hiển thị Danh sách Bài viết & Nội dung Chi tiết Tin -->
-            <div id="forumPostsContainer"></div>
-          </div>
-        </div>
-
-        <!-- Kệ Đặc quyền & Ưu đãi Chéo B2B Đang Mở (Hiển thị ngang bên dưới Cây Diễn đàn) -->
-        <div class="card" style="margin-top:20px;">
-          <div class="card-header">
-            <div>
-              <h3 class="card-title">🎁 Kệ Đặc quyền & Ưu đãi Chéo B2B Đang Mở Toàn Hệ sinh thái</h3>
-              <p class="card-subtitle">Các gói tài trợ & chiết khấu độc quyền được cung cấp trực tiếp từ Không gian Quản trị của Đơn vị Thành viên</p>
-            </div>
-            <span class="badge badge-amber">Give-to-Get B2B Offers</span>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;" id="b2bGrid"></div>
-        </div>
-      </section>
-
-      <!-- Phần 2: Sàn Nhân lực Đã xác thực & Đấu trường Học & Thi Online Khánh Hòa -->
-      <section id="sec-talent-lms" class="pub-section">
-        <div class="pub-section-header">
-          <div>
-            <div class="pub-section-tag">🤖 SÀN TUYỂN DỤNG AI (JOBAI.TECHCORP.INFO.VN) & LIÊN THÔNG KHẢO THÍ TRỰC TUYẾN</div>
-            <h3 class="pub-section-title">Hồ sơ Nhân lực Xác thực (TechCorp HireMind AI) & Đấu trường Thi Online</h3>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <a href="https://jobai.techcorp.info.vn/careers.html" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
-              🤖 Mở Sàn Tuyển dụng & Tìm việc AI (jobai.techcorp.info.vn) ↗
-            </a>
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">🏅 Hồ sơ Ứng viên & Thực tập sinh Đã Xác thực Điểm Thi Online</h3>
-                <p class="card-subtitle">Sẵn sàng kết nối thực tập & làm việc tại các Doanh nghiệp thành viên Hệ sinh thái TechCorp</p>
-              </div>
-            </div>
-            <div class="filter-bar">
-              <input
-                type="text"
-                id="talentSearchInput"
-                class="input-control"
-                style="flex:1;"
-                placeholder="Tìm theo tên, trường, chứng chỉ (IELTS, TOEIC, ERP)..."
-              />
-              <select id="talentDomainFilter" class="select-control">
-                <option value="all">Tất cả lĩnh vực</option>
-                <option value="tourism">Du lịch - Khách sạn - Ngoại ngữ</option>
-                <option value="it">CNTT - Quản trị ERP</option>
-                <option value="finance">Kế toán - Tài chính</option>
-              </select>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:12px;" id="talentGrid"></div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h3 class="card-title">🏆 Đấu trường Học & Thi Online Khánh Hòa (LMS Funnel)</h3>
-                <p class="card-subtitle">Các kỳ thi năng lực trực tuyến do các Trung tâm & Trường học thành viên đồng tổ chức</p>
-              </div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:12px;" id="contestList"></div>
           </div>
         </div>
       </section>
@@ -1075,6 +1076,6 @@
   </nav>
 
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=25"></script>
+  <script src="app.js?v=26"></script>
 </body>
 </html>
