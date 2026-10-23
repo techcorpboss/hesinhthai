@@ -625,7 +625,7 @@ function buildDataSeedStatements(state, productCatalog) {
         lt.inPipeline || 0
       )}, ${sqlEsc(lt.focusArea)}, ${sqlEsc(lt.comboPackage)}, ${sqlEsc(
         lt.notes
-      )}) ON DUPLICATE KEY UPDATE \`target_count\`=VALUES(\`target_count\`), \`current_signed\`=VALUES(\`current_signed\`), \`in_pipeline\`=VALUES(\`in_pipeline\`), \`notes\`=VALUES(\`notes\`);`
+      )}) ON DUPLICATE KEY UPDATE \`target_count\`=VALUES(\`target_count\`), \`current_signed\`=VALUES(\`current_signed\`), \`in_pipeline\`=VALUES(\`in_pipeline\`), \`focus_area\`=VALUES(\`focus_area\`), \`combo_package\`=VALUES(\`combo_package\`), \`notes\`=VALUES(\`notes\`);`
     );
   });
 
@@ -655,7 +655,7 @@ function buildDataSeedStatements(state, productCatalog) {
         aud.severity || "INFO"
       )}, ${sqlEsc(
         aud.details
-      )}) ON DUPLICATE KEY UPDATE \`timestamp_label\`=VALUES(\`timestamp_label\`), \`details\`=VALUES(\`details\`);`
+      )}) ON DUPLICATE KEY UPDATE \`timestamp_label\`=VALUES(\`timestamp_label\`), \`actor_id\`=VALUES(\`actor_id\`), \`actor_name\`=VALUES(\`actor_name\`), \`actor_org\`=VALUES(\`actor_org\`), \`ip_address\`=VALUES(\`ip_address\`), \`action\`=VALUES(\`action\`), \`target\`=VALUES(\`target\`), \`severity\`=VALUES(\`severity\`), \`details\`=VALUES(\`details\`);`
     );
   });
 
@@ -846,6 +846,131 @@ function connectMysqlSmart(callback) {
   attemptNext();
 }
 
+// Đọc dữ liệu thực tế từ các bảng MySQL (audit_logs, demo_requests, lighthouse_targets) vào state
+function pullLiveTablesFromMysql(queryRunner, state, callback) {
+  const cb = typeof callback === "function" ? callback : function () {};
+  if (!queryRunner || !state) return cb(null, false);
+
+  let stateUpdated = false;
+
+  queryRunner.query(
+    "SELECT `id`, `timestamp_label`, `actor_id`, `actor_name`, `actor_org`, `ip_address`, `action`, `target`, `severity`, `details` FROM `audit_logs` ORDER BY `timestamp_label` DESC LIMIT 300;",
+    function (audErr, audRows) {
+      if (!audErr && Array.isArray(audRows) && audRows.length > 0) {
+        if (!Array.isArray(state.auditLogs)) state.auditLogs = [];
+        const existingMap = new Map(state.auditLogs.map(function (a) { return [a.id, a]; }));
+        audRows.forEach(function (r) {
+          if (!r || !r.id) return;
+          const mapped = {
+            id: String(r.id),
+            timestamp: String(r.timestamp_label || ""),
+            actorId: String(r.actor_id || "USR-ADMIN-00"),
+            actorName: String(r.actor_name || "Quản trị viên TechCorp"),
+            actorOrg: String(r.actor_org || "TechCorp Hub"),
+            ipAddress: String(r.ip_address || "103.170.122.138"),
+            action: String(r.action || "SYSTEM_ACTION"),
+            target: String(r.target || "System"),
+            severity: String(r.severity || "INFO"),
+            details: String(r.details || "")
+          };
+          if (!existingMap.has(mapped.id)) {
+            state.auditLogs.push(mapped);
+            existingMap.set(mapped.id, mapped);
+            stateUpdated = true;
+          }
+        });
+        state.auditLogs.sort(function (a, b) {
+          return String(b.timestamp || "").localeCompare(String(a.timestamp || ""));
+        });
+        if (state.auditLogs.length > 300) {
+          state.auditLogs = state.auditLogs.slice(0, 300);
+        }
+      }
+
+      queryRunner.query(
+        "SELECT `id`, `full_name`, `phone`, `email`, `org_name`, `org_scale`, `product_id`, `product_name`, `app_url`, `preferred_time`, `notes`, `status`, `admin_note`, `ip_address`, `created_at` FROM `demo_requests` ORDER BY `created_at` DESC;",
+        function (demoErr, demoRows) {
+          if (!demoErr && Array.isArray(demoRows) && demoRows.length > 0) {
+            if (!Array.isArray(state.demoRequests)) state.demoRequests = [];
+            const demoMap = new Map(state.demoRequests.map(function (d) { return [d.id, d]; }));
+            demoRows.forEach(function (r) {
+              if (!r || !r.id) return;
+              const mapped = {
+                id: String(r.id),
+                fullName: String(r.full_name || ""),
+                phone: String(r.phone || ""),
+                email: String(r.email || ""),
+                orgName: String(r.org_name || ""),
+                orgScale: String(r.org_scale || ""),
+                productId: String(r.product_id || "erp"),
+                productName: String(r.product_name || ""),
+                appUrl: String(r.app_url || ""),
+                preferredTime: String(r.preferred_time || ""),
+                notes: String(r.notes || ""),
+                status: String(r.status || "new"),
+                adminNote: String(r.admin_note || ""),
+                ipAddress: String(r.ip_address || "103.170.122.138"),
+                createdAt: String(r.created_at || "")
+              };
+              if (!demoMap.has(mapped.id)) {
+                state.demoRequests.unshift(mapped);
+                demoMap.set(mapped.id, mapped);
+                stateUpdated = true;
+              } else {
+                const cur = demoMap.get(mapped.id);
+                if (mapped.adminNote && !cur.adminNote) {
+                  cur.adminNote = mapped.adminNote;
+                  stateUpdated = true;
+                }
+                if (mapped.status && mapped.status !== "new" && cur.status === "new") {
+                  cur.status = mapped.status;
+                  stateUpdated = true;
+                }
+              }
+            });
+          }
+
+          queryRunner.query(
+            "SELECT `id`, `segment`, `target_count`, `current_signed`, `in_pipeline`, `focus_area`, `combo_package`, `notes` FROM `lighthouse_targets` ORDER BY `id` ASC;",
+            function (lhErr, lhRows) {
+              if (!lhErr && Array.isArray(lhRows) && lhRows.length > 0) {
+                if (!Array.isArray(state.lighthouseTargets)) state.lighthouseTargets = [];
+                lhRows.forEach(function (r, idx) {
+                  if (!r || !r.segment) return;
+                  const found = state.lighthouseTargets.find(function (x) {
+                    return x.segment === r.segment;
+                  });
+                  if (found) {
+                    if (!found.id) found.id = "LH-0" + (idx + 1);
+                    if (Number(r.current_signed) > Number(found.currentSigned || 0)) {
+                      found.currentSigned = Number(r.current_signed);
+                      found.inPipeline = Number(r.in_pipeline || 0);
+                      stateUpdated = true;
+                    }
+                  } else {
+                    state.lighthouseTargets.push({
+                      id: "LH-" + (r.id || Date.now()),
+                      segment: String(r.segment),
+                      targetCount: Number(r.target_count || 10),
+                      currentSigned: Number(r.current_signed || 0),
+                      inPipeline: Number(r.in_pipeline || 0),
+                      focusArea: String(r.focus_area || "Nha Trang - Khánh Hòa"),
+                      comboPackage: String(r.combo_package || "Gói Combo Chuyển đổi số"),
+                      notes: String(r.notes || "")
+                    });
+                    stateUpdated = true;
+                  }
+                });
+              }
+              return cb(null, stateUpdated);
+            }
+          );
+        }
+      );
+    }
+  );
+}
+
 function initAndSyncMysql(state, doneCallback) {
   const cb = typeof doneCallback === "function" ? doneCallback : function () {};
   const dbName = process.env.DB_DATABASE || "hesinhthai_db";
@@ -899,34 +1024,45 @@ function initAndSyncMysql(state, doneCallback) {
         activePool = driverLib.createPool(poolOpts);
       }
 
-      const catalog = extractProductCatalogFromHtml();
-      const allStatements = SCHEMA_TABLES_DDL.concat(
-        buildDataSeedStatements(state, catalog)
-      );
-
-      // Thực thi tuần tự các câu lệnh DDL + DML
-      let i = 0;
-      function runNextStatement() {
-        if (i >= allStatements.length) {
-          mysqlStatus.connected = true;
-          mysqlStatus.database = dbName;
-          mysqlStatus.lastSyncedAt = new Date().toISOString();
-          mysqlStatus.error = null;
-          try {
-            bootstrapConn.end();
-          } catch (_) {}
-          return cb(null, mysqlStatus);
+      // Bước 1: Tạo các bảng DDL nếu chưa có
+      let ddlIdx = 0;
+      function runNextDdl() {
+        if (ddlIdx >= SCHEMA_TABLES_DDL.length) {
+          // Bước 2: Đọc dữ liệu thực tế đang lưu trong MySQL vào state trước khi đồng bộ ngược lại
+          pullLiveTablesFromMysql(bootstrapConn, state, function (_, stateUpdatedFromMysql) {
+            const catalog = extractProductCatalogFromHtml();
+            const dmlStatements = buildDataSeedStatements(state, catalog);
+            let dmlIdx = 0;
+            function runNextDml() {
+              if (dmlIdx >= dmlStatements.length) {
+                mysqlStatus.connected = true;
+                mysqlStatus.database = dbName;
+                mysqlStatus.lastSyncedAt = new Date().toISOString();
+                mysqlStatus.error = null;
+                try {
+                  bootstrapConn.end();
+                } catch (_) {}
+                return cb(null, mysqlStatus, stateUpdatedFromMysql);
+              }
+              const sql = dmlStatements[dmlIdx++];
+              bootstrapConn.query(sql, function (qErr) {
+                if (qErr) {
+                  mysqlStatus.error = qErr.message;
+                }
+                runNextDml();
+              });
+            }
+            runNextDml();
+          });
+          return;
         }
-        const sql = allStatements[i++];
-        bootstrapConn.query(sql, function (qErr) {
-          if (qErr) {
-            mysqlStatus.error = qErr.message;
-          }
-          runNextStatement();
+        const ddlSql = SCHEMA_TABLES_DDL[ddlIdx++];
+        bootstrapConn.query(ddlSql, function () {
+          runNextDdl();
         });
       }
 
-      runNextStatement();
+      runNextDdl();
     });
   });
 }
@@ -956,6 +1092,20 @@ function syncStateToMysqlAsync(state) {
   });
 }
 
+function executeMysqlStatement(sql, callback) {
+  const cb = typeof callback === "function" ? callback : function () {};
+  if (!activePool || !sql) return cb(null);
+  activePool.query(sql, function (err, results) {
+    cb(err, results);
+  });
+}
+
+function pullFromMysqlAsync(state, callback) {
+  const cb = typeof callback === "function" ? callback : function () {};
+  if (!activePool) return cb(null, false);
+  pullLiveTablesFromMysql(activePool, state, cb);
+}
+
 function getMysqlStatus() {
   return mysqlStatus;
 }
@@ -963,7 +1113,10 @@ function getMysqlStatus() {
 module.exports = {
   initAndSyncMysql: initAndSyncMysql,
   syncStateToMysqlAsync: syncStateToMysqlAsync,
+  executeMysqlStatement: executeMysqlStatement,
+  pullFromMysqlAsync: pullFromMysqlAsync,
   exportSqlDumpFile: exportSqlDumpFile,
   getMysqlStatus: getMysqlStatus,
   SCHEMA_TABLES_DDL: SCHEMA_TABLES_DDL
 };
+

@@ -11,7 +11,13 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
-const { initAndSyncMysql, syncStateToMysqlAsync, getMysqlStatus } = require("./mysql");
+const {
+  initAndSyncMysql,
+  syncStateToMysqlAsync,
+  executeMysqlStatement,
+  pullFromMysqlAsync,
+  getMysqlStatus
+} = require("./mysql");
 
 const DATA_DIR = path.join(__dirname, "..", "data");
 const JSON_DB_PATH = path.join(DATA_DIR, "techcorp_hub_db.json");
@@ -1560,11 +1566,38 @@ try {
       timestamp TEXT NOT NULL,
       actor_id TEXT,
       actor_name TEXT,
+      actor_org TEXT,
       ip_address TEXT,
       action TEXT NOT NULL,
       target TEXT,
       severity TEXT,
       details TEXT
+    );
+    CREATE TABLE IF NOT EXISTS demo_requests (
+      id TEXT PRIMARY KEY,
+      full_name TEXT NOT NULL,
+      phone TEXT NOT NULL,
+      email TEXT,
+      org_name TEXT NOT NULL,
+      org_scale TEXT,
+      product_id TEXT NOT NULL,
+      product_name TEXT NOT NULL,
+      app_url TEXT,
+      preferred_time TEXT,
+      notes TEXT,
+      status TEXT NOT NULL DEFAULT 'new',
+      admin_note TEXT,
+      ip_address TEXT,
+      created_at TEXT
+    );
+    CREATE TABLE IF NOT EXISTS lighthouse_targets (
+      segment TEXT PRIMARY KEY,
+      target_count INTEGER NOT NULL DEFAULT 0,
+      current_signed INTEGER NOT NULL DEFAULT 0,
+      in_pipeline INTEGER NOT NULL DEFAULT 0,
+      focus_area TEXT,
+      combo_package TEXT,
+      notes TEXT
     );
   `);
 } catch (_) {
@@ -1668,6 +1701,16 @@ class HubDatabase {
           this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
           needsSave = true;
         }
+        if (!Array.isArray(this.state.lighthouseTargets) || this.state.lighthouseTargets.length === 0) {
+          this.state.lighthouseTargets = JSON.parse(JSON.stringify(INITIAL_SEED.lighthouseTargets));
+          needsSave = true;
+        }
+        this.state.lighthouseTargets.forEach((lt, idx) => {
+          if (!lt.id) {
+            lt.id = "LH-0" + (idx + 1);
+            needsSave = true;
+          }
+        });
         if (!this.state.meta || this.state.meta.version !== "6.7.0") {
           this.state.meta = JSON.parse(JSON.stringify(INITIAL_SEED.meta));
           this.state.apps = JSON.parse(JSON.stringify(INITIAL_SEED.apps));
@@ -1715,7 +1758,17 @@ class HubDatabase {
       this.save();
     }
     this.syncToSqlite();
-    initAndSyncMysql(this.state);
+    initAndSyncMysql(this.state, (_, __, stateUpdatedFromMysql) => {
+      if (stateUpdatedFromMysql) {
+        try {
+          this.state.meta.updatedAt = new Date().toISOString();
+          const tmpPath = `${JSON_DB_PATH}.tmp`;
+          fs.writeFileSync(tmpPath, JSON.stringify(this.state, null, 2), "utf8");
+          fs.renameSync(tmpPath, JSON_DB_PATH);
+          this.syncToSqlite();
+        } catch (___) {}
+      }
+    });
   }
 
   save() {
@@ -1736,12 +1789,102 @@ class HubDatabase {
          ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`
       );
       upsertKv.run("hub_full_state", JSON.stringify(this.state), now);
+
+      const upsertAudit = sqliteDb.prepare(
+        `INSERT INTO audit_logs (id, timestamp, actor_id, actor_name, ip_address, action, target, severity, details)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT(id) DO UPDATE SET
+           timestamp = excluded.timestamp,
+           actor_id = excluded.actor_id,
+           actor_name = excluded.actor_name,
+           ip_address = excluded.ip_address,
+           action = excluded.action,
+           target = excluded.target,
+           severity = excluded.severity,
+           details = excluded.details`
+      );
+      (this.state.auditLogs || []).forEach((log) => {
+        upsertAudit.run(
+          String(log.id || ""),
+          String(log.timestamp || ""),
+          String(log.actorId || ""),
+          String(log.actorName || ""),
+          String(log.ipAddress || ""),
+          String(log.action || ""),
+          String(log.target || ""),
+          String(log.severity || "INFO"),
+          String(log.details || "")
+        );
+      });
+
+      const upsertDemo = sqliteDb.prepare(
+        `INSERT INTO demo_requests (id, full_name, phone, email, org_name, org_scale, product_id, product_name, app_url, preferred_time, notes, status, admin_note, ip_address, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT(id) DO UPDATE SET
+           full_name = excluded.full_name,
+           phone = excluded.phone,
+           email = excluded.email,
+           org_name = excluded.org_name,
+           org_scale = excluded.org_scale,
+           product_id = excluded.product_id,
+           product_name = excluded.product_name,
+           app_url = excluded.app_url,
+           preferred_time = excluded.preferred_time,
+           notes = excluded.notes,
+           status = excluded.status,
+           admin_note = excluded.admin_note`
+      );
+      (this.state.demoRequests || []).forEach((d) => {
+        upsertDemo.run(
+          String(d.id || ""),
+          String(d.fullName || ""),
+          String(d.phone || ""),
+          String(d.email || ""),
+          String(d.orgName || ""),
+          String(d.orgScale || ""),
+          String(d.productId || ""),
+          String(d.productName || ""),
+          String(d.appUrl || ""),
+          String(d.preferredTime || ""),
+          String(d.notes || ""),
+          String(d.status || "new"),
+          String(d.adminNote || ""),
+          String(d.ipAddress || ""),
+          String(d.createdAt || "")
+        );
+      });
+
+      const upsertLh = sqliteDb.prepare(
+        `INSERT INTO lighthouse_targets (segment, target_count, current_signed, in_pipeline, focus_area, combo_package, notes)
+         VALUES (?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT(segment) DO UPDATE SET
+           target_count = excluded.target_count,
+           current_signed = excluded.current_signed,
+           in_pipeline = excluded.in_pipeline,
+           focus_area = excluded.focus_area,
+           combo_package = excluded.combo_package,
+           notes = excluded.notes`
+      );
+      (this.state.lighthouseTargets || []).forEach((lt) => {
+        upsertLh.run(
+          String(lt.segment || ""),
+          Number(lt.targetCount || 0),
+          Number(lt.currentSigned || 0),
+          Number(lt.inPipeline || 0),
+          String(lt.focusArea || ""),
+          String(lt.comboPackage || ""),
+          String(lt.notes || "")
+        );
+      });
     } catch (_) {}
   }
 
   // ==================== AUDIT LOGGING ====================
   addAuditLog({
     actorKey = "super-admin",
+    actorId = "",
+    actorName = "",
+    actorOrg = "",
     ipAddress = "103.170.122.138",
     action = "SYSTEM_ACTION",
     target = "System",
@@ -1750,7 +1893,7 @@ class HubDatabase {
   }) {
     const persona =
       this.state.personas[actorKey] ||
-      this.state.users.find((u) => u.id === actorKey || u.personaKey === actorKey) ||
+      this.state.users.find((u) => u.id === actorKey || u.personaKey === actorKey || u.email === actorKey) ||
       this.state.personas["super-admin"];
 
     const now = new Date();
@@ -1762,22 +1905,42 @@ class HubDatabase {
     const entry = {
       id: "AUD-" + Date.now() + "-" + Math.floor(Math.random() * 90 + 10),
       timestamp,
-      actorId: persona.userId || persona.id || "USR-ADMIN-00",
-      actorName: persona.name || persona.fullName || "Quản trị viên TechCorp",
-      actorOrg: persona.org || "TechCorp Hub",
-      ipAddress,
-      action,
-      target,
-      severity,
-      details
+      actorId: actorId || persona.userId || persona.id || "USR-ADMIN-00",
+      actorName: actorName || persona.name || persona.fullName || "Quản trị viên TechCorp",
+      actorOrg: actorOrg || persona.org || "TechCorp Hub",
+      ipAddress: ipAddress || "103.170.122.138",
+      action: String(action || "SYSTEM_ACTION").toUpperCase(),
+      target: String(target || "System"),
+      severity: ["INFO", "WARNING", "CRITICAL"].includes(String(severity).toUpperCase())
+        ? String(severity).toUpperCase()
+        : "INFO",
+      details: String(details || "")
     };
 
     this.state.auditLogs.unshift(entry);
-    if (this.state.auditLogs.length > 200) {
-      this.state.auditLogs = this.state.auditLogs.slice(0, 200);
+    if (this.state.auditLogs.length > 300) {
+      this.state.auditLogs = this.state.auditLogs.slice(0, 300);
     }
     this.save();
     return entry;
+  }
+
+  deleteAuditLog(logId, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    const idx = (this.state.auditLogs || []).findIndex((l) => l.id === logId);
+    if (idx === -1) {
+      throw new Error(`Không tìm thấy bản ghi Audit Log mã '${logId}'.`);
+    }
+    const removed = this.state.auditLogs.splice(idx, 1)[0];
+    if (sqliteDb) {
+      try {
+        sqliteDb.prepare("DELETE FROM audit_logs WHERE id = ?").run(String(logId));
+      } catch (_) {}
+    }
+    executeMysqlStatement(
+      `DELETE FROM \`audit_logs\` WHERE \`id\` = '${String(logId).replace(/'/g, "\\'")}';`
+    );
+    this.save();
+    return removed;
   }
 
   // ==================== APP REGISTRY CRUD ====================
@@ -2649,6 +2812,13 @@ class HubDatabase {
   }
 
   // ==================== DEMO REQUESTS / CUSTOMER LEADS CRUD ====================
+  getDemoRequests() {
+    if (!Array.isArray(this.state.demoRequests)) {
+      this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
+    }
+    return this.state.demoRequests;
+  }
+
   createDemoRequest(payload, ipAddress = "103.170.122.138") {
     if (!Array.isArray(this.state.demoRequests)) {
       this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
@@ -2669,12 +2839,17 @@ class HubDatabase {
 
     const now = new Date();
     const pad = (n) => String(n).padStart(2, "0");
-    const createdAt = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
-      now.getHours()
-    )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    const createdAt =
+      payload.createdAt ||
+      `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
+        now.getHours()
+      )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+    const customId = payload.id && String(payload.id).trim();
+    const existingIdx = customId ? this.state.demoRequests.findIndex((x) => x.id === customId) : -1;
 
     const newLead = {
-      id: "DEMO-" + String(Date.now()).slice(-6),
+      id: customId || "DEMO-" + String(Date.now()).slice(-6),
       fullName,
       phone,
       email: email || "Chưa cung cấp",
@@ -2685,13 +2860,17 @@ class HubDatabase {
       appUrl,
       preferredTime: String(payload.preferredTime || "Trong giờ hành chính").trim(),
       notes: String(payload.notes || "Đăng ký nhận tài khoản dùng thử & tư vấn triển khai.").trim(),
-      status: "new",
-      adminNote: "",
-      ipAddress,
+      status: String(payload.status || "new").trim(),
+      adminNote: String(payload.adminNote || "").trim(),
+      ipAddress: ipAddress || "103.170.122.138",
       createdAt
     };
 
-    this.state.demoRequests.unshift(newLead);
+    if (existingIdx !== -1) {
+      this.state.demoRequests[existingIdx] = { ...this.state.demoRequests[existingIdx], ...newLead };
+    } else {
+      this.state.demoRequests.unshift(newLead);
+    }
 
     this.addEvent({
       sourceApp: productId,
@@ -2701,7 +2880,9 @@ class HubDatabase {
     });
 
     this.addAuditLog({
-      actorKey: "super-admin",
+      actorKey: payload.actorKey || "super-admin",
+      actorName: payload.actorKey ? "" : `${fullName} (Khách hàng Đăng ký)`,
+      actorOrg: payload.actorKey ? "" : orgName,
       ipAddress,
       action: "DEMO_REQUEST_CREATED",
       target: `${newLead.id}: ${fullName} (${orgName})`,
@@ -2723,6 +2904,35 @@ class HubDatabase {
     }
 
     const oldStatus = lead.status;
+    if (payload.fullName !== undefined && String(payload.fullName).trim()) {
+      lead.fullName = String(payload.fullName).trim();
+    }
+    if (payload.phone !== undefined && String(payload.phone).trim()) {
+      lead.phone = String(payload.phone).trim();
+    }
+    if (payload.email !== undefined) {
+      lead.email = String(payload.email).trim() || "Chưa cung cấp";
+    }
+    if (payload.orgName !== undefined && String(payload.orgName).trim()) {
+      lead.orgName = String(payload.orgName).trim();
+    }
+    if (payload.orgScale !== undefined && String(payload.orgScale).trim()) {
+      lead.orgScale = String(payload.orgScale).trim();
+    }
+    if (payload.productId !== undefined && String(payload.productId).trim()) {
+      lead.productId = String(payload.productId).trim();
+      const matchedApp = this.state.apps.find((a) => a.id === lead.productId);
+      if (matchedApp) {
+        lead.productName = payload.productName || matchedApp.name;
+        lead.appUrl = payload.appUrl || matchedApp.appUrl;
+      }
+    }
+    if (payload.productName !== undefined && String(payload.productName).trim()) {
+      lead.productName = String(payload.productName).trim();
+    }
+    if (payload.notes !== undefined) {
+      lead.notes = String(payload.notes).trim();
+    }
     if (payload.status !== undefined) {
       lead.status = String(payload.status).trim();
     }
@@ -2739,7 +2949,7 @@ class HubDatabase {
       action: "DEMO_REQUEST_UPDATE",
       target: `${lead.id}: ${lead.fullName} (${lead.orgName})`,
       severity: "INFO",
-      details: `Cập nhật trạng thái xử lý Demo [${lead.productName}]: ${oldStatus} -> ${lead.status}. Ghi chú: ${lead.adminNote || "Không có"}`
+      details: `Cập nhật hồ sơ khách hàng Demo [${lead.productName}]: Trạng thái ${oldStatus} -> ${lead.status}. Ghi chú CSKH: ${lead.adminNote || "Không có"}`
     });
 
     this.save();
@@ -2756,17 +2966,319 @@ class HubDatabase {
     }
     const removed = this.state.demoRequests.splice(idx, 1)[0];
 
+    if (sqliteDb) {
+      try {
+        sqliteDb.prepare("DELETE FROM demo_requests WHERE id = ?").run(String(leadId));
+      } catch (_) {}
+    }
+    executeMysqlStatement(
+      `DELETE FROM \`demo_requests\` WHERE \`id\` = '${String(leadId).replace(/'/g, "\\'")}';`
+    );
+
     this.addAuditLog({
       actorKey,
       ipAddress,
       action: "DEMO_REQUEST_DELETE",
       target: `${removed.id}: ${removed.fullName} (${removed.orgName})`,
       severity: "WARNING",
-      details: `Đã xoá yêu cầu đăng ký Demo sản phẩm "${removed.productName}" của khách hàng ${removed.fullName}.`
+      details: `Đã xoá yêu cầu đăng ký Demo sản phẩm "${removed.productName}" của khách hàng ${removed.fullName} khỏi CSDL.`
     });
 
     this.save();
     return removed;
+  }
+
+  bulkImportDemoRequests(rows, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!Array.isArray(rows) || rows.length === 0) {
+      throw new Error("Không có dữ liệu khách hàng hợp lệ để nhập vào CSDL.");
+    }
+    if (!Array.isArray(this.state.demoRequests)) {
+      this.state.demoRequests = JSON.parse(JSON.stringify(INITIAL_DEMO_REQUESTS));
+    }
+
+    let createdCount = 0;
+    let updatedCount = 0;
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const defaultNow = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
+      now.getHours()
+    )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+    rows.forEach((r) => {
+      const fullName = String(r.fullName || r.HoTenKhachHang || "").trim();
+      const phone = String(r.phone || r.SoDienThoai || "").trim();
+      const orgName = String(r.orgName || r.DonViToChuc || "Đơn vị Đăng ký Demo").trim();
+      if (!fullName || !phone) return;
+
+      const productId = String(r.productId || r.MaSanPham || "erp").trim().toLowerCase();
+      const matchedApp = this.state.apps.find((a) => a.id === productId);
+      const id = String(r.id || r.MaPhieu || "DEMO-" + Math.floor(100000 + Math.random() * 899999)).trim();
+      const existing = this.state.demoRequests.find((x) => x.id === id);
+
+      const record = {
+        id,
+        fullName,
+        phone,
+        email: String(r.email || r.Email || "Chưa cung cấp").trim(),
+        orgName,
+        orgScale: String(r.orgScale || r.QuyMo || "50 - 200 nhân sự").trim(),
+        productId,
+        productName: matchedApp ? matchedApp.name : String(r.productName || r.TenSanPham || "Giải pháp Số TechCorp").trim(),
+        appUrl: matchedApp ? matchedApp.appUrl : "https://hesinhthai.techcorp.info.vn",
+        preferredTime: String(r.preferredTime || r.LichHenDemo || "Trong giờ hành chính").trim(),
+        notes: String(r.notes || r.YeuCauChiTiet || "Nhập từ file Excel CRM").trim(),
+        status: String(r.status || r.TrangThai || "new").trim(),
+        adminNote: String(r.adminNote || r.GhiChuAdmin || "Nhập từ Excel").trim(),
+        ipAddress: String(r.ipAddress || ipAddress).trim(),
+        createdAt: String(r.createdAt || r.ThoiGianDangKy || defaultNow).trim()
+      };
+
+      if (existing) {
+        Object.assign(existing, record);
+        updatedCount++;
+      } else {
+        this.state.demoRequests.unshift(record);
+        createdCount++;
+      }
+    });
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "DEMO_REQUEST_BULK_IMPORT",
+      target: `Nhập Excel CRM Khách hàng (${createdCount} mới, ${updatedCount} cập nhật)`,
+      severity: "INFO",
+      details: `Nhập danh sách khách hàng đăng ký Demo từ file Excel vào CSDL: Thêm mới ${createdCount}, cập nhật ${updatedCount}.`
+    });
+
+    this.save();
+    return { importedCount: createdCount, createdCount, updatedCount, demoRequests: this.state.demoRequests };
+  }
+
+  // ==================== CUSTOMER TRACKING / LIGHTHOUSE PIPELINE CRUD ====================
+  getLighthouseTargets() {
+    if (!Array.isArray(this.state.lighthouseTargets)) {
+      this.state.lighthouseTargets = JSON.parse(JSON.stringify(INITIAL_SEED.lighthouseTargets));
+    }
+    this.state.lighthouseTargets.forEach((lt, idx) => {
+      if (!lt.id) lt.id = "LH-0" + (idx + 1);
+    });
+    return this.state.lighthouseTargets;
+  }
+
+  saveLighthouseTarget(payload, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    const list = this.getLighthouseTargets();
+    const segment = String(payload.segment || "").trim();
+    if (!segment) {
+      throw new Error("Vui lòng nhập tên Phân khúc / Nhóm Khách hàng mục tiêu.");
+    }
+
+    const targetCount = Math.max(1, parseInt(payload.targetCount || "10", 10) || 10);
+    const currentSigned = Math.max(0, parseInt(payload.currentSigned || "0", 10) || 0);
+    const inPipeline = Math.max(0, parseInt(payload.inPipeline || "0", 10) || 0);
+    const focusArea = String(payload.focusArea || "Nha Trang - Khánh Hòa").trim();
+    const comboPackage = String(payload.comboPackage || payload.combo || "Gói Combo Chuyển đổi số TechCorp").trim();
+    const notes = String(payload.notes || payload.note || "").trim();
+
+    let targetItem = null;
+    if (payload.id) {
+      targetItem = list.find((x) => x.id === payload.id);
+    }
+    if (!targetItem && payload.idx !== undefined && payload.idx !== "" && list[Number(payload.idx)]) {
+      targetItem = list[Number(payload.idx)];
+    }
+    if (!targetItem) {
+      targetItem = list.find((x) => x.segment.toLowerCase() === segment.toLowerCase());
+    }
+
+    const isUpdate = Boolean(targetItem);
+    const oldSegment = targetItem ? targetItem.segment : "";
+
+    if (targetItem) {
+      targetItem.segment = segment;
+      targetItem.targetCount = targetCount;
+      targetItem.currentSigned = currentSigned;
+      targetItem.inPipeline = inPipeline;
+      targetItem.focusArea = focusArea;
+      targetItem.comboPackage = comboPackage;
+      targetItem.notes = notes;
+      if (oldSegment && oldSegment !== segment) {
+        if (sqliteDb) {
+          try {
+            sqliteDb.prepare("DELETE FROM lighthouse_targets WHERE segment = ?").run(oldSegment);
+          } catch (_) {}
+        }
+        executeMysqlStatement(
+          `DELETE FROM \`lighthouse_targets\` WHERE \`segment\` = '${oldSegment.replace(/'/g, "\\'")}';`
+        );
+      }
+    } else {
+      targetItem = {
+        id: "LH-" + Date.now(),
+        segment,
+        targetCount,
+        currentSigned,
+        inPipeline,
+        focusArea,
+        comboPackage,
+        notes
+      };
+      list.push(targetItem);
+    }
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: isUpdate ? "CRM_LIGHTHOUSE_UPDATE" : "CRM_LIGHTHOUSE_CREATE",
+      target: segment,
+      severity: "INFO",
+      details: `${isUpdate ? "Cập nhật" : "Thêm mới"} theo dõi khách hàng hạt nhân "${segment}": Đã ký ${currentSigned}/${targetCount} đơn vị (Đang đàm phán: ${inPipeline}).`
+    });
+
+    this.save();
+    return targetItem;
+  }
+
+  incrementLighthouseTarget(idOrIdx, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    const list = this.getLighthouseTargets();
+    let item = list.find((x) => x.id === String(idOrIdx));
+    if (!item && !isNaN(Number(idOrIdx)) && list[Number(idOrIdx)]) {
+      item = list[Number(idOrIdx)];
+    }
+    if (!item) {
+      throw new Error("Không tìm thấy phân khúc khách hàng hạt nhân để cập nhật.");
+    }
+
+    item.currentSigned = Number(item.currentSigned || 0) + 1;
+    if (Number(item.inPipeline || 0) > 0) {
+      item.inPipeline = Number(item.inPipeline) - 1;
+    }
+
+    const evt = this.addEvent({
+      sourceApp: "techcorp-hub",
+      targetApp: "all",
+      eventType: "LIGHTHOUSE_DEAL_WON",
+      text: `[Chiến dịch Hạt nhân Khánh Hòa] Chốt thành công +1 đơn vị thuộc phân khúc "${item.segment}" (${item.currentSigned}/${item.targetCount}).`
+    });
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "CRM_LIGHTHOUSE_CLOSE",
+      target: item.segment,
+      severity: "INFO",
+      details: `Cập nhật tiến độ chốt khách hàng hạt nhân vào CSDL lên ${item.currentSigned}/${item.targetCount} đơn vị.`
+    });
+
+    this.save();
+    return { item, event: evt };
+  }
+
+  deleteLighthouseTarget(idOrIdx, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    const list = this.getLighthouseTargets();
+    let idx = list.findIndex((x) => x.id === String(idOrIdx));
+    if (idx === -1 && !isNaN(Number(idOrIdx)) && list[Number(idOrIdx)]) {
+      idx = Number(idOrIdx);
+    }
+    if (idx === -1) {
+      throw new Error("Không tìm thấy phân khúc khách hàng hạt nhân để xoá.");
+    }
+
+    const removed = list.splice(idx, 1)[0];
+    if (sqliteDb && removed.segment) {
+      try {
+        sqliteDb.prepare("DELETE FROM lighthouse_targets WHERE segment = ?").run(String(removed.segment));
+      } catch (_) {}
+    }
+    if (removed.segment) {
+      executeMysqlStatement(
+        `DELETE FROM \`lighthouse_targets\` WHERE \`segment\` = '${String(removed.segment).replace(/'/g, "\\'")}';`
+      );
+    }
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "CRM_LIGHTHOUSE_DELETE",
+      target: removed.segment,
+      severity: "WARNING",
+      details: `Đã xoá phân khúc khách hàng hạt nhân "${removed.segment}" khỏi bảng theo dõi CSDL.`
+    });
+
+    this.save();
+    return removed;
+  }
+
+  bulkImportLighthouseTargets(rows, actorKey = "super-admin", ipAddress = "103.170.122.138") {
+    if (!Array.isArray(rows) || rows.length === 0) {
+      throw new Error("Không có dữ liệu phân khúc khách hàng hợp lệ để nhập.");
+    }
+    const list = this.getLighthouseTargets();
+    let createdCount = 0;
+    let updatedCount = 0;
+
+    rows.forEach((r) => {
+      const segment = String(r.segment || r["Phân khúc Khách hàng"] || "").trim();
+      if (!segment) return;
+      const focusArea = String(r.focusArea || r["Khu vực Trọng điểm"] || "Nha Trang - Khánh Hòa").trim();
+      const comboPackage = String(r.comboPackage || r["Gói Giải pháp Combo"] || "Gói Combo Chuyển đổi số").trim();
+      const currentSigned = Math.max(0, parseInt(r.currentSigned || r["Số lượng Đã ký"] || "0", 10) || 0);
+      const targetCount = Math.max(1, parseInt(r.targetCount || r["Chỉ tiêu Giai đoạn 1"] || "10", 10) || 10);
+      const inPipeline = Math.max(0, parseInt(r.inPipeline || r["Đang đàm phán"] || "0", 10) || 0);
+      const notes = String(r.notes || r["Chi tiết Đơn vị & Ghi chú"] || "").trim();
+
+      const existing = list.find((x) => x.segment.toLowerCase() === segment.toLowerCase());
+      if (existing) {
+        existing.focusArea = focusArea;
+        existing.comboPackage = comboPackage;
+        existing.currentSigned = currentSigned;
+        existing.targetCount = targetCount;
+        existing.inPipeline = inPipeline;
+        existing.notes = notes;
+        updatedCount++;
+      } else {
+        list.push({
+          id: "LH-" + Date.now() + "-" + Math.floor(Math.random() * 90 + 10),
+          segment,
+          focusArea,
+          comboPackage,
+          currentSigned,
+          targetCount,
+          inPipeline,
+          notes
+        });
+        createdCount++;
+      }
+    });
+
+    this.addAuditLog({
+      actorKey,
+      ipAddress,
+      action: "CRM_LIGHTHOUSE_BULK_IMPORT",
+      target: `Nhập Excel Khách hàng Hạt nhân (${createdCount} mới, ${updatedCount} cập nhật)`,
+      severity: "INFO",
+      details: `Nhập dữ liệu theo dõi khách hàng hạt nhân từ Excel vào CSDL: Thêm mới ${createdCount}, cập nhật ${updatedCount}.`
+    });
+
+    this.save();
+    return { importedCount: createdCount, createdCount, updatedCount, lighthouseTargets: list };
+  }
+
+  syncLiveFromMysql(callback) {
+    const cb = typeof callback === "function" ? callback : function () {};
+    pullFromMysqlAsync(this.state, (err, updated) => {
+      if (updated) {
+        this.save();
+      }
+      cb(err, {
+        updated,
+        mysqlStatus: getMysqlStatus(),
+        sqliteActive: Boolean(sqliteDb),
+        auditLogsCount: (this.state.auditLogs || []).length,
+        demoRequestsCount: (this.state.demoRequests || []).length,
+        lighthouseCount: (this.state.lighthouseTargets || []).length
+      });
+    });
   }
 
   // ==================== EVENT BUS ====================
@@ -2797,6 +3309,7 @@ module.exports = {
   db: new HubDatabase(),
   SQLITE_DB_PATH,
   JSON_DB_PATH,
-  getMysqlStatus
+  getMysqlStatus,
+  isSqliteActive: () => Boolean(sqliteDb)
 };
 

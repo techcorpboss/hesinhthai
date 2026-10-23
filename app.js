@@ -1474,27 +1474,118 @@ function showToast(msg) {
 }
 
 function recordLocalAuditLog(action, target, severity, details) {
-  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"];
+  const persona = STATE.personas[STATE.currentPersona] || STATE.personas["super-admin"] || {};
   const now = new Date();
   const pad = (n) => String(n).padStart(2, "0");
   const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
     now.getHours()
   )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 
-  STATE.auditLogs.unshift({
-    id: "AUD-" + Date.now(),
+  const tempId = "AUD-" + Date.now();
+  const localEntry = {
+    id: tempId,
     timestamp,
     actorId: persona.userId || "USR-ADMIN-00",
     actorName: persona.name || "Quản trị viên TechCorp",
     actorOrg: persona.org || "TechCorp Hub",
     ipAddress: "103.170.122.138",
-    action,
-    target,
-    severity,
-    details
-  });
+    action: action || "USER_ACTION",
+    target: target || "TechCorp Hub",
+    severity: severity || "INFO",
+    details: details || ""
+  };
+
+  STATE.auditLogs.unshift(localEntry);
   renderAuditLogsTable();
+
+  // Persist to real backend database (MySQL + SQLite + JSON)
+  fetch("/api/v1/audit-logs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      actorKey: STATE.currentPersona || "super-admin",
+      actorId: localEntry.actorId,
+      actorName: localEntry.actorName,
+      actorOrg: localEntry.actorOrg,
+      action: localEntry.action,
+      target: localEntry.target,
+      severity: localEntry.severity,
+      details: localEntry.details
+    })
+  })
+    .then((r) => r.json())
+    .then((data) => {
+      if (data && data.ok && Array.isArray(data.auditLogs)) {
+        STATE.auditLogs = data.auditLogs;
+        if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+        renderAuditLogsTable();
+        window.updateDbStatusBanners();
+      }
+    })
+    .catch(() => {});
 }
+
+window.updateDbStatusBanners = function () {
+  const st = STATE.dbStatus || {};
+  const engineLabel =
+    st.engine ||
+    (STATE.apiOnline
+      ? "SQLite Relational DB (techcorp_hub.sqlite) + JSON Store"
+      : "Local Fallback Cache");
+  const syncedAt = st.lastSyncedAt
+    ? new Date(st.lastSyncedAt).toLocaleTimeString("vi-VN")
+    : new Date().toLocaleTimeString("vi-VN");
+  const auditCount = (STATE.auditLogs || []).length;
+  const lhCount = (STATE.lighthouseTargets || []).length;
+  const demoCount = (STATE.demoRequests || []).length;
+
+  const auditTextEl = document.getElementById("auditDbStatusText");
+  if (auditTextEl) {
+    auditTextEl.innerHTML = `Engine: <strong>${escapeHtml(engineLabel)}</strong> • Bảng <code>audit_logs</code>: <strong>${auditCount} bản ghi</strong> • Bảng <code>lighthouse_targets</code>: <strong>${lhCount} phân khúc KH</strong> • Đồng bộ lúc: <strong>${escapeHtml(syncedAt)}</strong>`;
+  }
+
+  const demoTextEl = document.getElementById("demoDbStatusText");
+  if (demoTextEl) {
+    demoTextEl.innerHTML = `Engine: <strong>${escapeHtml(engineLabel)}</strong> • Bảng <code>demo_requests</code>: <strong>${demoCount} hồ sơ khách hàng</strong> • Bảng <code>audit_logs</code>: <strong>${auditCount} bản ghi</strong> • Đồng bộ lúc: <strong>${escapeHtml(syncedAt)}</strong>`;
+  }
+};
+
+window.syncDatabaseLive = async function (showNotification = true) {
+  try {
+    const res = await fetch("/api/v1/db/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.apiOnline = true;
+      if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+      if (Array.isArray(data.auditLogs)) STATE.auditLogs = data.auditLogs;
+      if (Array.isArray(data.demoRequests)) {
+        STATE.demoRequests = data.demoRequests;
+        syncDemoRequestsToLocal();
+      }
+      if (Array.isArray(data.lighthouseTargets)) {
+        STATE.lighthouseTargets = data.lighthouseTargets;
+      }
+      if (Array.isArray(data.users)) STATE.users = data.users;
+      if (Array.isArray(data.announcements)) STATE.announcements = data.announcements;
+      if (Array.isArray(data.forumPosts)) STATE.forumPosts = data.forumPosts;
+      sanitizeStateTerminology();
+      renderAllViews();
+      window.updateDbStatusBanners();
+      if (showNotification) {
+        showToast(
+          `🔄 Đã đồng bộ dữ liệu thực tế từ Database (<b>${(STATE.auditLogs || []).length} Audit Logs</b>, <b>${(STATE.demoRequests || []).length} KH Demo</b>, <b>${(STATE.lighthouseTargets || []).length} Phân khúc KH</b>)!`
+        );
+      }
+      return;
+    }
+  } catch (_) {}
+  if (showNotification) {
+    showToast(`<span style="color:#d97706">⚠️ Không thể kết nối tới API Database, đang hiển thị dữ liệu bộ nhớ đệm.</span>`);
+  }
+};
 
 window.activeAdminPanelId = "panel-master-overview";
 window.activeMemberSubTab = "overview";
@@ -1533,6 +1624,10 @@ window.activateAdminPanel = function (panelId, memberSubTab) {
   });
   if (panelId === "panel-role-workspace") {
     renderMemberWorkspace();
+  }
+  if (panelId === "panel-master-audit" || panelId === "panel-master-demos") {
+    window.updateDbStatusBanners();
+    window.syncDatabaseLive(false);
   }
 };
 
@@ -5260,22 +5355,26 @@ window.handleImportUsersExcel = function (event) {
 };
 
 
-// ==================== 4. USER TRACEABILITY & AUDIT LOGS ====================
+// ==================== 4. USER TRACEABILITY & AUDIT LOGS (DATABASE: audit_logs) ====================
 window.renderAuditLogsTable = function () {
   const tbody = document.getElementById("auditLogsTableBody");
   const badgeEl = document.getElementById("kpiAuditCountBadge");
   if (badgeEl) {
-    badgeEl.textContent = `${STATE.auditLogs.length} Bản ghi truy vết`;
+    badgeEl.textContent = `${(STATE.auditLogs || []).length} Bản ghi truy vết`;
+  }
+  if (typeof window.updateDbStatusBanners === "function") {
+    window.updateDbStatusBanners();
   }
   if (!tbody) return;
 
-  const kw = (document.getElementById("auditSearchInput")?.value || "").toLowerCase();
+  const kw = (document.getElementById("auditSearchInput")?.value || "").toLowerCase().trim();
   const sevFilter = document.getElementById("auditSeverityFilter")?.value || "all";
 
-  const filtered = STATE.auditLogs.filter((log) => {
+  const filtered = (STATE.auditLogs || []).filter((log) => {
     const matchSev = sevFilter === "all" || log.severity === sevFilter;
     const matchKw =
       !kw ||
+      (log.id || "").toLowerCase().includes(kw) ||
       (log.actorName || "").toLowerCase().includes(kw) ||
       (log.actorOrg || "").toLowerCase().includes(kw) ||
       (log.ipAddress || "").toLowerCase().includes(kw) ||
@@ -5284,6 +5383,17 @@ window.renderAuditLogsTable = function () {
       (log.details || "").toLowerCase().includes(kw);
     return matchSev && matchKw;
   });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center;padding:24px;color:#64748b;">
+          Không tìm thấy bản ghi Audit Log nào khớp với bộ lọc hiện tại trong Cơ sở dữ liệu.
+        </td>
+      </tr>
+    `;
+    return;
+  }
 
   tbody.innerHTML = filtered
     .map((log) => {
@@ -5297,8 +5407,9 @@ window.renderAuditLogsTable = function () {
       return `
         <tr>
           <td>
-            <code style="font-size:11.5px;color:#0052d4;">${escapeHtml(log.id)}</code>
+            <code style="font-size:11.5px;font-weight:800;color:#0052d4;">${escapeHtml(log.id)}</code>
             <div style="font-size:11.5px;color:#475569;margin-top:2px;">🕒 ${escapeHtml(log.timestamp)}</div>
+            <div style="font-size:10.5px;color:#059669;font-weight:700;margin-top:2px;">● DB Synced</div>
           </td>
           <td>
             <strong style="font-size:13px;color:#0f172a;">${escapeHtml(log.actorName)}</strong>
@@ -5313,15 +5424,45 @@ window.renderAuditLogsTable = function () {
           </td>
           <td style="font-weight:600;color:#1e293b;">${escapeHtml(log.target)}</td>
           <td style="font-size:12.5px;color:#334155;max-width:340px;">${escapeHtml(log.details)}</td>
+          <td>
+            <button type="button" class="btn btn-danger btn-sm" onclick="deleteAuditLogItem('${escapeHtml(log.id)}')" title="Xoá bản ghi này khỏi CSDL">
+              🗑️ Xoá
+            </button>
+          </td>
         </tr>
       `;
     })
     .join("");
 };
 
+window.deleteAuditLogItem = async function (logId) {
+  if (!logId) return;
+  if (!confirm(`Bạn có chắc chắn muốn xoá bản ghi Audit Log mã "${logId}" khỏi Cơ sở dữ liệu?`)) {
+    return;
+  }
+  try {
+    const res = await fetch(`/api/v1/audit-logs/${encodeURIComponent(logId)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data && data.ok && Array.isArray(data.auditLogs)) {
+      STATE.auditLogs = data.auditLogs;
+      if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+      renderAllViews();
+      window.updateDbStatusBanners();
+      showToast(`🗑️ Đã xoá bản ghi Audit Log <b>${escapeHtml(logId)}</b> khỏi Cơ sở dữ liệu!`);
+      return;
+    }
+  } catch (_) {}
+
+  STATE.auditLogs = (STATE.auditLogs || []).filter((x) => x.id !== logId);
+  renderAllViews();
+  showToast(`🗑️ Đã xoá bản ghi Audit Log <b>${escapeHtml(logId)}</b>!`);
+};
+
 window.exportAuditLogsCsv = function () {
   const headers = ["ID", "Timestamp", "ActorID", "ActorName", "Organization", "IPAddress", "Action", "Severity", "Target", "Details"];
-  const rows = STATE.auditLogs.map((l) => [
+  const rows = (STATE.auditLogs || []).map((l) => [
     l.id,
     l.timestamp,
     l.actorId,
@@ -5342,7 +5483,7 @@ window.exportAuditLogsCsv = function () {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  showToast("📥 Đã xuất file báo cáo Truy vết Người dùng (Audit Logs CSV) thành công!");
+  showToast("📥 Đã xuất file báo cáo Truy vết Người dùng (Audit Logs CSV) từ Cơ sở dữ liệu!");
 };
 
 window.printAuditLogsReport = function () {
@@ -5364,7 +5505,7 @@ window.printAuditLogsReport = function () {
     .join("");
   openEnterprisePrintWindow(
     "BÁO CÁO NHẬT KÝ KIỂM TOÁN & TRUY VẾT AN NINH (SECURITY AUDIT LOGS)",
-    "Giám sát hoạt động xác thực SSO, phân quyền RBAC và thay đổi dữ liệu trên toàn Hệ sinh thái TechCorp",
+    "Dữ liệu truy vết thực tế từ Cơ sở dữ liệu (Bảng audit_logs) trên toàn Hệ sinh thái TechCorp",
     ["Mã Log & Thời gian", "Người thực hiện & Đơn vị", "Địa chỉ IP", "Hành động", "Đối tượng tác động", "Chi tiết"],
     rowsHtml,
     `Tổng số: ${logs.length} Bản ghi`
@@ -5597,21 +5738,37 @@ window.connectB2B = async function (company) {
 function renderLighthouseTable() {
   const tbody = document.getElementById("lighthouseTableBody");
   if (!tbody) return;
-  tbody.innerHTML = STATE.lighthouseTargets
+  const list = STATE.lighthouseTargets || [];
+  tbody.innerHTML = list
     .map((item, idx) => {
-      const pct = Math.min(100, Math.round((item.currentSigned / item.targetCount) * 100));
+      const targetCount = Math.max(1, Number(item.targetCount ?? 10));
+      const currentSigned = Number(item.currentSigned ?? 0);
+      const inPipeline = Number(item.inPipeline ?? 0);
+      const comboText = item.comboPackage || item.combo || "Combo Giải pháp Chuyển đổi số TechCorp";
+      const noteText = item.notes || item.note || "";
+      const focusArea = item.focusArea || "Khánh Hòa & Toàn quốc";
+      const rowId = item.id || String(idx);
+      const pct = Math.min(100, Math.round((currentSigned / targetCount) * 100));
       return `
         <tr>
-          <td><strong>${escapeHtml(item.segment)}</strong><div style="font-size:12px;color:#475569;">📍 ${escapeHtml(item.focusArea)}</div></td>
-          <td><span class="badge badge-blue">${escapeHtml(item.comboPackage)}</span></td>
           <td>
-            <div style="font-weight:700;">${item.currentSigned} / ${item.targetCount} đơn vị (${pct}%)</div>
-            <div style="font-size:11.5px;color:#d97706;">Đang đàm phán: ${item.inPipeline} đơn vị</div>
+            <code style="font-size:11px;color:#0052d4;font-weight:700;">${escapeHtml(item.id || `LH-0${idx + 1}`)}</code>
+            <div><strong>${escapeHtml(item.segment)}</strong></div>
+            <div style="font-size:12px;color:#475569;">📍 ${escapeHtml(focusArea)}</div>
+          </td>
+          <td><span class="badge badge-blue">${escapeHtml(comboText)}</span></td>
+          <td>
+            <div style="font-weight:700;color:#0f172a;">${currentSigned} / ${targetCount} đơn vị (${pct}%)</div>
+            <div style="font-size:11.5px;color:#d97706;">Đang đàm phán (Pipeline): ${inPipeline} đơn vị</div>
             <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
           </td>
-          <td style="font-size:12.5px;color:#334155;">${escapeHtml(item.notes)}</td>
+          <td style="font-size:12.5px;color:#334155;max-width:280px;">${escapeHtml(noteText)}</td>
           <td>
-            <button class="btn btn-outline btn-sm" onclick="incrementSigned(${idx})">+1 Chốt mới</button>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-emerald btn-sm" onclick="incrementSigned('${escapeHtml(rowId)}')">+1 Chốt mới</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="editLighthouseTarget('${escapeHtml(rowId)}')">✏️ Sửa</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deleteLighthouseTargetItem('${escapeHtml(rowId)}')">🗑️ Xoá</button>
+            </div>
           </td>
         </tr>
       `;
@@ -5619,36 +5776,191 @@ function renderLighthouseTable() {
     .join("");
 }
 
-window.incrementSigned = async function (idx) {
+window.openLighthouseForm = function () {
+  const box = document.getElementById("lighthouseEditBox");
+  if (!box) return;
+  const titleEl = document.getElementById("lighthouseFormTitle");
+  if (titleEl) titleEl.textContent = "➕ Thêm Mới Phân khúc Theo dõi Khách hàng vào Database";
+  if (document.getElementById("lhEditId")) document.getElementById("lhEditId").value = "";
+  if (document.getElementById("lhSegmentInput")) document.getElementById("lhSegmentInput").value = "";
+  if (document.getElementById("lhTargetCountInput")) document.getElementById("lhTargetCountInput").value = "10";
+  if (document.getElementById("lhCurrentSignedInput")) document.getElementById("lhCurrentSignedInput").value = "0";
+  if (document.getElementById("lhInPipelineInput")) document.getElementById("lhInPipelineInput").value = "2";
+  if (document.getElementById("lhComboInput")) document.getElementById("lhComboInput").value = "";
+  if (document.getElementById("lhNoteInput")) document.getElementById("lhNoteInput").value = "";
+  box.style.display = "block";
+  box.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+
+window.closeLighthouseForm = function () {
+  const box = document.getElementById("lighthouseEditBox");
+  if (box) box.style.display = "none";
+};
+
+window.editLighthouseTarget = function (idOrIdx) {
+  const list = STATE.lighthouseTargets || [];
+  let item = list.find((x) => x.id === idOrIdx);
+  if (!item && /^\d+$/.test(String(idOrIdx))) {
+    item = list[parseInt(idOrIdx, 10)];
+  }
+  if (!item) return;
+  const box = document.getElementById("lighthouseEditBox");
+  if (!box) return;
+  const titleEl = document.getElementById("lighthouseFormTitle");
+  if (titleEl) titleEl.textContent = `✏️ Cập nhật Phân khúc Khách hàng: ${item.segment}`;
+  if (document.getElementById("lhEditId")) document.getElementById("lhEditId").value = item.id || String(idOrIdx);
+  if (document.getElementById("lhSegmentInput")) document.getElementById("lhSegmentInput").value = item.segment || "";
+  if (document.getElementById("lhTargetCountInput")) document.getElementById("lhTargetCountInput").value = String(item.targetCount ?? 10);
+  if (document.getElementById("lhCurrentSignedInput")) document.getElementById("lhCurrentSignedInput").value = String(item.currentSigned ?? 0);
+  if (document.getElementById("lhInPipelineInput")) document.getElementById("lhInPipelineInput").value = String(item.inPipeline ?? 0);
+  if (document.getElementById("lhComboInput")) document.getElementById("lhComboInput").value = item.comboPackage || item.combo || "";
+  if (document.getElementById("lhNoteInput")) document.getElementById("lhNoteInput").value = item.notes || item.note || "";
+  box.style.display = "block";
+  box.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+
+window.saveLighthouseTargetForm = async function () {
+  const editId = document.getElementById("lhEditId")?.value.trim() || "";
+  const segment = document.getElementById("lhSegmentInput")?.value.trim() || "";
+  const targetCount = parseInt(document.getElementById("lhTargetCountInput")?.value || "10", 10);
+  const currentSigned = parseInt(document.getElementById("lhCurrentSignedInput")?.value || "0", 10);
+  const inPipeline = parseInt(document.getElementById("lhInPipelineInput")?.value || "0", 10);
+  const comboPackage = document.getElementById("lhComboInput")?.value.trim() || "Combo Giải pháp Chuyển đổi số TechCorp";
+  const notes = document.getElementById("lhNoteInput")?.value.trim() || "";
+
+  if (!segment) {
+    showToast(`<span style="color:#d97706">Vui lòng nhập Tên Phân khúc Khách hàng & Khu vực!</span>`);
+    return;
+  }
+
   try {
-    const res = await fetch(`/api/v1/lighthouse/${idx}/increment`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
+    const url = editId ? `/api/v1/lighthouse/${encodeURIComponent(editId)}` : "/api/v1/lighthouse";
+    const method = editId ? "PUT" : "POST";
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: editId || undefined,
+        segment,
+        targetCount,
+        currentSigned,
+        inPipeline,
+        comboPackage,
+        combo: comboPackage,
+        notes,
+        note: notes,
+        actorKey: STATE.currentPersona
+      })
     });
     const data = await res.json();
-    if (data.ok) {
+    if (data && data.ok && Array.isArray(data.lighthouseTargets)) {
       STATE.lighthouseTargets = data.lighthouseTargets;
-      STATE.activityLogs = data.activityLogs;
-      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      if (Array.isArray(data.auditLogs)) STATE.auditLogs = data.auditLogs;
+      if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+      closeLighthouseForm();
       renderAllViews();
-      showToast(`Đã lưu tiến độ chốt khách hàng hạt nhân Nha Trang vào Database!`);
+      window.updateDbStatusBanners();
+      showToast(`💾 Đã lưu phân khúc khách hàng <b>${escapeHtml(segment)}</b> trực tiếp vào Cơ sở dữ liệu!`);
       return;
     }
   } catch (_) {}
 
-  const item = STATE.lighthouseTargets[idx];
+  if (editId) {
+    const existing = (STATE.lighthouseTargets || []).find((x, i) => x.id === editId || String(i) === editId);
+    if (existing) {
+      existing.segment = segment;
+      existing.targetCount = targetCount;
+      existing.currentSigned = currentSigned;
+      existing.inPipeline = inPipeline;
+      existing.comboPackage = comboPackage;
+      existing.notes = notes;
+    }
+  } else {
+    STATE.lighthouseTargets.push({
+      id: "LH-" + Date.now(),
+      segment,
+      targetCount,
+      currentSigned,
+      inPipeline,
+      focusArea: "Khánh Hòa & Toàn quốc",
+      comboPackage,
+      notes
+    });
+  }
+  recordLocalAuditLog("LIGHTHOUSE_SAVE", segment, "INFO", `Lưu phân khúc khách hàng (${currentSigned}/${targetCount}).`);
+  closeLighthouseForm();
+  renderAllViews();
+  showToast(`💾 Đã lưu phân khúc khách hàng <b>${escapeHtml(segment)}</b>!`);
+};
+
+window.deleteLighthouseTargetItem = async function (idOrIdx) {
+  const list = STATE.lighthouseTargets || [];
+  let item = list.find((x) => x.id === idOrIdx);
+  if (!item && /^\d+$/.test(String(idOrIdx))) {
+    item = list[parseInt(idOrIdx, 10)];
+  }
+  if (!item) return;
+  if (!confirm(`Bạn có chắc chắn muốn xoá phân khúc khách hàng "${item.segment}" khỏi Cơ sở dữ liệu?`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/v1/lighthouse/${encodeURIComponent(idOrIdx)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data && data.ok && Array.isArray(data.lighthouseTargets)) {
+      STATE.lighthouseTargets = data.lighthouseTargets;
+      if (Array.isArray(data.auditLogs)) STATE.auditLogs = data.auditLogs;
+      if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+      renderAllViews();
+      window.updateDbStatusBanners();
+      showToast(`🗑️ Đã xoá phân khúc <b>${escapeHtml(item.segment)}</b> khỏi Cơ sở dữ liệu!`);
+      return;
+    }
+  } catch (_) {}
+
+  STATE.lighthouseTargets = list.filter((x, idx) => x.id !== idOrIdx && String(idx) !== String(idOrIdx));
+  recordLocalAuditLog("LIGHTHOUSE_DELETE", item.segment, "WARNING", `Xoá phân khúc khách hàng.`);
+  renderAllViews();
+  showToast(`🗑️ Đã xoá phân khúc <b>${escapeHtml(item.segment)}</b>!`);
+};
+
+window.incrementSigned = async function (idOrIdx) {
+  try {
+    const res = await fetch(`/api/v1/lighthouse/${encodeURIComponent(idOrIdx)}/increment`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ actorKey: STATE.currentPersona })
+    });
+    const data = await res.json();
+    if (data && data.ok) {
+      STATE.lighthouseTargets = data.lighthouseTargets;
+      STATE.activityLogs = data.activityLogs || STATE.activityLogs;
+      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+      renderAllViews();
+      window.updateDbStatusBanners();
+      showToast(`✅ Đã lưu tiến độ chốt khách hàng mới vào Cơ sở dữ liệu & ghi nhận Audit Log!`);
+      return;
+    }
+  } catch (_) {}
+
+  const item =
+    (STATE.lighthouseTargets || []).find((x) => x.id === idOrIdx) ||
+    STATE.lighthouseTargets[parseInt(idOrIdx, 10)];
   if (item) {
-    item.currentSigned += 1;
+    item.currentSigned = Number(item.currentSigned || 0) + 1;
     if (item.inPipeline > 0) item.inPipeline -= 1;
     recordLocalAuditLog("CRM_LIGHTHOUSE_CLOSE", item.segment, "INFO", `Tăng số lượng chốt lên ${item.currentSigned}/${item.targetCount}.`);
     renderAllViews();
-    showToast(`Đã cập nhật tiến độ chốt khách hàng hạt nhân Nha Trang!`);
+    showToast(`✅ Đã cập nhật tiến độ chốt khách hàng hạt nhân!`);
   }
 };
 
 function updateTotalKPIs() {
-  const totalSigned = STATE.lighthouseTargets.reduce((acc, x) => acc + x.currentSigned, 0);
-  const totalTarget = STATE.lighthouseTargets.reduce((acc, x) => acc + x.targetCount, 0);
+  const totalSigned = (STATE.lighthouseTargets || []).reduce((acc, x) => acc + Number(x.currentSigned || 0), 0);
+  const totalTarget = (STATE.lighthouseTargets || []).reduce((acc, x) => acc + Number(x.targetCount || 0), 0);
   const el = document.getElementById("kpiLighthouseCount");
   if (el && totalTarget > 0) {
     el.textContent = `${totalSigned} / ${totalTarget}`;
@@ -5696,24 +6008,24 @@ window.calculateComboPrice = function () {
 
 window.printLighthouseReport = function () {
   const list = STATE.lighthouseTargets || [];
-  const totalSigned = list.reduce((acc, x) => acc + (x.currentSigned || 0), 0);
-  const totalTarget = list.reduce((acc, x) => acc + (x.targetCount || 0), 0);
+  const totalSigned = list.reduce((acc, x) => acc + Number(x.currentSigned || 0), 0);
+  const totalTarget = list.reduce((acc, x) => acc + Number(x.targetCount || 0), 0);
   const rowsHtml = list
     .map(
       (item, idx) => `
       <tr>
         <td style="text-align:center;">${idx + 1}</td>
-        <td><strong>${escapeHtml(item.segment)}</strong><br/>📍 ${escapeHtml(item.focusArea)}</td>
-        <td>${escapeHtml(item.comboPackage)}</td>
+        <td><strong>${escapeHtml(item.segment)}</strong><br/>📍 ${escapeHtml(item.focusArea || "Khánh Hòa")}</td>
+        <td>${escapeHtml(item.comboPackage || item.combo || "")}</td>
         <td><strong>${item.currentSigned} / ${item.targetCount}</strong> đơn vị<br/>Đang đàm phán: ${item.inPipeline}</td>
-        <td>${escapeHtml(item.notes)}</td>
+        <td>${escapeHtml(item.notes || item.note || "")}</td>
       </tr>
     `
     )
     .join("");
   openEnterprisePrintWindow(
-    "BÁO CÁO TIẾN ĐỘ PHÁT TRIỂN 57 ĐƠN VỊ HẠT NHÂN TẠI KHÁNH HÒA",
-    `Tổng tiến độ ký kết: ${totalSigned} / ${totalTarget} đơn vị hạt nhân Giai đoạn 1`,
+    "BÁO CÁO THEO DÕI TIẾN ĐỘ KHÁCH HÀNG HẠT NHÂN (DATABASE: lighthouse_targets)",
+    `Tổng tiến độ ký kết thực tế: ${totalSigned} / ${totalTarget} đơn vị hạt nhân`,
     ["Phân khúc & Khu vực Trọng điểm", "Gói Giải pháp Combo", "Tiến độ Ký kết", "Danh sách Đơn vị & Ghi chú"],
     rowsHtml,
     `Đã ký: ${totalSigned}/${totalTarget} đơn vị`
@@ -5722,6 +6034,7 @@ window.printLighthouseReport = function () {
 
 window.exportLighthouseExcel = function () {
   const headers = [
+    { key: "id", label: "Mã Phân khúc" },
     { key: "segment", label: "Phân khúc Khách hàng" },
     { key: "focusArea", label: "Khu vực Trọng điểm" },
     { key: "comboPackage", label: "Gói Giải pháp Combo" },
@@ -5730,10 +6043,88 @@ window.exportLighthouseExcel = function () {
     { key: "inPipeline", label: "Đang đàm phán" },
     { key: "notes", label: "Chi tiết Đơn vị & Ghi chú" }
   ];
-  const rows = STATE.lighthouseTargets || [];
+  const rows = (STATE.lighthouseTargets || []).map((x, idx) => ({
+    id: x.id || `LH-0${idx + 1}`,
+    segment: x.segment || "",
+    focusArea: x.focusArea || "Khánh Hòa & Toàn quốc",
+    comboPackage: x.comboPackage || x.combo || "",
+    currentSigned: x.currentSigned ?? 0,
+    targetCount: x.targetCount ?? 10,
+    inPipeline: x.inPipeline ?? 0,
+    notes: x.notes || x.note || ""
+  }));
   const dateStr = new Date().toISOString().slice(0, 10);
-  downloadCsvFile(`TechCorp_TienDo_57_DonVi_HatNhan_${dateStr}.csv`, headers, rows);
-  showToast("📥 Đã xuất Báo cáo Tiến độ 57 Đơn vị Hạt nhân (.CSV) thành công!");
+  downloadCsvFile(`TechCorp_TheoDoi_KhachHang_HatNhan_${dateStr}.csv`, headers, rows);
+  showToast("📥 Đã xuất Báo cáo Theo dõi Khách hàng Hạt nhân (.CSV) từ Cơ sở dữ liệu!");
+};
+
+window.downloadLighthouseExcelTemplate = function () {
+  const headers = [
+    { key: "id", label: "Mã Phân khúc" },
+    { key: "segment", label: "Phân khúc Khách hàng" },
+    { key: "focusArea", label: "Khu vực Trọng điểm" },
+    { key: "comboPackage", label: "Gói Giải pháp Combo" },
+    { key: "currentSigned", label: "Số lượng Đã ký" },
+    { key: "targetCount", label: "Chỉ tiêu Giai đoạn 1" },
+    { key: "inPipeline", label: "Đang đàm phán" },
+    { key: "notes", label: "Chi tiết Đơn vị & Ghi chú" }
+  ];
+  const sampleRows = [
+    {
+      id: "LH-05",
+      segment: "5. Khách sạn, Resort & Lữ hành Quốc tế (Nha Trang - Cam Ranh)",
+      focusArea: "Trần Phú, Bãi Dài Cam Ranh, Hòn Tre",
+      comboPackage: "TechCorp PMS + ERP Tài chính + Tuyển dụng JobAI",
+      currentSigned: 5,
+      targetCount: 15,
+      inPipeline: 6,
+      notes: "Triển khai đồng bộ PMS lễ tân buồng phòng và kế toán tự động"
+    }
+  ];
+  downloadCsvFile("TechCorp_FileMau_TheoDoi_KhachHang_HatNhan.csv", headers, sampleRows);
+  showToast("📄 Đã tải File Mẫu Nhập Theo dõi Khách hàng Hạt nhân (.CSV)!");
+};
+
+window.triggerImportLighthouseExcel = function () {
+  const inp = document.getElementById("importLighthouseExcelInput");
+  if (inp) {
+    inp.value = "";
+    inp.click();
+  }
+};
+
+window.handleImportLighthouseExcel = function (event) {
+  const file = event && event.target && event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    const rawObjects = parseCsvToObjects(String(e.target.result || ""));
+    if (!rawObjects.length) {
+      showToast(`<span style="color:#d97706">⚠️ File CSV trống hoặc không đúng định dạng!</span>`);
+      return;
+    }
+    try {
+      const res = await fetch("/api/v1/lighthouse/bulk-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows: rawObjects, actorKey: STATE.currentPersona })
+      });
+      const data = await res.json();
+      if (data && data.ok && Array.isArray(data.lighthouseTargets)) {
+        STATE.lighthouseTargets = data.lighthouseTargets;
+        if (Array.isArray(data.auditLogs)) STATE.auditLogs = data.auditLogs;
+        if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+        renderAllViews();
+        window.updateDbStatusBanners();
+        showToast(
+          `📤 Đã nhập Excel vào Database: Thêm mới <b>${data.importedCount}</b>, Cập nhật <b>${data.updatedCount}</b> phân khúc khách hàng!`
+        );
+        return;
+      }
+    } catch (_) {}
+    showToast(`<span style="color:#d97706">⚠️ Lỗi kết nối khi nhập dữ liệu vào Database.</span>`);
+  };
+  reader.readAsText(file, "utf-8");
 };
 
 window.printComboPricingQuote = function () {
@@ -8819,6 +9210,10 @@ function setupPersonaSwitcher() {
 }
 
 function mergeLocalDemoRequests() {
+  // When connected to the backend database, STATE.demoRequests comes authoritatively from the database
+  if (STATE.apiOnline) {
+    return;
+  }
   try {
     const raw = localStorage.getItem("tc_hub_demo_requests_v1");
     if (!raw) return;
@@ -8843,6 +9238,9 @@ function syncDemoRequestsToLocal() {
 
 window.renderAdminDemoRequestsTable = function () {
   mergeLocalDemoRequests();
+  if (typeof window.updateDbStatusBanners === "function") {
+    window.updateDbStatusBanners();
+  }
   const tbody = document.getElementById("adminDemoRequestsTableBody");
   const kpiRow = document.getElementById("adminDemoKpiRow");
   const list = STATE.demoRequests || [];
@@ -8855,9 +9253,9 @@ window.renderAdminDemoRequestsTable = function () {
 
     kpiRow.innerHTML = `
       <div class="kpi-card">
-        <span class="label">📋 Tổng Yêu cầu Đăng ký Demo</span>
+        <span class="label">📋 Tổng Yêu cầu Đăng ký Demo (CSDL)</span>
         <div class="value" style="color:#0052d4;">${list.length} Khách hàng</div>
-        <div class="sub">Từ 16 trang giới thiệu sản phẩm</div>
+        <div class="sub">Dữ liệu thực tế từ bảng <code>demo_requests</code></div>
       </div>
       <div class="kpi-card">
         <span class="label">🆕 Mới đăng ký (Cần gọi ngay)</span>
@@ -8900,7 +9298,7 @@ window.renderAdminDemoRequestsTable = function () {
     tbody.innerHTML = `
       <tr>
         <td colspan="6" style="text-align:center;padding:24px;color:#64748b;">
-          Không tìm thấy yêu cầu đăng ký Demo nào phù hợp với bộ lọc hiện tại.
+          Không tìm thấy yêu cầu đăng ký Demo nào phù hợp với bộ lọc hiện tại trong Cơ sở dữ liệu.
         </td>
       </tr>
     `;
@@ -8923,6 +9321,7 @@ window.renderAdminDemoRequestsTable = function () {
             <code style="font-size:12px;font-weight:800;color:#0052d4;">${escapeHtml(item.id)}</code>
             <div style="font-size:11.5px;color:#475569;margin-top:3px;">🕒 ${escapeHtml(item.createdAt || "Vừa xong")}</div>
             <div style="font-size:11px;color:#94a3b8;margin-top:2px;">IP: ${escapeHtml(item.ipAddress || "103.170.122.138")}</div>
+            <div style="font-size:10.5px;color:#059669;font-weight:700;margin-top:2px;">● DB Synced</div>
           </td>
           <td>
             <strong style="font-size:13.5px;color:#0f172a;">${escapeHtml(item.fullName)}</strong>
@@ -8965,7 +9364,7 @@ window.renderAdminDemoRequestsTable = function () {
                 placeholder="Ghi chú chăm sóc khách hàng..."
                 value="${escapeHtml(item.adminNote || "")}"
               />
-              <button class="btn btn-outline btn-sm" onclick="saveDemoLeadAdminNote('${escapeHtml(item.id)}')" title="Lưu ghi chú">💾</button>
+              <button class="btn btn-outline btn-sm" onclick="saveDemoLeadAdminNote('${escapeHtml(item.id)}')" title="Lưu ghi chú vào CSDL">💾</button>
             </div>
           </td>
           <td>
@@ -8973,7 +9372,10 @@ window.renderAdminDemoRequestsTable = function () {
               <a href="tel:${escapeHtml((item.phone || "").replace(/[^0-9+]/g, ""))}" class="btn btn-primary btn-sm" style="text-decoration:none;text-align:center;">
                 📞 Gọi / Zalo
               </a>
-              <button class="btn btn-danger btn-sm" onclick="deleteDemoLead('${escapeHtml(item.id)}')">
+              <button type="button" class="btn btn-outline btn-sm" onclick="editAdminDemoLead('${escapeHtml(item.id)}')">
+                ✏️ Sửa
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deleteDemoLead('${escapeHtml(item.id)}')">
                 🗑️ Xoá
               </button>
             </div>
@@ -9000,7 +9402,9 @@ window.updateDemoLeadStatus = async function (leadId, newStatus) {
     if (data && data.ok && Array.isArray(data.demoRequests)) {
       STATE.demoRequests = data.demoRequests;
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      if (data.dbStatus) STATE.dbStatus = data.dbStatus;
       syncDemoRequestsToLocal();
+      window.updateDbStatusBanners();
     }
   } catch (_) {
     recordLocalAuditLog(
@@ -9012,7 +9416,7 @@ window.updateDemoLeadStatus = async function (leadId, newStatus) {
   }
 
   renderAllViews();
-  showToast(`✅ Đã cập nhật trạng thái chăm sóc khách hàng <b>${escapeHtml(lead.fullName)}</b>!`);
+  showToast(`✅ Đã lưu trạng thái chăm sóc khách hàng <b>${escapeHtml(lead.fullName)}</b> vào Database!`);
 };
 
 window.saveDemoLeadAdminNote = async function (leadId) {
@@ -9033,20 +9437,22 @@ window.saveDemoLeadAdminNote = async function (leadId) {
     if (data && data.ok && Array.isArray(data.demoRequests)) {
       STATE.demoRequests = data.demoRequests;
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      if (data.dbStatus) STATE.dbStatus = data.dbStatus;
       syncDemoRequestsToLocal();
+      window.updateDbStatusBanners();
     }
   } catch (_) {
     recordLocalAuditLog("DEMO_REQUEST_NOTE", `${lead.id}: ${lead.fullName}`, "INFO", `Ghi chú Admin: ${adminNote}`);
   }
 
   renderAllViews();
-  showToast(`💾 Đã lưu ghi chú chăm sóc cho khách hàng <b>${escapeHtml(lead.fullName)}</b>!`);
+  showToast(`💾 Đã lưu ghi chú chăm sóc cho khách hàng <b>${escapeHtml(lead.fullName)}</b> vào Database!`);
 };
 
 window.deleteDemoLead = async function (leadId) {
   const lead = (STATE.demoRequests || []).find((x) => x.id === leadId);
   if (!lead) return;
-  if (!confirm(`Bạn có chắc chắn muốn xoá yêu cầu đăng ký Demo của "${lead.fullName}" (${lead.orgName})?`)) {
+  if (!confirm(`Bạn có chắc chắn muốn xoá yêu cầu đăng ký Demo của "${lead.fullName}" (${lead.orgName}) khỏi Cơ sở dữ liệu?`)) {
     return;
   }
 
@@ -9061,14 +9467,16 @@ window.deleteDemoLead = async function (leadId) {
     if (data && data.ok && Array.isArray(data.demoRequests)) {
       STATE.demoRequests = data.demoRequests;
       STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      if (data.dbStatus) STATE.dbStatus = data.dbStatus;
       syncDemoRequestsToLocal();
+      window.updateDbStatusBanners();
     }
   } catch (_) {
     recordLocalAuditLog("DEMO_REQUEST_DELETE", `${lead.id}: ${lead.fullName}`, "WARNING", "Xoá yêu cầu đăng ký Demo.");
   }
 
   renderAllViews();
-  showToast(`🗑️ Đã xoá yêu cầu đăng ký Demo mã <b>${escapeHtml(leadId)}</b>!`);
+  showToast(`🗑️ Đã xoá yêu cầu đăng ký Demo mã <b>${escapeHtml(leadId)}</b> khỏi Database!`);
 };
 
 window.exportDemoLeadsCsv = function () {
@@ -9112,29 +9520,67 @@ window.exportDemoLeadsCsv = function () {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  showToast("📥 Đã xuất danh sách Khách hàng Đăng ký Demo (CSV) thành công!");
+  showToast("📥 Đã xuất danh sách Khách hàng Đăng ký Demo (CSV) từ Cơ sở dữ liệu!");
 };
 
 window.deleteDemoLeadAdmin = window.deleteDemoLead;
 
-window.toggleAdminDemoLeadForm = function (show) {
-  const box = document.getElementById("adminNewDemoLeadFormBox");
+window.toggleAdminDemoLeadForm = function (show, isEdit = false) {
+  const box = document.getElementById("adminDemoLeadCreateBox") || document.getElementById("adminNewDemoLeadFormBox");
   if (!box) return;
   const shouldShow = show === undefined ? box.style.display === "none" : Boolean(show);
+  if (shouldShow && !isEdit) {
+    const titleEl = document.getElementById("crmLeadFormTitle");
+    if (titleEl) titleEl.textContent = "➕ Thêm Mới Hồ sơ Khách hàng Đăng ký Tư vấn / Demo vào Database";
+    if (document.getElementById("crmEditLeadId")) document.getElementById("crmEditLeadId").value = "";
+    if (document.getElementById("crmNewLeadName")) document.getElementById("crmNewLeadName").value = "";
+    if (document.getElementById("crmNewLeadPhone")) document.getElementById("crmNewLeadPhone").value = "";
+    if (document.getElementById("crmNewLeadEmail")) document.getElementById("crmNewLeadEmail").value = "";
+    if (document.getElementById("crmNewLeadOrg")) document.getElementById("crmNewLeadOrg").value = "";
+    if (document.getElementById("crmNewLeadScale")) document.getElementById("crmNewLeadScale").value = "50 - 200 nhân sự / học viên";
+    if (document.getElementById("crmNewLeadProduct")) document.getElementById("crmNewLeadProduct").value = "erp";
+    if (document.getElementById("crmNewLeadTime")) document.getElementById("crmNewLeadTime").value = "Trong giờ hành chính (08:00 - 17:30)";
+    if (document.getElementById("crmNewLeadStatus")) document.getElementById("crmNewLeadStatus").value = "new";
+    if (document.getElementById("crmNewLeadNotes")) document.getElementById("crmNewLeadNotes").value = "";
+    if (document.getElementById("crmNewLeadAdminNote")) document.getElementById("crmNewLeadAdminNote").value = "";
+  }
   box.style.display = shouldShow ? "block" : "none";
   if (shouldShow) {
     box.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 };
 
+window.editAdminDemoLead = function (leadId) {
+  const lead = (STATE.demoRequests || []).find((x) => x.id === leadId);
+  if (!lead) return;
+  window.toggleAdminDemoLeadForm(true, true);
+  const titleEl = document.getElementById("crmLeadFormTitle");
+  if (titleEl) titleEl.textContent = `✏️ Chỉnh sửa Hồ sơ Khách hàng: ${lead.fullName} (${lead.id})`;
+  if (document.getElementById("crmEditLeadId")) document.getElementById("crmEditLeadId").value = lead.id;
+  if (document.getElementById("crmNewLeadName")) document.getElementById("crmNewLeadName").value = lead.fullName || "";
+  if (document.getElementById("crmNewLeadPhone")) document.getElementById("crmNewLeadPhone").value = lead.phone || "";
+  if (document.getElementById("crmNewLeadEmail")) document.getElementById("crmNewLeadEmail").value = lead.email || "";
+  if (document.getElementById("crmNewLeadOrg")) document.getElementById("crmNewLeadOrg").value = lead.orgName || "";
+  if (document.getElementById("crmNewLeadScale")) document.getElementById("crmNewLeadScale").value = lead.orgScale || "50 - 200 nhân sự";
+  if (document.getElementById("crmNewLeadProduct")) document.getElementById("crmNewLeadProduct").value = lead.productId || "erp";
+  if (document.getElementById("crmNewLeadTime")) document.getElementById("crmNewLeadTime").value = lead.preferredTime || "Trong giờ hành chính";
+  if (document.getElementById("crmNewLeadStatus")) document.getElementById("crmNewLeadStatus").value = lead.status || "new";
+  if (document.getElementById("crmNewLeadNotes")) document.getElementById("crmNewLeadNotes").value = lead.notes || "";
+  if (document.getElementById("crmNewLeadAdminNote")) document.getElementById("crmNewLeadAdminNote").value = lead.adminNote || "";
+};
+
 window.saveAdminNewDemoLead = async function () {
-  const fullName = document.getElementById("adminDemoNewFullName")?.value.trim();
-  const phone = document.getElementById("adminDemoNewPhone")?.value.trim();
-  const orgName = document.getElementById("adminDemoNewOrgName")?.value.trim();
-  const email = document.getElementById("adminDemoNewEmail")?.value.trim() || "Chưa cung cấp";
-  const productId = document.getElementById("adminDemoNewProductId")?.value || "erp";
-  const status = document.getElementById("adminDemoNewStatus")?.value || "new";
-  const notes = document.getElementById("adminDemoNewNotes")?.value.trim() || "Khách hàng đăng ký trực tiếp qua Hotline/Zalo Điều hành.";
+  const editId = document.getElementById("crmEditLeadId")?.value.trim() || "";
+  const fullName = (document.getElementById("crmNewLeadName")?.value || document.getElementById("adminDemoNewFullName")?.value || "").trim();
+  const phone = (document.getElementById("crmNewLeadPhone")?.value || document.getElementById("adminDemoNewPhone")?.value || "").trim();
+  const orgName = (document.getElementById("crmNewLeadOrg")?.value || document.getElementById("adminDemoNewOrgName")?.value || "").trim();
+  const email = (document.getElementById("crmNewLeadEmail")?.value || document.getElementById("adminDemoNewEmail")?.value || "").trim() || "Chưa cung cấp";
+  const orgScale = (document.getElementById("crmNewLeadScale")?.value || "").trim() || "50 - 200 nhân sự / học viên";
+  const productId = document.getElementById("crmNewLeadProduct")?.value || document.getElementById("adminDemoNewProductId")?.value || "erp";
+  const preferredTime = (document.getElementById("crmNewLeadTime")?.value || "").trim() || "Trong giờ hành chính (08:00 - 17:30)";
+  const status = document.getElementById("crmNewLeadStatus")?.value || document.getElementById("adminDemoNewStatus")?.value || "new";
+  const notes = (document.getElementById("crmNewLeadNotes")?.value || document.getElementById("adminDemoNewNotes")?.value || "").trim() || "Khách hàng đăng ký trực tiếp qua Hotline/Zalo Điều hành.";
+  const adminNote = (document.getElementById("crmNewLeadAdminNote")?.value || "").trim();
 
   if (!fullName || !phone || !orgName) {
     showToast(`<span style="color:#d97706">Vui lòng nhập đầy đủ Họ tên, Số điện thoại/Zalo và Tên Đơn vị/Doanh nghiệp!</span>`);
@@ -9145,6 +9591,55 @@ window.saveAdminNewDemoLead = async function () {
   const productName = matchedApp ? matchedApp.name : "Giải pháp Chuyển đổi số Hệ sinh thái TechCorp";
   const appUrl = matchedApp ? matchedApp.appUrl : "https://hesinhthai.techcorp.info.vn";
 
+  // Update existing customer lead in database
+  if (editId) {
+    try {
+      const res = await fetch(`/api/v1/demo-requests/${encodeURIComponent(editId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName,
+          phone,
+          email,
+          orgName,
+          orgScale,
+          productId,
+          productName,
+          appUrl,
+          preferredTime,
+          status,
+          notes,
+          adminNote,
+          actorKey: STATE.currentPersona
+        })
+      });
+      const data = await res.json();
+      if (data && data.ok && Array.isArray(data.demoRequests)) {
+        STATE.demoRequests = data.demoRequests;
+        if (Array.isArray(data.auditLogs)) STATE.auditLogs = data.auditLogs;
+        if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+        syncDemoRequestsToLocal();
+        toggleAdminDemoLeadForm(false);
+        renderAllViews();
+        window.updateDbStatusBanners();
+        showToast(`✅ Đã cập nhật hồ sơ khách hàng <b>${escapeHtml(fullName)}</b> (${escapeHtml(editId)}) vào Database!`);
+        return;
+      }
+    } catch (_) {}
+
+    const target = (STATE.demoRequests || []).find((x) => x.id === editId);
+    if (target) {
+      Object.assign(target, { fullName, phone, email, orgName, orgScale, productId, productName, appUrl, preferredTime, status, notes, adminNote });
+      syncDemoRequestsToLocal();
+      recordLocalAuditLog("DEMO_REQUEST_UPDATE", `${editId}: ${fullName}`, "INFO", `Cập nhật thông tin khách hàng.`);
+    }
+    toggleAdminDemoLeadForm(false);
+    renderAllViews();
+    showToast(`✅ Đã cập nhật hồ sơ khách hàng <b>${escapeHtml(fullName)}</b>!`);
+    return;
+  }
+
+  // Create new customer lead in database
   let savedLead = null;
   try {
     const res = await fetch("/api/v1/demo-requests", {
@@ -9155,20 +9650,28 @@ window.saveAdminNewDemoLead = async function () {
         phone,
         email,
         orgName,
-        orgScale: "50 - 200 nhân sự / học viên",
+        orgScale,
         productId,
         productName,
         appUrl,
-        preferredTime: "Trong giờ hành chính",
-        notes
+        preferredTime,
+        status,
+        notes,
+        adminNote
       })
     });
     const data = await res.json();
-    if (data && data.ok && data.lead) {
-      savedLead = data.lead;
-      savedLead.status = status;
+    const createdObj = (data && (data.lead || data.demoRequest)) || null;
+    if (data && data.ok && createdObj) {
+      savedLead = createdObj;
       if (Array.isArray(data.demoRequests)) {
         STATE.demoRequests = data.demoRequests;
+      }
+      if (Array.isArray(data.auditLogs)) {
+        STATE.auditLogs = data.auditLogs;
+      }
+      if (data.dbStatus) {
+        STATE.dbStatus = data.dbStatus;
       }
     }
   } catch (_) {}
@@ -9180,29 +9683,26 @@ window.saveAdminNewDemoLead = async function () {
       phone,
       email,
       orgName,
-      orgScale: "50 - 200 nhân sự / học viên",
+      orgScale,
       productId,
       productName,
       appUrl,
-      preferredTime: "Trong giờ hành chính",
+      preferredTime,
       notes,
       status,
-      adminNote: "Tạo từ Cổng Quản trị",
+      adminNote: adminNote || "Tạo từ Cổng Quản trị",
       ipAddress: "103.170.122.138",
       createdAt: new Date().toISOString().replace("T", " ").slice(0, 19)
     };
     STATE.demoRequests.unshift(savedLead);
+    recordLocalAuditLog("DEMO_REQUEST_CREATE", `${savedLead.id}: ${fullName}`, "INFO", `Tạo mới hồ sơ khách hàng Demo.`);
   }
 
   syncDemoRequestsToLocal();
-  if (document.getElementById("adminDemoNewFullName")) document.getElementById("adminDemoNewFullName").value = "";
-  if (document.getElementById("adminDemoNewPhone")) document.getElementById("adminDemoNewPhone").value = "";
-  if (document.getElementById("adminDemoNewOrgName")) document.getElementById("adminDemoNewOrgName").value = "";
-  if (document.getElementById("adminDemoNewEmail")) document.getElementById("adminDemoNewEmail").value = "";
-  if (document.getElementById("adminDemoNewNotes")) document.getElementById("adminDemoNewNotes").value = "";
   toggleAdminDemoLeadForm(false);
   renderAllViews();
-  showToast(`✅ Đã thêm mới khách hàng Demo <b>${escapeHtml(fullName)}</b> (${escapeHtml(savedLead.id)})!`);
+  window.updateDbStatusBanners();
+  showToast(`✅ Đã lưu khách hàng <b>${escapeHtml(fullName)}</b> (${escapeHtml(savedLead.id)}) trực tiếp vào Cơ sở dữ liệu!`);
 };
 
 window.printDemoLeadsReport = function () {
@@ -9222,8 +9722,8 @@ window.printDemoLeadsReport = function () {
     )
     .join("");
   openEnterprisePrintWindow(
-    "BÁO CÁO DANH SÁCH KHÁCH HÀNG ĐĂNG KÝ DEMO & TƯ VẤN GIẢI PHÁP (CRM LEADS)",
-    "Tổng hợp dữ liệu khách hàng đăng ký từ 16 trang chi tiết sản phẩm & cổng liên hệ",
+    "BÁO CÁO DANH SÁCH KHÁCH HÀNG ĐĂNG KÝ DEMO & TƯ VẤN GIẢI PHÁP (DATABASE: demo_requests)",
+    "Dữ liệu khách hàng thực tế từ Cơ sở dữ liệu Hệ sinh thái TechCorp",
     ["Mã Phiếu & Ngày ĐK", "Khách hàng & Đơn vị", "Sản phẩm Quan tâm", "Yêu cầu & Lịch hẹn", "Trạng thái & Ghi chú CSKH"],
     rowsHtml,
     `Tổng số: ${list.length} Khách hàng`
@@ -9273,12 +9773,35 @@ window.handleImportDemoLeadsExcel = function (event) {
   const file = event && event.target && event.target.files && event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = function (e) {
+  reader.onload = async function (e) {
     const rawObjects = parseCsvToObjects(String(e.target.result || ""));
     if (!rawObjects.length) {
       showToast(`<span style="color:#d97706">⚠️ File CSV trống hoặc không đúng định dạng!</span>`);
       return;
     }
+
+    // Persist imported rows directly to Backend Database (demo_requests + audit_logs)
+    try {
+      const res = await fetch("/api/v1/demo-requests/bulk-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows: rawObjects, actorKey: STATE.currentPersona })
+      });
+      const data = await res.json();
+      if (data && data.ok && Array.isArray(data.demoRequests)) {
+        STATE.demoRequests = data.demoRequests;
+        if (Array.isArray(data.auditLogs)) STATE.auditLogs = data.auditLogs;
+        if (data.dbStatus) STATE.dbStatus = data.dbStatus;
+        syncDemoRequestsToLocal();
+        renderAllViews();
+        window.updateDbStatusBanners();
+        showToast(
+          `📤 Đã nhập Excel vào Database: Thêm mới <b>${data.importedCount}</b>, Cập nhật <b>${data.updatedCount}</b> khách hàng Demo!`
+        );
+        return;
+      }
+    } catch (_) {}
+
     let added = 0;
     rawObjects.forEach((r) => {
       const fullName = r.HoTenKhachHang || r.fullName || r["Họ tên"] || "";
@@ -9381,11 +9904,18 @@ window.submitPublicContactForm = async function (event) {
       })
     });
     const data = await res.json();
-    if (data && data.ok && data.lead) {
-      createdLead = data.lead;
+    const leadObj = (data && (data.lead || data.demoRequest)) || null;
+    if (data && data.ok && leadObj) {
+      createdLead = leadObj;
       if (Array.isArray(data.demoRequests)) {
         STATE.demoRequests = data.demoRequests;
         syncDemoRequestsToLocal();
+      }
+      if (Array.isArray(data.auditLogs)) {
+        STATE.auditLogs = data.auditLogs;
+      }
+      if (data.dbStatus) {
+        STATE.dbStatus = data.dbStatus;
       }
     }
   } catch (_) {}
@@ -9430,7 +9960,7 @@ window.submitPublicContactForm = async function (event) {
   if (formEl) formEl.reset();
 
   renderAllViews();
-  showToast(`✅ Đã gửi thông tin liên hệ của <b>${escapeHtml(fullName)}</b> về Hệ sinh thái TechCorp!`);
+  showToast(`✅ Đã lưu thông tin liên hệ của <b>${escapeHtml(fullName)}</b> vào Cơ sở dữ liệu Hệ sinh thái TechCorp!`);
 };
 
 function sanitizeStateTerminology() {
@@ -9603,25 +10133,32 @@ async function bootstrapFromServer() {
     const data = await res.json();
     if (data && data.ok) {
       STATE.apiOnline = true;
+      if (data.dbStatus) {
+        STATE.dbStatus = data.dbStatus;
+      }
       STATE.apps = data.apps || STATE.apps;
       if (Array.isArray(data.heroSliders) && data.heroSliders.length > 0) {
         STATE.heroSliders = data.heroSliders;
         saveCachedHeroSliders();
       }
-      if (Array.isArray(data.demoRequests) && data.demoRequests.length > 0) {
+      if (Array.isArray(data.demoRequests)) {
         STATE.demoRequests = data.demoRequests;
+        syncDemoRequestsToLocal();
       }
-      mergeLocalDemoRequests();
       STATE.users = data.users || STATE.users;
       STATE.personas = data.personas || STATE.personas;
       STATE.announcements = data.announcements || STATE.announcements;
       STATE.rbacMatrix = data.rbacMatrix || STATE.rbacMatrix;
       STATE.forumPosts = data.forumPosts || STATE.forumPosts;
-      STATE.auditLogs = data.auditLogs || STATE.auditLogs;
+      if (Array.isArray(data.auditLogs)) {
+        STATE.auditLogs = data.auditLogs;
+      }
       STATE.talents = data.talents || STATE.talents;
       STATE.contests = data.contests || STATE.contests;
       STATE.b2bOffers = data.b2bOffers || STATE.b2bOffers;
-      STATE.lighthouseTargets = data.lighthouseTargets || STATE.lighthouseTargets;
+      if (Array.isArray(data.lighthouseTargets)) {
+        STATE.lighthouseTargets = data.lighthouseTargets;
+      }
       STATE.activityLogs = data.activityLogs || STATE.activityLogs;
       if (data.sso && data.sso.token) {
         STATE.ssoToken = data.sso.token;
@@ -9646,6 +10183,7 @@ async function bootstrapFromServer() {
 
   sanitizeStateTerminology();
   renderAllViews();
+  window.updateDbStatusBanners();
   window.activateAdminPanel(window.activeAdminPanelId, window.activeMemberSubTab);
 }
 

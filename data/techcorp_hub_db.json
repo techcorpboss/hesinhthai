@@ -3,7 +3,7 @@
     "domain": "hesinhthai.techcorp.info.vn",
     "version": "6.7.0",
     "region": "Nha Trang - Khánh Hòa",
-    "updatedAt": "2026-10-21T03:29:15.046Z"
+    "updatedAt": "2026-10-23T12:12:31.439Z"
   },
   "apps": [
     {
@@ -488,7 +488,8 @@
       "inPipeline": 2,
       "focusArea": "Vĩnh Hải, Vĩnh Hòa, Trung tâm Nha Trang",
       "comboPackage": "Cổng Thực tập & Việc làm Số + Thi Trắc nghiệm Online",
-      "notes": "Đã kết nối Trung tâm Hỗ trợ SV; đang chuẩn bị ký MOU đợt 1"
+      "notes": "Đã kết nối Trung tâm Hỗ trợ SV; đang chuẩn bị ký MOU đợt 1",
+      "id": "LH-01"
     },
     {
       "segment": "2. Trung tâm Ngoại ngữ - Tin học",
@@ -497,7 +498,8 @@
       "inPipeline": 5,
       "focusArea": "KĐT Vĩnh Điềm Trung, Lê Hồng Phong, Phước Hải, Bắc Nha Trang",
       "comboPackage": "Gói Tăng tốc Tuyển sinh (QL Trung tâm + LMS Thi Online + Web)",
-      "notes": "Rất hào hứng với chương trình đồng tổ chức Thi thử IELTS/TOEIC toàn tỉnh"
+      "notes": "Rất hào hứng với chương trình đồng tổ chức Thi thử IELTS/TOEIC toàn tỉnh",
+      "id": "LH-02"
     },
     {
       "segment": "3. Trường Mầm non & Phổ thông Tư thục",
@@ -506,7 +508,8 @@
       "inPipeline": 7,
       "focusArea": "KĐT Mỹ Gia, Hà Quang II, Vĩnh Điềm Trung, Bình Tân",
       "comboPackage": "Gói Mầm non Số (15.000đ/trẻ/tháng + Sổ liên lạc + Thu học phí QR)",
-      "notes": "Chốt nhanh nhờ miễn phí khởi tạo và có nhân sự hỗ trợ tận nơi tại Nha Trang"
+      "notes": "Chốt nhanh nhờ miễn phí khởi tạo và có nhân sự hỗ trợ tận nơi tại Nha Trang",
+      "id": "LH-03"
     },
     {
       "segment": "4. Doanh nghiệp SME (Du lịch, F&B, Thương mại)",
@@ -515,7 +518,8 @@
       "inPipeline": 14,
       "focusArea": "Trần Phú, Nguyễn Thị Minh Khai, Đắc Lộc, Bình Tân",
       "comboPackage": "Gói Bệ phóng SME (Tặng Website + Micro-ERP CRM/HRM + Tuyển dụng)",
-      "notes": "Thu hút mạnh nhờ đặc quyền tuyển thực tập sinh ngoại ngữ/tin học đã xác thực"
+      "notes": "Thu hút mạnh nhờ đặc quyền tuyển thực tập sinh ngoại ngữ/tin học đã xác thực",
+      "id": "LH-04"
     }
   ],
   "activityLogs": [

@@ -7,7 +7,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const { URL } = require("url");
-const { db, SQLITE_DB_PATH, JSON_DB_PATH, getMysqlStatus } = require("./backend/db");
+const { db, SQLITE_DB_PATH, JSON_DB_PATH, getMysqlStatus, isSqliteActive } = require("./backend/db");
 const { issueSsoToken, verifySsoToken } = require("./backend/sso");
 
 const PORT = parseInt(process.env.PORT || "3000", 10);
@@ -31,6 +31,32 @@ function getClientIp(req) {
   const xri = req.headers["x-real-ip"];
   if (xri) return String(xri).trim();
   return (req.socket && req.socket.remoteAddress) || (req.connection && req.connection.remoteAddress) || "103.170.122.138";
+}
+
+function buildDbStatusPayload() {
+  const mysql = getMysqlStatus();
+  const sqliteActive = typeof isSqliteActive === "function" ? isSqliteActive() : false;
+  return {
+    engine: mysql && mysql.connected
+      ? `MySQL (${mysql.database}) + SQLite + JSON`
+      : sqliteActive
+      ? "SQLite (techcorp_hub.sqlite) + JSON Transactional DB"
+      : "JSON Transactional DB (techcorp_hub_db.json)",
+    mysqlConnected: Boolean(mysql && mysql.connected),
+    mysqlDatabase: (mysql && mysql.database) || "hesinhthai_db",
+    mysqlLastSyncedAt: (mysql && mysql.lastSyncedAt) || null,
+    sqliteActive,
+    sqliteFile: path.basename(SQLITE_DB_PATH),
+    jsonFile: path.basename(JSON_DB_PATH),
+    updatedAt: (db.state && db.state.meta && db.state.meta.updatedAt) || new Date().toISOString(),
+    counts: {
+      auditLogs: (db.state.auditLogs || []).length,
+      demoRequests: (db.state.demoRequests || []).length,
+      lighthouseTargets: (db.state.lighthouseTargets || []).length,
+      users: (db.state.users || []).length,
+      apps: (db.state.apps || []).length
+    }
+  };
 }
 
 function setCorsHeaders(res) {
@@ -115,12 +141,29 @@ async function handleApi(req, res, parsedUrl) {
       totalForumPosts: (db.state.forumPosts || []).length,
       totalAuditLogs: (db.state.auditLogs || []).length,
       mysql: getMysqlStatus(),
+      dbStatus: buildDbStatusPayload(),
       storage: {
         mysqlDatabase: process.env.DB_DATABASE || "hesinhthai_db",
         sqlitePath: path.basename(SQLITE_DB_PATH),
         jsonPath: path.basename(JSON_DB_PATH)
       },
       timestamp: new Date().toISOString()
+    });
+  }
+
+  // 1b. Live Database Two-Way Sync Endpoint
+  if (pathname === "/api/v1/db/sync" && (method === "POST" || method === "GET")) {
+    return new Promise((resolve) => {
+      db.syncLiveFromMysql(() => {
+        sendJson(res, 200, {
+          ok: true,
+          dbStatus: buildDbStatusPayload(),
+          auditLogs: db.state.auditLogs || [],
+          demoRequests: db.getDemoRequests(),
+          lighthouseTargets: db.getLighthouseTargets()
+        });
+        resolve();
+      });
     });
   }
 
@@ -131,9 +174,10 @@ async function handleApi(req, res, parsedUrl) {
     return sendJson(res, 200, {
       ok: true,
       meta: db.state.meta,
+      dbStatus: buildDbStatusPayload(),
       sso,
       heroSliders: db.state.heroSliders || [],
-      demoRequests: db.state.demoRequests || [],
+      demoRequests: db.getDemoRequests(),
       apps: db.getPublicApps(),
       users: db.state.users || [],
       personas: db.state.personas,
@@ -144,7 +188,7 @@ async function handleApi(req, res, parsedUrl) {
       b2bOffers: db.state.b2bOffers,
       forumPosts: db.state.forumPosts || [],
       auditLogs: db.state.auditLogs || [],
-      lighthouseTargets: db.state.lighthouseTargets,
+      lighthouseTargets: db.getLighthouseTargets(),
       activityLogs: db.state.activityLogs
     });
   }
@@ -275,6 +319,17 @@ async function handleApi(req, res, parsedUrl) {
         );
       });
       if (!matchedUser) {
+        db.addAuditLog({
+          actorKey: "guest",
+          actorId: "USR-UNKNOWN",
+          actorName: `Khách chưa xác thực (${rawIdentifier})`,
+          actorOrg: "Cổng Đăng nhập SSO",
+          ipAddress: clientIp,
+          action: "AUTH_LOGIN_FAILED",
+          target: `Thử đăng nhập: ${rawIdentifier}`,
+          severity: "WARNING",
+          details: `Từ chối đăng nhập: Định danh "${rawIdentifier}" không tồn tại trong CSDL TechCorp ID.`
+        });
         return sendJson(res, 401, {
           ok: false,
           error: "Tài khoản định danh (Email / SĐT / Mã TechCorp ID) không tồn tại trong hệ thống."
@@ -282,6 +337,17 @@ async function handleApi(req, res, parsedUrl) {
       }
 
       if (matchedUser.status === "locked") {
+        db.addAuditLog({
+          actorKey: matchedUser.personaKey || matchedUser.id,
+          actorId: matchedUser.id,
+          actorName: matchedUser.fullName,
+          actorOrg: matchedUser.org,
+          ipAddress: clientIp,
+          action: "AUTH_LOGIN_LOCKED",
+          target: `Tài khoản bị khóa (${matchedUser.email})`,
+          severity: "WARNING",
+          details: `Từ chối đăng nhập: Tài khoản "${matchedUser.email}" đang ở trạng thái tạm khóa (Locked).`
+        });
         return sendJson(res, 403, {
           ok: false,
           error: "Tài khoản này đang bị tạm khóa bởi Quản trị viên."
@@ -293,6 +359,17 @@ async function handleApi(req, res, parsedUrl) {
         validPasswords.push(String(matchedUser.password));
       }
       if (validPasswords.indexOf(password) === -1) {
+        db.addAuditLog({
+          actorKey: matchedUser.personaKey || matchedUser.id,
+          actorId: matchedUser.id,
+          actorName: matchedUser.fullName,
+          actorOrg: matchedUser.org,
+          ipAddress: clientIp,
+          action: "AUTH_LOGIN_FAILED",
+          target: `Sai mật khẩu (${matchedUser.email})`,
+          severity: "WARNING",
+          details: `Cảnh báo bảo mật: Nhập sai mật khẩu cho tài khoản "${matchedUser.email}" từ IP ${clientIp}.`
+        });
         return sendJson(res, 401, {
           ok: false,
           error: "Mật khẩu không chính xác. Vui lòng kiểm tra lại."
@@ -573,6 +650,7 @@ async function handleApi(req, res, parsedUrl) {
   if (pathname === "/api/v1/audit-logs" && method === "GET") {
     return sendJson(res, 200, {
       ok: true,
+      dbStatus: buildDbStatusPayload(),
       auditLogs: db.state.auditLogs || []
     });
   }
@@ -582,6 +660,9 @@ async function handleApi(req, res, parsedUrl) {
       const body = await parseBody(req);
       const log = db.addAuditLog({
         actorKey: body.actorKey || "super-admin",
+        actorId: body.actorId || "",
+        actorName: body.actorName || "",
+        actorOrg: body.actorOrg || "",
         ipAddress: clientIp,
         action: body.action || "USER_ACTION",
         target: body.target || "TechCorp Hub",
@@ -591,6 +672,23 @@ async function handleApi(req, res, parsedUrl) {
       return sendJson(res, 201, {
         ok: true,
         log,
+        dbStatus: buildDbStatusPayload(),
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  const auditLogItemMatch = pathname.match(/^\/api\/v1\/audit-logs\/([^/]+)$/);
+  if (auditLogItemMatch && method === "DELETE") {
+    try {
+      const logId = decodeURIComponent(auditLogItemMatch[1]);
+      const removed = db.deleteAuditLog(logId, "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        removed,
+        dbStatus: buildDbStatusPayload(),
         auditLogs: db.state.auditLogs
       });
     } catch (err) {
@@ -757,37 +855,98 @@ async function handleApi(req, res, parsedUrl) {
     }
   }
 
-  // 14. Increment Lighthouse Customer Deal in Nha Trang
-  const lighthouseMatch = pathname.match(/^\/api\/v1\/lighthouse\/(\d+)\/increment$/);
-  if (lighthouseMatch && method === "POST") {
-    const idx = parseInt(lighthouseMatch[1], 10);
-    const item = db.state.lighthouseTargets[idx];
-    if (!item) {
-      return sendJson(res, 404, { ok: false, error: "Không tìm thấy phân khúc mục tiêu." });
-    }
-    item.currentSigned += 1;
-    if (item.inPipeline > 0) item.inPipeline -= 1;
-    const evt = db.addEvent({
-      sourceApp: "techcorp-hub",
-      targetApp: "all",
-      eventType: "LIGHTHOUSE_DEAL_CLOSED",
-      text: `[Chiến dịch Hạt nhân Nha Trang] Chúc mừng! Vừa chốt thêm 01 khách hàng thuộc nhóm "${item.segment}" (Tổng: ${item.currentSigned}/${item.targetCount}).`
-    });
-    db.addAuditLog({
-      actorKey: "super-admin",
-      ipAddress: clientIp,
-      action: "CRM_LIGHTHOUSE_CLOSE",
-      target: item.segment,
-      severity: "INFO",
-      details: `Cập nhật tiến độ chốt khách hàng hạt nhân Nha Trang lên ${item.currentSigned}/${item.targetCount}.`
-    });
+  // 14. Lighthouse Customer Tracking & Deal Pipeline (Theo dõi Khách hàng Hạt nhân)
+  if (pathname === "/api/v1/lighthouse" && method === "GET") {
     return sendJson(res, 200, {
       ok: true,
-      lighthouseTargets: db.state.lighthouseTargets,
-      event: evt,
-      auditLogs: db.state.auditLogs,
-      activityLogs: db.state.activityLogs
+      dbStatus: buildDbStatusPayload(),
+      lighthouseTargets: db.getLighthouseTargets()
     });
+  }
+
+  if (pathname === "/api/v1/lighthouse" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const saved = db.saveLighthouseTarget(body, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 201, {
+        ok: true,
+        target: saved,
+        dbStatus: buildDbStatusPayload(),
+        lighthouseTargets: db.getLighthouseTargets(),
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  if (pathname === "/api/v1/lighthouse/bulk-import" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const result = db.bulkImportLighthouseTargets(body.rows || [], body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        ...result,
+        dbStatus: buildDbStatusPayload(),
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  const lighthouseMatch = pathname.match(/^\/api\/v1\/lighthouse\/([^/]+)\/increment$/);
+  if (lighthouseMatch && method === "POST") {
+    try {
+      const idOrIdx = decodeURIComponent(lighthouseMatch[1]);
+      const body = await parseBody(req);
+      const result = db.incrementLighthouseTarget(idOrIdx, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        target: result.item,
+        lighthouseTargets: db.getLighthouseTargets(),
+        event: result.event,
+        dbStatus: buildDbStatusPayload(),
+        auditLogs: db.state.auditLogs,
+        activityLogs: db.state.activityLogs
+      });
+    } catch (err) {
+      return sendJson(res, 404, { ok: false, error: err.message });
+    }
+  }
+
+  const lighthouseItemMatch = pathname.match(/^\/api\/v1\/lighthouse\/([^/]+)$/);
+  if (lighthouseItemMatch && method === "PUT") {
+    try {
+      const idOrIdx = decodeURIComponent(lighthouseItemMatch[1]);
+      const body = await parseBody(req);
+      const saved = db.saveLighthouseTarget({ ...body, id: idOrIdx }, body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        target: saved,
+        dbStatus: buildDbStatusPayload(),
+        lighthouseTargets: db.getLighthouseTargets(),
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  if (lighthouseItemMatch && method === "DELETE") {
+    try {
+      const idOrIdx = decodeURIComponent(lighthouseItemMatch[1]);
+      const removed = db.deleteLighthouseTarget(idOrIdx, "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        removed,
+        dbStatus: buildDbStatusPayload(),
+        lighthouseTargets: db.getLighthouseTargets(),
+        auditLogs: db.state.auditLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
   }
 
   // 15. RBAC Permission Matrix Update
@@ -916,6 +1075,7 @@ async function handleApi(req, res, parsedUrl) {
   if (pathname === "/api/v1/demo-requests" && method === "GET") {
     return sendJson(res, 200, {
       ok: true,
+      dbStatus: buildDbStatusPayload(),
       demoRequests: db.state.demoRequests || []
     });
   }
@@ -927,10 +1087,27 @@ async function handleApi(req, res, parsedUrl) {
       return sendJson(res, 201, {
         ok: true,
         message: "Đã gửi yêu cầu Đăng ký Demo thành công! Chuyên gia TechCorp sẽ liên hệ trong 15 phút.",
+        lead: created,
         demoRequest: created,
+        dbStatus: buildDbStatusPayload(),
         demoRequests: db.state.demoRequests,
         auditLogs: db.state.auditLogs,
         activityLogs: db.state.activityLogs
+      });
+    } catch (err) {
+      return sendJson(res, 400, { ok: false, error: err.message });
+    }
+  }
+
+  if (pathname === "/api/v1/demo-requests/bulk-import" && method === "POST") {
+    try {
+      const body = await parseBody(req);
+      const result = db.bulkImportDemoRequests(body.rows || [], body.actorKey || "super-admin", clientIp);
+      return sendJson(res, 200, {
+        ok: true,
+        ...result,
+        dbStatus: buildDbStatusPayload(),
+        auditLogs: db.state.auditLogs
       });
     } catch (err) {
       return sendJson(res, 400, { ok: false, error: err.message });
@@ -945,7 +1122,9 @@ async function handleApi(req, res, parsedUrl) {
       const updated = db.updateDemoRequest(leadId, body, body.actorKey || "super-admin", clientIp);
       return sendJson(res, 200, {
         ok: true,
+        lead: updated,
         demoRequest: updated,
+        dbStatus: buildDbStatusPayload(),
         demoRequests: db.state.demoRequests,
         auditLogs: db.state.auditLogs
       });
@@ -961,6 +1140,7 @@ async function handleApi(req, res, parsedUrl) {
       return sendJson(res, 200, {
         ok: true,
         removed,
+        dbStatus: buildDbStatusPayload(),
         demoRequests: db.state.demoRequests,
         auditLogs: db.state.auditLogs
       });
