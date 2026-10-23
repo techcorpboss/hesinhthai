@@ -2056,27 +2056,28 @@ function renderAdminHeroSlidersManager() {
     .map(
       (s, idx) => `
       <tr style="${s.id === currentEditId ? "background:#eff6ff;" : ""}">
-        <td>
-          <div style="display:flex;align-items:center;gap:10px;">
+        <td style="min-width:210px;">
+          <div style="display:flex;align-items:center;gap:10px;min-width:0;">
             <img
               src="${escapeHtml(s.imageUrl)}"
               alt="${escapeHtml(s.id)}"
               class="admin-slider-thumb"
+              style="flex-shrink:0;"
               onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'"
             />
-            <div>
+            <div style="min-width:0;">
               <span class="badge badge-blue">Slide #${idx + 1} (${escapeHtml(s.id)})</span>
-              <div style="font-size:11px;color:#64748b;margin-top:4px;">${escapeHtml((s.imageCaption || "").slice(0, 42))}...</div>
+              <div style="font-size:11px;color:#64748b;margin-top:4px;word-break:break-word;">${escapeHtml((s.imageCaption || "").slice(0, 48))}...</div>
             </div>
           </div>
         </td>
-        <td>
-          <strong style="color:#0b2559;font-size:13px;">${escapeHtml(s.title)}</strong>
-          <div style="font-size:11.5px;color:#0052d4;margin-top:3px;">
+        <td style="min-width:200px;">
+          <strong style="color:#0b2559;font-size:13px;display:block;word-break:break-word;">${escapeHtml(s.title)}</strong>
+          <div style="font-size:11.5px;color:#0052d4;margin-top:3px;word-break:break-all;">
             🔗 CTA: <code>${escapeHtml(s.primaryCtaText)}</code> → <code>${escapeHtml(s.primaryCtaLink)}</code>
           </div>
         </td>
-        <td>
+        <td style="white-space:nowrap;">
           <button class="btn btn-primary btn-sm" onclick="selectHeroSliderForEdit('${escapeHtml(s.id)}')">
             🖼️ Đổi Ảnh & Sửa
           </button>
@@ -2878,15 +2879,15 @@ function renderConnectedApps() {
           ? `<span class="badge badge-green">✔ Đã cấp quyền SSO</span>`
           : `<span class="badge badge-amber">🔒 Chưa mở quyền cho Vai trò này</span>`;
       return `
-        <div class="product-item" style="${!isAuthorized ? "opacity:0.75;border-left-color:#94a3b8;background:#f8fafc;" : ""}">
-          <div class="product-info">
-            <h4>${i + 1}. ${escapeHtml(app.name)} <code style="font-size:11.5px;color:#0052d4;margin-left:6px;">[${escapeHtml(app.id)}]</code></h4>
-            <p>${escapeHtml(app.desc || "")}</p>
-            <div style="font-size:11.5px;color:#64748b;margin-top:4px;">
+        <div class="product-item" style="min-width:0;overflow:hidden;${!isAuthorized ? "opacity:0.75;border-left-color:#94a3b8;background:#f8fafc;" : ""}">
+          <div class="product-info" style="min-width:0;flex:1;">
+            <h4 style="word-break:break-word;">${i + 1}. ${escapeHtml(app.name)} <code style="font-size:11.5px;color:#0052d4;margin-left:6px;">[${escapeHtml(app.id)}]</code></h4>
+            <p style="word-break:break-word;">${escapeHtml(app.desc || "")}</p>
+            <div style="font-size:11.5px;color:#64748b;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
               🌐 URL: <span style="color:#475569;">${escapeHtml(app.appUrl || "")}</span>
             </div>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0;">
             <span class="badge badge-blue">${escapeHtml(app.badge || "App")}</span>
             ${statusBadge}
           </div>
@@ -2934,28 +2935,28 @@ function renderAdminAppsTable() {
 
             return `
         <tr>
-          <td>
-            <div style="display:flex;align-items:center;gap:10px;">
+          <td style="min-width:250px;">
+            <div style="display:flex;align-items:center;gap:10px;min-width:0;">
               <img
                 src="${escapeHtml(thumbUrl)}"
                 alt="${escapeHtml(app.name)}"
                 style="width:68px;height:46px;object-fit:cover;border-radius:8px;border:1px solid #cbd5e1;flex-shrink:0;"
                 onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80'"
               />
-              <div>
-                <strong>${escapeHtml(app.name)}</strong>
+              <div style="min-width:0;">
+                <strong style="display:block;word-break:break-word;">${escapeHtml(app.name)}</strong>
                 <div style="font-size:11.5px;color:#0052d4;">ID: <code>${escapeHtml(app.id)}</code> • Nhãn: ${escapeHtml(app.badge || "App")}</div>
-                <div style="font-size:11.5px;color:#475569;">${escapeHtml(app.desc || "")}</div>
+                <div style="font-size:11.5px;color:#475569;word-break:break-word;">${escapeHtml(app.desc || "")}</div>
               </div>
             </div>
           </td>
-          <td>
-            <div style="font-size:12px;color:#0f172a;">🌐 <a href="${escapeHtml(app.appUrl || "#")}" target="_blank" rel="noopener" style="color:#0052d4;text-decoration:none;font-weight:700;">${escapeHtml(app.appUrl || "")} ↗</a></div>
-            <div style="font-size:11.5px;color:#d97706;margin-top:3px;">🔑 <code>${escapeHtml(app.apiKeyMasked || "tc_live_...")}</code></div>
+          <td style="min-width:190px;max-width:260px;">
+            <div style="font-size:12px;color:#0f172a;word-break:break-all;">🌐 <a href="${escapeHtml(app.appUrl || "#")}" target="_blank" rel="noopener" style="color:#0052d4;text-decoration:none;font-weight:700;">${escapeHtml(app.appUrl || "")} ↗</a></div>
+            <div style="font-size:11.5px;color:#d97706;margin-top:3px;word-break:break-all;">🔑 <code>${escapeHtml(app.apiKeyMasked || "tc_live_...")}</code></div>
           </td>
-          <td>${stBadge}</td>
-          <td>
-            <div class="action-group">
+          <td style="white-space:nowrap;">${stBadge}</td>
+          <td style="min-width:210px;">
+            <div class="action-group" style="display:flex;gap:5px;flex-wrap:wrap;">
               <a href="product.html?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-primary btn-sm" style="text-decoration:none;" title="Xem trang giới thiệu sản phẩm">👁️ Xem</a>
               <button type="button" class="btn btn-outline btn-sm" onclick="editEcosystemApp('${escapeHtml(app.id)}')">✏️ Sửa</button>
               <button type="button" class="btn btn-warning btn-sm" onclick="toggleAppLock('${escapeHtml(app.id)}')">
@@ -4068,8 +4069,8 @@ window.renderAdminForumTable = function () {
           </td>
           <td>${stBadge}</td>
           <td>${lockBadge}</td>
-          <td>
-            <div class="action-group">
+          <td style="min-width:210px;">
+            <div class="action-group" style="display:flex;gap:5px;flex-wrap:wrap;">
               <button class="btn btn-emerald btn-sm" onclick="moderateForumStatus('${p.id}', 'approved')" title="Duyệt hiển thị">
                 ✅ Duyệt
               </button>
@@ -7838,8 +7839,8 @@ window.renderAdminBulletinsTable = function () {
     .map(
       (a) => `
       <tr>
-        <td>
-          <div style="display:flex;align-items:center;gap:10px;">
+        <td style="min-width:210px;max-width:260px;">
+          <div style="display:flex;align-items:center;gap:10px;min-width:0;">
             <img
               src="${escapeHtml(a.imageUrl)}"
               alt="${escapeHtml(a.title)}"
@@ -7847,28 +7848,28 @@ window.renderAdminBulletinsTable = function () {
               onclick="openBulletinDetailModal('${escapeHtml(a.id)}')"
               onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80'"
             />
-            <div>
-              <span class="badge ${a.sourceType === "master" ? "badge-amber" : "badge-blue"}">${escapeHtml(a.badge)}</span>
+            <div style="min-width:0;">
+              <span class="badge ${a.sourceType === "master" ? "badge-amber" : "badge-blue"}" style="white-space:normal;line-height:1.25;text-align:left;">${escapeHtml(a.badge)}</span>
               <div style="font-size:11px;color:#64748b;margin-top:3px;">
                 🏷️ ${escapeHtml(a.categoryTag)} ${a.pinned ? `<span style="color:#d97706;font-weight:800;">• 📌 Đang ghim</span>` : ""}
               </div>
             </div>
           </div>
         </td>
-        <td>
-          <strong style="color:#0f172a;cursor:pointer;" onclick="openBulletinDetailModal('${escapeHtml(a.id)}')">${escapeHtml(a.title)}</strong>
+        <td style="min-width:240px;">
+          <strong style="color:#0f172a;cursor:pointer;display:block;word-break:break-word;" onclick="openBulletinDetailModal('${escapeHtml(a.id)}')">${escapeHtml(a.title)}</strong>
           <div style="font-size:11px;color:#0052d4;margin-top:2px;">Mã: <code>${escapeHtml(a.id)}</code></div>
-          <div style="font-size:12px;color:#475569;margin-top:3px;">${escapeHtml(a.summary)}</div>
+          <div style="font-size:12px;color:#475569;margin-top:3px;word-break:break-word;">${escapeHtml(a.summary)}</div>
         </td>
-        <td>
-          <div style="font-weight:700;color:#1e293b;">${escapeHtml(a.authorOrg)}</div>
+        <td style="min-width:150px;">
+          <div style="font-weight:700;color:#1e293b;word-break:break-word;">${escapeHtml(a.authorOrg)}</div>
           <div style="font-size:11.5px;color:#64748b;">${escapeHtml(a.authorName)}</div>
         </td>
-        <td style="font-size:12px;color:#475569;">
+        <td style="font-size:12px;color:#475569;white-space:nowrap;">
           <div>🕒 ${escapeHtml(a.createdAt)}</div>
           <div style="font-size:11px;color:#0052d4;font-weight:700;margin-top:2px;">👁️ ${Number(a.views).toLocaleString("vi-VN")} lượt xem</div>
         </td>
-        <td>
+        <td style="min-width:185px;">
           <div style="display:flex;gap:5px;flex-wrap:wrap;">
             <button class="btn btn-primary btn-sm" onclick="openBulletinDetailModal('${escapeHtml(a.id)}')" title="Đọc chi tiết bản tin">📖 Xem</button>
             <button class="btn btn-outline btn-sm" onclick="editAnnouncementAdmin('${escapeHtml(a.id)}')" title="Chỉnh sửa bản tin">✏️ Sửa</button>
@@ -8166,7 +8167,7 @@ function renderMemberWorkspace() {
   `;
 
   const roleAppsHtml = `
-    <div class="card" style="border:2px solid #0052d4;box-shadow:0 12px 28px rgba(0,82,212,0.12);">
+    <div class="card" style="border:2px solid #0052d4;box-shadow:0 12px 28px rgba(0,82,212,0.12);overflow:hidden;">
       <div class="card-header">
         <div>
           <span class="badge badge-green">🚀 HỆ THỐNG PHẦN MỀM ĐƯỢC CẤP QUYỀN SSO CHO VAI TRÒ NÀY (${allowedAppsList.length} NỀN TẢNG LIVE)</span>
@@ -8176,27 +8177,31 @@ function renderMemberWorkspace() {
           </p>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;">
         ${allowedAppsList
           .map((app) => {
             const meta = PRODUCT_SHOWCASE_META[app.id] || { icon: "🚀" };
+            const cleanDomain = (app.appUrl || "").replace(/^https?:\/\//i, "");
             return `
-              <div style="background:#f8fbff;border:1.5px solid #cfe2ff;border-radius:14px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;">
-                <div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;">
-                    <span style="font-size:20px;">${meta.icon}</span>
+              <div style="background:#f8fbff;border:1.5px solid #cfe2ff;border-radius:14px;padding:15px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-width:0;overflow:hidden;box-sizing:border-box;">
+                <div style="min-width:0;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;">
+                    <span style="font-size:22px;line-height:1;">${meta.icon}</span>
                     <span class="badge badge-green">● SSO Authorized</span>
                   </div>
-                  <strong style="font-size:13.5px;color:#071936;display:block;">${escapeHtml(app.name)}</strong>
-                  <p style="font-size:12px;color:#475569;margin-top:4px;line-height:1.45;">${escapeHtml(app.desc || "")}</p>
+                  <strong style="font-size:14px;color:#071936;display:block;line-height:1.35;word-break:break-word;">${escapeHtml(app.name)}</strong>
+                  <p style="font-size:12px;color:#475569;margin-top:5px;line-height:1.48;word-break:break-word;">${escapeHtml(app.desc || "")}</p>
                 </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid #dbeafe;">
-                  <code style="font-size:11px;color:#0052d4;font-weight:700;">${escapeHtml(app.appUrl.replace("https://", ""))}</code>
-                  <div style="display:flex;gap:6px;">
-                    <a href="product.html?id=${encodeURIComponent(app.id)}" class="btn btn-outline btn-sm" style="text-decoration:none;">
-                      Chi tiết
+                <div style="display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid #dbeafe;min-width:0;">
+                  <div style="display:flex;align-items:center;gap:5px;min-width:0;background:#eff6ff;padding:4px 8px;border-radius:6px;border:1px solid #bfdbfe;">
+                    <span style="font-size:11px;flex-shrink:0;">🌐</span>
+                    <code style="font-size:11px;color:#0052d4;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;min-width:0;" title="${escapeHtml(cleanDomain)}">${escapeHtml(cleanDomain)}</code>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1.35fr;gap:8px;width:100%;">
+                    <a href="product.html?id=${encodeURIComponent(app.id)}" class="btn btn-outline btn-sm" style="text-decoration:none;justify-content:center;width:100%;padding:7px 8px;">
+                      📖 Chi tiết
                     </a>
-                    <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+                    <a href="${escapeHtml(app.appUrl)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;justify-content:center;width:100%;padding:7px 8px;">
                       Mở Hệ thống ↗
                     </a>
                   </div>
@@ -8300,22 +8305,22 @@ function renderMemberWorkspace() {
             ${memberBulletins
               .map(
                 (item) => `
-                <div style="background:#f8fbff;border:1px solid #dbeafe;border-radius:12px;padding:12px;display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;">
+                <div style="background:#f8fbff;border:1px solid #dbeafe;border-radius:12px;padding:12px;display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;align-items:center;min-width:0;overflow:hidden;">
                   <img
                     src="${escapeHtml(item.imageUrl)}"
                     alt="${escapeHtml(item.title)}"
                     style="width:110px;height:82px;object-fit:cover;border-radius:8px;cursor:pointer;"
                     onclick="openBulletinDetailModal('${escapeHtml(item.id)}')"
                   />
-                  <div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
-                      <span class="badge badge-blue">${escapeHtml(item.badge)}</span>
-                      <span style="font-size:11px;color:#64748b;">🕒 ${escapeHtml(item.createdAt)}</span>
+                  <div style="min-width:0;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+                      <span class="badge badge-blue" style="max-width:100%;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.badge)}</span>
+                      <span style="font-size:11px;color:#64748b;flex-shrink:0;">🕒 ${escapeHtml(item.createdAt)}</span>
                     </div>
-                    <strong style="font-size:13px;color:#0f172a;display:block;cursor:pointer;" onclick="openBulletinDetailModal('${escapeHtml(item.id)}')">${escapeHtml(item.title)}</strong>
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
-                      <span style="font-size:11.5px;color:#0052d4;font-weight:700;">🏢 ${escapeHtml(item.authorOrg)}</span>
-                      <button type="button" class="btn btn-outline btn-sm" onclick="openBulletinDetailModal('${escapeHtml(item.id)}')">📖 Xem chi tiết</button>
+                    <strong style="font-size:13px;color:#0f172a;display:block;cursor:pointer;word-break:break-word;" onclick="openBulletinDetailModal('${escapeHtml(item.id)}')">${escapeHtml(item.title)}</strong>
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;">
+                      <span style="font-size:11.5px;color:#0052d4;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🏢 ${escapeHtml(item.authorOrg)}</span>
+                      <button type="button" class="btn btn-outline btn-sm" style="flex-shrink:0;" onclick="openBulletinDetailModal('${escapeHtml(item.id)}')">📖 Xem chi tiết</button>
                     </div>
                   </div>
                 </div>
@@ -8451,7 +8456,7 @@ function renderMemberWorkspace() {
                       ${t.certs.map((c) => `<span class="badge badge-blue">${escapeHtml(c)}</span>`).join("")}
                     </div>
                   </div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid #e2e8f0;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:10px;border-top:1px solid #e2e8f0;">
                     <span style="font-size:12px;color:#059669;font-weight:700;">● ${escapeHtml(t.status)}</span>
                     <button class="btn btn-primary btn-sm" onclick="importCandidateToERP('${t.id}', '${escapeHtml(t.name)}')">
                       📥 Đẩy Hồ sơ vào HRM (ERP)
@@ -8502,12 +8507,12 @@ function renderMemberWorkspace() {
                   .slice(0, 3)
                   .map(
                     (t) => `
-                  <div style="background:#f5f9ff;border:1px solid #cfe2ff;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
-                    <div>
+                  <div style="background:#f5f9ff;border:1px solid #cfe2ff;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <div style="min-width:0;flex:1;">
                       <strong style="color:#0f172a;font-size:13px;">${escapeHtml(t.name)}</strong>
                       <div style="font-size:11.5px;color:#475569;">${escapeHtml(t.school)} • <span style="color:#0052d4;font-weight:700;">${escapeHtml(t.certs[0])}</span></div>
                     </div>
-                    <button class="btn btn-primary btn-sm" onclick="importCandidateToERP('${t.id}', '${escapeHtml(t.name)}')">Nhập vào HRM</button>
+                    <button class="btn btn-primary btn-sm" style="flex-shrink:0;" onclick="importCandidateToERP('${t.id}', '${escapeHtml(t.name)}')">Nhập vào HRM</button>
                   </div>
                 `
                   )
@@ -8563,7 +8568,7 @@ function renderMemberWorkspace() {
               ⚡ Phát Chứng chỉ Số QR & Chia Lead Tự động
             </button>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;">
             ${STATE.contests
               .map(
                 (c) => `
@@ -8575,7 +8580,7 @@ function renderMemberWorkspace() {
                     <p style="font-size:12.5px;color:#475569;margin-top:4px;">👥 <strong>Đối tượng dự thi:</strong> ${escapeHtml(c.targetGroup)}</p>
                     <p style="font-size:12.5px;color:#059669;margin-top:4px;">🎁 <strong>Học bổng tài trợ:</strong> ${escapeHtml(c.reward)}</p>
                   </div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid #e2e8f0;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:10px;border-top:1px solid #e2e8f0;">
                     <div>
                       <strong style="color:#0052d4;font-size:13px;">${c.participants.toLocaleString()} thí sinh</strong>
                       <div style="font-size:11.5px;color:#d97706;font-weight:700;">+${c.leadsGenerated} Lead học viên mới</div>
@@ -8628,12 +8633,12 @@ function renderMemberWorkspace() {
                 ${STATE.contests
                   .map(
                     (c) => `
-                  <div style="background:#f5f9ff;border:1px solid #cfe2ff;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
-                    <div>
+                  <div style="background:#f5f9ff;border:1px solid #cfe2ff;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <div style="min-width:0;flex:1;">
                       <strong style="color:#0f172a;font-size:12.5px;">${escapeHtml(c.title)}</strong>
                       <div style="font-size:11.5px;color:#059669;font-weight:700;">+${c.leadsGenerated} Lead học viên mới chờ tư vấn</div>
                     </div>
-                    <button class="btn btn-primary btn-sm" onclick="pushLeadsToCenter('${c.id}', '${escapeHtml(c.title)}')">Kéo Lead về CRM</button>
+                    <button class="btn btn-primary btn-sm" style="flex-shrink:0;" onclick="pushLeadsToCenter('${c.id}', '${escapeHtml(c.title)}')">Kéo Lead về CRM</button>
                   </div>
                 `
                   )
@@ -8748,19 +8753,19 @@ function renderMemberWorkspace() {
                 Ban Giám hiệu kiểm duyệt các chương trình tài trợ từ Trung tâm Ngoại ngữ & Doanh nghiệp trước khi hiển thị trên Sổ liên lạc Điện tử của Phụ huynh:
               </p>
               <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
-                <div style="background:#f5f9ff;border:1px solid #cfe2ff;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;">
-                  <div>
+                <div style="background:#f5f9ff;border:1px solid #cfe2ff;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <div style="min-width:0;flex:1;">
                     <strong style="font-size:12.5px;color:#0f172a;">Ocean English Center: Tặng 120 suất Test Tiếng Anh thiếu nhi</strong>
                     <div style="font-size:11.5px;color:#059669;">✔ Kèm học bổng 40% cho học sinh Trường Sao Biển</div>
                   </div>
-                  <button class="btn btn-emerald btn-sm" onclick="showToast('Đã phê duyệt gửi thông báo học bổng tới Phụ huynh khối Tiểu học & Mầm non!')">✔ Duyệt gửi PH</button>
+                  <button class="btn btn-emerald btn-sm" style="flex-shrink:0;" onclick="showToast('Đã phê duyệt gửi thông báo học bổng tới Phụ huynh khối Tiểu học & Mầm non!')">✔ Duyệt gửi PH</button>
                 </div>
-                <div style="background:#f5f9ff;border:1px solid #cfe2ff;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;">
-                  <div>
+                <div style="background:#f5f9ff;border:1px solid #cfe2ff;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <div style="min-width:0;flex:1;">
                     <strong style="font-size:12.5px;color:#0f172a;">Nha khoa Quốc tế Sài Gòn - Nha Trang: Khám răng miễn phí</strong>
                     <div style="font-size:11.5px;color:#059669;">✔ Tài trợ 100% cho Ngày hội Gia đình của Trường</div>
                   </div>
-                  <button class="btn btn-emerald btn-sm" onclick="showToast('Đã xác nhận lịch phối hợp khám răng định kỳ tại trường!')">✔ Duyệt lịch</button>
+                  <button class="btn btn-emerald btn-sm" style="flex-shrink:0;" onclick="showToast('Đã xác nhận lịch phối hợp khám răng định kỳ tại trường!')">✔ Duyệt lịch</button>
                 </div>
               </div>
             </div>
