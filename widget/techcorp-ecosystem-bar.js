@@ -58,8 +58,9 @@
       font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #071936;
       color: #f8fafc;
-      height: 42px;
-      padding: 0 28px;
+      min-height: 42px;
+      height: auto;
+      padding: 4px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -68,31 +69,41 @@
       z-index: 10000;
       box-sizing: border-box;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      white-space: nowrap;
     }
     .tc-eco-inner {
       width: 100%;
-      max-width: 1440px;
+      max-width: 1480px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
     .tc-eco-left, .tc-eco-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tc-eco-left {
+      min-width: 0;
     }
     .tc-eco-brand {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       font-weight: 800;
       font-size: 12px;
       color: #ffffff;
       text-decoration: none;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.35px;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .tc-eco-dot {
       width: 8px;
@@ -100,29 +111,35 @@
       border-radius: 50%;
       background: #22c55e;
       box-shadow: 0 0 8px #22c55e;
+      flex-shrink: 0;
     }
     .tc-eco-divider {
       width: 1px;
       height: 16px;
       background: rgba(255, 255, 255, 0.18);
+      flex-shrink: 0;
     }
     .tc-eco-launcher-wrap {
       position: relative;
+      flex-shrink: 0;
     }
     .tc-eco-launcher-btn {
       background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.22);
       color: #ffffff;
-      padding: 5px 12px;
+      padding: 5px 11px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.15s ease;
       font-family: inherit;
+      white-space: nowrap;
+      flex-shrink: 0;
+      line-height: 1.2;
     }
     .tc-eco-launcher-btn:hover {
       background: rgba(255, 255, 255, 0.2);
@@ -142,6 +159,7 @@
       border: 1px solid #cbd5e1;
       padding: 18px 20px;
       z-index: 10001;
+      white-space: normal;
     }
     .tc-eco-dropdown.open {
       display: block;
@@ -190,21 +208,32 @@
       margin-top: 1px;
     }
     .tc-eco-quick-stats {
-      font-size: 11.5px;
+      font-size: 11px;
       color: #94a3b8;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tc-eco-quick-stats span {
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .tc-eco-link {
       color: #cbd5e1;
       text-decoration: none;
       font-weight: 600;
-      font-size: 12px;
-      padding: 4px 10px;
+      font-size: 11.5px;
+      padding: 4px 9px;
       border-radius: 6px;
       transition: all 0.15s ease;
       white-space: nowrap;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1.2;
     }
     .tc-eco-link:hover {
       color: #ffffff;
@@ -219,27 +248,34 @@
     .tc-eco-user-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       background: rgba(15, 23, 42, 0.75);
       border: 1px solid rgba(148, 163, 184, 0.35);
       color: #e2e8f0;
-      padding: 4px 10px;
+      padding: 4px 9px;
       border-radius: 6px;
       font-size: 11.5px;
       font-weight: 700;
       white-space: nowrap;
+      flex-shrink: 0;
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
     }
     .tc-eco-sso-btn {
       background: linear-gradient(135deg, #0061ff 0%, #0284c7 100%);
       color: #ffffff;
       text-decoration: none;
-      padding: 5px 13px;
+      padding: 5px 12px;
       border-radius: 6px;
       font-size: 11.5px;
       font-weight: 700;
       white-space: nowrap;
+      flex-shrink: 0;
       border: 1px solid rgba(255, 255, 255, 0.25);
       transition: all 0.15s ease;
+      line-height: 1.2;
     }
     .tc-eco-sso-btn:hover {
       filter: brightness(1.1);
@@ -248,15 +284,17 @@
       background: rgba(239, 68, 68, 0.2);
       color: #fca5a5;
       text-decoration: none;
-      padding: 5px 11px;
+      padding: 5px 10px;
       border-radius: 6px;
       font-size: 11.5px;
       font-weight: 700;
       white-space: nowrap;
+      flex-shrink: 0;
       border: 1px solid rgba(248, 113, 113, 0.4);
       cursor: pointer;
       font-family: inherit;
       transition: all 0.15s ease;
+      line-height: 1.2;
     }
     .tc-eco-logout-btn:hover {
       background: #dc2626;
@@ -266,25 +304,37 @@
     .tc-eco-mobile-short {
       display: none;
     }
-    @media (max-width: 1024px) {
-      .tc-eco-quick-stats, .tc-eco-user-badge {
-        display: none;
+    /* Tự động ẩn nhãn phụ trạng thái trên màn hình Laptop <= 1560px để các nút không bao giờ bị ép tràn hay xuống dòng */
+    @media (max-width: 1560px) {
+      .tc-eco-quick-stats {
+        display: none !important;
+      }
+    }
+    @media (max-width: 1320px) {
+      .tc-eco-user-role-sub {
+        display: none !important;
+      }
+      .tc-eco-user-badge {
+        max-width: 190px;
+      }
+    }
+    @media (max-width: 1120px) {
+      .tc-eco-user-badge {
+        display: none !important;
       }
       .tc-eco-dd-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .tc-eco-bar {
-        height: auto;
-        min-height: 38px;
-        padding: 6px 10px;
+        padding: 5px 10px;
       }
       .tc-eco-inner {
         gap: 6px;
       }
       .tc-eco-left, .tc-eco-right {
-        gap: 6px;
+        gap: 5px;
       }
       .tc-eco-divider {
         display: none;
@@ -363,8 +413,9 @@
     return `
       ${companyMainSiteHtml}
       ${publicLinkHtml}
-      <span class="tc-eco-user-badge" id="tcEcoSsoStatus">
-        👤 ${savedSession.name} • <span style="color:#38bdf8;">${savedSession.roleBadge || "Thành viên"}</span>
+      <span class="tc-eco-user-badge" id="tcEcoSsoStatus" title="${savedSession.name} • ${savedSession.roleBadge || "Thành viên"}">
+        <span>👤 ${savedSession.name}</span>
+        <span class="tc-eco-user-role-sub" style="color:#38bdf8;">• ${savedSession.roleBadge || "Thành viên"}</span>
       </span>
       <a href="${basePrefix}admin.html" class="tc-eco-link ${isAdminPage ? "active" : ""}">
         <span class="tc-eco-desktop-full">${workspaceLabelFull}</span>
