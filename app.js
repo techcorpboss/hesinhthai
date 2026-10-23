@@ -1876,6 +1876,15 @@ function renderPublicHeroSlider() {
 
           <div style="display:flex;flex-wrap:wrap;gap:12px;">
             <a
+              href="https://techcorp.info.vn"
+              target="_blank"
+              rel="noopener"
+              class="btn"
+              style="background:linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);color:#071936;font-weight:900;padding:12px 20px;font-size:14px;text-decoration:none;border:1.5px solid #fef08a;box-shadow:0 8px 20px rgba(245,158,11,0.35);"
+            >
+              🏛️ Website Chính Công ty (techcorp.info.vn) ↗
+            </a>
+            <a
               href="${escapeHtml(primaryLink)}"
               ${primaryClickAttr}
               class="btn"
@@ -6238,14 +6247,28 @@ function renderRoleContextAndSidebar() {
   // 5. Update Main Role Context Banner
   const bannerEl = document.getElementById("roleContextBanner");
   if (bannerEl && roleConfig) {
+    const companyWebBtnHtml = `
+      <a
+        href="https://techcorp.info.vn"
+        target="_blank"
+        rel="noopener"
+        class="btn btn-sm"
+        style="background:linear-gradient(135deg,#f59e0b 0%,#ea580c 100%);color:#ffffff;border:1px solid #fde68a;font-weight:800;text-decoration:none;"
+        title="Truy cập Website Chính thức của Công ty TNHH Công nghệ và Giáo dục TechCorp (https://techcorp.info.vn)"
+      >
+        🏛️ Website Chính Công ty (techcorp.info.vn) ↗
+      </a>
+    `;
     const actionButtonsHtml =
       roleCode === "super_admin"
         ? `
+          ${companyWebBtnHtml}
           <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-master-overview')">👑 Tổng quan Hệ sinh thái</button>
           <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-master-rbac')">🔐 Cấu hình Phân quyền RBAC</button>
           <button class="btn btn-danger btn-sm" onclick="logoutSsoSession()">🚪 Đăng xuất</button>
         `
         : `
+          ${companyWebBtnHtml}
           <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'overview')">🏢 Tổng quan Workspace</button>
           <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-role-workspace', 'apps')">🚀 Mở ${assignedApps.length} Hệ thống Được cấp phép</button>
           <button class="btn btn-danger btn-sm" onclick="logoutSsoSession()">🚪 Đăng xuất</button>

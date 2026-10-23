@@ -339,6 +339,7 @@
   document.head.appendChild(style);
 
   const basePrefix = hubBaseUrl ? hubBaseUrl + "/" : "";
+  const companyMainSiteHtml = `<a href="https://techcorp.info.vn" target="_blank" rel="noopener" class="tc-eco-link" style="background:rgba(251,191,36,0.18);border:1px solid rgba(251,191,36,0.55);color:#fde047;font-weight:800;" title="Truy cập Website Chính thức của Công ty TNHH Công nghệ và Giáo dục TechCorp"><span class="tc-eco-desktop-full">🏛️ Website Công ty (techcorp.info.vn) ↗</span><span class="tc-eco-mobile-short">🏛️ techcorp.info.vn ↗</span></a>`;
   const publicLinkHtml =
     isAdminPage || isLoginPage
       ? `<a href="${basePrefix}index.html" class="tc-eco-link"><span class="tc-eco-desktop-full">🌍 Về Trang Public</span><span class="tc-eco-mobile-short">🌍 Trang chủ</span></a>`
@@ -348,6 +349,7 @@
     const savedSession = getSavedSsoSession();
     if (!savedSession) {
       return `
+        ${companyMainSiteHtml}
         ${publicLinkHtml}
         <a href="${basePrefix}login.html" class="tc-eco-sso-btn" id="tcEcoSsoStatus">
           🔐 Đăng nhập
@@ -359,6 +361,7 @@
         ? "👑 Quản trị Hệ sinh thái"
         : "⚙️ Không gian Quản trị";
     return `
+      ${companyMainSiteHtml}
       ${publicLinkHtml}
       <span class="tc-eco-user-badge" id="tcEcoSsoStatus">
         👤 ${savedSession.name} • <span style="color:#38bdf8;">${savedSession.roleBadge || "Thành viên"}</span>
@@ -392,6 +395,13 @@
             <span style="font-size:10px;opacity:0.85;">▼</span>
           </button>
           <div class="tc-eco-dropdown" id="tcEcoDropdown">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 14px;margin-bottom:12px;border-radius:10px;background:linear-gradient(135deg,#071936 0%,#0043b8 100%);border:1.5px solid #fbbf24;color:#ffffff;">
+              <div>
+                <div style="font-size:12.5px;font-weight:800;color:#fde047;">🏛️ WEBSITE CHÍNH THỨC CỦA CÔNG TY TECHCORP — https://techcorp.info.vn</div>
+                <div style="font-size:11px;color:#e2e8f0;">Cổng thông tin chính thức Công ty TNHH Công nghệ và Giáo dục TechCorp • Tư vấn Giải pháp Số &amp; Đào tạo</div>
+              </div>
+              <a href="https://techcorp.info.vn" target="_blank" rel="noopener" style="background:#fbbf24;color:#071936;font-weight:900;font-size:11.5px;padding:6px 12px;border-radius:7px;text-decoration:none;white-space:nowrap;">Mở techcorp.info.vn ↗</a>
+            </div>
             <div class="tc-eco-dd-header">
               <div>
                 <strong style="font-size:13.5px;color:#071936;">Danh mục 16 Hệ thống Phần mềm Đang Vận hành Thực tế (*.techcorp.info.vn)</strong>
