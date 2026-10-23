@@ -6308,29 +6308,30 @@ function renderRoleContextAndSidebar() {
   if (orgEl) orgEl.textContent = persona.org;
 
   // 2. Dynamically Render Role-Specific Left Sidebar (#dynamicRoleSidebarNav in admin.html)
+  const sidebarHeaderEl = document.getElementById("sidebarRoleHeaderTitle");
   const sidebarNavEl = document.getElementById("dynamicRoleSidebarNav");
   if (sidebarNavEl) {
     const pendingForumCount = STATE.forumPosts.filter((p) => p.status === "pending").length;
     const totalBulletinsCount = (STATE.announcements || []).length;
 
     if (roleCode === "super_admin") {
+      if (sidebarHeaderEl) sidebarHeaderEl.textContent = "👑 QUẢN TRỊ TỐI CAO (SUPER ADMIN)";
       const demoLeadsCount = (STATE.demoRequests || []).length;
       sidebarNavEl.innerHTML = `
-        <div class="sidebar-section-label">👑 QUẢN TRỊ TỐI CAO (SUPER ADMIN)</div>
         <button class="nav-btn" data-panel="panel-master-overview" onclick="activateAdminPanel('panel-master-overview')">
           <span>📊 1. Tổng quan & Event Bus</span>
           <span class="nav-badge">${STATE.apps.length} App</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-apps" onclick="activateAdminPanel('panel-master-apps')">
-          <span>🚀 2. Quản trị 16 Sản phẩm & App</span>
+          <span>🚀 2. Quản trị 16 Sản phẩm</span>
           <span class="nav-badge">API Key</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-demos" onclick="activateAdminPanel('panel-master-demos')">
-          <span>📋 3. Khách hàng Đăng ký Demo</span>
+          <span>📋 3. Khách hàng ĐK Demo</span>
           <span class="nav-badge" style="background:#059669;color:#fff;">${demoLeadsCount} Lead</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-bulletins" onclick="activateAdminPanel('panel-master-bulletins')">
-          <span>🖼️ 4. Quản trị 6 Slider & Bản tin</span>
+          <span>🖼️ 4. Quản trị Slider & Bản tin</span>
           <span class="nav-badge">6 Slide</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-forum" onclick="activateAdminPanel('panel-master-forum')">
@@ -6338,18 +6339,18 @@ function renderRoleContextAndSidebar() {
           <span class="nav-badge">${pendingForumCount} Chờ</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-users" onclick="activateAdminPanel('panel-master-users')">
-          <span>👥 6. Quản lý Thành viên & SSO</span>
+          <span>👥 6. Quản lý Thành viên SSO</span>
           <span class="nav-badge">${STATE.users.length} User</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-rbac" onclick="activateAdminPanel('panel-master-rbac')">
-          <span>🔐 7. Cấu hình Phân quyền RBAC</span>
+          <span>🔐 7. Phân quyền Vai trò RBAC</span>
           <span class="nav-badge">9 Quyền</span>
         </button>
         <button class="nav-btn" data-panel="panel-master-audit" onclick="activateAdminPanel('panel-master-audit')">
-          <span>🔍 8. Audit Logs & 57 Hạt nhân</span>
+          <span>🔍 8. Audit Logs & KH Hạt nhân</span>
           <span class="nav-badge">An ninh</span>
         </button>
-        <div class="sidebar-section-label" style="margin-top:10px;">🏢 GIÁM SÁT WORKSPACE ĐƠN VỊ</div>
+        <div class="sidebar-section-label" style="margin-top:8px;">🏢 GIÁM SÁT WORKSPACE ĐƠN VỊ</div>
         <button class="nav-btn" data-panel="panel-role-workspace" onclick="activateAdminPanel('panel-role-workspace', 'overview')">
           <span>🏢 9. Giám sát Workspace 4 Khối</span>
           <span class="nav-badge">4 Vai trò</span>
@@ -6362,34 +6363,34 @@ function renderRoleContextAndSidebar() {
           sectionTitle: "🏢 CHỨC NĂNG CHỦ DOANH NGHIỆP",
           items: [
             { label: "🏢 1. Tổng quan Doanh nghiệp", subtab: "overview", badge: "Dashboard" },
-            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} Hệ thống` },
-            { label: "👨‍💼 3. Tuyển dụng Liên thông & CV", subtab: "recruitment", badge: `${STATE.talents.length} CV` },
-            { label: "🎁 4. Chiến dịch E-Voucher & B2B", subtab: "b2b", badge: "Give-to-Get" }
+            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} App` },
+            { label: "👨‍💼 3. Tuyển dụng Liên thông CV", subtab: "recruitment", badge: `${STATE.talents.length} CV` },
+            { label: "🎁 4. Chiến dịch Voucher & B2B", subtab: "b2b", badge: "B2B" }
           ]
         },
         center_director: {
           sectionTitle: "🏫 CHỨC NĂNG GIÁM ĐỐC TRUNG TÂM",
           items: [
             { label: "🏫 1. Tổng quan Trung tâm", subtab: "overview", badge: "Dashboard" },
-            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} Hệ thống` },
-            { label: "🏆 3. Đấu trường Thi Online & Lead", subtab: "contests", badge: "385 Lead" },
-            { label: "🤝 4. Hợp đồng Đào tạo DN (RFQ)", subtab: "b2b", badge: "04 HĐ" }
+            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} App` },
+            { label: "🏆 3. Đấu trường Thi & Lead", subtab: "contests", badge: "385 Lead" },
+            { label: "🤝 4. Hợp đồng Đào tạo DN", subtab: "b2b", badge: "04 HĐ" }
           ]
         },
         school_principal: {
           sectionTitle: "🎓 CHỨC NĂNG HIỆU TRƯỞNG TRƯỜNG",
           items: [
             { label: "🎓 1. Tổng quan Học vụ & QR", subtab: "overview", badge: "96.4% QR" },
-            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} Hệ thống` },
-            { label: "🎁 3. Duyệt Học bổng & Phúc lợi PH", subtab: "scholarships", badge: "500 Suất" },
-            { label: "🍱 4. Nhà cung ứng Học đường B2B", subtab: "b2b", badge: "06 ĐV" }
+            { label: "🚀 2. Phần mềm Đã cấp phép", subtab: "apps", badge: `${assignedApps.length} App` },
+            { label: "🎁 3. Duyệt Học bổng & Phúc lợi", subtab: "scholarships", badge: "500 Suất" },
+            { label: "🍱 4. Nhà cung ứng Học đường", subtab: "b2b", badge: "06 ĐV" }
           ]
         },
         student_parent: {
           sectionTitle: "👨‍🎓 CHỨC NĂNG HỌC VIÊN / PHỤ HUYNH",
           items: [
-            { label: "🏅 1. Hồ sơ Năng lực Số (Passport)", subtab: "overview", badge: "Verified" },
-            { label: "🚀 2. Nền tảng Học & Thi Trực tuyến", subtab: "apps", badge: `${assignedApps.length} Hệ thống` },
+            { label: "🏅 1. Hồ sơ Năng lực (Passport)", subtab: "overview", badge: "Verified" },
+            { label: "🚀 2. Nền tảng Học & Thi Online", subtab: "apps", badge: `${assignedApps.length} App` },
             { label: "💼 3. Ứng tuyển Thực tập 1-Click", subtab: "jobs", badge: "30 DN" },
             { label: "🎁 4. Ví Học bổng & E-Voucher", subtab: "vouchers", badge: "05 Ưu đãi" }
           ]
@@ -6397,6 +6398,7 @@ function renderRoleContextAndSidebar() {
       };
 
       const cfg = roleMenus[roleCode] || roleMenus.ceo_sme;
+      if (sidebarHeaderEl) sidebarHeaderEl.textContent = cfg.sectionTitle;
       const roleMenuButtons = cfg.items
         .map(
           (item) => `
@@ -6411,17 +6413,16 @@ function renderRoleContextAndSidebar() {
       const postNewsBtn = perms.postMemberNews
         ? `
           <button class="nav-btn" data-panel="panel-role-workspace" data-subtab="news" onclick="activateAdminPanel('panel-role-workspace', 'news')">
-            <span>📢 5. Đăng Tin Đơn vị lên Public</span>
+            <span>📢 5. Đăng Tin Đơn vị Public</span>
             <span class="nav-badge">✔ Mở</span>
           </button>
         `
         : "";
 
       sidebarNavEl.innerHTML = `
-        <div class="sidebar-section-label">${cfg.sectionTitle}</div>
         ${roleMenuButtons}
         ${postNewsBtn}
-        <div class="sidebar-section-label" style="margin-top:10px;">🔗 ĐIỀU HƯỚNG PHIÊN LÀM VIỆC</div>
+        <div class="sidebar-section-label" style="margin-top:8px;">🔗 ĐIỀU HƯỚNG PHIÊN LÀM VIỆC</div>
         <a href="index.html" class="nav-btn" style="text-decoration:none;">
           <span>🌍 Xem Trang Public Hệ sinh thái</span>
           <span class="nav-badge">↗</span>
