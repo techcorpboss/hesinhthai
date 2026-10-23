@@ -1,13 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cá»•ng Quáº£n trá»‹ Há»‡ sinh thÃ¡i Theo Vai trÃ² (RBAC Admin Portal) â€” hesinhthai.techcorp.info.vn</title>
-  <link rel="icon" type="image/png" href="logo.png?v=31" />
-  <link rel="stylesheet" href="styles.css?v=31" />
+  <title>Cổng Quản trị Hệ sinh thái Theo Vai trò (RBAC Admin Portal) — hesinhthai.techcorp.info.vn</title>
+  <link rel="icon" type="image/png" href="logo.png?v=32" />
+  <link rel="stylesheet" href="styles.css?v=32" />
   <script
-    src="widget/techcorp-ecosystem-bar.js?v=31"
+    src="widget/techcorp-ecosystem-bar.js?v=32"
     data-app-id="erp"
     data-org-name="TechCorp Role-Based Admin"
     data-user-role="SSO Workspace"
@@ -15,29 +15,29 @@
   ></script>
 </head>
 <body>
-  <!-- HEADER QUáº¢N TRá»Š CHUáº¨N QUá»C Táº¾ (Gá»ŒN GÃ€NG, TÃCH BIá»†T THEO PHIÃŠN ÄÄ‚NG NHáº¬P) -->
+  <!-- HEADER QUẢN TRỊ CHUẨN QUỐC TẾ (GỌN GÀNG, TÁCH BIỆT THEO PHIÊN ĐĂNG NHẬP) -->
   <header class="hub-header">
     <div class="hub-header-inner">
       <a href="index.html" class="brand-box">
         <div class="brand-logo">
-          <img src="logo.png?v=6.0" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
+          <img src="logo.png?v=32.0" alt="TechCorp Logo" style="width:100%;height:100%;object-fit:contain;" />
         </div>
         <div class="brand-title">
           <h1>
             <span id="adminPortalTitle">TechCorp Admin Portal</span>
-            <span class="brand-domain-pill" id="adminPortalRolePill">ðŸ›¡ï¸ RBAC v6.0</span>
+            <span class="brand-domain-pill" id="adminPortalRolePill">🛡️ RBAC v6.0</span>
           </h1>
-          <p id="currentPersonaDesc">Äang xÃ¡c thá»±c phiÃªn lÃ m viá»‡c SSO TechCorp ID...</p>
+          <p id="currentPersonaDesc">Đang xác thực phiên làm việc SSO TechCorp ID...</p>
         </div>
       </a>
 
       <div class="admin-header-actions">
-        <span class="badge badge-green" id="apiStatusBadge">â— API & SQLite Online</span>
+        <span class="badge badge-green" id="apiStatusBadge">● API & SQLite Online</span>
 
         <div class="user-session-pill" id="adminHeaderUserPill">
-          <div class="user-session-avatar" id="adminHeaderAvatar">ðŸ‘‘</div>
+          <div class="user-session-avatar" id="adminHeaderAvatar">👑</div>
           <div class="user-session-meta">
-            <strong id="adminHeaderName">Quáº£n trá»‹ viÃªn Há»‡ sinh thÃ¡i</strong>
+            <strong id="adminHeaderName">Quản trị viên Hệ sinh thái</strong>
             <span id="adminHeaderOrg">TechCorp Headquarters</span>
           </div>
         </div>
@@ -48,9 +48,9 @@
           rel="noopener"
           class="btn btn-sm"
           style="background:linear-gradient(135deg,#f59e0b 0%,#ea580c 100%);color:#ffffff;border:1.5px solid #fde68a;font-weight:800;text-decoration:none;padding:8px 12px;"
-          title="Truy cáº­p Website ChÃ­nh thá»©c cá»§a CÃ´ng ty TNHH CÃ´ng nghá»‡ vÃ  GiÃ¡o dá»¥c TechCorp (techcorp.info.vn)"
+          title="Truy cập Website Chính thức của Công ty TNHH Công nghệ và Giáo dục TechCorp (techcorp.info.vn)"
         >
-          ðŸ›ï¸ techcorp.info.vn â†—
+          🏛️ techcorp.info.vn ↗
         </a>
 
         <a
@@ -59,9 +59,9 @@
           rel="noopener"
           class="btn btn-primary btn-sm"
           style="text-decoration:none;padding:8px 12px;"
-          title="Má»Ÿ Studio Video Quáº£ng bÃ¡ (TikTok/Facebook)"
+          title="Mở Studio Video Quảng bá (TikTok/Facebook)"
         >
-          ðŸŽ¬ Studio Video
+          🎬 Studio Video
         </a>
 
         <a
@@ -69,7 +69,7 @@
           class="btn btn-outline btn-sm"
           style="text-decoration:none;padding:8px 12px;"
         >
-          ðŸŒ Trang Public
+          🌍 Trang Public
         </a>
 
         <button
@@ -78,71 +78,71 @@
           class="btn btn-danger btn-sm"
           style="padding:8px 12px;"
         >
-          ðŸšª ÄÄƒng xuáº¥t
+          🚪 Đăng xuất
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Bá» Cá»¤C Cá»”NG QUáº¢N TRá»Š: SIDEBAR Äá»˜NG CHá»ˆ HIá»‚N THá»Š CHá»¨C NÄ‚NG Cá»¦A VAI TRÃ’ ÄÃƒ ÄÄ‚NG NHáº¬P -->
+  <!-- BỐ CỤC CỔNG QUẢN TRỊ: SIDEBAR ĐỘNG CHỈ HIỂN THỊ CHỨC NĂNG CỦA VAI TRÒ ĐÃ ĐĂNG NHẬP -->
   <div class="portal-shell">
-    <!-- SIDEBAR Tá»° Äá»˜NG RENDER MENU THEO ÄÃšNG VAI TRÃ’ ÄANG ÄÄ‚NG NHáº¬P -->
+    <!-- SIDEBAR TỰ ĐỘNG RENDER MENU THEO ĐÚNG VAI TRÒ ĐANG ĐĂNG NHẬP -->
     <aside class="portal-sidebar">
-      <div class="sidebar-section-label" id="sidebarRoleHeaderTitle">MENU QUáº¢N TRá»Š THEO VAI TRÃ’</div>
+      <div class="sidebar-section-label" id="sidebarRoleHeaderTitle">MENU QUẢN TRỊ THEO VAI TRÒ</div>
       <nav class="sidebar-nav" id="dynamicRoleSidebarNav"></nav>
 
-      <!-- Há»™p TÃ³m táº¯t Quyá»n háº¡n RBAC cá»§a Vai trÃ² hiá»‡n táº¡i -->
+      <!-- Hộp Tóm tắt Quyền hạn RBAC của Vai trò hiện tại -->
       <div class="sidebar-role-card" id="sidebarRoleSummaryBox"></div>
     </aside>
 
-    <!-- KHU Vá»°C LÃ€M VIá»†C CHÃNH -->
+    <!-- KHU VỰC LÀM VIỆC CHÍNH -->
     <main class="portal-main">
-      <!-- Banner Tráº¡ng thÃ¡i Vai trÃ² & Quyá»n háº¡n hiá»‡n hÃ nh -->
+      <!-- Banner Trạng thái Vai trò & Quyền hạn hiện hành -->
       <div class="role-context-banner" id="roleContextBanner"></div>
 
-      <!-- Dáº£i 4 Chá»‰ sá»‘ KPI Äá»™ng (Hiá»ƒn thá»‹ Ä‘Ãºng KPI cá»§a Vai trÃ² Ä‘ang chá»n!) -->
+      <!-- Dải 4 Chỉ số KPI Động (Hiển thị đúng KPI của Vai trò đang chọn!) -->
       <section class="kpi-grid" id="dynamicRoleKpiGrid"></section>
 
       <!-- =====================================================================
-           PANEL A: DÃ€NH CHO CÃC ÄÆ N Vá»Š THÃ€NH VIÃŠN (DOANH NGHIá»†P / TRUNG TÃ‚M / TRÆ¯á»œNG / Há»ŒC VIÃŠN)
-           Hoáº·c khi Há»‡ sinh thÃ¡i TechCorp báº¥m GiÃ¡m sÃ¡t Workspace ThÃ nh viÃªn
+           PANEL A: DÀNH CHO CÁC ĐƠN VỊ THÀNH VIÊN (DOANH NGHIỆP / TRUNG TÂM / TRƯỜNG / HỌC VIÊN)
+           Hoặc khi Hệ sinh thái TechCorp bấm Giám sát Workspace Thành viên
            ===================================================================== -->
       <section id="panel-role-workspace" class="tab-panel">
         <div id="memberWorkspaceDynamicContainer"></div>
       </section>
 
       <!-- =====================================================================
-           PANEL B: Tá»”NG QUAN ÄIá»€U HÃ€NH Háº  Táº¦NG & EVENT BUS (Há»† SINH THÃI TECHCORP)
+           PANEL B: TỔNG QUAN ĐIỀU HÀNH HẠ TẦNG & EVENT BUS (HỆ SINH THÁI TECHCORP)
            ===================================================================== -->
       <section id="panel-master-overview" class="tab-panel active">
         <div class="grid-2">
           <div class="card">
             <div class="card-header">
               <div>
-                <h3 class="card-title">ðŸš€ Tráº¡ng thÃ¡i á»¨ng dá»¥ng LiÃªn thÃ´ng & PhÃ¢n quyá»n SSO</h3>
+                <h3 class="card-title">🚀 Trạng thái Ứng dụng Liên thông & Phân quyền SSO</h3>
                 <p class="card-subtitle">
-                  Danh sÃ¡ch cÃ¡c á»©ng dá»¥ng Ä‘ang káº¿t ná»‘i vÃ o CSDL Táº­p trung vÃ  tráº¡ng thÃ¡i cáº¥p quyá»n cho vai trÃ² hiá»‡n táº¡i.
+                  Danh sách các ứng dụng đang kết nối vào CSDL Tập trung và trạng thái cấp quyền cho vai trò hiện tại.
                 </p>
               </div>
               <button class="btn btn-primary btn-sm" onclick="activateAdminPanel('panel-master-apps')">
-                âž• ThÃªm / Sá»­a á»¨ng dá»¥ng
+                ➕ Thêm / Sửa Ứng dụng
               </button>
             </div>
             <div class="product-list" id="connectedAppsList"></div>
 
             <div style="margin-top:16px;padding-top:14px;border-top:2px solid #edf4ff;">
               <h4 style="font-size:13.5px;margin-bottom:8px;color:#0043b8;font-weight:800;">
-                âš¡ KÃ­ch hoáº¡t Luá»“ng Äá»“ng bá»™ API LiÃªn thÃ´ng (Ghi vÃ o SQLite/JSON & Audit Log):
+                ⚡ Kích hoạt Luồng Đồng bộ API Liên thông (Ghi vào SQLite/JSON & Audit Log):
               </h4>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
                 <button class="btn btn-primary btn-sm" onclick="simulateCrossSync('erp-job')">
-                  1. Äáº©y Tuyá»ƒn dá»¥ng ERP â†’ TrÆ°á»ng & Trung tÃ¢m
+                  1. Đẩy Tuyển dụng ERP → Trường & Trung tâm
                 </button>
                 <button class="btn btn-emerald btn-sm" onclick="simulateCrossSync('exam-cert')">
-                  2. Cáº¥p Chá»©ng chá»‰ Thi Online â†’ Chia Lead CRM
+                  2. Cấp Chứng chỉ Thi Online → Chia Lead CRM
                 </button>
                 <button class="btn btn-outline btn-sm" onclick="simulateCrossSync('parent-voucher')">
-                  3. Báº¯n E-Voucher DN â†’ App Phá»¥ huynh
+                  3. Bắn E-Voucher DN → App Phụ huynh
                 </button>
               </div>
             </div>
@@ -151,19 +151,19 @@
           <div class="card">
             <div class="card-header">
               <div>
-                <h3 class="card-title">ðŸ“¡ Nháº­t kÃ½ Sá»± kiá»‡n LiÃªn thÃ´ng Thá»i gian thá»±c (Live Event Bus)</h3>
-                <p class="card-subtitle">Luá»“ng dá»¯ liá»‡u báº¯n tá»± Ä‘á»™ng giá»¯a cÃ¡c á»©ng dá»¥ng qua <code>POST /api/v1/events/publish</code></p>
+                <h3 class="card-title">📡 Nhật ký Sự kiện Liên thông Thời gian thực (Live Event Bus)</h3>
+                <p class="card-subtitle">Luồng dữ liệu bắn tự động giữa các ứng dụng qua <code>POST /api/v1/events/publish</code></p>
               </div>
               <button class="btn btn-outline btn-sm" onclick="activateAdminPanel('panel-master-audit')">
-                ðŸ” Xem Audit Logs
+                🔍 Xem Audit Logs
               </button>
             </div>
             <div class="feed-list" id="liveFeedList"></div>
 
             <div style="margin-top:14px;padding-top:12px;border-top:2px solid #edf4ff;">
-              <div style="font-size:12px;font-weight:800;color:#0b2559;">ðŸ” Chuá»—i JWT SSO Token cá»§a PhiÃªn lÃ m viá»‡c hiá»‡n táº¡i:</div>
+              <div style="font-size:12px;font-weight:800;color:#0b2559;">🔐 Chuỗi JWT SSO Token của Phiên làm việc hiện tại:</div>
               <div class="code-box" id="currentSsoTokenBox" style="word-break:break-all;max-height:70px;overflow-y:auto;">
-                Äang khá»Ÿi táº¡o JWT Token...
+                Đang khởi tạo JWT Token...
               </div>
             </div>
           </div>
@@ -171,24 +171,24 @@
       </section>
 
       <!-- =====================================================================
-           PANEL C: QUáº¢N TRá»Š Sáº¢N PHáº¨M & á»¨NG Dá»¤NG Há»† SINH THÃI (APP REGISTRY CRUD)
+           PANEL C: QUẢN TRỊ SẢN PHẨM & ỨNG DỤNG HỆ SINH THÁI (APP REGISTRY CRUD)
            ===================================================================== -->
       <section id="panel-master-apps" class="tab-panel">
         <div class="grid-2">
           <div class="card">
             <div class="card-header" style="flex-wrap:wrap;gap:10px;">
               <div>
-                <h3 class="card-title">ðŸš€ Danh má»¥c Sáº£n pháº©m &amp; á»¨ng dá»¥ng trong Há»‡ sinh thÃ¡i TechCorp</h3>
+                <h3 class="card-title">🚀 Danh mục Sản phẩm &amp; Ứng dụng trong Hệ sinh thái TechCorp</h3>
                 <p class="card-subtitle">
-                  Quáº£n trá»‹ toÃ n diá»‡n (ThÃªm, Xem, Sá»­a, XoÃ¡, KhÃ³a/Má»Ÿ, In áº¥n, Xuáº¥t/Nháº­p Excel). Má»i cáº­p nháº­t tá»± Ä‘á»™ng Ä‘á»“ng bá»™ ra <strong>Trang Public Sáº£n pháº©m</strong> vÃ  <strong>Thanh Topbar SSO</strong>.
+                  Quản trị toàn diện (Thêm, Xem, Sửa, Xoá, Khóa/Mở, In ấn, Xuất/Nhập Excel). Mọi cập nhật tự động đồng bộ ra <strong>Trang Public Sản phẩm</strong> và <strong>Thanh Topbar SSO</strong>.
                 </p>
               </div>
               <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminAppsReport()">ðŸ–¨ï¸ In Danh má»¥c</button>
-                <button type="button" class="btn btn-emerald btn-sm" onclick="exportAppsExcel()">ðŸ“¥ Xuáº¥t Excel</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportAppsExcel()">ðŸ“¤ Nháº­p Excel</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="downloadAppsExcelTemplate()" title="Táº£i file Excel máº«u Ä‘á»ƒ nháº­p sáº£n pháº©m">ðŸ“„ File Máº«u</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="resetAppForm()">âž• Nháº­p má»›i</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminAppsReport()">🖨️ In Danh mục</button>
+                <button type="button" class="btn btn-emerald btn-sm" onclick="exportAppsExcel()">📥 Xuất Excel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportAppsExcel()">📤 Nhập Excel</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="downloadAppsExcelTemplate()" title="Tải file Excel mẫu để nhập sản phẩm">📄 File Mẫu</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="resetAppForm()">➕ Nhập mới</button>
                 <input type="file" id="importAppsExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportAppsExcel(event)" />
               </div>
             </div>
@@ -199,14 +199,14 @@
                 id="adminAppSearchInput"
                 class="input-control"
                 style="min-width:220px;flex:1;"
-                placeholder="ðŸ” TÃ¬m theo tÃªn sáº£n pháº©m, mÃ£ App ID, tÃªn miá»n, mÃ´ táº£..."
+                placeholder="🔍 Tìm theo tên sản phẩm, mã App ID, tên miền, mô tả..."
                 oninput="renderAdminAppsTable()"
               />
               <select id="adminAppStatusFilter" class="select-control" onchange="renderAdminAppsTable()">
-                <option value="all">Táº¥t cáº£ tráº¡ng thÃ¡i (${16}+ App)</option>
-                <option value="active">ðŸŸ¢ Äang hoáº¡t Ä‘á»™ng (Active)</option>
-                <option value="maintenance">ðŸŸ¡ Äang báº£o trÃ¬ (Maintenance)</option>
-                <option value="locked">ðŸ”´ Táº¡m khÃ³a / áº¨n (Locked)</option>
+                <option value="all">Tất cả trạng thái (${16}+ App)</option>
+                <option value="active">🟢 Đang hoạt động (Active)</option>
+                <option value="maintenance">🟡 Đang bảo trì (Maintenance)</option>
+                <option value="locked">🔴 Tạm khóa / Ẩn (Locked)</option>
               </select>
             </div>
 
@@ -214,10 +214,10 @@
               <table class="tc-table">
                 <thead>
                   <tr>
-                    <th>Sáº£n pháº©m, áº¢nh &amp; MÃ£ ID</th>
-                    <th>Äá»‹a chá»‰ Web &amp; API Key</th>
-                    <th>Tráº¡ng thÃ¡i</th>
-                    <th>Thao tÃ¡c Quáº£n trá»‹ (CRUD)</th>
+                    <th>Sản phẩm, Ảnh &amp; Mã ID</th>
+                    <th>Địa chỉ Web &amp; API Key</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác Quản trị (CRUD)</th>
                   </tr>
                 </thead>
                 <tbody id="adminAppsTableBody"></tbody>
@@ -228,65 +228,65 @@
           <div class="card" style="align-self:start;">
             <div class="card-header">
               <div>
-                <h3 class="card-title" id="appFormTitle">âž• Bá»• sung / Cáº­p nháº­t Sáº£n pháº©m vÃ o Há»‡ sinh thÃ¡i</h3>
-                <p class="card-subtitle">Tá»± Ä‘á»™ng cáº¥p khÃ³a API Key, hÃ¬nh áº£nh Ä‘áº¡i diá»‡n vÃ  mÃ£ nhÃºng liÃªn thÃ´ng SSO.</p>
+                <h3 class="card-title" id="appFormTitle">➕ Bổ sung / Cập nhật Sản phẩm vào Hệ sinh thái</h3>
+                <p class="card-subtitle">Tự động cấp khóa API Key, hình ảnh đại diện và mã nhúng liên thông SSO.</p>
               </div>
-              <span class="badge badge-blue" id="appFormModeBadge">Cháº¿ Ä‘á»™: Táº¡o má»›i</span>
+              <span class="badge badge-blue" id="appFormModeBadge">Chế độ: Tạo mới</span>
             </div>
 
             <input type="hidden" id="editAppMode" value="create" />
             <div style="display:flex;flex-direction:column;gap:11px;">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">MÃ£ Ä‘á»‹nh danh á»¨ng dá»¥ng (App ID):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Mã định danh Ứng dụng (App ID):</label>
                   <input type="text" id="newAppId" class="input-control" style="width:100%;" placeholder="VD: biz-hotel-pms" value="biz-hotel-pms" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">NhÃ£n phÃ¢n loáº¡i (Badge):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Nhãn phân loại (Badge):</label>
                   <input type="text" id="newAppBadge" class="input-control" style="width:100%;" placeholder="VD: Hospitality / EdTech" value="Hospitality" />
                 </div>
               </div>
 
               <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:10px;">
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">TÃªn hiá»ƒn thá»‹ Sáº£n pháº©m:</label>
-                  <input type="text" id="newAppName" class="input-control" style="width:100%;" placeholder="Nháº­p tÃªn sáº£n pháº©m..." value="QL KhÃ¡ch sáº¡n & Resort (PMS)" />
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Tên hiển thị Sản phẩm:</label>
+                  <input type="text" id="newAppName" class="input-control" style="width:100%;" placeholder="Nhập tên sản phẩm..." value="QL Khách sạn & Resort (PMS)" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Tráº¡ng thÃ¡i hoáº¡t Ä‘á»™ng:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Trạng thái hoạt động:</label>
                   <select id="newAppStatus" class="select-control" style="width:100%;">
-                    <option value="active">ðŸŸ¢ Äang hoáº¡t Ä‘á»™ng (Active)</option>
-                    <option value="maintenance">ðŸŸ¡ Äang báº£o trÃ¬ (Maintenance)</option>
-                    <option value="locked">ðŸ”´ Táº¡m khÃ³a / áº¨n (Locked)</option>
+                    <option value="active">🟢 Đang hoạt động (Active)</option>
+                    <option value="maintenance">🟡 Đang bảo trì (Maintenance)</option>
+                    <option value="locked">🔴 Tạm khóa / Ẩn (Locked)</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Thuá»™c NhÃ³m Sáº£n pháº©m (Hiá»ƒn thá»‹ trÃªn Trang Sáº£n pháº©m):</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Thuộc Nhóm Sản phẩm (Hiển thị trên Trang Sản phẩm):</label>
                 <select id="newAppGroup" class="select-control" style="width:100%;">
-                  <option value="GROUP-1">NhÃ³m 01: GiÃ¡o dá»¥c Máº§m non &amp; Phá»• thÃ´ng K-12</option>
-                  <option value="GROUP-2">NhÃ³m 02: Äáº¡i há»c, Cao Ä‘áº³ng &amp; GiÃ¡o dá»¥c ThÆ°á»ng xuyÃªn</option>
-                  <option value="GROUP-3">NhÃ³m 03: Trung tÃ¢m Ngoáº¡i ngá»¯ - Tin há»c &amp; Kháº£o thÃ­ LMS</option>
-                  <option value="GROUP-4">NhÃ³m 04: SÃ n Viá»‡c lÃ m AI (JobAI) &amp; Cá»•ng Giáº£i phÃ¡p Sá»‘</option>
-                  <option value="GROUP-5">NhÃ³m 05: Quáº£n trá»‹ Doanh nghiá»‡p (ERP &amp; BSC-KPI)</option>
-                  <option value="GROUP-6" selected>NhÃ³m 06: KhÃ¡ch sáº¡n PMS, SÃ n BÄS AI &amp; Ná»™i tháº¥t</option>
+                  <option value="GROUP-1">Nhóm 01: Giáo dục Mầm non &amp; Phổ thông K-12</option>
+                  <option value="GROUP-2">Nhóm 02: Đại học, Cao đẳng &amp; Giáo dục Thường xuyên</option>
+                  <option value="GROUP-3">Nhóm 03: Trung tâm Ngoại ngữ - Tin học &amp; Khảo thí LMS</option>
+                  <option value="GROUP-4">Nhóm 04: Sàn Việc làm AI (JobAI) &amp; Cổng Giải pháp Số</option>
+                  <option value="GROUP-5">Nhóm 05: Quản trị Doanh nghiệp (ERP &amp; BSC-KPI)</option>
+                  <option value="GROUP-6" selected>Nhóm 06: Khách sạn PMS, Sàn BĐS AI &amp; Nội thất</option>
                 </select>
               </div>
 
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Äá»‹a chá»‰ Web (App URL):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Địa chỉ Web (App URL):</label>
                   <input type="text" id="newAppUrl" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Webhook nháº­n sá»± kiá»‡n:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Webhook nhận sự kiện:</label>
                   <input type="text" id="newAppWebhook" class="input-control" style="width:100%;" value="https://pms.techcorp.info.vn/api/webhooks/techcorp-hub" />
                 </div>
               </div>
 
               <div style="background:#f8fbff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;">
-                <label style="font-size:12px;color:#0043b8;font-weight:800;display:block;margin-bottom:5px;">ðŸ–¼ï¸ HÃ¬nh áº£nh Äáº¡i diá»‡n Sáº£n pháº©m (URL hoáº·c Táº£i áº£nh tá»« mÃ¡y tÃ­nh):</label>
+                <label style="font-size:12px;color:#0043b8;font-weight:800;display:block;margin-bottom:5px;">🖼️ Hình ảnh Đại diện Sản phẩm (URL hoặc Tải ảnh từ máy tính):</label>
                 <div style="display:flex;gap:8px;align-items:center;">
                   <input
                     type="text"
@@ -297,87 +297,87 @@
                     value="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80"
                   />
                   <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0;white-space:nowrap;">
-                    ðŸ“¤ Chá»n áº¢nh
+                    📤 Chọn Ảnh
                     <input type="file" id="newAppImageFileInput" accept="image/*" style="display:none;" onchange="handleAppImageUpload(event)" />
                   </label>
                 </div>
               </div>
 
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">MÃ´ táº£ chá»©c nÄƒng &amp; Luá»“ng dá»¯ liá»‡u liÃªn thÃ´ng:</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Mô tả chức năng &amp; Luồng dữ liệu liên thông:</label>
                 <textarea
                   id="newAppDesc"
                   class="input-control"
                   style="width:100%;min-height:62px;font-family:inherit;"
-                >Quáº£n lÃ½ buá»“ng phÃ²ng, Ä‘áº·t phÃ²ng &amp; káº¿t ná»‘i tuyá»ƒn thá»±c táº­p sinh Du lá»‹ch Nha Trang</textarea>
+                >Quản lý buồng phòng, đặt phòng &amp; kết nối tuyển thực tập sinh Du lịch Nha Trang</textarea>
               </div>
 
               <div style="display:flex;gap:10px;">
                 <button type="button" class="btn btn-primary" onclick="saveEcosystemApp()" style="flex:1;padding:11px;">
-                  ðŸ’¾ LÆ°u Sáº£n pháº©m &amp; Äá»“ng bá»™ ra Trang Public
+                  💾 Lưu Sản phẩm &amp; Đồng bộ ra Trang Public
                 </button>
-                <button type="button" class="btn btn-outline" onclick="resetAppForm()">Há»§y / Nháº­p má»›i</button>
+                <button type="button" class="btn btn-outline" onclick="resetAppForm()">Hủy / Nhập mới</button>
               </div>
             </div>
 
             <div id="integrationGuideOutput" style="margin-top:16px;padding-top:14px;border-top:2px solid #edf4ff;">
               <p style="font-size:12px;color:#334155;margin-bottom:6px;">
-                <strong>MÃ£ nhÃºng Thanh LiÃªn thÃ´ng chuáº©n cho á»©ng dá»¥ng vá»‡ tinh:</strong>
+                <strong>Mã nhúng Thanh Liên thông chuẩn cho ứng dụng vệ tinh:</strong>
               </p>
-              <div class="code-box">&lt;script src="https://hesinhthai.techcorp.info.vn/widget/techcorp-ecosystem-bar.js?v=5.0" data-hub-url="https://hesinhthai.techcorp.info.vn" data-app-id="biz-erp" defer&gt;&lt;/script&gt;</div>
+              <div class="code-box">&lt;script src="https://hesinhthai.techcorp.info.vn/widget/techcorp-ecosystem-bar.js?v=32.0" data-hub-url="https://hesinhthai.techcorp.info.vn" data-app-id="biz-erp" defer&gt;&lt;/script&gt;</div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- =====================================================================
-           PANEL D: QUáº¢N TRá»Š 6 HERO SLIDER (Äá»”I HÃŒNH áº¢NH / UPLOAD áº¢NH) & Báº¢N TIN TRANG PUBLIC
+           PANEL D: QUẢN TRỊ 6 HERO SLIDER (ĐỔI HÌNH ẢNH / UPLOAD ẢNH) & BẢN TIN TRANG PUBLIC
            ===================================================================== -->
       <section id="panel-master-bulletins" class="tab-panel">
-        <!-- KHá»I 1: QUáº¢N TRá»Š 6 HERO SLIDER TRANG CHá»¦ PUBLIC (THAY Äá»”I HÃŒNH áº¢NH & Ná»˜I DUNG) -->
+        <!-- KHỐI 1: QUẢN TRỊ 6 HERO SLIDER TRANG CHỦ PUBLIC (THAY ĐỔI HÌNH ẢNH & NỘI DUNG) -->
         <div class="card" style="margin-bottom:22px;border-top:4px solid #0052d4;">
           <div class="card-header">
             <div>
-              <span class="badge badge-blue">ðŸ–¼ï¸ HERO SLIDER CAROUSEL (6 SLIDE CHáº Y LIÃŠN Tá»¤C TRÃŠN TRANG CHá»¦)</span>
-              <h3 class="card-title" style="margin-top:6px;">Quáº£n trá»‹ HÃ¬nh áº£nh & Ná»™i dung 6 Hero Slider Trang chá»§ (hesinhthai.techcorp.info.vn)</h3>
+              <span class="badge badge-blue">🖼️ HERO SLIDER CAROUSEL (6 SLIDE CHẠY LIÊN TỤC TRÊN TRANG CHỦ)</span>
+              <h3 class="card-title" style="margin-top:6px;">Quản trị Hình ảnh & Nội dung 6 Hero Slider Trang chủ (hesinhthai.techcorp.info.vn)</h3>
               <p class="card-subtitle">
-                Thay Ä‘á»•i hÃ¬nh áº£nh cá»§a báº¥t ká»³ Slide nÃ o báº±ng cÃ¡ch <strong>Táº£i áº£nh trá»±c tiáº¿p tá»« mÃ¡y tÃ­nh (Upload File)</strong> hoáº·c <strong>DÃ¡n Ä‘Æ°á»ng dáº«n URL áº£nh</strong>. Thay Ä‘á»•i sáº½ Ã¡p dá»¥ng ngay láº­p tá»©c trÃªn Trang chá»§!
+                Thay đổi hình ảnh của bất kỳ Slide nào bằng cách <strong>Tải ảnh trực tiếp từ máy tính (Upload File)</strong> hoặc <strong>Dán đường dẫn URL ảnh</strong>. Thay đổi sẽ áp dụng ngay lập tức trên Trang chủ!
               </p>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <a href="index.html" target="_blank" class="btn btn-outline btn-sm">ðŸŒ Xem Slider ngoÃ i Trang chá»§ â†—</a>
-              <button class="btn btn-warning btn-sm" onclick="resetDefaultHeroSliders()">ðŸ”„ KhÃ´i phá»¥c 6 áº¢nh Máº·c Ä‘á»‹nh</button>
+              <a href="index.html" target="_blank" class="btn btn-outline btn-sm">🌍 Xem Slider ngoài Trang chủ ↗</a>
+              <button class="btn btn-warning btn-sm" onclick="resetDefaultHeroSliders()">🔄 Khôi phục 6 Ảnh Mặc định</button>
             </div>
           </div>
 
           <div class="grid-2">
-            <!-- Báº£ng danh sÃ¡ch 6 Slide -->
+            <!-- Bảng danh sách 6 Slide -->
             <div class="table-wrap">
               <table class="tc-table">
                 <thead>
                   <tr>
-                    <th>Slide & HÃ¬nh áº£nh Hiá»‡n táº¡i</th>
-                    <th>TiÃªu Ä‘á» & LiÃªn káº¿t ÄÃ­ch</th>
-                    <th>Thao tÃ¡c</th>
+                    <th>Slide & Hình ảnh Hiện tại</th>
+                    <th>Tiêu đề & Liên kết Đích</th>
+                    <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="adminHeroSlidersTableBody"></tbody>
               </table>
             </div>
 
-            <!-- Form Chá»‰nh sá»­a HÃ¬nh áº£nh & Ná»™i dung Slide -->
+            <!-- Form Chỉnh sửa Hình ảnh & Nội dung Slide -->
             <div style="background:#f4f9ff;border:1.5px solid #93c5fd;border-radius:14px;padding:18px;align-self:start;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                 <h4 style="font-size:15px;font-weight:800;color:#0b2559;" id="heroSliderFormTitle">
-                  ðŸ–¼ï¸ Chá»‰nh sá»­a & Thay Ä‘á»•i HÃ¬nh áº£nh cho: Slide #1
+                  🖼️ Chỉnh sửa & Thay đổi Hình ảnh cho: Slide #1
                 </h4>
-                <span class="badge badge-green" id="heroSliderActiveBadge">Äang chá»n: SLIDE-01</span>
+                <span class="badge badge-green" id="heroSliderActiveBadge">Đang chọn: SLIDE-01</span>
               </div>
 
               <input type="hidden" id="editHeroSlideId" value="SLIDE-01" />
 
               <div style="display:flex;flex-direction:column;gap:11px;">
-                <!-- Xem trÆ°á»›c hÃ¬nh áº£nh hiá»‡n táº¡i / má»›i táº£i lÃªn -->
+                <!-- Xem trước hình ảnh hiện tại / mới tải lên -->
                 <div style="display:grid;grid-template-columns:160px 1fr;gap:12px;align-items:center;background:#ffffff;padding:10px;border-radius:12px;border:1px solid #cbd5e1;">
                   <img
                     id="editHeroImagePreview"
@@ -387,7 +387,7 @@
                   />
                   <div>
                     <label style="font-size:12px;font-weight:800;color:#0043b8;display:block;margin-bottom:5px;">
-                      ðŸ“¤ CÃ¡ch 1: Táº£i HÃ¬nh áº£nh Má»›i tá»« MÃ¡y tÃ­nh (JPG/PNG/WebP):
+                      📤 Cách 1: Tải Hình ảnh Mới từ Máy tính (JPG/PNG/WebP):
                     </label>
                     <input
                       type="file"
@@ -397,14 +397,14 @@
                       style="font-size:12px;width:100%;"
                     />
                     <div style="font-size:11px;color:#64748b;margin-top:4px;">
-                      áº¢nh táº£i lÃªn Ä‘Æ°á»£c tá»± Ä‘á»™ng tá»‘i Æ°u Ä‘á»™ phÃ¢n giáº£i HD vÃ  lÆ°u trá»±c tiáº¿p vÃ o CSDL Server.
+                      Ảnh tải lên được tự động tối ưu độ phân giải HD và lưu trực tiếp vào CSDL Server.
                     </div>
                   </div>
                 </div>
 
                 <div>
                   <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">
-                    ðŸŒ CÃ¡ch 2: Hoáº·c nháº­p ÄÆ°á»ng dáº«n URL HÃ¬nh áº£nh (Image URL / Data URI):
+                    🌐 Cách 2: Hoặc nhập Đường dẫn URL Hình ảnh (Image URL / Data URI):
                   </label>
                   <input
                     type="text"
@@ -418,60 +418,60 @@
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                   <div>
-                    <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">NhÃ£n tiÃªu Ä‘iá»ƒm trÃªn Slide (Badge):</label>
+                    <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nhãn tiêu điểm trên Slide (Badge):</label>
                     <input type="text" id="editHeroBadge" class="input-control" style="width:100%;" />
                   </div>
                   <div>
-                    <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">ChÃº thÃ­ch gÃ³c dÆ°á»›i áº£nh (Caption):</label>
+                    <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Chú thích góc dưới ảnh (Caption):</label>
                     <input type="text" id="editHeroCaption" class="input-control" style="width:100%;" />
                   </div>
                 </div>
 
                 <div>
-                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">TiÃªu Ä‘á» chÃ­nh cá»§a Slide (Title):</label>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Tiêu đề chính của Slide (Title):</label>
                   <input type="text" id="editHeroTitle" class="input-control" style="width:100%;" />
                 </div>
 
                 <div>
-                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">MÃ´ táº£ chi tiáº¿t (Subtitle):</label>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Mô tả chi tiết (Subtitle):</label>
                   <textarea id="editHeroSubtitle" class="input-control" style="width:100%;min-height:66px;font-family:inherit;"></textarea>
                 </div>
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                   <div>
-                    <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">NÃºt báº¥m chÃ­nh (CTA Text):</label>
+                    <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nút bấm chính (CTA Text):</label>
                     <input type="text" id="editHeroPrimaryText" class="input-control" style="width:100%;" />
                   </div>
                   <div>
-                    <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">ÄÆ°á»ng dáº«n Ä‘Ã­ch (CTA Link):</label>
+                    <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Đường dẫn đích (CTA Link):</label>
                     <input type="text" id="editHeroPrimaryLink" class="input-control" style="width:100%;" />
                   </div>
                 </div>
 
                 <button class="btn btn-primary" onclick="saveHeroSliderConfig()" style="padding:11px;">
-                  ðŸ’¾ LÆ°u HÃ¬nh áº£nh & Cáº­p nháº­t Slide lÃªn Trang chá»§ Ngay
+                  💾 Lưu Hình ảnh & Cập nhật Slide lên Trang chủ Ngay
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- KHá»I 2: QUáº¢N TRá»Š Báº¢N TIN ÄIá»€U HÃ€NH & TIN Tá»¨C ÄÆ N Vá»Š THÃ€NH VIÃŠN -->
+        <!-- KHỐI 2: QUẢN TRỊ BẢN TIN ĐIỀU HÀNH & TIN TỨC ĐƠN VỊ THÀNH VIÊN -->
         <div class="grid-2">
           <div class="card">
             <div class="card-header" style="flex-wrap:wrap;gap:10px;">
               <div>
-                <h3 class="card-title">ðŸ“¢ Danh sÃ¡ch Báº£n tin Äiá»u hÃ nh &amp; Tin ÄÆ¡n vá»‹ ThÃ nh viÃªn (Full CRUD)</h3>
+                <h3 class="card-title">📢 Danh sách Bản tin Điều hành &amp; Tin Đơn vị Thành viên (Full CRUD)</h3>
                 <p class="card-subtitle">
-                  Quáº£n lÃ½ toÃ n diá»‡n (Táº¡o má»›i, Xem chi tiáº¿t, Chá»‰nh sá»­a, Ghim ná»•i báº­t, XoÃ¡, In áº¥n, Xuáº¥t/Nháº­p Excel) cÃ¡c báº£n tin hiá»ƒn thá»‹ ngoÃ i Trang chá»§ Public.
+                  Quản lý toàn diện (Tạo mới, Xem chi tiết, Chỉnh sửa, Ghim nổi bật, Xoá, In ấn, Xuất/Nhập Excel) các bản tin hiển thị ngoài Trang chủ Public.
                 </p>
               </div>
               <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminBulletinsReport()">ðŸ–¨ï¸ In Danh sÃ¡ch Tin</button>
-                <button type="button" class="btn btn-emerald btn-sm" onclick="exportBulletinsExcel()">ðŸ“¥ Xuáº¥t Excel</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportBulletinsExcel()">ðŸ“¤ Nháº­p Excel</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="downloadBulletinsExcelTemplate()" title="Táº£i file Excel máº«u Ä‘á»ƒ nháº­p báº£n tin">ðŸ“„ File Máº«u</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="resetBulletinForm()">âž• Soáº¡n tin má»›i</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminBulletinsReport()">🖨️ In Danh sách Tin</button>
+                <button type="button" class="btn btn-emerald btn-sm" onclick="exportBulletinsExcel()">📥 Xuất Excel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportBulletinsExcel()">📤 Nhập Excel</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="downloadBulletinsExcelTemplate()" title="Tải file Excel mẫu để nhập bản tin">📄 File Mẫu</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="resetBulletinForm()">➕ Soạn tin mới</button>
                 <input type="file" id="importBulletinsExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportBulletinsExcel(event)" />
               </div>
             </div>
@@ -482,13 +482,13 @@
                 id="adminBulletinSearchInput"
                 class="input-control"
                 style="min-width:220px;flex:1;"
-                placeholder="ðŸ” TÃ¬m theo tiÃªu Ä‘á», tÃ³m táº¯t, Ä‘Æ¡n vá»‹ Ä‘Äƒng, chuyÃªn má»¥c..."
+                placeholder="🔍 Tìm theo tiêu đề, tóm tắt, đơn vị đăng, chuyên mục..."
                 oninput="renderAdminBulletinsTable()"
               />
               <select id="adminBulletinTypeFilter" class="select-control" onchange="renderAdminBulletinsTable()">
-                <option value="all">Táº¥t cáº£ loáº¡i báº£n tin</option>
-                <option value="master">ðŸ‘‘ Tin Äiá»u hÃ nh Há»‡ sinh thÃ¡i TechCorp</option>
-                <option value="member">ðŸŒŸ Tin ÄÆ¡n vá»‹ ThÃ nh viÃªn</option>
+                <option value="all">Tất cả loại bản tin</option>
+                <option value="master">👑 Tin Điều hành Hệ sinh thái TechCorp</option>
+                <option value="member">🌟 Tin Đơn vị Thành viên</option>
               </select>
             </div>
 
@@ -496,11 +496,11 @@
               <table class="tc-table">
                 <thead>
                   <tr>
-                    <th>áº¢nh &amp; PhÃ¢n loáº¡i</th>
-                    <th>TiÃªu Ä‘á» &amp; TÃ³m táº¯t</th>
-                    <th>ÄÆ¡n vá»‹ ÄÄƒng táº£i</th>
-                    <th>Thá»i gian &amp; LÆ°á»£t xem</th>
-                    <th>Thao tÃ¡c (CRUD)</th>
+                    <th>Ảnh &amp; Phân loại</th>
+                    <th>Tiêu đề &amp; Tóm tắt</th>
+                    <th>Đơn vị Đăng tải</th>
+                    <th>Thời gian &amp; Lượt xem</th>
+                    <th>Thao tác (CRUD)</th>
                   </tr>
                 </thead>
                 <tbody id="adminBulletinsTableBody"></tbody>
@@ -511,46 +511,46 @@
           <div class="card" style="align-self:start;">
             <div class="card-header">
               <div>
-                <h3 class="card-title" id="bulletinFormTitle">âœï¸ PhÃ¡t hÃ nh Báº£n tin Äiá»u hÃ nh / Quáº£ng bÃ¡ Má»›i ra Trang Public</h3>
-                <p class="card-subtitle">Ná»™i dung vÃ  hÃ¬nh áº£nh Ä‘áº¡i diá»‡n sau khi lÆ°u sáº½ hiá»ƒn thá»‹ ngay trÃªn Trang chá»§ Public.</p>
+                <h3 class="card-title" id="bulletinFormTitle">✍️ Phát hành Bản tin Điều hành / Quảng bá Mới ra Trang Public</h3>
+                <p class="card-subtitle">Nội dung và hình ảnh đại diện sau khi lưu sẽ hiển thị ngay trên Trang chủ Public.</p>
               </div>
-              <span class="badge badge-blue" id="bulletinFormModeBadge">Cháº¿ Ä‘á»™: Táº¡o má»›i</span>
+              <span class="badge badge-blue" id="bulletinFormModeBadge">Chế độ: Tạo mới</span>
             </div>
 
             <input type="hidden" id="editBulletinId" value="" />
             <div style="display:flex;flex-direction:column;gap:11px;">
               <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:10px;">
                 <div>
-                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Loáº¡i Báº£n tin:</label>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Loại Bản tin:</label>
                   <select id="newBulletinSourceType" class="select-control" style="width:100%;" onchange="handleBulletinTypeChange(this.value)">
-                    <option value="master">ðŸ‘‘ ThÃ´ng bÃ¡o Äiá»u hÃ nh Há»‡ sinh thÃ¡i TechCorp</option>
-                    <option value="member">ðŸŒŸ Tin tá»©c / Sá»± kiá»‡n / Æ¯u Ä‘Ã£i ÄÆ¡n vá»‹ ThÃ nh viÃªn</option>
+                    <option value="master">👑 Thông báo Điều hành Hệ sinh thái TechCorp</option>
+                    <option value="member">🌟 Tin tức / Sự kiện / Ưu đãi Đơn vị Thành viên</option>
                   </select>
                 </div>
                 <div>
-                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">ChuyÃªn má»¥c (Category Tag):</label>
-                  <input type="text" id="newBulletinCategoryTag" class="input-control" style="width:100%;" value="Äiá»u hÃ nh Há»‡ sinh thÃ¡i" placeholder="VD: Há»c bá»•ng & Kháº£o thÃ­" />
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Chuyên mục (Category Tag):</label>
+                  <input type="text" id="newBulletinCategoryTag" class="input-control" style="width:100%;" value="Điều hành Hệ sinh thái" placeholder="VD: Học bổng & Khảo thí" />
                 </div>
               </div>
 
               <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:10px;">
                 <div>
-                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">NhÃ£n hiá»ƒn thá»‹ (Badge):</label>
-                  <input type="text" id="newBulletinBadge" class="input-control" style="width:100%;" value="ðŸ‘‘ THÃ”NG BÃO ÄIá»€U HÃ€NH Tá»ª Há»† SINH THÃI TECHCORP" />
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nhãn hiển thị (Badge):</label>
+                  <input type="text" id="newBulletinBadge" class="input-control" style="width:100%;" value="👑 THÔNG BÁO ĐIỀU HÀNH TỪ HỆ SINH THÁI TECHCORP" />
                 </div>
                 <div>
-                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">ÄÆ¡n vá»‹ phÃ¡t hÃ nh:</label>
+                  <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Đơn vị phát hành:</label>
                   <input type="text" id="newBulletinAuthorOrg" class="input-control" style="width:100%;" placeholder="VD: TechCorp Headquarters" />
                 </div>
               </div>
 
               <div>
-                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">TiÃªu Ä‘á» Báº£n tin:</label>
-                <input type="text" id="newBulletinTitle" class="input-control" style="width:100%;" placeholder="Nháº­p tiÃªu Ä‘á» thÃ´ng bÃ¡o..." />
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Tiêu đề Bản tin:</label>
+                <input type="text" id="newBulletinTitle" class="input-control" style="width:100%;" placeholder="Nhập tiêu đề thông báo..." />
               </div>
 
               <div style="background:#f8fbff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;">
-                <label style="font-size:12px;font-weight:800;color:#0043b8;display:block;margin-bottom:5px;">ðŸ–¼ï¸ HÃ¬nh áº£nh Ä‘áº¡i diá»‡n (Nháº­p URL hoáº·c Táº£i áº£nh tá»« mÃ¡y tÃ­nh):</label>
+                <label style="font-size:12px;font-weight:800;color:#0043b8;display:block;margin-bottom:5px;">🖼️ Hình ảnh đại diện (Nhập URL hoặc Tải ảnh từ máy tính):</label>
                 <div style="display:flex;gap:8px;align-items:center;">
                   <input
                     type="text"
@@ -560,30 +560,30 @@
                     placeholder="https://images.unsplash.com/..."
                   />
                   <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0;white-space:nowrap;">
-                    ðŸ“¤ Chá»n áº¢nh
+                    📤 Chọn Ảnh
                     <input type="file" id="newBulletinImageFileInput" accept="image/*" style="display:none;" onchange="handleBulletinImageUpload(event)" />
                   </label>
                 </div>
               </div>
 
               <div>
-                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Ná»™i dung tÃ³m táº¯t (Hiá»ƒn thá»‹ ngoÃ i tháº» tin):</label>
-                <textarea id="newBulletinSummary" class="input-control" style="width:100%;min-height:60px;font-family:inherit;" placeholder="Nháº­p Ä‘oáº¡n tÃ³m táº¯t ngáº¯n gá»n..."></textarea>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung tóm tắt (Hiển thị ngoài thẻ tin):</label>
+                <textarea id="newBulletinSummary" class="input-control" style="width:100%;min-height:60px;font-family:inherit;" placeholder="Nhập đoạn tóm tắt ngắn gọn..."></textarea>
               </div>
               <div>
-                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Ná»™i dung bÃ i viáº¿t chi tiáº¿t (Hiá»ƒn thá»‹ khi báº¥m Xem tin chi tiáº¿t):</label>
-                <textarea id="newBulletinContent" class="input-control" style="width:100%;min-height:95px;font-family:inherit;" placeholder="Nháº­p toÃ n vÄƒn ná»™i dung chi tiáº¿t cá»§a báº£n tin, chÃ­nh sÃ¡ch Ã¡p dá»¥ng, quyá»n lá»£i thÃ nh viÃªn..."></textarea>
+                <label style="font-size:12px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Nội dung bài viết chi tiết (Hiển thị khi bấm Xem tin chi tiết):</label>
+                <textarea id="newBulletinContent" class="input-control" style="width:100%;min-height:95px;font-family:inherit;" placeholder="Nhập toàn văn nội dung chi tiết của bản tin, chính sách áp dụng, quyền lợi thành viên..."></textarea>
               </div>
 
               <label style="font-size:12.5px;color:#0f172a;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;">
-                <input type="checkbox" id="newBulletinPinned" checked /> ðŸ“Œ Ghim ná»•i báº­t báº£n tin nÃ y lÃªn Khu vá»±c TÃ¢m Ä‘iá»ƒm Trang chá»§
+                <input type="checkbox" id="newBulletinPinned" checked /> 📌 Ghim nổi bật bản tin này lên Khu vực Tâm điểm Trang chủ
               </label>
 
               <div style="display:flex;gap:10px;">
                 <button type="button" class="btn btn-primary" id="btnSubmitBulletinForm" onclick="submitNewAnnouncement()" style="flex:1;padding:11px;">
-                  ðŸš€ PhÃ¡t hÃ nh lÃªn Trang Public Há»‡ sinh thÃ¡i
+                  🚀 Phát hành lên Trang Public Hệ sinh thái
                 </button>
-                <button type="button" class="btn btn-outline" onclick="resetBulletinForm()">Há»§y / Táº¡o má»›i</button>
+                <button type="button" class="btn btn-outline" onclick="resetBulletinForm()">Hủy / Tạo mới</button>
               </div>
             </div>
           </div>
@@ -591,42 +591,42 @@
       </section>
 
       <!-- =====================================================================
-           PANEL E: KIá»‚M DUYá»†T DIá»„N ÄÃ€N & GIAO THÆ¯Æ NG B2B (APPROVE / CLOCK / LOCK / DELETE / EXCEL / PRINT)
+           PANEL E: KIỂM DUYỆT DIỄN ĐÀN & GIAO THƯƠNG B2B (APPROVE / CLOCK / LOCK / DELETE / EXCEL / PRINT)
            ===================================================================== -->
       <section id="panel-master-forum" class="tab-panel">
         <div class="card">
           <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
-              <h3 class="card-title">ðŸ›¡ï¸ Kiá»ƒm duyá»‡t &amp; Quáº£n trá»‹ Diá»…n Ä‘Ã n Giao thÆ°Æ¡ng (Full CRUD, In áº¥n, Xuáº¥t/Nháº­p Excel)</h3>
+              <h3 class="card-title">🛡️ Kiểm duyệt &amp; Quản trị Diễn đàn Giao thương (Full CRUD, In ấn, Xuất/Nhập Excel)</h3>
               <p class="card-subtitle">
-                Táº¡o má»›i, xem, sá»­a, duyá»‡t hiá»ƒn thá»‹ ra Trang Public, khÃ³a bÃ¬nh luáº­n (Clock/Lock), ghim VIP, xoÃ¡ bÃ i, in bÃ¡o cÃ¡o hoáº·c nháº­p/xuáº¥t Excel.
+                Tạo mới, xem, sửa, duyệt hiển thị ra Trang Public, khóa bình luận (Clock/Lock), ghim VIP, xoá bài, in báo cáo hoặc nhập/xuất Excel.
               </p>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button type="button" class="btn btn-primary btn-sm" onclick="openAdminCreateForumModal()">âž• ÄÄƒng bÃ i má»›i</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="printAdminForumReport()">ðŸ–¨ï¸ In Danh sÃ¡ch</button>
-              <button type="button" class="btn btn-emerald btn-sm" onclick="exportForumExcel()">ðŸ“¥ Xuáº¥t Excel</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="triggerImportForumExcel()">ðŸ“¤ Nháº­p Excel</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="downloadForumExcelTemplate()">ðŸ“„ File Máº«u</button>
-              <a href="index.html?page=forum" class="btn btn-outline btn-sm">ðŸŒ Xem ngoÃ i Public</a>
+              <button type="button" class="btn btn-primary btn-sm" onclick="openAdminCreateForumModal()">➕ Đăng bài mới</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="printAdminForumReport()">🖨️ In Danh sách</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportForumExcel()">📥 Xuất Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="triggerImportForumExcel()">📤 Nhập Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="downloadForumExcelTemplate()">📄 File Mẫu</button>
+              <a href="index.html?page=forum" class="btn btn-outline btn-sm">🌍 Xem ngoài Public</a>
               <input type="file" id="importForumExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportForumExcel(event)" />
             </div>
           </div>
 
           <div class="filter-bar">
             <select id="adminForumStatusFilter" class="select-control" onchange="renderAdminForumTable()">
-              <option value="all">Táº¥t cáº£ tráº¡ng thÃ¡i tháº©m Ä‘á»‹nh</option>
-              <option value="pending">â³ Chá» tháº©m Ä‘á»‹nh (Pending)</option>
-              <option value="approved">âœ… ÄÃ£ tháº©m Ä‘á»‹nh &amp; Hiá»ƒn thá»‹ Public (Approved)</option>
-              <option value="rejected">ðŸš« ÄÃ£ tá»« chá»‘i / áº¨n (Rejected)</option>
-              <option value="locked">ðŸ”’ ÄÃ£ khÃ³a bÃ¬nh luáº­n (Clocked / Locked)</option>
+              <option value="all">Tất cả trạng thái thẩm định</option>
+              <option value="pending">⏳ Chờ thẩm định (Pending)</option>
+              <option value="approved">✅ Đã thẩm định &amp; Hiển thị Public (Approved)</option>
+              <option value="rejected">🚫 Đã từ chối / Ẩn (Rejected)</option>
+              <option value="locked">🔒 Đã khóa bình luận (Clocked / Locked)</option>
             </select>
             <input
               type="text"
               id="adminForumSearchInput"
               class="input-control"
               style="min-width:240px;flex:1;"
-              placeholder="ðŸ” TÃ¬m theo tiÃªu Ä‘á», ngÆ°á»i Ä‘Äƒng, Ä‘Æ¡n vá»‹, mÃ£ bÃ i viáº¿t..."
+              placeholder="🔍 Tìm theo tiêu đề, người đăng, đơn vị, mã bài viết..."
               oninput="renderAdminForumTable()"
             />
           </div>
@@ -636,41 +636,41 @@
             style="display:none;background:#f0f7ff;border:2px solid #0061ff;border-radius:14px;padding:18px;margin-bottom:18px;"
           >
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-              <h4 style="color:#0043b8;font-weight:800;" id="adminForumModalHeader">ðŸ‘ï¸ Táº¡o má»›i / Chá»‰nh sá»­a / Tháº©m Ä‘á»‹nh BÃ i viáº¿t Diá»…n Ä‘Ã n</h4>
-              <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminForumModal()">ÄÃ³ng âœ•</button>
+              <h4 style="color:#0043b8;font-weight:800;" id="adminForumModalHeader">👁️ Tạo mới / Chỉnh sửa / Thẩm định Bài viết Diễn đàn</h4>
+              <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminForumModal()">Đóng ✕</button>
             </div>
             <input type="hidden" id="adminEditPostId" />
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;">
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">TiÃªu Ä‘á» bÃ i viáº¿t (*):</label>
-                <input type="text" id="adminEditPostTitle" class="input-control" style="width:100%;" placeholder="Nháº­p tiÃªu Ä‘á» tin giao thÆ°Æ¡ng B2B..." />
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Tiêu đề bài viết (*):</label>
+                <input type="text" id="adminEditPostTitle" class="input-control" style="width:100%;" placeholder="Nhập tiêu đề tin giao thương B2B..." />
               </div>
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Äáº·c quyá»n cam káº¿t (Give-to-Get):</label>
-                <input type="text" id="adminEditPostDeal" class="input-control" style="width:100%;" placeholder="VD: Táº·ng 20 suáº¥t há»c bá»•ng / Giáº£m 30% phÃ­..." />
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Đặc quyền cam kết (Give-to-Get):</label>
+                <input type="text" id="adminEditPostDeal" class="input-control" style="width:100%;" placeholder="VD: Tặng 20 suất học bổng / Giảm 30% phí..." />
               </div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;">
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">ChuyÃªn má»¥c Giao thÆ°Æ¡ng:</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Chuyên mục Giao thương:</label>
                 <select id="adminEditPostCategory" class="select-control" style="width:100%;">
-                  <option value="rfq">ðŸ“¢ Cáº§n Mua / TÃ¬m Äá»‘i tÃ¡c (RFQ)</option>
-                  <option value="spotlight">ðŸŽ Äáº·c quyá»n Give-to-Get</option>
-                  <option value="comarketing">ðŸ¤ Há»£p tÃ¡c Sá»± kiá»‡n &amp; Tuyá»ƒn sinh</option>
-                  <option value="knowledge">ðŸ’¡ Chia sáº» Quáº£n trá»‹ &amp; AI</option>
+                  <option value="rfq">📢 Cần Mua / Tìm Đối tác (RFQ)</option>
+                  <option value="spotlight">🎁 Đặc quyền Give-to-Get</option>
+                  <option value="comarketing">🤝 Hợp tác Sự kiện &amp; Tuyển sinh</option>
+                  <option value="knowledge">💡 Chia sẻ Quản trị &amp; AI</option>
                 </select>
               </div>
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">ÄÆ¡n vá»‹ ThÃ nh viÃªn Ä‘Äƒng bÃ i:</label>
-                <input type="text" id="adminEditPostOrg" class="input-control" style="width:100%;" placeholder="VD: CÃ´ng ty TNHH CÃ´ng nghá»‡ TechCorp" />
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Đơn vị Thành viên đăng bài:</label>
+                <input type="text" id="adminEditPostOrg" class="input-control" style="width:100%;" placeholder="VD: Công ty TNHH Công nghệ TechCorp" />
               </div>
             </div>
             <div style="margin-bottom:12px;">
-              <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Ná»™i dung chi tiáº¿t (*):</label>
-              <textarea id="adminEditPostContent" class="input-control" style="width:100%;min-height:80px;font-family:inherit;" placeholder="Nháº­p ná»™i dung chi tiáº¿t bÃ i viáº¿t..."></textarea>
+              <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:4px;">Nội dung chi tiết (*):</label>
+              <textarea id="adminEditPostContent" class="input-control" style="width:100%;min-height:80px;font-family:inherit;" placeholder="Nhập nội dung chi tiết bài viết..."></textarea>
             </div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
-              <button type="button" class="btn btn-primary btn-sm" onclick="saveAdminForumEdit()">ðŸ’¾ LÆ°u BÃ i viáº¿t &amp; Duyá»‡t hiá»ƒn thá»‹ Public</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="saveAdminForumEdit()">💾 Lưu Bài viết &amp; Duyệt hiển thị Public</button>
             </div>
           </div>
 
@@ -678,11 +678,11 @@
             <table class="tc-table">
               <thead>
                 <tr>
-                  <th>MÃ£ &amp; Chá»§ Ä‘á» Tháº£o luáº­n</th>
-                  <th>NgÆ°á»i Ä‘Äƒng &amp; Äáº·c quyá»n</th>
-                  <th>Tráº¡ng thÃ¡i Tháº©m Ä‘á»‹nh</th>
-                  <th>Tráº¡ng thÃ¡i KhÃ³a (Clock)</th>
-                  <th>Thao tÃ¡c Quáº£n trá»‹</th>
+                  <th>Mã &amp; Chủ đề Thảo luận</th>
+                  <th>Người đăng &amp; Đặc quyền</th>
+                  <th>Trạng thái Thẩm định</th>
+                  <th>Trạng thái Khóa (Clock)</th>
+                  <th>Thao tác Quản trị</th>
                 </tr>
               </thead>
               <tbody id="adminForumTableBody"></tbody>
@@ -692,24 +692,24 @@
       </section>
 
       <!-- =====================================================================
-           PANEL F: QUáº¢N LÃ ÄÆ N Vá»Š THÃ€NH VIÃŠN & TÃ€I KHOáº¢N SSO (USERS CRUD)
+           PANEL F: QUẢN LÝ ĐƠN VỊ THÀNH VIÊN & TÀI KHOẢN SSO (USERS CRUD)
            ===================================================================== -->
       <section id="panel-master-users" class="tab-panel">
         <div class="grid-2">
           <div class="card">
             <div class="card-header" style="flex-wrap:wrap;gap:10px;">
               <div>
-                <h3 class="card-title">ðŸ‘¥ Danh sÃ¡ch ÄÆ¡n vá»‹ ThÃ nh viÃªn &amp; TÃ i khoáº£n SSO (TechCorp ID)</h3>
+                <h3 class="card-title">👥 Danh sách Đơn vị Thành viên &amp; Tài khoản SSO (TechCorp ID)</h3>
                 <p class="card-subtitle">
-                  Quáº£n lÃ½ táº­p trung (Táº¡o má»›i, Xem, Sá»­a, KhÃ³a/Má»Ÿ, XoÃ¡, In áº¥n, Xuáº¥t/Nháº­p Excel) tÃ i khoáº£n lÃ£nh Ä‘áº¡o doanh nghiá»‡p, hiá»‡u trÆ°á»Ÿng, giÃ¡m Ä‘á»‘c trung tÃ¢m vÃ  há»c viÃªn.
+                  Quản lý tập trung (Tạo mới, Xem, Sửa, Khóa/Mở, Xoá, In ấn, Xuất/Nhập Excel) tài khoản lãnh đạo doanh nghiệp, hiệu trưởng, giám đốc trung tâm và học viên.
                 </p>
               </div>
               <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminUsersReport()">ðŸ–¨ï¸ In Danh sÃ¡ch</button>
-                <button type="button" class="btn btn-emerald btn-sm" onclick="exportUsersExcel()">ðŸ“¥ Xuáº¥t Excel</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportUsersExcel()">ðŸ“¤ Nháº­p Excel</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="downloadUsersExcelTemplate()" title="Táº£i file Excel máº«u Ä‘á»ƒ nháº­p danh sÃ¡ch thÃ nh viÃªn">ðŸ“„ File Máº«u</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="resetUserForm()">âž• Táº¡o tÃ i khoáº£n má»›i</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="printAdminUsersReport()">🖨️ In Danh sách</button>
+                <button type="button" class="btn btn-emerald btn-sm" onclick="exportUsersExcel()">📥 Xuất Excel</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="triggerImportUsersExcel()">📤 Nhập Excel</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="downloadUsersExcelTemplate()" title="Tải file Excel mẫu để nhập danh sách thành viên">📄 File Mẫu</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="resetUserForm()">➕ Tạo tài khoản mới</button>
                 <input type="file" id="importUsersExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportUsersExcel(event)" />
               </div>
             </div>
@@ -720,21 +720,21 @@
                 id="adminUserSearchInput"
                 class="input-control"
                 style="min-width:200px;flex:1;"
-                placeholder="ðŸ” TÃ¬m theo tÃªn, email, SÄT, Ä‘Æ¡n vá»‹, mÃ£ ID..."
+                placeholder="🔍 Tìm theo tên, email, SĐT, đơn vị, mã ID..."
                 oninput="renderAdminUsersTable()"
               />
               <select id="adminUserRoleFilter" class="select-control" onchange="renderAdminUsersTable()">
-                <option value="all">Táº¥t cáº£ nhÃ³m vai trÃ²</option>
-                <option value="super_admin">ðŸ‘‘ Há»‡ sinh thÃ¡i TechCorp</option>
-                <option value="ceo_sme">ðŸ¢ Chá»§ Doanh nghiá»‡p SME</option>
-                <option value="center_director">ðŸ« GiÃ¡m Ä‘á»‘c Trung tÃ¢m NN-TH</option>
-                <option value="school_principal">ðŸŽ“ Hiá»‡u trÆ°á»Ÿng CÆ¡ sá»Ÿ GiÃ¡o dá»¥c</option>
-                <option value="student_parent">ðŸ‘¨â€ðŸŽ“ Cá»™ng Ä‘á»“ng Há»c viÃªn / SV</option>
+                <option value="all">Tất cả nhóm vai trò</option>
+                <option value="super_admin">👑 Hệ sinh thái TechCorp</option>
+                <option value="ceo_sme">🏢 Chủ Doanh nghiệp SME</option>
+                <option value="center_director">🏫 Giám đốc Trung tâm NN-TH</option>
+                <option value="school_principal">🎓 Hiệu trưởng Cơ sở Giáo dục</option>
+                <option value="student_parent">👨‍🎓 Cộng đồng Học viên / SV</option>
               </select>
               <select id="adminUserStatusFilter" class="select-control" onchange="renderAdminUsersTable()">
-                <option value="all">Má»i tráº¡ng thÃ¡i</option>
-                <option value="active">ðŸŸ¢ Active</option>
-                <option value="locked">ðŸ”´ Locked</option>
+                <option value="all">Mọi trạng thái</option>
+                <option value="active">🟢 Active</option>
+                <option value="locked">🔴 Locked</option>
               </select>
             </div>
 
@@ -742,11 +742,11 @@
               <table class="tc-table">
                 <thead>
                   <tr>
-                    <th>TÃ i khoáº£n &amp; LiÃªn há»‡</th>
-                    <th>ÄÆ¡n vá»‹ &amp; Vai trÃ²</th>
-                    <th>Quyá»n á»¨ng dá»¥ng &amp; IP</th>
-                    <th>Tráº¡ng thÃ¡i</th>
-                    <th>Thao tÃ¡c (CRUD)</th>
+                    <th>Tài khoản &amp; Liên hệ</th>
+                    <th>Đơn vị &amp; Vai trò</th>
+                    <th>Quyền Ứng dụng &amp; IP</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác (CRUD)</th>
                   </tr>
                 </thead>
                 <tbody id="adminUsersTableBody"></tbody>
@@ -757,120 +757,120 @@
           <div class="card" style="align-self:start;">
             <div class="card-header">
               <div>
-                <h3 class="card-title" id="userFormTitle">âž• Táº¡o má»›i / Cáº­p nháº­t TÃ i khoáº£n ThÃ nh viÃªn</h3>
-                <p class="card-subtitle">Cáº¥p Ä‘á»‹nh danh SSO <code>TechCorp ID</code> vÃ  gÃ¡n vai trÃ² RBAC.</p>
+                <h3 class="card-title" id="userFormTitle">➕ Tạo mới / Cập nhật Tài khoản Thành viên</h3>
+                <p class="card-subtitle">Cấp định danh SSO <code>TechCorp ID</code> và gán vai trò RBAC.</p>
               </div>
-              <span class="badge badge-blue" id="userFormModeBadge">Cháº¿ Ä‘á»™: Táº¡o má»›i</span>
+              <span class="badge badge-blue" id="userFormModeBadge">Chế độ: Tạo mới</span>
             </div>
 
             <input type="hidden" id="editUserId" value="" />
             <div style="display:flex;flex-direction:column;gap:12px;">
               <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Há» vÃ  tÃªn ngÆ°á»i dÃ¹ng:</label>
-                  <input type="text" id="userFullName" class="input-control" style="width:100%;" placeholder="VD: Pháº¡m HoÃ ng Nam (GiÃ¡m Ä‘á»‘c)" />
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Họ và tên người dùng:</label>
+                  <input type="text" id="userFullName" class="input-control" style="width:100%;" placeholder="VD: Phạm Hoàng Nam (Giám đốc)" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Sá»‘ Ä‘iá»‡n thoáº¡i:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Số điện thoại:</label>
                   <input type="text" id="userPhone" class="input-control" style="width:100%;" placeholder="VD: 0905.888.999" />
                 </div>
               </div>
 
               <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Äá»‹a chá»‰ Email (Äá»‹nh danh SSO):</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Địa chỉ Email (Định danh SSO):</label>
                   <input type="email" id="userEmail" class="input-control" style="width:100%;" placeholder="VD: nam.ph@camranhresort.vn" />
                 </div>
                 <div>
-                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Tráº¡ng thÃ¡i TÃ i khoáº£n:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Trạng thái Tài khoản:</label>
                   <select id="userStatus" class="select-control" style="width:100%;">
-                    <option value="active">ðŸŸ¢ Äang hoáº¡t Ä‘á»™ng (Active)</option>
-                    <option value="locked">ðŸ”´ KhÃ³a tÃ i khoáº£n (Locked)</option>
+                    <option value="active">🟢 Đang hoạt động (Active)</option>
+                    <option value="locked">🔴 Khóa tài khoản (Locked)</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">ÄÆ¡n vá»‹ / Doanh nghiá»‡p / TrÆ°á»ng há»c ThÃ nh viÃªn:</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Đơn vị / Doanh nghiệp / Trường học Thành viên:</label>
                 <input type="text" id="userOrg" class="input-control" style="width:100%;" placeholder="VD: Cam Ranh Riviera Resort &amp; Spa" />
               </div>
 
               <div>
-                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">NhÃ³m Vai trÃ² RBAC trong Há»‡ sinh thÃ¡i:</label>
+                <label style="font-size:12px;color:#334155;font-weight:700;display:block;margin-bottom:5px;">Nhóm Vai trò RBAC trong Hệ sinh thái:</label>
                 <select id="userRole" class="select-control" style="width:100%;" onchange="autoSuggestAppsForRole(this.value)">
-                  <option value="ceo_sme">ðŸ¢ Chá»§ Doanh nghiá»‡p SME (ERP &amp; Website)</option>
-                  <option value="center_director">ðŸ« GiÃ¡m Ä‘á»‘c Trung tÃ¢m Ngoáº¡i ngá»¯ - Tin há»c</option>
-                  <option value="school_principal">ðŸŽ“ Hiá»‡u trÆ°á»Ÿng TrÆ°á»ng há»c (Máº§m non - Äáº¡i há»c)</option>
-                  <option value="student_parent">ðŸ‘¨â€ðŸŽ“ Há»c viÃªn / Sinh viÃªn / Phá»¥ huynh</option>
-                  <option value="super_admin">ðŸ‘‘ Há»‡ sinh thÃ¡i TechCorp (Super Admin)</option>
+                  <option value="ceo_sme">🏢 Chủ Doanh nghiệp SME (ERP &amp; Website)</option>
+                  <option value="center_director">🏫 Giám đốc Trung tâm Ngoại ngữ - Tin học</option>
+                  <option value="school_principal">🎓 Hiệu trưởng Trường học (Mầm non - Đại học)</option>
+                  <option value="student_parent">👨‍🎓 Học viên / Sinh viên / Phụ huynh</option>
+                  <option value="super_admin">👑 Hệ sinh thái TechCorp (Super Admin)</option>
                 </select>
               </div>
 
               <div>
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px;">
-                  <label style="font-size:12px;color:#334155;font-weight:700;">PhÃ¢n quyá»n Truy cáº­p 16 á»¨ng dá»¥ng qua SSO:</label>
+                  <label style="font-size:12px;color:#334155;font-weight:700;">Phân quyền Truy cập 16 Ứng dụng qua SSO:</label>
                   <div style="display:flex;gap:6px;">
-                    <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:11px;" onclick="toggleAllUserAppCheckboxes(true)">âœ” Chá»n táº¥t cáº£ 16 App</button>
-                    <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:11px;" onclick="toggleAllUserAppCheckboxes(false)">âœ• Bá» chá»n</button>
+                    <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:11px;" onclick="toggleAllUserAppCheckboxes(true)">✔ Chọn tất cả 16 App</button>
+                    <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px;font-size:11px;" onclick="toggleAllUserAppCheckboxes(false)">✕ Bỏ chọn</button>
                   </div>
                 </div>
                 <div id="userAppPermissionsBox" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f0f7ff;padding:12px;border-radius:10px;border:1px solid #bfdbfe;">
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="jobai" checked /> ðŸ¤– SÃ n Viá»‡c lÃ m JobAI
+                    <input type="checkbox" class="user-app-cb" value="jobai" checked /> 🤖 Sàn Việc làm JobAI
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="erp" checked /> ðŸ¢ TechCorp ERP
+                    <input type="checkbox" class="user-app-cb" value="erp" checked /> 🏢 TechCorp ERP
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="kpi" checked /> ðŸ“Š BSC-KPI
+                    <input type="checkbox" class="user-app-cb" value="kpi" checked /> 📊 BSC-KPI
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="lms" checked /> ðŸ“ LMS &amp; Thi Online
+                    <input type="checkbox" class="user-app-cb" value="lms" checked /> 📝 LMS &amp; Thi Online
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="learn" checked /> ðŸ’» TechCorpLearn
+                    <input type="checkbox" class="user-app-cb" value="learn" checked /> 💻 TechCorpLearn
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="ttnn" /> ðŸŒ QL Trung tÃ¢m NN-TH
+                    <input type="checkbox" class="user-app-cb" value="ttnn" /> 🌐 QL Trung tâm NN-TH
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="qldt" /> ðŸ§­ Äáº¡i há»c TC COMPASS
+                    <input type="checkbox" class="user-app-cb" value="qldt" /> 🧭 Đại học TC COMPASS
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="gdtx" /> ðŸ›ï¸ QL Trung tÃ¢m GDTX
+                    <input type="checkbox" class="user-app-cb" value="gdtx" /> 🏛️ QL Trung tâm GDTX
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="mamnon" /> ðŸ§¸ QL TrÆ°á»ng Máº§m non
+                    <input type="checkbox" class="user-app-cb" value="mamnon" /> 🧸 QL Trường Mầm non
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="tieuhoc" /> ðŸŽ’ QL TrÆ°á»ng Tiá»ƒu há»c
+                    <input type="checkbox" class="user-app-cb" value="tieuhoc" /> 🎒 QL Trường Tiểu học
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="thcs" /> ðŸ“˜ QL TrÆ°á»ng THCS
+                    <input type="checkbox" class="user-app-cb" value="thcs" /> 📘 QL Trường THCS
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="thpt" /> ðŸŽ“ QL TrÆ°á»ng THPT
+                    <input type="checkbox" class="user-app-cb" value="thpt" /> 🎓 QL Trường THPT
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="qldh" /> ðŸ¨ KhÃ¡ch sáº¡n PMS
+                    <input type="checkbox" class="user-app-cb" value="qldh" /> 🏨 Khách sạn PMS
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="bds" /> ðŸ™ï¸ SÃ n BÄS AI
+                    <input type="checkbox" class="user-app-cb" value="bds" /> 🏙️ Sàn BĐS AI
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="noithat" /> ðŸ›‹ï¸ Ná»™i tháº¥t 3D
+                    <input type="checkbox" class="user-app-cb" value="noithat" /> 🛋️ Nội thất 3D
                   </label>
                   <label style="font-size:12px;color:#0f172a;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;">
-                    <input type="checkbox" class="user-app-cb" value="techcorp" /> ðŸš€ Cá»•ng Giáº£i phÃ¡p TechCorp
+                    <input type="checkbox" class="user-app-cb" value="techcorp" /> 🚀 Cổng Giải pháp TechCorp
                   </label>
                 </div>
               </div>
 
               <div style="display:flex;gap:10px;margin-top:4px;">
                 <button type="button" class="btn btn-primary" onclick="saveEcosystemUser()" style="flex:1;padding:11px;">
-                  ðŸ’¾ LÆ°u TÃ i khoáº£n &amp; Cáº¥p Quyá»n SSO
+                  💾 Lưu Tài khoản &amp; Cấp Quyền SSO
                 </button>
-                <button type="button" class="btn btn-outline" onclick="resetUserForm()">Há»§y / Nháº­p má»›i</button>
+                <button type="button" class="btn btn-outline" onclick="resetUserForm()">Hủy / Nhập mới</button>
               </div>
             </div>
           </div>
@@ -878,20 +878,20 @@
       </section>
 
       <!-- =====================================================================
-           PANEL G: Cáº¤U HÃŒNH MA TRáº¬N PHÃ‚N QUYá»€N VAI TRÃ’ (RBAC MATRIX 9x5)
+           PANEL G: CẤU HÌNH MA TRẬN PHÂN QUYỀN VAI TRÒ (RBAC MATRIX 9x5)
            ===================================================================== -->
       <section id="panel-master-rbac" class="tab-panel">
         <div class="card">
           <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
-              <h3 class="card-title">ðŸ” Cáº¥u hÃ¬nh Ma tráº­n PhÃ¢n quyá»n Chi tiáº¿t theo Vai trÃ² (Role-Based Access Control - RBAC)</h3>
+              <h3 class="card-title">🔐 Cấu hình Ma trận Phân quyền Chi tiết theo Vai trò (Role-Based Access Control - RBAC)</h3>
               <p class="card-subtitle">
-                Há»‡ sinh thÃ¡i TechCorp Ä‘á»‹nh nghÄ©a chÃ­nh xÃ¡c tá»«ng nhÃ³m Ä‘á»‘i tÆ°á»£ng Ä‘Æ°á»£c phÃ©p xem hoáº·c thá»±c thi chá»©c nÄƒng nÃ o. Khi báº­t/táº¯t Ã´ chá»n bÃªn dÆ°á»›i, Menu Quáº£n trá»‹ cá»§a vai trÃ² Ä‘Ã³ sáº½ tá»± Ä‘á»™ng má»Ÿ rá»™ng hoáº·c thu háº¹p tá»©c thÃ¬!
+                Hệ sinh thái TechCorp định nghĩa chính xác từng nhóm đối tượng được phép xem hoặc thực thi chức năng nào. Khi bật/tắt ô chọn bên dưới, Menu Quản trị của vai trò đó sẽ tự động mở rộng hoặc thu hẹp tức thì!
               </p>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button type="button" class="btn btn-outline btn-sm" onclick="printRbacMatrixReport()">ðŸ–¨ï¸ In Ma tráº­n RBAC</button>
-              <button type="button" class="btn btn-emerald btn-sm" onclick="exportRbacMatrixExcel()">ðŸ“¥ Xuáº¥t Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="printRbacMatrixReport()">🖨️ In Ma trận RBAC</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportRbacMatrixExcel()">📥 Xuất Excel</button>
             </div>
           </div>
 
@@ -899,12 +899,12 @@
             <table class="tc-table rbac-table">
               <thead>
                 <tr>
-                  <th style="min-width:260px;">Chá»©c nÄƒng / PhÃ¢n há»‡ Quáº£n trá»‹</th>
-                  <th>ðŸ‘‘ Há»‡ sinh thÃ¡i TechCorp<br/><span style="font-size:10px;font-weight:500;">(super_admin)</span></th>
-                  <th>ðŸ¢ Chá»§ Doanh nghiá»‡p<br/><span style="font-size:10px;font-weight:500;">(ceo_sme)</span></th>
-                  <th>ðŸ« GÄ Trung tÃ¢m<br/><span style="font-size:10px;font-weight:500;">(center_director)</span></th>
-                  <th>ðŸŽ“ Hiá»‡u trÆ°á»Ÿng TrÆ°á»ng<br/><span style="font-size:10px;font-weight:500;">(school_principal)</span></th>
-                  <th>ðŸ‘¨â€ðŸŽ“ Há»c viÃªn / PH<br/><span style="font-size:10px;font-weight:500;">(student_parent)</span></th>
+                  <th style="min-width:260px;">Chức năng / Phân hệ Quản trị</th>
+                  <th>👑 Hệ sinh thái TechCorp<br/><span style="font-size:10px;font-weight:500;">(super_admin)</span></th>
+                  <th>🏢 Chủ Doanh nghiệp<br/><span style="font-size:10px;font-weight:500;">(ceo_sme)</span></th>
+                  <th>🏫 GĐ Trung tâm<br/><span style="font-size:10px;font-weight:500;">(center_director)</span></th>
+                  <th>🎓 Hiệu trưởng Trường<br/><span style="font-size:10px;font-weight:500;">(school_principal)</span></th>
+                  <th>👨‍🎓 Học viên / PH<br/><span style="font-size:10px;font-weight:500;">(student_parent)</span></th>
                 </tr>
               </thead>
               <tbody id="rbacMatrixTableBody"></tbody>
@@ -914,20 +914,20 @@
       </section>
 
       <!-- =====================================================================
-           PANEL H: TRUY Váº¾T AN NINH AUDIT LOGS & CHIáº¾N Dá»ŠCH 57 Háº T NHÃ‚N NHA TRANG
+           PANEL H: TRUY VẾT AN NINH AUDIT LOGS & CHIẾN DỊCH 57 HẠT NHÂN NHA TRANG
            ===================================================================== -->
       <section id="panel-master-audit" class="tab-panel">
         <!-- Live Database Connection & Sync Status Banner -->
         <div id="auditDbStatusBanner" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;padding:12px 18px;border-radius:14px;margin-bottom:16px;box-shadow:0 8px 20px rgba(15,23,42,0.18);">
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <span style="background:#10b981;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">ðŸŸ¢ LIVE DATABASE</span>
+            <span style="background:#10b981;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">🟢 LIVE DATABASE</span>
             <span id="auditDbStatusText" style="font-size:13px;font-weight:600;color:#e2e8f0;">
-              Äang káº¿t ná»‘i cÆ¡ sá»Ÿ dá»¯ liá»‡u thá»±c táº¿ (Báº£ng <code>audit_logs</code> &amp; <code>lighthouse_targets</code>)...
+              Đang kết nối cơ sở dữ liệu thực tế (Bảng <code>audit_logs</code> &amp; <code>lighthouse_targets</code>)...
             </span>
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
             <button type="button" class="btn btn-sm" style="background:#3b82f6;color:#fff;border:1px solid #60a5fa;font-weight:700;" onclick="syncDatabaseLive(true)">
-              ðŸ”„ Äá»“ng bá»™ thá»±c táº¿ tá»« Database
+              🔄 Đồng bộ thực tế từ Database
             </button>
           </div>
         </div>
@@ -935,20 +935,20 @@
         <div class="card" style="margin-bottom:20px;">
           <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
-              <h3 class="card-title">ðŸ” Truy váº¿t NgÆ°á»i dÃ¹ng &amp; Nháº­t kÃ½ Kiá»ƒm toÃ¡n Táº­p trung (Security Audit Trail â€” DB Table: <code>audit_logs</code>)</h3>
+              <h3 class="card-title">🔍 Truy vết Người dùng &amp; Nhật ký Kiểm toán Tập trung (Security Audit Trail — DB Table: <code>audit_logs</code>)</h3>
               <p class="card-subtitle">
-                LÆ°u váº¿t trá»±c tiáº¿p vÃ o CÆ¡ sá»Ÿ dá»¯ liá»‡u thá»±c táº¿ má»i thao tÃ¡c Ä‘Äƒng nháº­p, phÃ¢n quyá»n RBAC, quáº£n trá»‹ sáº£n pháº©m, báº£n tin, tÃ i khoáº£n vÃ  theo dÃµi khÃ¡ch hÃ ng kÃ¨m Ä‘á»‹a chá»‰ IP.
+                Lưu vết trực tiếp vào Cơ sở dữ liệu thực tế mọi thao tác đăng nhập, phân quyền RBAC, quản trị sản phẩm, bản tin, tài khoản và theo dõi khách hàng kèm địa chỉ IP.
               </p>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
               <button type="button" class="btn btn-primary btn-sm" onclick="syncDatabaseLive(true)">
-                ðŸ”„ Táº£i má»›i tá»« CSDL
+                🔄 Tải mới từ CSDL
               </button>
               <button type="button" class="btn btn-outline btn-sm" onclick="printAuditLogsReport()">
-                ðŸ–¨ï¸ In BÃ¡o cÃ¡o Truy váº¿t
+                🖨️ In Báo cáo Truy vết
               </button>
               <button type="button" class="btn btn-emerald btn-sm" onclick="exportAuditLogsCsv()">
-                ðŸ“¥ Xuáº¥t Excel (CSV)
+                📥 Xuất Excel (CSV)
               </button>
             </div>
           </div>
@@ -959,14 +959,14 @@
               id="auditSearchInput"
               class="input-control"
               style="min-width:260px;flex:1;"
-              placeholder="ðŸ” TÃ¬m theo ngÆ°á»i thá»±c hiá»‡n, Ä‘Æ¡n vá»‹, IP, mÃ£ hÃ nh Ä‘á»™ng, Ä‘á»‘i tÆ°á»£ng, chi tiáº¿t..."
+              placeholder="🔍 Tìm theo người thực hiện, đơn vị, IP, mã hành động, đối tượng, chi tiết..."
               oninput="renderAuditLogsTable()"
             />
             <select id="auditSeverityFilter" class="select-control" onchange="renderAuditLogsTable()">
-              <option value="all">Táº¥t cáº£ má»©c Ä‘á»™ cáº£nh bÃ¡o</option>
-              <option value="INFO">ðŸŸ¢ INFO (Thao tÃ¡c tiÃªu chuáº©n)</option>
-              <option value="WARNING">ðŸŸ¡ WARNING (PhÃ¢n quyá»n RBAC / Cáº£nh bÃ¡o)</option>
-              <option value="CRITICAL">ðŸ”´ CRITICAL (XoÃ¡ dá»¯ liá»‡u / Báº£o máº­t)</option>
+              <option value="all">Tất cả mức độ cảnh báo</option>
+              <option value="INFO">🟢 INFO (Thao tác tiêu chuẩn)</option>
+              <option value="WARNING">🟡 WARNING (Phân quyền RBAC / Cảnh báo)</option>
+              <option value="CRITICAL">🔴 CRITICAL (Xoá dữ liệu / Bảo mật)</option>
             </select>
           </div>
 
@@ -974,13 +974,13 @@
             <table class="tc-table">
               <thead>
                 <tr>
-                  <th>MÃ£ Log &amp; Thá»i gian</th>
-                  <th>NgÆ°á»i thá»±c hiá»‡n &amp; ÄÆ¡n vá»‹</th>
-                  <th>Äá»‹a chá»‰ IP</th>
-                  <th>HÃ nh Ä‘á»™ng &amp; Má»©c Ä‘á»™</th>
-                  <th>Äá»‘i tÆ°á»£ng tÃ¡c Ä‘á»™ng</th>
-                  <th>Chi tiáº¿t Truy váº¿t (Database)</th>
-                  <th>Thao tÃ¡c</th>
+                  <th>Mã Log &amp; Thời gian</th>
+                  <th>Người thực hiện &amp; Đơn vị</th>
+                  <th>Địa chỉ IP</th>
+                  <th>Hành động &amp; Mức độ</th>
+                  <th>Đối tượng tác động</th>
+                  <th>Chi tiết Truy vết (Database)</th>
+                  <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody id="auditLogsTableBody"></tbody>
@@ -991,57 +991,57 @@
         <div class="card">
           <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
-              <h3 class="card-title">ðŸ“Š Báº£ng Theo dÃµi KhÃ¡ch hÃ ng Háº¡t nhÃ¢n &amp; Pipeline Triá»ƒn khai (DB Table: <code>lighthouse_targets</code>)</h3>
-              <p class="card-subtitle">Dá»¯ liá»‡u thá»±c táº¿ tá»« cÆ¡ sá»Ÿ dá»¯ liá»‡u theo dÃµi má»¥c tiÃªu phÃ¡t triá»ƒn khÃ¡ch hÃ ng &amp; Ä‘á»‘i tÃ¡c theo tá»«ng phÃ¢n khÃºc</p>
+              <h3 class="card-title">📊 Bảng Theo dõi Khách hàng Hạt nhân &amp; Pipeline Triển khai (DB Table: <code>lighthouse_targets</code>)</h3>
+              <p class="card-subtitle">Dữ liệu thực tế từ cơ sở dữ liệu theo dõi mục tiêu phát triển khách hàng &amp; đối tác theo từng phân khúc</p>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button type="button" class="btn btn-primary btn-sm" onclick="openLighthouseForm()">âž• ThÃªm PhÃ¢n khÃºc KH</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="printLighthouseReport()">ðŸ–¨ï¸ In Tiáº¿n Ä‘á»™ KH</button>
-              <button type="button" class="btn btn-emerald btn-sm" onclick="exportLighthouseExcel()">ðŸ“¥ Xuáº¥t Excel</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="triggerImportLighthouseExcel()">ðŸ“¤ Nháº­p Excel</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="downloadLighthouseExcelTemplate()">ðŸ“„ File Máº«u</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="openLighthouseForm()">➕ Thêm Phân khúc KH</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="printLighthouseReport()">🖨️ In Tiến độ KH</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportLighthouseExcel()">📥 Xuất Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="triggerImportLighthouseExcel()">📤 Nhập Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="downloadLighthouseExcelTemplate()">📄 File Mẫu</button>
               <input type="file" id="importLighthouseExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportLighthouseExcel(event)" />
             </div>
           </div>
 
-          <!-- Form ThÃªm má»›i / Cáº­p nháº­t PhÃ¢n khÃºc Theo dÃµi KhÃ¡ch hÃ ng (DB: lighthouse_targets) -->
+          <!-- Form Thêm mới / Cập nhật Phân khúc Theo dõi Khách hàng (DB: lighthouse_targets) -->
           <div id="lighthouseEditBox" style="display:none;background:#f0f9ff;border:1.5px solid #7dd3fc;border-radius:14px;padding:16px;margin-bottom:18px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-              <h4 id="lighthouseFormTitle" style="color:#0369a1;font-weight:800;font-size:14.5px;">âž• ThÃªm / Cáº­p nháº­t PhÃ¢n khÃºc Theo dÃµi KhÃ¡ch hÃ ng</h4>
-              <button type="button" class="btn btn-outline btn-sm" onclick="closeLighthouseForm()">ÄÃ³ng âœ•</button>
+              <h4 id="lighthouseFormTitle" style="color:#0369a1;font-weight:800;font-size:14.5px;">➕ Thêm / Cập nhật Phân khúc Theo dõi Khách hàng</h4>
+              <button type="button" class="btn btn-outline btn-sm" onclick="closeLighthouseForm()">Đóng ✕</button>
             </div>
             <input type="hidden" id="lhEditId" value="" />
             <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">PhÃ¢n khÃºc KhÃ¡ch hÃ ng &amp; Khu vá»±c (*):</label>
-                <input type="text" id="lhSegmentInput" class="input-control" style="width:100%;" placeholder="VD: Doanh nghiá»‡p SME &amp; Du lá»‹ch (Nha Trang)" />
+                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Phân khúc Khách hàng &amp; Khu vực (*):</label>
+                <input type="text" id="lhSegmentInput" class="input-control" style="width:100%;" placeholder="VD: Doanh nghiệp SME &amp; Du lịch (Nha Trang)" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Chá»‰ tiÃªu (Target):</label>
+                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Chỉ tiêu (Target):</label>
                 <input type="number" id="lhTargetCountInput" class="input-control" style="width:100%;" min="1" value="10" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">ÄÃ£ kÃ½ HÄ (Signed):</label>
+                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Đã ký HĐ (Signed):</label>
                 <input type="number" id="lhCurrentSignedInput" class="input-control" style="width:100%;" min="0" value="0" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Äang Ä‘Ã m phÃ¡n (Pipeline):</label>
+                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Đang đàm phán (Pipeline):</label>
                 <input type="number" id="lhInPipelineInput" class="input-control" style="width:100%;" min="0" value="2" />
               </div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">GÃ³i Combo Giáº£i phÃ¡p MÅ©i nhá»n:</label>
-                <input type="text" id="lhComboInput" class="input-control" style="width:100%;" placeholder="VD: ERP + BSC-KPI + SÃ n Viá»‡c lÃ m JobAI" />
+                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Gói Combo Giải pháp Mũi nhọn:</label>
+                <input type="text" id="lhComboInput" class="input-control" style="width:100%;" placeholder="VD: ERP + BSC-KPI + Sàn Việc làm JobAI" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Ghi chÃº Triá»ƒn khai &amp; Danh sÃ¡ch KH tiÃªu biá»ƒu:</label>
-                <input type="text" id="lhNoteInput" class="input-control" style="width:100%;" placeholder="VD: ÄÃ£ triá»ƒn khai 12 Ä‘Æ¡n vá»‹ máº«u..." />
+                <label style="font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px;">Ghi chú Triển khai &amp; Danh sách KH tiêu biểu:</label>
+                <input type="text" id="lhNoteInput" class="input-control" style="width:100%;" placeholder="VD: Đã triển khai 12 đơn vị mẫu..." />
               </div>
             </div>
             <div style="display:flex;justify-content:flex-end;gap:8px;">
-              <button type="button" class="btn btn-outline btn-sm" onclick="closeLighthouseForm()">Há»§y</button>
-              <button type="button" class="btn btn-primary btn-sm" onclick="saveLighthouseTargetForm()">ðŸ’¾ LÆ°u vÃ o CÆ¡ sá»Ÿ dá»¯ liá»‡u</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="closeLighthouseForm()">Hủy</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="saveLighthouseTargetForm()">💾 Lưu vào Cơ sở dữ liệu</button>
             </div>
           </div>
 
@@ -1049,11 +1049,11 @@
             <table class="tc-table">
               <thead>
                 <tr>
-                  <th>PhÃ¢n khÃºc &amp; Khu vá»±c</th>
-                  <th>GÃ³i Combo MÅ©i nhá»n</th>
-                  <th>Tiáº¿n Ä‘á»™ Chá»‘t thá»±c táº¿ (CSDL)</th>
-                  <th>Ghi chÃº</th>
-                  <th>Thao tÃ¡c (CRUD)</th>
+                  <th>Phân khúc &amp; Khu vực</th>
+                  <th>Gói Combo Mũi nhọn</th>
+                  <th>Tiến độ Chốt thực tế (CSDL)</th>
+                  <th>Ghi chú</th>
+                  <th>Thao tác (CRUD)</th>
                 </tr>
               </thead>
               <tbody id="lighthouseTableBody"></tbody>
@@ -1063,20 +1063,20 @@
       </section>
 
       <!-- =====================================================================
-           PANEL I: QUáº¢N LÃ KHÃCH HÃ€NG LIÃŠN Há»† & ÄÄ‚NG KÃ DEMO Sáº¢N PHáº¨M (DEMO LEADS CRM)
+           PANEL I: QUẢN LÝ KHÁCH HÀNG LIÊN HỆ & ĐĂNG KÝ DEMO SẢN PHẨM (DEMO LEADS CRM)
            ===================================================================== -->
       <section id="panel-master-demos" class="tab-panel">
         <!-- Live Database Connection & Sync Status Banner for Customer Tracking -->
         <div id="demoDbStatusBanner" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:linear-gradient(135deg,#064e3b,#047857);color:#fff;padding:12px 18px;border-radius:14px;margin-bottom:16px;box-shadow:0 8px 20px rgba(6,78,59,0.18);">
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <span style="background:#10b981;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">ðŸŸ¢ LIVE CRM DATABASE</span>
+            <span style="background:#10b981;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">🟢 LIVE CRM DATABASE</span>
             <span id="demoDbStatusText" style="font-size:13px;font-weight:600;color:#ecfdf5;">
-              Äang káº¿t ná»‘i dá»¯ liá»‡u khÃ¡ch hÃ ng thá»±c táº¿ tá»« CSDL (Báº£ng <code>demo_requests</code>)...
+              Đang kết nối dữ liệu khách hàng thực tế từ CSDL (Bảng <code>demo_requests</code>)...
             </span>
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
             <button type="button" class="btn btn-sm" style="background:#10b981;color:#fff;border:1px solid #6ee7b7;font-weight:700;" onclick="syncDatabaseLive(true)">
-              ðŸ”„ Äá»“ng bá»™ KhÃ¡ch hÃ ng tá»« Database
+              🔄 Đồng bộ Khách hàng từ Database
             </button>
           </div>
         </div>
@@ -1084,135 +1084,135 @@
         <div class="card" style="border-top:4px solid #059669;">
           <div class="card-header" style="flex-wrap:wrap;gap:10px;">
             <div>
-              <span class="badge badge-green">ðŸ“‹ CRM THEO DÃ•I KHÃCH HÃ€NG ÄÄ‚NG KÃ DEMO 16 Sáº¢N PHáº¨M (DB TABLE: demo_requests)</span>
-              <h3 class="card-title" style="margin-top:6px;">Danh sÃ¡ch KhÃ¡ch hÃ ng LiÃªn há»‡ TÆ° váº¥n &amp; ÄÄƒng kÃ½ DÃ¹ng thá»­ Demo</h3>
+              <span class="badge badge-green">📋 CRM THEO DÕI KHÁCH HÀNG ĐĂNG KÝ DEMO 16 SẢN PHẨM (DB TABLE: demo_requests)</span>
+              <h3 class="card-title" style="margin-top:6px;">Danh sách Khách hàng Liên hệ Tư vấn &amp; Đăng ký Dùng thử Demo</h3>
               <p class="card-subtitle">
-                Dá»¯ liá»‡u khÃ¡ch hÃ ng Ä‘Æ°á»£c Ä‘á»c vÃ  ghi trá»±c tiáº¿p vÃ o CÆ¡ sá»Ÿ dá»¯ liá»‡u thá»±c táº¿ (ThÃªm má»›i, Xem, Chá»‰nh sá»­a thÃ´ng tin/tráº¡ng thÃ¡i, XoÃ¡, In bÃ¡o cÃ¡o CRM, Xuáº¥t/Nháº­p Excel).
+                Dữ liệu khách hàng được đọc và ghi trực tiếp vào Cơ sở dữ liệu thực tế (Thêm mới, Xem, Chỉnh sửa thông tin/trạng thái, Xoá, In báo cáo CRM, Xuất/Nhập Excel).
               </p>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button type="button" class="btn btn-primary btn-sm" onclick="toggleAdminDemoLeadForm(true)">âž• ThÃªm KhÃ¡ch hÃ ng</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="syncDatabaseLive(true)">ðŸ”„ Táº£i má»›i CSDL</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="printDemoLeadsReport()">ðŸ–¨ï¸ In Danh sÃ¡ch CRM</button>
-              <button type="button" class="btn btn-emerald btn-sm" onclick="exportDemoLeadsCsv()">ðŸ“¥ Xuáº¥t Excel</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="triggerImportDemoLeadsExcel()">ðŸ“¤ Nháº­p Excel</button>
-              <button type="button" class="btn btn-outline btn-sm" onclick="downloadDemoLeadsTemplate()">ðŸ“„ File Máº«u</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="toggleAdminDemoLeadForm(true)">➕ Thêm Khách hàng</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="syncDatabaseLive(true)">🔄 Tải mới CSDL</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="printDemoLeadsReport()">🖨️ In Danh sách CRM</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="exportDemoLeadsCsv()">📥 Xuất Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="triggerImportDemoLeadsExcel()">📤 Nhập Excel</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="downloadDemoLeadsTemplate()">📄 File Mẫu</button>
               <input type="file" id="importDemoLeadsExcelInput" accept=".csv,.txt,.tsv" style="display:none;" onchange="handleImportDemoLeadsExcel(event)" />
             </div>
           </div>
 
-          <!-- Form ThÃªm má»›i / Cáº­p nháº­t KhÃ¡ch hÃ ng ÄÄƒng kÃ½ Demo trá»±c tiáº¿p trong CRM (DB: demo_requests) -->
+          <!-- Form Thêm mới / Cập nhật Khách hàng Đăng ký Demo trực tiếp trong CRM (DB: demo_requests) -->
           <div id="adminDemoLeadCreateBox" style="display:none;background:#f0fdf4;border:1.5px solid #6ee7b7;border-radius:14px;padding:16px;margin-bottom:18px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-              <h4 id="crmLeadFormTitle" style="color:#065f46;font-weight:800;font-size:14.5px;">âž• ThÃªm Má»›i Há»“ sÆ¡ KhÃ¡ch hÃ ng ÄÄƒng kÃ½ TÆ° váº¥n / Demo</h4>
-              <button type="button" class="btn btn-outline btn-sm" onclick="toggleAdminDemoLeadForm(false)">ÄÃ³ng âœ•</button>
+              <h4 id="crmLeadFormTitle" style="color:#065f46;font-weight:800;font-size:14.5px;">➕ Thêm Mới Hồ sơ Khách hàng Đăng ký Tư vấn / Demo</h4>
+              <button type="button" class="btn btn-outline btn-sm" onclick="toggleAdminDemoLeadForm(false)">Đóng ✕</button>
             </div>
             <input type="hidden" id="crmEditLeadId" value="" />
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:10px;">
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Há» vÃ  tÃªn khÃ¡ch hÃ ng (*):</label>
-                <input type="text" id="crmNewLeadName" class="input-control" style="width:100%;" placeholder="VD: Nguyá»…n Minh Tuáº¥n (GiÃ¡m Ä‘á»‘c)" />
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Họ và tên khách hàng (*):</label>
+                <input type="text" id="crmNewLeadName" class="input-control" style="width:100%;" placeholder="VD: Nguyễn Minh Tuấn (Giám đốc)" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Sá»‘ Ä‘iá»‡n thoáº¡i / Zalo (*):</label>
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Số điện thoại / Zalo (*):</label>
                 <input type="text" id="crmNewLeadPhone" class="input-control" style="width:100%;" placeholder="VD: 0905.123.456" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Email nháº­n tÃ i khoáº£n Demo:</label>
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Email nhận tài khoản Demo:</label>
                 <input type="email" id="crmNewLeadEmail" class="input-control" style="width:100%;" placeholder="VD: tuan.nm@company.vn" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">ÄÆ¡n vá»‹ / Doanh nghiá»‡p / TrÆ°á»ng há»c (*):</label>
-                <input type="text" id="crmNewLeadOrg" class="input-control" style="width:100%;" placeholder="VD: CÃ´ng ty CP Du lá»‹ch Biá»ƒn Xanh" />
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Đơn vị / Doanh nghiệp / Trường học (*):</label>
+                <input type="text" id="crmNewLeadOrg" class="input-control" style="width:100%;" placeholder="VD: Công ty CP Du lịch Biển Xanh" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Quy mÃ´ nhÃ¢n sá»± / Há»c sinh:</label>
-                <input type="text" id="crmNewLeadScale" class="input-control" style="width:100%;" placeholder="VD: 50 - 200 nhÃ¢n sá»±" value="50 - 200 nhÃ¢n sá»± / há»c viÃªn" />
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Quy mô nhân sự / Học sinh:</label>
+                <input type="text" id="crmNewLeadScale" class="input-control" style="width:100%;" placeholder="VD: 50 - 200 nhân sự" value="50 - 200 nhân sự / học viên" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Sáº£n pháº©m ÄÄƒng kÃ½ Demo (*):</label>
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Sản phẩm Đăng ký Demo (*):</label>
                 <select id="crmNewLeadProduct" class="select-control" style="width:100%;">
-                  <option value="erp">ðŸ¢ TechCorp ERP â€” Quáº£n trá»‹ Doanh nghiá»‡p</option>
-                  <option value="kpi">ðŸ“Š Há»‡ thá»‘ng Quáº£n trá»‹ BSC-KPI</option>
-                  <option value="jobai">ðŸ¤– SÃ n Tuyá»ƒn dá»¥ng JobAI</option>
-                  <option value="lms">ðŸ“ TechCorp LMS &amp; Kháº£o thÃ­ Online</option>
-                  <option value="learn">ðŸ’» TechCorpLearn â€” E-Learning Äa ngÃ nh</option>
-                  <option value="ttnn">ðŸ« Quáº£n lÃ½ Trung tÃ¢m Ngoáº¡i ngá»¯ - Tin há»c</option>
-                  <option value="qldt">ðŸ§­ Äáº¡i há»c Sá»‘ TC COMPASS</option>
-                  <option value="gdtx">ðŸ›ï¸ Quáº£n lÃ½ Trung tÃ¢m GDTX - HÆ°á»›ng nghiá»‡p</option>
-                  <option value="mamnon">ðŸ§¸ Quáº£n lÃ½ TrÆ°á»ng Máº§m non</option>
-                  <option value="tieuhoc">ðŸŽ’ Quáº£n lÃ½ TrÆ°á»ng Tiá»ƒu há»c</option>
-                  <option value="thcs">ðŸ“˜ Quáº£n lÃ½ TrÆ°á»ng THCS</option>
-                  <option value="thpt">ðŸŽ“ Quáº£n lÃ½ TrÆ°á»ng THPT</option>
-                  <option value="qldh">ðŸ¨ TechCorp PMS â€” KhÃ¡ch sáº¡n &amp; Resort</option>
-                  <option value="bds">ðŸ™ï¸ SÃ n Giao dá»‹ch &amp; Äá»‹nh giÃ¡ BÄS AI</option>
-                  <option value="noithat">ðŸ›‹ï¸ Thiáº¿t káº¿ Ná»™i tháº¥t 3D &amp; BÃ¡o giÃ¡</option>
-                  <option value="techcorp">ðŸš€ Combo ToÃ n diá»‡n Há»‡ sinh thÃ¡i TechCorp</option>
+                  <option value="erp">🏢 TechCorp ERP — Quản trị Doanh nghiệp</option>
+                  <option value="kpi">📊 Hệ thống Quản trị BSC-KPI</option>
+                  <option value="jobai">🤖 Sàn Tuyển dụng JobAI</option>
+                  <option value="lms">📝 TechCorp LMS &amp; Khảo thí Online</option>
+                  <option value="learn">💻 TechCorpLearn — E-Learning Đa ngành</option>
+                  <option value="ttnn">🏫 Quản lý Trung tâm Ngoại ngữ - Tin học</option>
+                  <option value="qldt">🧭 Đại học Số TC COMPASS</option>
+                  <option value="gdtx">🏛️ Quản lý Trung tâm GDTX - Hướng nghiệp</option>
+                  <option value="mamnon">🧸 Quản lý Trường Mầm non</option>
+                  <option value="tieuhoc">🎒 Quản lý Trường Tiểu học</option>
+                  <option value="thcs">📘 Quản lý Trường THCS</option>
+                  <option value="thpt">🎓 Quản lý Trường THPT</option>
+                  <option value="qldh">🏨 TechCorp PMS — Khách sạn &amp; Resort</option>
+                  <option value="bds">🏙️ Sàn Giao dịch &amp; Định giá BĐS AI</option>
+                  <option value="noithat">🛋️ Thiết kế Nội thất 3D &amp; Báo giá</option>
+                  <option value="techcorp">🚀 Combo Toàn diện Hệ sinh thái TechCorp</option>
                 </select>
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Khung giá» háº¹n tÆ° váº¥n Demo:</label>
-                <input type="text" id="crmNewLeadTime" class="input-control" style="width:100%;" placeholder="VD: SÃ¡ng (08:30 - 11:30)" value="Trong giá» hÃ nh chÃ­nh (08:00 - 17:30)" />
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Khung giờ hẹn tư vấn Demo:</label>
+                <input type="text" id="crmNewLeadTime" class="input-control" style="width:100%;" placeholder="VD: Sáng (08:30 - 11:30)" value="Trong giờ hành chính (08:00 - 17:30)" />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Tráº¡ng thÃ¡i ChÄƒm sÃ³c:</label>
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Trạng thái Chăm sóc:</label>
                 <select id="crmNewLeadStatus" class="select-control" style="width:100%;">
-                  <option value="new">ðŸ†• Má»›i Ä‘Äƒng kÃ½ (Chá» gá»i tÆ° váº¥n)</option>
-                  <option value="contacted">ðŸ“ž ÄÃ£ liÃªn há»‡ / ÄÃ£ cáº¥p TK Demo</option>
-                  <option value="scheduled">ðŸ“… ÄÃ£ háº¹n lá»‹ch Demo 1-1</option>
-                  <option value="completed">âœ… ÄÃ£ Demo &amp; Chá»‘t triá»ƒn khai</option>
+                  <option value="new">🆕 Mới đăng ký (Chờ gọi tư vấn)</option>
+                  <option value="contacted">📞 Đã liên hệ / Đã cấp TK Demo</option>
+                  <option value="scheduled">📅 Đã hẹn lịch Demo 1-1</option>
+                  <option value="completed">✅ Đã Demo &amp; Chốt triển khai</option>
                 </select>
               </div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">YÃªu cáº§u trá»ng tÃ¢m cá»§a KhÃ¡ch hÃ ng:</label>
-                <input type="text" id="crmNewLeadNotes" class="input-control" style="width:100%;" placeholder="VD: Cáº§n tÆ° váº¥n phÃ¢n há»‡ HRM, TÃ i chÃ­nh vÃ  Ä‘á»“ng bá»™ KPI..." />
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Yêu cầu trọng tâm của Khách hàng:</label>
+                <input type="text" id="crmNewLeadNotes" class="input-control" style="width:100%;" placeholder="VD: Cần tư vấn phân hệ HRM, Tài chính và đồng bộ KPI..." />
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Ghi chÃº ChÄƒm sÃ³c cá»§a ChuyÃªn viÃªn (Admin Note):</label>
-                <input type="text" id="crmNewLeadAdminNote" class="input-control" style="width:100%;" placeholder="VD: ÄÃ£ gá»­i tÃ i khoáº£n tráº£i nghiá»‡m qua Zalo..." />
+                <label style="font-size:11.5px;font-weight:700;color:#065f46;display:block;margin-bottom:4px;">Ghi chú Chăm sóc của Chuyên viên (Admin Note):</label>
+                <input type="text" id="crmNewLeadAdminNote" class="input-control" style="width:100%;" placeholder="VD: Đã gửi tài khoản trải nghiệm qua Zalo..." />
               </div>
             </div>
             <div style="display:flex;justify-content:flex-end;gap:8px;">
-              <button type="button" class="btn btn-outline btn-sm" onclick="toggleAdminDemoLeadForm(false)">Há»§y</button>
-              <button type="button" class="btn btn-emerald btn-sm" onclick="saveAdminNewDemoLead()">ðŸ’¾ LÆ°u Há»“ sÆ¡ KhÃ¡ch hÃ ng vÃ o Database</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="toggleAdminDemoLeadForm(false)">Hủy</button>
+              <button type="button" class="btn btn-emerald btn-sm" onclick="saveAdminNewDemoLead()">💾 Lưu Hồ sơ Khách hàng vào Database</button>
             </div>
           </div>
 
-          <!-- Thá»‘ng kÃª nhanh sá»‘ lÆ°á»£ng khÃ¡ch hÃ ng Ä‘Äƒng kÃ½ Demo -->
+          <!-- Thống kê nhanh số lượng khách hàng đăng ký Demo -->
           <div class="kpi-row" style="margin-bottom:18px;" id="adminDemoKpiRow"></div>
 
-          <!-- Bá»™ lá»c & TÃ¬m kiáº¿m KhÃ¡ch hÃ ng ÄÄƒng kÃ½ Demo -->
+          <!-- Bộ lọc & Tìm kiếm Khách hàng Đăng ký Demo -->
           <div class="filter-bar">
             <select id="adminDemoStatusFilter" class="select-control" onchange="renderAdminDemoRequestsTable()">
-              <option value="all">Táº¥t cáº£ tráº¡ng thÃ¡i xá»­ lÃ½</option>
-              <option value="new">ðŸ†• Má»›i Ä‘Äƒng kÃ½ (Chá» gá»i tÆ° váº¥n)</option>
-              <option value="contacted">ðŸ“ž ÄÃ£ liÃªn há»‡ / ÄÃ£ gá»­i tÃ i khoáº£n</option>
-              <option value="scheduled">ðŸ“… ÄÃ£ háº¹n lá»‹ch Demo 1-1</option>
-              <option value="completed">âœ… ÄÃ£ Demo &amp; Chá»‘t triá»ƒn khai</option>
+              <option value="all">Tất cả trạng thái xử lý</option>
+              <option value="new">🆕 Mới đăng ký (Chờ gọi tư vấn)</option>
+              <option value="contacted">📞 Đã liên hệ / Đã gửi tài khoản</option>
+              <option value="scheduled">📅 Đã hẹn lịch Demo 1-1</option>
+              <option value="completed">✅ Đã Demo &amp; Chốt triển khai</option>
             </select>
             <input
               type="text"
               id="adminDemoSearchInput"
               class="input-control"
               style="min-width:260px;flex:1;"
-              placeholder="ðŸ” TÃ¬m theo tÃªn khÃ¡ch hÃ ng, SÄT/Zalo, Ä‘Æ¡n vá»‹, sáº£n pháº©m..."
+              placeholder="🔍 Tìm theo tên khách hàng, SĐT/Zalo, đơn vị, sản phẩm..."
               oninput="renderAdminDemoRequestsTable()"
             />
           </div>
 
-          <!-- Báº£ng Danh sÃ¡ch KhÃ¡ch hÃ ng LiÃªn há»‡ Demo -->
+          <!-- Bảng Danh sách Khách hàng Liên hệ Demo -->
           <div class="table-wrap">
             <table class="tc-table">
               <thead>
                 <tr>
-                  <th>MÃ£ &amp; Thá»i gian</th>
-                  <th>ThÃ´ng tin KhÃ¡ch hÃ ng &amp; ÄÆ¡n vá»‹</th>
-                  <th>Sáº£n pháº©m ÄÄƒng kÃ½ Demo</th>
-                  <th>Lá»‹ch háº¹n &amp; YÃªu cáº§u Trá»ng tÃ¢m</th>
-                  <th>Tráº¡ng thÃ¡i ChÄƒm sÃ³c &amp; Ghi chÃº Admin</th>
-                  <th>Thao tÃ¡c (CRUD)</th>
+                  <th>Mã &amp; Thời gian</th>
+                  <th>Thông tin Khách hàng &amp; Đơn vị</th>
+                  <th>Sản phẩm Đăng ký Demo</th>
+                  <th>Lịch hẹn &amp; Yêu cầu Trọng tâm</th>
+                  <th>Trạng thái Chăm sóc &amp; Ghi chú Admin</th>
+                  <th>Thao tác (CRUD)</th>
                 </tr>
               </thead>
               <tbody id="adminDemoRequestsTableBody"></tbody>
@@ -1223,14 +1223,14 @@
     </main>
   </div>
 
-  <!-- MODAL XEM CHI TIáº¾T Báº¢N TIN Há»† SINH THÃI & TIN ÄÆ N Vá»Š THÃ€NH VIÃŠN -->
+  <!-- MODAL XEM CHI TIẾT BẢN TIN HỆ SINH THÁI & TIN ĐƠN VỊ THÀNH VIÊN -->
   <div id="bulletinDetailModal" class="bulletin-detail-modal-backdrop" style="display:none;" onclick="if(event.target===this)closeBulletinDetailModal()">
     <div class="bulletin-detail-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="bulletinModalTitle">
       <div id="bulletinDetailModalBody"></div>
     </div>
   </div>
 
-  <!-- MODAL XEM Há»’ SÆ  CHI TIáº¾T THÃ€NH VIÃŠN TECHCORP ID -->
+  <!-- MODAL XEM HỒ SƠ CHI TIẾT THÀNH VIÊN TECHCORP ID -->
   <div id="userDetailModal" class="bulletin-detail-modal-backdrop" style="display:none;" onclick="if(event.target===this)closeUserDetailModal()">
     <div class="bulletin-detail-modal-dialog" style="max-width:680px;" role="dialog" aria-modal="true">
       <div id="userDetailModalBody"></div>
@@ -1238,6 +1238,6 @@
   </div>
 
   <div id="toastContainer" class="toast-container"></div>
-  <script src="app.js?v=31"></script>
+  <script src="app.js?v=32"></script>
 </body>
 </html>

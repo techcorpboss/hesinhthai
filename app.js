@@ -6352,7 +6352,7 @@ function renderRoleContextAndSidebar() {
         </button>
         <div class="sidebar-section-label" style="margin-top:8px;">🏢 GIÁM SÁT WORKSPACE ĐƠN VỊ</div>
         <button class="nav-btn" data-panel="panel-role-workspace" onclick="activateAdminPanel('panel-role-workspace', 'overview')">
-          <span>🏢 9. Giám sát Workspace 4 Khối</span>
+          <span>🏢 9. Giám sát 4 Khối Đơn vị</span>
           <span class="nav-badge">4 Vai trò</span>
         </button>
       `;
